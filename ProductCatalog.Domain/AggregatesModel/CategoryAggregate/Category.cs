@@ -1,9 +1,18 @@
 ﻿namespace ProductCatalog.Domain.AggregatesModel.CategoryAggregate
 {
-    public class Category
+    public sealed class Category
     {
-        public Guid Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
+        public Guid Id { get; private set; }
+        public string Code { get; private set; }
+        public string Name { get; private set; }
+
+        public Category() { }
+
+        public Category(string code, string name)
+        {
+            Id = Guid.NewGuid();
+            Code = code;
+            Name = name;
+        }
     }
 }
