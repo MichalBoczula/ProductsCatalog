@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using ProductCatalog.Application.Common.Dtos;
+using ProductCatalog.Domain.ReadModels;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;

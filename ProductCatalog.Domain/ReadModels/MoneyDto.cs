@@ -1,4 +1,4 @@
-﻿namespace ProductCatalog.Application.Common.Dtos
+﻿namespace ProductCatalog.Domain.ReadModels
 {
     public class MoneyDto
     {

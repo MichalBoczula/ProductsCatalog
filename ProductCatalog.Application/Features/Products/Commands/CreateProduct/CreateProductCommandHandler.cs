@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using MediatR;
-using ProductCatalog.Application.Common.Dtos;
+using ProductCatalog.Domain.ReadModels;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 

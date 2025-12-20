@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
-
-namespace ProductCatalog.Application.Common.Dtos
+﻿namespace ProductCatalog.Domain.ReadModels
 {
     public class ProductDto
     {

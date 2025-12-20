@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ProductCatalog.Application.Common.Dtos;
+using ProductCatalog.Domain.ReadModels;
 
 namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
 {
