@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+using ProductCatalog.Infrastructure.Common;
 
 namespace ProductCatalog.Infrastructure.Configuration
 {
@@ -8,7 +9,7 @@ namespace ProductCatalog.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.ToTable("TB_Categories");
+            builder.ToTable(SqlTableNames.Categories);
 
             builder.HasKey(x => x.Id);
 
@@ -16,7 +17,6 @@ namespace ProductCatalog.Infrastructure.Configuration
             
             builder.Property(x => x.Code).HasMaxLength(200).IsRequired();
             builder.HasIndex(x => x.Code);
-
         }
     }
 }

@@ -69,6 +69,8 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("TB_Products", (string)null);
                 });
 

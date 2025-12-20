@@ -45,6 +45,11 @@ namespace ProductCatalog.Infrastructure.Migrations
                 name: "IX_TB_Categories_Code",
                 table: "TB_Categories",
                 column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TB_Products_CategoryId",
+                table: "TB_Products",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />

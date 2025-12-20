@@ -12,7 +12,7 @@ using ProductCatalog.Infrastructure.Contexts.Commands;
 namespace ProductCatalog.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductsContext))]
-    [Migration("20251220174138_Initial")]
+    [Migration("20251220211942_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -71,6 +71,8 @@ namespace ProductCatalog.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("TB_Products", (string)null);
                 });
