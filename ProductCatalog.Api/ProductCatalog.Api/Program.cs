@@ -1,4 +1,5 @@
 using ProductCatalog.Infrastructure;
+using ProductCatalog.Application;
 
 namespace ProductCatalog.Api
 {
@@ -14,6 +15,7 @@ namespace ProductCatalog.Api
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddApplication();
 
             var app = builder.Build();
             if (app.Environment.IsDevelopment())

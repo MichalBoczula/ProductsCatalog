@@ -2,5 +2,5 @@
 
 namespace ProductCatalog.Application.Features.Products
 {
-    public sealed record CreateProductDto(Guid Id, string Name, string Description, Money Price, Guid CategoryId);
+    public sealed record CreateProductExternalDto(string Name, string Description, Money Price, Guid CategoryId);
 }

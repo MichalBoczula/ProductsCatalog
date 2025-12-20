@@ -6,7 +6,7 @@
         public string Code { get; private set; }
         public string Name { get; private set; }
 
-        public Category() { }
+        private Category() { }
 
         public Category(string code, string name)
         {

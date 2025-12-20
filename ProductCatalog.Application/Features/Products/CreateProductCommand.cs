@@ -2,5 +2,5 @@
 
 namespace ProductCatalog.Application.Features.Products
 {
-    public sealed record CreateProductCommand(CreateProductDto product) : IRequest<Guid>;
+    public sealed record CreateProductCommand(CreateProductExternalDto product) : IRequest<Guid>;
 }
