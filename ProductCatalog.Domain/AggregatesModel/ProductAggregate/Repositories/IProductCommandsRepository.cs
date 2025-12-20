@@ -3,5 +3,6 @@
     public interface IProductCommandsRepository
     {
         Task AddAsync(Product product, CancellationToken ct);
+        Task UpdateAsync(Product product, CancellationToken cancellationToken);
     }
 }

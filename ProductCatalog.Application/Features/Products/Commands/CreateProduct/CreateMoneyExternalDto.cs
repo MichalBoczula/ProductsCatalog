@@ -1,4 +1,4 @@
-﻿namespace ProductCatalog.Application.Features.Products
+﻿namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
 {
     public class CreateMoneyExternalDto
     {

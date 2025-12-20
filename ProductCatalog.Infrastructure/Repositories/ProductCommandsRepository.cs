@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
+﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 
@@ -18,6 +17,12 @@ namespace ProductCatalog.Infrastructure.Repositories
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync(ct);
+        }
+
+        public Task UpdateAsync(Product product, CancellationToken cancellationToken)
+        {
+            _context.Products.Update(product);
+            return _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

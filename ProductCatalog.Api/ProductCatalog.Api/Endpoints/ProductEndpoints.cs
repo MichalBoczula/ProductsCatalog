@@ -1,5 +1,6 @@
 ﻿using MediatR;
-using ProductCatalog.Application.Features.Products;
+using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -13,6 +14,14 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Created($"/products/{result.Id}", result);
             })
                 .WithName("CreateProduct")
+                .WithOpenApi();
+
+            app.MapPut("/products/{id:guid}", async (Guid id, UpdateProductExternalDto product, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new UpdateProductCommand(product));
+                return Results.Created($"/products/{result.Id}", result);
+            })
+                .WithName("UpdateProduct")
                 .WithOpenApi();
 
             return app;

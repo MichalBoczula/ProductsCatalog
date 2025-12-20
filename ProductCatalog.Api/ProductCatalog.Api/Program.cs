@@ -1,6 +1,6 @@
 using ProductCatalog.Api.Endpoints;
 using ProductCatalog.Application;
-using ProductCatalog.Application.Features.Products;
+using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Infrastructure;
 
 namespace ProductCatalog.Api
@@ -22,6 +22,8 @@ namespace ProductCatalog.Api
             builder.Services.AddMediatR(cfg =>
                cfg.RegisterServicesFromAssembly(typeof(CreateProductCommand).Assembly));
 
+            builder.Services.AddHealthChecks();
+
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
@@ -34,6 +36,8 @@ namespace ProductCatalog.Api
             app.UseAuthorization();
 
             app.MapProductEndpoints();
+
+            app.MapHealthChecks("/health");
 
             app.Run();
         }
