@@ -1,6 +1,5 @@
 using ProductCatalog.Api.Endpoints;
 using ProductCatalog.Application;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Infrastructure;
 
 namespace ProductCatalog.Api
@@ -20,12 +19,12 @@ namespace ProductCatalog.Api
             builder.Services.AddApplication();
 
             builder.Services.AddMediatR(cfg =>
-               cfg.RegisterServicesFromAssembly(typeof(CreateProductCommand).Assembly));
+                cfg.RegisterServicesFromAssembly(typeof(Application.DependencyInjection).Assembly));
 
             builder.Services.AddHealthChecks();
 
             var app = builder.Build();
-            
+
             app.UseSwagger();
             app.UseSwaggerUI();
 
