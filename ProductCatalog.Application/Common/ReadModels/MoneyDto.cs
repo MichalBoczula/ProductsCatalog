@@ -1,6 +1,6 @@
-﻿namespace ProductCatalog.Application.Common.Dtos.Internal
+﻿namespace ProductCatalog.Application.Common.Dtos
 {
-    internal class MoneyDto
+    public class MoneyDto
     {
         public decimal Amount { get; set; }
         public string Currency { get; set; }

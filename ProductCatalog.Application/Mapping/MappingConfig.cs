@@ -1,6 +1,6 @@
 ﻿using Mapster;
-using ProductCatalog.Application.Common.Dtos.External;
-using ProductCatalog.Application.Common.Dtos.Internal;
+using ProductCatalog.Application.Common.Dtos;
+using ProductCatalog.Application.Features.Products;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 
@@ -16,7 +16,7 @@ namespace ProductCatalog.Application.Mapping
 
         private static void CreateMapppingForProducts()
         {
-            TypeAdapterConfig<ProductExternalDto, Product>
+            TypeAdapterConfig<CreateProductExternalDto, Product>
                 .NewConfig()
                 .MapToConstructor(true);
 
@@ -26,7 +26,7 @@ namespace ProductCatalog.Application.Mapping
 
         private static void CreateMapppingForMoney()
         {
-            TypeAdapterConfig<MoneyExternalDto, Money>
+            TypeAdapterConfig<CreateMoneyExternalDto, Money>
                 .NewConfig()
                 .MapToConstructor(true);
             TypeAdapterConfig<Money, MoneyDto>

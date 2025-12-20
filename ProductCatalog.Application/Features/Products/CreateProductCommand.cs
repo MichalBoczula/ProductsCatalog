@@ -1,8 +1,7 @@
 ﻿using MediatR;
-using ProductCatalog.Application.Common.Dtos.External;
-using ProductCatalog.Application.Common.Dtos.Internal;
+using ProductCatalog.Application.Common.Dtos;
 
 namespace ProductCatalog.Application.Features.Products
 {
-    public sealed record CreateProductCommand(ProductExternalDto product) : IRequest<ProductDto>;
+    public sealed record CreateProductCommand(CreateProductExternalDto product) : IRequest<ProductDto>;
 }
