@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ProductCatalog.Domain.ReadModels;
+using ProductCatalog.Application.Common.Dtos;
 
 namespace ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId
 {

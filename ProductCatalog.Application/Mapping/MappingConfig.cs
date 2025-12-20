@@ -1,8 +1,9 @@
 ﻿using Mapster;
-using ProductCatalog.Domain.ReadModels;
+using ProductCatalog.Application.Common.Dtos;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+using ProductCatalog.Domain.ReadModels;
 
 namespace ProductCatalog.Application.Mapping
 {
@@ -12,6 +13,7 @@ namespace ProductCatalog.Application.Mapping
         {
             CreateMapppingForProducts();
             CreateMapppingForMoney();
+            CreateMapppingForReadModels();
         }
 
         private static void CreateMapppingForProducts()
@@ -31,6 +33,18 @@ namespace ProductCatalog.Application.Mapping
                 .MapToConstructor(true);
             TypeAdapterConfig<Money, MoneyDto>
                 .NewConfig();
+        }
+
+        private static void CreateMapppingForReadModels()
+        {
+            TypeAdapterConfig<ProductReadModel, ProductDto>
+                .NewConfig()
+                .Map(dest => dest.Price,
+                    src => new MoneyDto
+                    {
+                        Amount = src.PriceAmount,
+                        Currency = src.PriceCurrency
+                    }); ;
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Mapster;
+using MediatR;
+using ProductCatalog.Application.Common.Dtos;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
-using ProductCatalog.Domain.ReadModels;
 
 namespace ProductCatalog.Application.Features.Products.Queries.GetProductById
 {
@@ -10,7 +11,7 @@ namespace ProductCatalog.Application.Features.Products.Queries.GetProductById
         public async Task<ProductDto?> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _productQueriesRepository.GetByIdAsync(request.id, cancellationToken);
-            return result;
+            return result.Adapt<ProductDto>();
         }
     }
 }

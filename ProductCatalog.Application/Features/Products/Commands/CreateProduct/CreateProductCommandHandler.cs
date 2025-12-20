@@ -1,12 +1,12 @@
 ﻿using Mapster;
 using MediatR;
-using ProductCatalog.Domain.ReadModels;
+using ProductCatalog.Application.Common.Dtos;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 
 namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
 {
-    internal class CreateProductCommandHandler(IProductCommandsRepository _productCommandsRepository) 
+    internal class CreateProductCommandHandler(IProductCommandsRepository _productCommandsRepository)
         : IRequestHandler<CreateProductCommand, ProductDto>
     {
         public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)

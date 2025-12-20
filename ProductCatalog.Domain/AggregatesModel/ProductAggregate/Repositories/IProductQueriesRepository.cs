@@ -4,7 +4,7 @@ namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories
 {
     public interface IProductQueriesRepository
     {
-        Task<ProductDto?> GetByIdAsync(Guid id, CancellationToken ct);
-        Task<IReadOnlyList<ProductDto>> GetByCategoryIdAsync(Guid categoryId, CancellationToken ct);
+        Task<ProductReadModel?> GetByIdAsync(Guid id, CancellationToken ct);
+        Task<IReadOnlyList<ProductReadModel>> GetByCategoryIdAsync(Guid categoryId, CancellationToken ct);
     }
 }

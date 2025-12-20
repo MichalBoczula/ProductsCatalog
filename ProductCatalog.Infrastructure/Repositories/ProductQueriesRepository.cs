@@ -19,26 +19,29 @@ namespace ProductCatalog.Infrastructure.Repositories
         }
         private IDbConnection CreateConnection() => new SqlConnection(_connectionString);
 
-        public async Task<ProductDto?> GetByIdAsync(Guid id, CancellationToken ct)
+        public async Task<ProductReadModel?> GetByIdAsync(Guid id, CancellationToken ct)
         {
             var sql = $@"
                 SELECT Id,
-                       Name,
-                       Description,
-                       PriceAmount,
-                       PriceCurrency,
-                       IsActive,
-                       CategoryId
+                        Name,
+                        Description,
+                        IsActive,
+                        CategoryId,
+                        PriceAmount,
+                        PriceCurrency
                 FROM {SqlTableNames.Products}
                 WHERE Id = @Id;
                 ";
 
             using var connection = CreateConnection();
-            return await connection.QuerySingleOrDefaultAsync<ProductDto>(
-                new CommandDefinition(sql, new { Id = id }, cancellationToken: ct));
+
+            var result = await connection.QuerySingleOrDefaultAsync<ProductReadModel?>(
+                sql, new { Id = id });
+
+            return result;
         }
 
-        public async Task<IReadOnlyList<ProductDto>> GetByCategoryIdAsync(Guid categoryId, CancellationToken ct)
+        public async Task<IReadOnlyList<ProductReadModel>?> GetByCategoryIdAsync(Guid categoryId, CancellationToken ct)
         {
             var sql = $@"
                 SELECT Id,
@@ -54,9 +57,11 @@ namespace ProductCatalog.Infrastructure.Repositories
                 ";
 
             using var connection = CreateConnection();
-            var results = await connection.QueryAsync<ProductDto>(
-                new CommandDefinition(sql, new { CategoryId = categoryId }, cancellationToken: ct));
-            return results.AsList();
+            var result = await connection.QueryAsync<ProductReadModel>(
+                new CommandDefinition(sql, new { CategoryId = categoryId }, cancellationToken: ct)
+             );
+
+            return result.ToList();
         }
     }
 }
