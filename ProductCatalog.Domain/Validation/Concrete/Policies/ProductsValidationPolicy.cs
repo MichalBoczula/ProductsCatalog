@@ -2,25 +2,22 @@
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
-using System.Data;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
-    public class ProductValidationPolicy
+    public sealed class ProductsValidationPolicy
     {
         private readonly List<IValidationRule<Product>> _rules = new();
+        private readonly ValidationResult validationResult = new();
 
-        public ProductValidationPolicy()
+        public ProductsValidationPolicy()
         {
-            _rules.Add(new ProductsNameValidationPolicy());
+            _rules.Add(new ProductsNameValidationRule());
         }
 
         public ValidationResult Validate(Product client)
         {
-            var validationResult = new ValidationResult();
-
-            _rules.ForEach(rule=> rule.IsValid(client, validationResult));
-
+            _rules.ForEach(rule => rule.IsValid(client, validationResult));
             return validationResult;
         }
 
@@ -36,7 +33,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
 
             return new ValidationPolicyDescriptor()
             {
-                PolicyName = nameof(ProductValidationPolicy),
+                PolicyName = nameof(ProductsValidationPolicy),
                 Rules = allErrors
             };
         }

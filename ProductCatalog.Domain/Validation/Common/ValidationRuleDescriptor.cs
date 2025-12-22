@@ -1,8 +1,8 @@
 ﻿namespace ProductCatalog.Domain.Validation.Common
 {
-    public class ValidationRuleDescriptor
+    public sealed class ValidationRuleDescriptor
     {
-        public string RuleName { get; set; }
-        public List<ValidationError> Rules { get; set; }
+        public required string RuleName { get; init; }
+        public required List<ValidationError> Rules { get; init; }
     }
 }

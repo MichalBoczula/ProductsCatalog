@@ -4,8 +4,8 @@ namespace ProductCatalog.Domain.Validation.Common
 {
     public class ValidationError
     {
-        public string Message { get; set; }
-        public string RuleName { get; set; }
-        public RuleSeverity Severity { get; set; }
+        public required string Message { get; init; }
+        public required string RuleName { get; init; }
+        public required RuleSeverity Severity { get; init; }
     }
 }

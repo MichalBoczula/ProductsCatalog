@@ -5,11 +5,11 @@ using ProductCatalog.Domain.Validation.Enums;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
 {
-    public class ProductsNameValidationPolicy : IValidationRule<Product>
+    public class ProductsNameValidationRule : IValidationRule<Product>
     {
         private readonly ValidationError nullOrWhiteSpace;
 
-        public ProductsNameValidationPolicy()
+        public ProductsNameValidationRule()
         {
             nullOrWhiteSpace = new ValidationError
             {
@@ -23,7 +23,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
         {
             if (string.IsNullOrWhiteSpace(entity.Name))
             {
-                validationResults.ValidationErrors.Add(nullOrWhiteSpace);
+                validationResults.AddValidateError(nullOrWhiteSpace);
                 return;
             }
         }

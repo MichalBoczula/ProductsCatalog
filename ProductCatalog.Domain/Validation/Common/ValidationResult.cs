@@ -1,8 +1,15 @@
 ﻿namespace ProductCatalog.Domain.Validation.Common
 {
-    public class ValidationResult
+    public sealed class ValidationResult
     {
-        public bool IsValid => !ValidationErrors.Any();
-        public List<ValidationError> ValidationErrors { get; set; } = new List<ValidationError>();
+        public bool IsValid => !_validationErrors.Any();
+        private readonly List<ValidationError> _validationErrors = new();
+
+        public void AddValidateError(ValidationError validationError)
+        {
+            _validationErrors.Add(validationError);
+        }
+
+        public IReadOnlyList<ValidationError> GetValidateErrors() => _validationErrors.AsReadOnly();
     }
 }
