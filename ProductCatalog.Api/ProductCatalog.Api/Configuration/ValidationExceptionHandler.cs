@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Api.Configuration
@@ -16,9 +17,17 @@ namespace ProductCatalog.Api.Configuration
             }
 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(new
+            await context.Response.WriteAsJsonAsync(new ProblemDetails
             {
-                Errors = validationException.ValidationResult.GetValidateErrors()
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Validation failed",
+                Detail = "One or more validation errors occurred.",
+                Extensions =
+                {
+                    ["errors"] = validationException.ValidationResult.GetValidateErrors(),
+                    ["traceId"] = context.TraceIdentifier
+
+                }
             }, cancellationToken);
 
             return true;
