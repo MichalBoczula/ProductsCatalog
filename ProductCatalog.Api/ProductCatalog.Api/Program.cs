@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Diagnostics;
+using ProductCatalog.Api.Configuration;
 using ProductCatalog.Api.Endpoints;
 using ProductCatalog.Application;
+using ProductCatalog.Domain;
+using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Infrastructure;
 
 namespace ProductCatalog.Api
@@ -15,6 +19,7 @@ namespace ProductCatalog.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDomain();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication();
 
@@ -23,7 +28,11 @@ namespace ProductCatalog.Api
 
             builder.Services.AddHealthChecks();
 
+            builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
+            
             var app = builder.Build();
+
+            app.UseExceptionHandler(_ => { });
 
             app.UseSwagger();
             app.UseSwaggerUI();

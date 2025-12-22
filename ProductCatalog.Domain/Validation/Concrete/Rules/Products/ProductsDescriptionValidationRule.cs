@@ -4,22 +4,22 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
 {
-    public sealed class ProductsNameValidationRule : IValidationRule<Product>
+    public sealed class ProductsDescriptionValidationRule : IValidationRule<Product>
     {
         private readonly ValidationError nullOrWhiteSpace;
 
-        public ProductsNameValidationRule()
+        public ProductsDescriptionValidationRule()
         {
             nullOrWhiteSpace = new ValidationError
             {
-                Message = "Products name cannot be null or whitespace.",
-                RuleName = "ProductsNameIsNullOrWhiteSpace",
+                Message = "Descriptions cannot be null or whitespace.",
+                RuleName = "Descriptions NameIsNullOrWhiteSpace",
             };
         }
 
         public void IsValid(Product entity, ValidationResult validationResults)
         {
-            if (string.IsNullOrWhiteSpace(entity.Name))
+            if (string.IsNullOrWhiteSpace(entity.Description))
             {
                 validationResults.AddValidateError(nullOrWhiteSpace);
                 return;

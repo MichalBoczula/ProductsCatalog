@@ -5,14 +5,16 @@ using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
-    public sealed class ProductsValidationPolicy
+    public sealed class ProductsValidationPolicy : IValidationPolicy<Product>
     {
-        private readonly List<IValidationRule<Product>> _rules = new();
+        private readonly List<IValidationRule<Product>> _rules = [];
         private readonly ValidationResult validationResult = new();
 
         public ProductsValidationPolicy()
         {
             _rules.Add(new ProductsNameValidationRule());
+            _rules.Add(new ProductsDescriptionValidationRule());
+            _rules.Add(new ProductsCategoryIdValidationRule());
         }
 
         public ValidationResult Validate(Product client)
