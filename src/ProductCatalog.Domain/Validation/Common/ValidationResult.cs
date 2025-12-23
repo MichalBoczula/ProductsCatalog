@@ -5,11 +5,11 @@
         public bool IsValid => !_validationErrors.Any();
         private readonly List<ValidationError> _validationErrors = new();
 
-        public void AddValidateError(ValidationError validationError)
+        public void AddValidationError(ValidationError validationError)
         {
             _validationErrors.Add(validationError);
         }
 
-        public IReadOnlyList<ValidationError> GetValidateErrors() => _validationErrors.AsReadOnly();
+        public IReadOnlyList<ValidationError> GetValidatonErrors() => _validationErrors.AsReadOnly();
     }
 }

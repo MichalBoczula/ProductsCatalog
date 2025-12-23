@@ -21,7 +21,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
         {
             if (entity == null) return;
             if (entity.CategoryId == Guid.Empty)
-                validationResults.AddValidateError(nullOrEmpty);
+                validationResults.AddValidationError(nullOrEmpty);
         }
 
         public List<ValidationError> Describe()

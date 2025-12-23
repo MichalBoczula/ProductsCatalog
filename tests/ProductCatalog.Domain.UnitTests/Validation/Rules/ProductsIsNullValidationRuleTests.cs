@@ -18,8 +18,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules
             //Act
             rule.IsValid(product, validationResult);
             //Assert
-            validationResult.GetValidateErrors().Count().ShouldBe(1);
-            var error = validationResult.GetValidateErrors().First();
+            validationResult.GetValidatonErrors().Count().ShouldBe(1);
+            var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Product cannot be null.");
             error.Name.ShouldContain("ProductIsNull");
         }

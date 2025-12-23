@@ -16,10 +16,10 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             //Act
             var result = policy.Validate(product);
             //Assert
-            result.GetValidateErrors().Count().ShouldBe(3);
-            result.GetValidateErrors().ShouldContain(e => e.Name == "ProductsNameIsNullOrWhiteSpace");
-            result.GetValidateErrors().ShouldContain(e => e.Name == "DescriptionsIsNullOrWhiteSpace");
-            result.GetValidateErrors().ShouldContain(e => e.Name == "CategoryIdIsNullOrWhiteSpace");
+            result.GetValidatonErrors().Count().ShouldBe(3);
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductsNameIsNullOrWhiteSpace");
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "DescriptionsIsNullOrWhiteSpace");
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "CategoryIdIsNullOrWhiteSpace");
         }
 
         [Fact]
@@ -31,8 +31,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             //Act
             var result = policy.Validate(product);
             //Assert
-            result.GetValidateErrors().Count().ShouldBe(1);
-            result.GetValidateErrors().ShouldContain(e => e.Name == "ProductIsNull");
+            result.GetValidatonErrors().Count().ShouldBe(1);
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductIsNull");
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             //Act
             var result = policy.Validate(product);
             //Assert
-            result.GetValidateErrors().Count().ShouldBe(0);
+            result.GetValidatonErrors().Count().ShouldBe(0);
         }
 
         [Fact]

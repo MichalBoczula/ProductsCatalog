@@ -15,7 +15,7 @@ namespace ProductCatalog.Api.Configuration.Extensions
                 Detail = "One or more validation errors occurred.",
                 Extensions =
                 {
-                    ["errors"] = validationException.ValidationResult.GetValidateErrors(),
+                    ["errors"] = validationException.ValidationResult.GetValidatonErrors(),
                     ["traceId"] = context.TraceIdentifier
 
                 }

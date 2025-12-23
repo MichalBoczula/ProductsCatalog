@@ -21,7 +21,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
         {
             if (entity == null) return;
             if (string.IsNullOrWhiteSpace(entity.Description))
-                validationResults.AddValidateError(nullOrWhiteSpace);
+                validationResults.AddValidationError(nullOrWhiteSpace);
         }
 
         public List<ValidationError> Describe()

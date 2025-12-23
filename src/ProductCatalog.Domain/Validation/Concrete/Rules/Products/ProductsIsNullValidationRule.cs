@@ -20,7 +20,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
         public void IsValid(Product entity, ValidationResult validationResults)
         {
             if (entity == null)
-                validationResults.AddValidateError(productIsNull);
+                validationResults.AddValidationError(productIsNull);
         }
 
         public List<ValidationError> Describe()

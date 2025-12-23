@@ -18,8 +18,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules
             //Act
             rule.IsValid(product, validationResult);
             //Assert
-            validationResult.GetValidateErrors().Count().ShouldBe(1);
-            var error = validationResult.GetValidateErrors().First();
+            validationResult.GetValidatonErrors().Count().ShouldBe(1);
+            var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Descriptions cannot be null or whitespace.");
             error.Name.ShouldContain("DescriptionsIsNullOrWhiteSpace");
         }
@@ -34,8 +34,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules
             //Act
             rule.IsValid(product, validationResult);
             //Assert
-            validationResult.GetValidateErrors().Count().ShouldBe(1);
-            var error = validationResult.GetValidateErrors().First();
+            validationResult.GetValidatonErrors().Count().ShouldBe(1);
+            var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Descriptions cannot be null or whitespace.");
             error.Name.ShouldContain("DescriptionsIsNullOrWhiteSpace");
         }
