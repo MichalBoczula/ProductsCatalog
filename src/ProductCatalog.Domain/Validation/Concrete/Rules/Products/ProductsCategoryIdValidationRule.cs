@@ -13,7 +13,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
             nullOrEmpty = new ValidationError
             {
                 Message = "CategoryId cannot be null or empty.",
-                RuleName = "CategoryIdIsNullOrWhiteSpace",
+                Name = "CategoryIdIsNullOrWhiteSpace",
             };
         }
 

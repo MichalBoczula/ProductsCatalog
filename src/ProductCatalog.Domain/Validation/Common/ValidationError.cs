@@ -3,6 +3,6 @@
     public sealed class ValidationError
     {
         public required string Message { get; init; }
-        public required string RuleName { get; init; }
+        public required string Name { get; init; }
     }
 }

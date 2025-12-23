@@ -1,0 +1,63 @@
+﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+using ProductCatalog.Domain.Validation.Common;
+using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
+using Shouldly;
+
+namespace ProductCatalog.Domain.UnitTests.Validation.Rules
+{
+    public class ProductsNameValidationRuleTests
+    {
+        [Fact]
+        public void IsValidate_NameIsEmpty_ShouldReturnError()
+        {
+            //Arrange
+            var product = new Product("", "desc", new Money(10, "usd"), Guid.NewGuid());
+            var rule = new ProductsNameValidationRule();
+            var validationResult = new ValidationResult();
+            //Act
+            rule.IsValid(product, validationResult);
+            //Assert
+            validationResult.GetValidateErrors().Count().ShouldBe(1);
+            var error = validationResult.GetValidateErrors().First();
+            error.Message.ShouldContain("Products name cannot be null or whitespace.");
+            error.Name.ShouldContain("ProductsNameIsNullOrWhiteSpace");
+        }
+
+        [Fact]
+        public void IsValidate_NameAsNull_ShouldReturnError()
+        {
+            //Arrange
+            var product = new Product(null, "desc", new Money(10, "usd"), Guid.NewGuid());
+            var rule = new ProductsNameValidationRule();
+            var validationResult = new ValidationResult();
+            //Act
+            rule.IsValid(product, validationResult);
+            //Assert
+            validationResult.GetValidateErrors().Count().ShouldBe(1);
+            var error = validationResult.GetValidateErrors().First();
+            error.Message.ShouldContain("Products name cannot be null or whitespace.");
+            error.Name.ShouldContain("ProductsNameIsNullOrWhiteSpace");
+        }
+
+        [Fact]
+        public void Describe_ShouldReturnCorrectRule()
+        {
+            //Arrange
+            var rule = new ProductsNameValidationRule();
+            var nullOrEmpty = new ValidationError
+            {
+                Message = "Products name cannot be null or whitespace.",
+                Name = "ProductsNameIsNullOrWhiteSpace",
+            };
+
+            //Act
+            var result = rule.Describe();
+            //Assert
+            result.Count.ShouldBe(1);
+            var desc = result.First();
+            desc.Message.ShouldBe(nullOrEmpty.Message);
+            desc.Name.ShouldBe(nullOrEmpty.Name);
+        }
+    }
+}

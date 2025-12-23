@@ -13,7 +13,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
             nullOrWhiteSpace = new ValidationError
             {
                 Message = "Descriptions cannot be null or whitespace.",
-                RuleName = "Descriptions NameIsNullOrWhiteSpace",
+                Name = "DescriptionsIsNullOrWhiteSpace",
             };
         }
 
