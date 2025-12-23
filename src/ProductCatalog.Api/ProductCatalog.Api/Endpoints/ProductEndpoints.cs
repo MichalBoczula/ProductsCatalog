@@ -26,8 +26,8 @@ namespace ProductCatalog.Api.Endpoints
                     Results.NotFound()
                   : Results.Ok(result);
             })
-               .WithName("GetProductById")
-               .WithOpenApi();
+            .WithName("GetProductById")
+            .WithOpenApi();
 
             app.MapGet("/products/categories/{categoryId:guid}", async (Guid categoryId, IMediator mediator) =>
             {
@@ -37,8 +37,8 @@ namespace ProductCatalog.Api.Endpoints
                     Results.NotFound()
                   : Results.Ok(result);
             })
-              .WithName("GetProductByCategoryId")
-              .WithOpenApi();
+            .WithName("GetProductByCategoryId")
+            .WithOpenApi();
         }
 
         private static void MapProductsCommands(IEndpointRouteBuilder app)
@@ -48,16 +48,16 @@ namespace ProductCatalog.Api.Endpoints
                 var result = await mediator.Send(new CreateProductCommand(product));
                 return Results.Created($"/products/{result.Id}", result);
             })
-                .WithName("CreateProduct")
-                .WithOpenApi();
+            .WithName("CreateProduct")
+            .WithOpenApi();
 
             app.MapPut("/products/{id:guid}", async (Guid id, UpdateProductExternalDto product, IMediator mediator) =>
             {
                 var result = await mediator.Send(new UpdateProductCommand(product));
                 return Results.Created($"/products/{result.Id}", result);
             })
-                .WithName("UpdateProduct")
-                .WithOpenApi();
+            .WithName("UpdateProduct")
+            .WithOpenApi();
         }
     }
 }

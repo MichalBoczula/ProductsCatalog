@@ -28,7 +28,7 @@ namespace ProductCatalog.Api
 
             builder.Services.AddHealthChecks();
 
-            builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
+            builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
 
             var app = builder.Build();
