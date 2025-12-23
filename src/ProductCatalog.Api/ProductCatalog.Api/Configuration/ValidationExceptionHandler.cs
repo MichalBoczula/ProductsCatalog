@@ -11,24 +11,22 @@ namespace ProductCatalog.Api.Configuration
             Exception exception,
             CancellationToken cancellationToken)
         {
-            if (exception is not ValidationException validationException)
+            if (exception is ValidationException validationException)
             {
-                return false;
-            }
-
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(new ProblemDetails
-            {
-                Status = StatusCodes.Status400BadRequest,
-                Title = "Validation failed",
-                Detail = "One or more validation errors occurred.",
-                Extensions =
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Title = "Validation failed",
+                    Detail = "One or more validation errors occurred.",
+                    Extensions =
                 {
                     ["errors"] = validationException.ValidationResult.GetValidateErrors(),
                     ["traceId"] = context.TraceIdentifier
 
                 }
-            }, cancellationToken);
+                }, cancellationToken);
+            }
 
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsJsonAsync(new ProblemDetails

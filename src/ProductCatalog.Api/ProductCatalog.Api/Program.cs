@@ -29,13 +29,7 @@ namespace ProductCatalog.Api
             builder.Services.AddHealthChecks();
 
             builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
-            builder.Services.AddProblemDetails(options =>
-            {
-                options.CustomizeProblemDetails = ctx =>
-                {
-                    ctx.ProblemDetails.Extensions["traceId"] = ctx.HttpContext.TraceIdentifier;
-                };
-            });
+            builder.Services.AddProblemDetails();
 
             var app = builder.Build();
 
