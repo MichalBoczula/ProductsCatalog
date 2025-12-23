@@ -25,6 +25,12 @@ namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate
 
         public void Deactivate() => IsActive = false;
 
-        public void ChangePrice(Money newPrice) => Price = newPrice;
+        public void AssigneNewProductInformation(Product incoming)
+        {
+            Name = incoming.Name;
+            Description = incoming.Description;
+            Price = incoming.Price;
+            CategoryId = incoming.CategoryId;
+        }
     }
 }

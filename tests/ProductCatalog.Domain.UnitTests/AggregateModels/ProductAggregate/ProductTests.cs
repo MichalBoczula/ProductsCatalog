@@ -18,16 +18,21 @@ namespace ProductCatalog.Domain.UnitTests.AggregateModels.ProductAggregate
         }
 
         [Fact]
-        public void ChangePrice_Price_ShouldBeEqualToNext()
+        public void AssigneNewProductInformation_ShouldBeCorrectlyAssigned()
         {
             //Arrange
-            var prev = new Money(10, "usd");
-            var next = new Money(20, "pln");
-            var product = new Product("test", "desc", prev, Guid.NewGuid());
+            var oldCategoryId = Guid.NewGuid();
+            var newCategoryId = Guid.NewGuid();
+            var product = new Product("test", "desc", new Money(10, "usd"), oldCategoryId);
+            var incoming = new Product("newName", "newDesc", new Money(15, "usd"), newCategoryId);
             //Act
-            product.ChangePrice(next);
+            product.AssigneNewProductInformation(incoming);
             //Assert
-            product.Price.ShouldBe(next);
+            product.Name.ShouldBe("newName");
+            product.Description.ShouldBe("newDesc");
+            product.Price.Amount.ShouldBe(15);
+            product.Price.Currency.ShouldBe("usd");
+            product.CategoryId.ShouldBe(newCategoryId);
         }
     }
 }

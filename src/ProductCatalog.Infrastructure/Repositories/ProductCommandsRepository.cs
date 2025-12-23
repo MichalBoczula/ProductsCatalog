@@ -1,4 +1,5 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
+﻿using Microsoft.EntityFrameworkCore;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 
@@ -19,10 +20,16 @@ namespace ProductCatalog.Infrastructure.Repositories
             await _context.SaveChangesAsync(ct);
         }
 
-        public Task UpdateAsync(Product product, CancellationToken cancellationToken)
+        public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
         {
             _context.Products.Update(product);
-            return _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Product?> GetProductById(Guid productId, CancellationToken cancellationToken)
+        {
+            var product = await _context.Products.SingleOrDefaultAsync(p => p.Id == productId);
+            return product;
         }
     }
 }

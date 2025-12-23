@@ -9,7 +9,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules
     public class ProductsNameValidationRuleTests
     {
         [Fact]
-        public void IsValidate_NameIsEmpty_ShouldReturnError()
+        public void IsValid_NameIsEmpty_ShouldReturnError()
         {
             //Arrange
             var product = new Product("", "desc", new Money(10, "usd"), Guid.NewGuid());
@@ -25,7 +25,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules
         }
 
         [Fact]
-        public void IsValidate_NameAsNull_ShouldReturnError()
+        public void IsValid_NameIsNull_ShouldReturnError()
         {
             //Arrange
             var product = new Product(null, "desc", new Money(10, "usd"), Guid.NewGuid());

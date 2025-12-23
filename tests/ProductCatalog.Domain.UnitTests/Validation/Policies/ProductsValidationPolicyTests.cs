@@ -23,6 +23,19 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         }
 
         [Fact]
+        public void Validate_ProductIsNull_ShouldReturnErrorInRulesSet()
+        {
+            //Arrange
+            Product product = null;
+            var policy = new ProductsValidationPolicy();
+            //Act
+            var result = policy.Validate(product);
+            //Assert
+            result.GetValidateErrors().Count().ShouldBe(1);
+            result.GetValidateErrors().ShouldContain(e => e.Name == "ProductIsNull");
+        }
+
+        [Fact]
         public void Validate_ValidObject_ShouldReturnEmptyRulesSet()
         {
             //Arrange
@@ -42,11 +55,12 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             //Act
             var result = policy.Describe();
             //Assert
-            result.Rules.Count.ShouldBe(3);
+            result.Rules.Count.ShouldBe(4);
             result.PolicyName.ShouldBe("ProductsValidationPolicy");
             result.Rules.ShouldContain(r => r.RuleName == "ProductsNameValidationRule");
             result.Rules.ShouldContain(r => r.RuleName == "ProductsDescriptionValidationRule");
             result.Rules.ShouldContain(r => r.RuleName == "ProductsCategoryIdValidationRule");
+            result.Rules.ShouldContain(r => r.RuleName == "ProductsIsNullValidationRule");
         }
     }
 }

@@ -3,5 +3,5 @@ using ProductCatalog.Application.Common.Dtos;
 
 namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
 {
-    public sealed record UpdateProductCommand(UpdateProductExternalDto product) : IRequest<ProductDto>;
+    public sealed record UpdateProductCommand(Guid productId, UpdateProductExternalDto product) : IRequest<ProductDto>;
 }

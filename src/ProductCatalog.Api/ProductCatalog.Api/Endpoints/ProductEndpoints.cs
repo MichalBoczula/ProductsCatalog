@@ -53,7 +53,7 @@ namespace ProductCatalog.Api.Endpoints
 
             app.MapPut("/products/{id:guid}", async (Guid id, UpdateProductExternalDto product, IMediator mediator) =>
             {
-                var result = await mediator.Send(new UpdateProductCommand(product));
+                var result = await mediator.Send(new UpdateProductCommand(id, product));
                 return Results.Created($"/products/{result.Id}", result);
             })
             .WithName("UpdateProduct")

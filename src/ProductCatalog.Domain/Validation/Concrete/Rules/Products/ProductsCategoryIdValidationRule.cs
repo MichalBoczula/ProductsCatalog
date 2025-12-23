@@ -19,11 +19,9 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products
 
         public void IsValid(Product entity, ValidationResult validationResults)
         {
+            if (entity == null) return;
             if (entity.CategoryId == Guid.Empty)
-            {
                 validationResults.AddValidateError(nullOrEmpty);
-                return;
-            }
         }
 
         public List<ValidationError> Describe()

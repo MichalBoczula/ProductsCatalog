@@ -15,6 +15,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
             _rules.Add(new ProductsNameValidationRule());
             _rules.Add(new ProductsDescriptionValidationRule());
             _rules.Add(new ProductsCategoryIdValidationRule());
+            _rules.Add(new ProductsIsNullValidationRule());
         }
 
         public ValidationResult Validate(Product client)
