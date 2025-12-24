@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Features.Products.Queries.GetProductById;
 using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
@@ -58,6 +59,14 @@ namespace ProductCatalog.Api.Endpoints
             })
             .WithName("UpdateProduct")
             .WithOpenApi();
+
+            app.MapDelete("/products/{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new RemoveProductCommand(id));
+                return Results.Created($"/products/{result.Id}", result);
+            })
+           .WithName("RemoveProduct")
+           .WithOpenApi();
         }
     }
 }
