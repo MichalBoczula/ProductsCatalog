@@ -2,8 +2,8 @@
 {
     public interface IProductsCommandsRepository
     {
-        Task AddAsync(Product product, CancellationToken ct);
-        Task UpdateAsync(Product product, CancellationToken cancellationToken);
+        Task Add(Product product, CancellationToken ct);
+        Task Update(Product product, CancellationToken cancellationToken);
         Task<Product?> GetProductById(Guid productId, CancellationToken cancellationToken);
     }
 }

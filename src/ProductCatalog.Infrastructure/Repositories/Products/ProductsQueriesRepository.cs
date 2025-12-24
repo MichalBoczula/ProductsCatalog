@@ -18,7 +18,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
             _connectionString = ConnectionStringExtensions.Initialize(configuration);
         }
 
-        public async Task<ProductReadModel?> GetByIdAsync(Guid id, CancellationToken ct)
+        public async Task<ProductReadModel?> GetById(Guid id, CancellationToken ct)
         {
             var sql = $@"
                 SELECT Id,
@@ -40,7 +40,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
             return result;
         }
 
-        public async Task<IReadOnlyList<ProductReadModel>?> GetByCategoryIdAsync(Guid categoryId, CancellationToken ct)
+        public async Task<IReadOnlyList<ProductReadModel>?> GetByCategoryId(Guid categoryId, CancellationToken ct)
         {
             var sql = $@"
                 SELECT Id,

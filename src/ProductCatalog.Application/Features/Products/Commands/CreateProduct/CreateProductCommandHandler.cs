@@ -21,7 +21,7 @@ namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
             {
                 throw new ValidationException(validationResult);
             }
-            await _productCommandsRepository.AddAsync(product, cancellationToken);
+            await _productCommandsRepository.Add(product, cancellationToken);
             return product.Adapt<ProductDto>();
         }
     }

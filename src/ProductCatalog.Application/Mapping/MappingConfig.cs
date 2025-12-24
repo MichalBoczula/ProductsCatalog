@@ -2,7 +2,9 @@
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
@@ -16,14 +18,17 @@ namespace ProductCatalog.Application.Mapping
         {
             CreateMappingForProducts();
             CreateMappingForMoney();
-            CreateMappingForReadModels();
-
             CreateMappingForCategories();
+            CreateMappingForReadModels();
         }
 
         private static void CreateMappingForProducts()
         {
             TypeAdapterConfig<CreateProductExternalDto, Product>
+                .NewConfig()
+                .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateProductExternalDto, Product>
                 .NewConfig()
                 .MapToConstructor(true);
 
@@ -36,6 +41,7 @@ namespace ProductCatalog.Application.Mapping
             TypeAdapterConfig<CreateMoneyExternalDto, Money>
                 .NewConfig()
                 .MapToConstructor(true);
+
             TypeAdapterConfig<Money, MoneyDto>
                 .NewConfig();
         }
@@ -57,6 +63,10 @@ namespace ProductCatalog.Application.Mapping
         private static void CreateMappingForCategories()
         {
             TypeAdapterConfig<CreateCategoryExternalDto, Category>
+                .NewConfig()
+                .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateCategoryExternalDto, Category>
                 .NewConfig()
                 .MapToConstructor(true);
 

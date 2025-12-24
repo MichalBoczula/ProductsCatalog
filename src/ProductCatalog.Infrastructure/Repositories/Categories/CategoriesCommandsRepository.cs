@@ -20,7 +20,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(Category category, CancellationToken cancellationToken)
+        public async Task Update(Category category, CancellationToken cancellationToken)
         {
             _context.Categories.Update(category);
             await _context.SaveChangesAsync(cancellationToken);

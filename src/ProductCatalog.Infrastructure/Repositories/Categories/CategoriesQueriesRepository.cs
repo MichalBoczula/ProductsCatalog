@@ -18,12 +18,13 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             _connectionString = ConnectionStringExtensions.Initialize(configuration);
         }
 
-        public async Task<CategoryReadModel?> GetByIdAsync(Guid id, CancellationToken ct)
+        public async Task<CategoryReadModel?> GetById(Guid id, CancellationToken ct)
         {
             var sql = $@"
                 SELECT Id,
                         Code,
-                        Name
+                        Name,
+                        IsActive
                 FROM {SqlTableNames.Categories}
                 WHERE Id = @Id;
                 ";
@@ -40,7 +41,8 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             var sql = $@"
                 SELECT Id,
                         Code,
-                        Name
+                        Name,
+                        IsActive
                 FROM {SqlTableNames.Categories}
                 ";
 

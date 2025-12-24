@@ -11,7 +11,7 @@ namespace ProductCatalog.Application.Features.Categories.Queries.GetCategoryById
     {
         public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-            var category = await _categoriesQueriesRepository.GetByIdAsync(request.CategoryId, cancellationToken);
+            var category = await _categoriesQueriesRepository.GetById(request.CategoryId, cancellationToken);
             return category.Adapt<CategoryDto>();
         }
     }

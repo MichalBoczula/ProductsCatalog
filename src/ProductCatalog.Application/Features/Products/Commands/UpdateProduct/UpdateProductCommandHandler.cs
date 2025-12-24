@@ -26,7 +26,7 @@ namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
             var incoming = request.product.Adapt(product);
             product.AssigneNewProductInformation(incoming);
 
-            await _productCommandsRepository.UpdateAsync(product, cancellationToken);
+            await _productCommandsRepository.Update(product, cancellationToken);
             return product.Adapt<ProductDto>();
         }
     }

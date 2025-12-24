@@ -13,7 +13,7 @@ namespace ProductCatalog.Application.Features.Categories.Commands.CreateCategory
     {
         public async Task<CategoryDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = request.Category.Adapt<Category>();
+            var category = request.category.Adapt<Category>();
             await _categoriesCommandsRepository.AddAsync(category, cancellationToken);
             return category.Adapt<CategoryDto>();
         }

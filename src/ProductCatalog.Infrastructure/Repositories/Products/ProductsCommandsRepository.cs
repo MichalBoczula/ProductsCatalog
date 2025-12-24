@@ -14,13 +14,13 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
             _context = context;
         }
 
-        public async Task AddAsync(Product product, CancellationToken ct)
+        public async Task Add(Product product, CancellationToken ct)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync(ct);
         }
 
-        public async Task UpdateAsync(Product product, CancellationToken cancellationToken)
+        public async Task Update(Product product, CancellationToken cancellationToken)
         {
             _context.Products.Update(product);
             await _context.SaveChangesAsync(cancellationToken);
