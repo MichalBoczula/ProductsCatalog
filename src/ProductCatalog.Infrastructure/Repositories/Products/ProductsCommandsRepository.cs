@@ -3,13 +3,13 @@ using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 
-namespace ProductCatalog.Infrastructure.Repositories
+namespace ProductCatalog.Infrastructure.Repositories.Products
 {
-    internal sealed class ProductCommandsRepository : IProductCommandsRepository
+    internal sealed class ProductsCommandsRepository : IProductCommandsRepository
     {
         private readonly ProductsContext _context;
 
-        public ProductCommandsRepository(ProductsContext context)
+        public ProductsCommandsRepository(ProductsContext context)
         {
             _context = context;
         }

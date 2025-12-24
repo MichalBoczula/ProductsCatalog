@@ -6,18 +6,17 @@ using ProductCatalog.Domain.ReadModels;
 using ProductCatalog.Infrastructure.Common;
 using System.Data;
 
-namespace ProductCatalog.Infrastructure.Repositories
+namespace ProductCatalog.Infrastructure.Repositories.Products
 {
-    internal class ProductQueriesRepository : IProductQueriesRepository
+    internal class ProductsQueriesRepository : IProductQueriesRepository
     {
         private readonly string _connectionString;
-
-        public ProductQueriesRepository(IConfiguration configuration)
-        {
-            _connectionString = configuration.GetConnectionString("ProductCatalogDb")
-                ?? throw new InvalidOperationException("Connection string 'ProductCatalogDb' is not configured.");
-        }
         private IDbConnection CreateConnection() => new SqlConnection(_connectionString);
+
+        public ProductsQueriesRepository(IConfiguration configuration)
+        {
+            _connectionString = ConnectionStringExtensions.Initialize(configuration);
+        }
 
         public async Task<ProductReadModel?> GetByIdAsync(Guid id, CancellationToken ct)
         {

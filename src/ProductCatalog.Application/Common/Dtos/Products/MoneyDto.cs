@@ -1,6 +1,6 @@
-﻿namespace ProductCatalog.Application.Common.Dtos
+﻿namespace ProductCatalog.Application.Common.Dtos.Products
 {
-    public class MoneyDto
+    public sealed record MoneyDto
     {
         public decimal Amount { get; init; }
         public string Currency { get; init; }

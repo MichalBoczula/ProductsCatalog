@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using MediatR;
-using ProductCatalog.Application.Common.Dtos;
+using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 
 namespace ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId

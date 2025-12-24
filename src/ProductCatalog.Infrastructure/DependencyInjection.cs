@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
-using ProductCatalog.Infrastructure.Repositories;
+using ProductCatalog.Infrastructure.Repositories.Products;
 
 namespace ProductCatalog.Infrastructure
 {
@@ -21,8 +21,8 @@ namespace ProductCatalog.Infrastructure
                     sql.MigrationsHistoryTable("__EFMigrationsHistory");
                 }));
 
-            services.AddScoped<IProductCommandsRepository, ProductCommandsRepository>();
-            services.AddScoped<IProductQueriesRepository, ProductQueriesRepository>();
+            services.AddScoped<IProductCommandsRepository, ProductsCommandsRepository>();
+            services.AddScoped<IProductQueriesRepository, ProductsQueriesRepository>();
 
             return services;
         }
