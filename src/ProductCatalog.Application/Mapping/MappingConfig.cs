@@ -1,6 +1,9 @@
 ﻿using Mapster;
+using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Products;
+using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 using ProductCatalog.Domain.ReadModels;
@@ -11,12 +14,14 @@ namespace ProductCatalog.Application.Mapping
     {
         public static void RegisterMappings()
         {
-            CreateMapppingForProducts();
-            CreateMapppingForMoney();
-            CreateMapppingForReadModels();
+            CreateMappingForProducts();
+            CreateMappingForMoney();
+            CreateMappingForReadModels();
+
+            CreateMappingForCategories();
         }
 
-        private static void CreateMapppingForProducts()
+        private static void CreateMappingForProducts()
         {
             TypeAdapterConfig<CreateProductExternalDto, Product>
                 .NewConfig()
@@ -26,7 +31,7 @@ namespace ProductCatalog.Application.Mapping
                 .NewConfig();
         }
 
-        private static void CreateMapppingForMoney()
+        private static void CreateMappingForMoney()
         {
             TypeAdapterConfig<CreateMoneyExternalDto, Money>
                 .NewConfig()
@@ -35,7 +40,7 @@ namespace ProductCatalog.Application.Mapping
                 .NewConfig();
         }
 
-        private static void CreateMapppingForReadModels()
+        private static void CreateMappingForReadModels()
         {
             TypeAdapterConfig<ProductReadModel, ProductDto>
                 .NewConfig()
@@ -45,6 +50,16 @@ namespace ProductCatalog.Application.Mapping
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
                     }); ;
+        }
+
+        private static void CreateMappingForCategories()
+        {
+            TypeAdapterConfig<CreateCategoryExternalDto, Category>
+                .NewConfig()
+                .MapToConstructor(true);
+
+            TypeAdapterConfig<Category, CategoryDto>
+                .NewConfig();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
+using ProductCatalog.Infrastructure.Repositories.Categories;
 using ProductCatalog.Infrastructure.Repositories.Products;
 
 namespace ProductCatalog.Infrastructure
@@ -23,6 +25,9 @@ namespace ProductCatalog.Infrastructure
 
             services.AddScoped<IProductsCommandsRepository, ProductsCommandsRepository>();
             services.AddScoped<IProductsQueriesRepository, ProductsQueriesRepository>();
+
+            services.AddScoped<ICategoriesCommandsRepository, CategoriesCommandsRepository>();
+            services.AddScoped<ICategoriesQueriesRepository, CategoriesQueriesRepository>();
 
             return services;
         }
