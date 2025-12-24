@@ -8,7 +8,7 @@ using System.Data;
 
 namespace ProductCatalog.Infrastructure.Repositories.Products
 {
-    internal class ProductsQueriesRepository : IProductQueriesRepository
+    internal class ProductsQueriesRepository : IProductsQueriesRepository
     {
         private readonly string _connectionString;
         private IDbConnection CreateConnection() => new SqlConnection(_connectionString);

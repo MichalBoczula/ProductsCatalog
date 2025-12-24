@@ -21,8 +21,8 @@ namespace ProductCatalog.Infrastructure
                     sql.MigrationsHistoryTable("__EFMigrationsHistory");
                 }));
 
-            services.AddScoped<IProductCommandsRepository, ProductsCommandsRepository>();
-            services.AddScoped<IProductQueriesRepository, ProductsQueriesRepository>();
+            services.AddScoped<IProductsCommandsRepository, ProductsCommandsRepository>();
+            services.AddScoped<IProductsQueriesRepository, ProductsQueriesRepository>();
 
             return services;
         }

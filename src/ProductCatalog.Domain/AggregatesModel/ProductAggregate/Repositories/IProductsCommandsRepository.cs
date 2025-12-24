@@ -1,6 +1,6 @@
 ﻿namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories
 {
-    public interface IProductCommandsRepository
+    public interface IProductsCommandsRepository
     {
         Task AddAsync(Product product, CancellationToken ct);
         Task UpdateAsync(Product product, CancellationToken cancellationToken);

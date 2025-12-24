@@ -5,7 +5,7 @@ using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 
 namespace ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId
 {
-    internal class GetProductsByCategoryIdQueryHandler(IProductQueriesRepository _productQueriesRepository)
+    internal class GetProductsByCategoryIdQueryHandler(IProductsQueriesRepository _productQueriesRepository)
         : IRequestHandler<GetProductsByCategoryIdQuery, IReadOnlyList<ProductDto>?>
     {
         public async Task<IReadOnlyList<ProductDto>?> Handle(GetProductsByCategoryIdQuery request, CancellationToken cancellationToken)

@@ -9,7 +9,7 @@ using ProductCatalog.Domain.Validation.Common;
 namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
 {
     internal class CreateProductCommandHandler
-        (IProductCommandsRepository _productCommandsRepository,
+        (IProductsCommandsRepository _productCommandsRepository,
          IValidationPolicy<Product> _validationPolicy)
         : IRequestHandler<CreateProductCommand, ProductDto>
     {

@@ -9,7 +9,7 @@ using ProductCatalog.Domain.Validation.Common;
 namespace ProductCatalog.Application.Features.Products.Commands.RemoveProduct
 {
     internal sealed class RemoveProductCommandHandler
-        (IProductCommandsRepository _productCommandsRepository,
+        (IProductsCommandsRepository _productCommandsRepository,
          IValidationPolicy<Product> _validation)
         : IRequestHandler<RemoveProductCommand, ProductDto>
     {

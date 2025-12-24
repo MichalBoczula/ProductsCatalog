@@ -5,7 +5,7 @@ using ProductCatalog.Infrastructure.Contexts.Commands;
 
 namespace ProductCatalog.Infrastructure.Repositories.Products
 {
-    internal sealed class ProductsCommandsRepository : IProductCommandsRepository
+    internal sealed class ProductsCommandsRepository : IProductsCommandsRepository
     {
         private readonly ProductsContext _context;
 
@@ -28,7 +28,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
 
         public async Task<Product?> GetProductById(Guid productId, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.SingleOrDefaultAsync(p => p.Id == productId);
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
             return product;
         }
     }

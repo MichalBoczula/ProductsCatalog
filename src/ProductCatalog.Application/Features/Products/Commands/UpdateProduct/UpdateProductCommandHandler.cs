@@ -9,7 +9,7 @@ using ProductCatalog.Domain.Validation.Common;
 namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
 {
     internal class UpdateProductCommandHandler
-        (IProductCommandsRepository _productCommandsRepository,
+        (IProductsCommandsRepository _productCommandsRepository,
          IValidationPolicy<Product> _validationPolicy)
         : IRequestHandler<UpdateProductCommand, ProductDto>
     {
