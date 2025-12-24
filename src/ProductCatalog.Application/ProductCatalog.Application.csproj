@@ -15,4 +15,8 @@
     <ProjectReference Include="..\ProductCatalog.Domain\ProductCatalog.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Categories\" />
+  </ItemGroup>
+
 </Project>

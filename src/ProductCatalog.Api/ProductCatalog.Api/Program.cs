@@ -42,7 +42,8 @@ namespace ProductCatalog.Api
 
             app.UseAuthorization();
 
-            app.MapProductEndpoints();
+            app.MapProductsEndpoints();
+            app.MapCategoriesEndpoints();
 
             app.MapHealthChecks("/health");
 

@@ -7,9 +7,9 @@ using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategory
 
 namespace ProductCatalog.Api.Endpoints
 {
-    public static class ProductEndpoints
+    public static class ProductsEndpoints
     {
-        public static IEndpointRouteBuilder MapProductEndpoints(this IEndpointRouteBuilder app)
+        public static IEndpointRouteBuilder MapProductsEndpoints(this IEndpointRouteBuilder app)
         {
             MapProductsQueries(app);
             MapProductsCommands(app);
@@ -55,7 +55,7 @@ namespace ProductCatalog.Api.Endpoints
             app.MapPut("/products/{id:guid}", async (Guid id, UpdateProductExternalDto product, IMediator mediator) =>
             {
                 var result = await mediator.Send(new UpdateProductCommand(id, product));
-                return Results.Created($"/products/{result.Id}", result);
+                return Results.Ok(result);
             })
             .WithName("UpdateProduct")
             .WithOpenApi();
@@ -63,7 +63,7 @@ namespace ProductCatalog.Api.Endpoints
             app.MapDelete("/products/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new RemoveProductCommand(id));
-                return Results.Created($"/products/{result.Id}", result);
+                return Results.Ok(result);
             })
            .WithName("RemoveProduct")
            .WithOpenApi();
