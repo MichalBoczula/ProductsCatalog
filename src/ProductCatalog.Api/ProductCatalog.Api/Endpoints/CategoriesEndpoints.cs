@@ -1,7 +1,7 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -28,15 +28,26 @@ namespace ProductCatalog.Api.Endpoints
 
         private static void MapCategoriesQueries(IEndpointRouteBuilder app)
         {
-            app.MapGet("/categories/{id:guid}", async (Guid Id, IMediator mediator) =>
+            app.MapGet("/categories", async (IMediator mediator) =>
             {
-                var result = await mediator.Send(new object());
+                var result = await mediator.Send(new GetCategoriesQuery());
 
                 return result is null ?
                     Results.NotFound()
                   : Results.Ok(result);
             })
-            .WithName("GetCategorybyId")
+           .WithName("GetCategories")
+           .WithOpenApi();
+
+            app.MapGet("/categories/{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetCategoryByIdQuery(id));
+
+                return result is null ?
+                    Results.NotFound()
+                  : Results.Ok(result);
+            })
+            .WithName("GetCategoryById")
             .WithOpenApi();
         }
     }

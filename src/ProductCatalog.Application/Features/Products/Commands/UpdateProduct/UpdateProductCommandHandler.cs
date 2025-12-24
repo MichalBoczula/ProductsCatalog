@@ -8,7 +8,7 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
 {
-    internal class UpdateProductCommandHandler
+    internal sealed class UpdateProductCommandHandler
         (IProductsCommandsRepository _productCommandsRepository,
          IValidationPolicy<Product> _validationPolicy)
         : IRequestHandler<UpdateProductCommand, ProductDto>

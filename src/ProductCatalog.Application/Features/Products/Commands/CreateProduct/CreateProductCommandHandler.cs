@@ -8,7 +8,7 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
 {
-    internal class CreateProductCommandHandler
+    internal sealed class CreateProductCommandHandler
         (IProductsCommandsRepository _productCommandsRepository,
          IValidationPolicy<Product> _validationPolicy)
         : IRequestHandler<CreateProductCommand, ProductDto>

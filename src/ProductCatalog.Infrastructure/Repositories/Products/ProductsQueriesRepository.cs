@@ -60,7 +60,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
                 new CommandDefinition(sql, new { CategoryId = categoryId }, cancellationToken: ct)
              );
 
-            return result.ToList();
+            return result.ToList().AsReadOnly();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 using ProductCatalog.Domain.ReadModels;
@@ -14,17 +15,41 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
 
         public CategoriesQueriesRepository(IConfiguration configuration)
         {
-            ConnectionStringExtensions.Initialize(configuration);
+            _connectionString = ConnectionStringExtensions.Initialize(configuration);
         }
 
-        public Task<CategoryReadModel?> GetByIdAsync(Guid id, CancellationToken ct)
+        public async Task<CategoryReadModel?> GetByIdAsync(Guid id, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var sql = $@"
+                SELECT Id,
+                        Code,
+                        Name
+                FROM {SqlTableNames.Categories}
+                WHERE Id = @Id;
+                ";
+
+            using var connection = CreateConnection();
+
+            var result = await connection.QuerySingleOrDefaultAsync<CategoryReadModel?>(
+                sql, new { Id = id });
+            return result;
         }
 
-        public Task<IReadOnlyList<CategoryReadModel>> GetCategories(CancellationToken ct)
+        public async Task<IReadOnlyList<CategoryReadModel>> GetCategories(CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var sql = $@"
+                SELECT Id,
+                        Code,
+                        Name
+                FROM {SqlTableNames.Categories}
+                ";
+
+            using var connection = CreateConnection();
+
+            var result = await connection.QueryAsync<CategoryReadModel>(
+                new CommandDefinition(sql, ct));
+
+            return result.ToList().AsReadOnly();
         }
     }
 }

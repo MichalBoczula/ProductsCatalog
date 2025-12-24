@@ -49,7 +49,9 @@ namespace ProductCatalog.Application.Mapping
                     {
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
-                    }); ;
+                    });
+            TypeAdapterConfig<CategoryReadModel, CategoryDto>
+                .NewConfig();
         }
 
         private static void CreateMappingForCategories()
