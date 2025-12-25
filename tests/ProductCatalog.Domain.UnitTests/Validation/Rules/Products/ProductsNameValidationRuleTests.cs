@@ -20,8 +20,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
-            error.Message.ShouldContain("Products name cannot be null or whitespace.");
-            error.Name.ShouldContain("ProductsNameIsNullOrWhiteSpace");
+            error.Message.ShouldContain("Name cannot be null or whitespace.");
+            error.Name.ShouldContain("ProductsNameValidationRule");
+            error.Entity.ShouldContain("Product");
         }
 
         [Fact]
@@ -36,8 +37,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
-            error.Message.ShouldContain("Products name cannot be null or whitespace.");
-            error.Name.ShouldContain("ProductsNameIsNullOrWhiteSpace");
+            error.Message.ShouldContain("Name cannot be null or whitespace.");
+            error.Name.ShouldContain("ProductsNameValidationRule");
+            error.Entity.ShouldContain("Product");
         }
 
         [Fact]
@@ -47,8 +49,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
             var rule = new ProductsNameValidationRule();
             var nullOrEmpty = new ValidationError
             {
-                Message = "Products name cannot be null or whitespace.",
-                Name = "ProductsNameIsNullOrWhiteSpace",
+                Message = "Name cannot be null or whitespace.",
+                Name = "ProductsNameValidationRule",
+                Entity = nameof(Product)
             };
 
             //Act

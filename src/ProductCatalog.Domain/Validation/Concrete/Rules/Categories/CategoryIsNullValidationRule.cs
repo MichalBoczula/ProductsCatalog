@@ -13,7 +13,8 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Categories
             categoryIsNull = new ValidationError
             {
                 Message = "Category cannot be null.",
-                Name = "CategoryIsNull",
+                Name = nameof(CategoryIsNullValidationRule),
+                Entity = nameof(Category)
             };
         }
 

@@ -21,7 +21,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("CategoryId cannot be null or empty.");
-            error.Name.ShouldContain("CategoryIdIsNullOrWhiteSpace");
+            error.Name.ShouldContain("ProductsCategoryIdValidationRule");
+            error.Entity.ShouldContain("Product");
         }
 
         [Fact]
@@ -32,7 +33,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
             var nullOrEmpty = new ValidationError
             {
                 Message = "CategoryId cannot be null or empty.",
-                Name = "CategoryIdIsNullOrWhiteSpace",
+                Name = "ProductsCategoryIdValidationRule",
+                Entity = nameof(Product)
             };
 
             //Act

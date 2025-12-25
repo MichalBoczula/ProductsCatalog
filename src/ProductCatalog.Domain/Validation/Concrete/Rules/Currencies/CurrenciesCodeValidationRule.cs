@@ -13,14 +13,15 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Currencies
             nullOrWhiteSpace = new ValidationError
             {
                 Message = "Code cannot be null or whitespace.",
-                Name = "CodeIsNullOrWhiteSpace",
+                Name = nameof(CurrenciesCodeValidationRule),
+                Entity = nameof(Currency)
             };
         }
 
         public void IsValid(Currency entity, ValidationResult validationResults)
         {
             if (entity == null) return;
-            if (string.IsNullOrWhiteSpace(entity.Description))
+            if (string.IsNullOrWhiteSpace(entity.Code))
                 validationResults.AddValidationError(nullOrWhiteSpace);
         }
 

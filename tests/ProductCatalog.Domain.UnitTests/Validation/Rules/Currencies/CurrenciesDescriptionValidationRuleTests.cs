@@ -1,57 +1,56 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+﻿using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.Validation.Common;
-using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
+using ProductCatalog.Domain.Validation.Concrete.Rules.Currencies;
 using Shouldly;
 
-namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
+namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Currencies
 {
-    public class ProductsDescriptionValidationRuleTests
+    public class CurrenciesDescriptionValidationRuleTests
     {
         [Fact]
         public void IsValid_DescriptionIsEmpty_ShouldReturnError()
         {
             //Arrange
-            var product = new Product("test", "", new Money(10, "usd"), Guid.NewGuid());
-            var rule = new ProductsDescriptionValidationRule();
+            var currency = new Currency("code", "");
+            var rule = new CurrenciesDescriptionValidationRule();
             var validationResult = new ValidationResult();
             //Act
-            rule.IsValid(product, validationResult);
+            rule.IsValid(currency, validationResult);
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Description cannot be null or whitespace.");
-            error.Name.ShouldContain("ProductsDescriptionValidationRule");
-            error.Entity.ShouldContain("Product");
+            error.Name.ShouldContain("CurrenciesDescriptionValidationRule");
+            error.Entity.ShouldContain("Currency");
         }
 
         [Fact]
         public void IsValid_DescriptionIsNull_ShouldReturnError()
         {
             //Arrange
-            var product = new Product("test", null, new Money(10, "usd"), Guid.NewGuid());
-            var rule = new ProductsDescriptionValidationRule();
+            var currency = new Currency("code", null);
+            var rule = new CurrenciesDescriptionValidationRule();
             var validationResult = new ValidationResult();
             //Act
-            rule.IsValid(product, validationResult);
+            rule.IsValid(currency, validationResult);
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Description cannot be null or whitespace.");
-            error.Name.ShouldContain("ProductsDescriptionValidationRule");
-            error.Entity.ShouldContain("Product");
+            error.Name.ShouldContain("CurrenciesDescriptionValidationRule");
+            error.Entity.ShouldContain("Currency");
         }
 
         [Fact]
         public void Describe_ShouldReturnCorrectRule()
         {
             //Arrange
-            var rule = new ProductsDescriptionValidationRule();
+            var rule = new CurrenciesDescriptionValidationRule();
             var nullOrEmpty = new ValidationError
             {
                 Message = "Description cannot be null or whitespace.",
-                Name = "ProductsDescriptionValidationRule",
-                Entity = nameof(Product)
+                Name = "CurrenciesDescriptionValidationRule",
+                Entity = nameof(Currency)
             };
 
             //Act

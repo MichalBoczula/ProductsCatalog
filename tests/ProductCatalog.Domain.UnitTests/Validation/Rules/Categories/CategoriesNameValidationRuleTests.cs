@@ -1,7 +1,6 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Categories;
-using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
 using Shouldly;
 
 namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
@@ -20,8 +19,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
-            error.Message.ShouldContain("Categories name cannot be null or whitespace.");
-            error.Name.ShouldContain("CategoriesNameIsNullOrWhiteSpace");
+            error.Message.ShouldContain("Name cannot be null or whitespace.");
+            error.Name.ShouldContain("CategoriesNameValidationRule");
+            error.Entity.ShouldContain("Category");
         }
 
         [Fact]
@@ -36,8 +36,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
-            error.Message.ShouldContain("Categories name cannot be null or whitespace.");
-            error.Name.ShouldContain("CategoriesNameIsNullOrWhiteSpace");
+            error.Message.ShouldContain("Name cannot be null or whitespace.");
+            error.Name.ShouldContain("CategoriesNameValidationRule");
+            error.Entity.ShouldContain("Category");
         }
 
         [Fact]
@@ -47,8 +48,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
             var rule = new CategoriesNameValidationRule();
             var nullOrEmpty = new ValidationError
             {
-                Message = "Categories name cannot be null or whitespace.",
-                Name = "CategoriesNameIsNullOrWhiteSpace",
+                Message = "Name cannot be null or whitespace.",
+                Name = "CategoriesNameValidationRule",
+                Entity = nameof(Category)
             };
 
             //Act

@@ -1,56 +1,56 @@
-﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+﻿using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.Validation.Common;
-using ProductCatalog.Domain.Validation.Concrete.Rules.Categories;
+using ProductCatalog.Domain.Validation.Concrete.Rules.Currencies;
 using Shouldly;
 
-namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
+namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Currencies
 {
-    public class CategoriesCodeValidationRuleTests
+    public class CurrenciesCodeValidationRuleTests
     {
         [Fact]
         public void IsValid_CodeIsEmpty_ShouldReturnError()
         {
             //Arrange
-            var product = new Category("", "name");
-            var rule = new CategoriesCodeValidationRule();
+            var currency = new Currency("", "name");
+            var rule = new CurrenciesCodeValidationRule();
             var validationResult = new ValidationResult();
             //Act
-            rule.IsValid(product, validationResult);
+            rule.IsValid(currency, validationResult);
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Code cannot be null or whitespace.");
-            error.Name.ShouldContain("CategoriesCodeValidationRule");
-            error.Entity.ShouldContain("Category");
+            error.Name.ShouldContain("CurrenciesCodeValidationRule");
+            error.Entity.ShouldContain("Currency");
         }
 
         [Fact]
         public void IsValid_CodeIsNull_ShouldReturnError()
         {
             //Arrange
-            var product = new Category(null, "name");
-            var rule = new CategoriesCodeValidationRule();
+            var currency = new Currency(null, "name");
+            var rule = new CurrenciesCodeValidationRule();
             var validationResult = new ValidationResult();
             //Act
-            rule.IsValid(product, validationResult);
+            rule.IsValid(currency, validationResult);
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Code cannot be null or whitespace.");
-            error.Name.ShouldContain("CategoriesCodeValidationRule");
-            error.Entity.ShouldContain("Category");
+            error.Name.ShouldContain("CurrenciesCodeValidationRule");
+            error.Entity.ShouldContain("Currency");
         }
 
         [Fact]
         public void Describe_ShouldReturnCorrectRule()
         {
             //Arrange
-            var rule = new CategoriesCodeValidationRule();
+            var rule = new CurrenciesCodeValidationRule();
             var nullOrEmpty = new ValidationError
             {
                 Message = "Code cannot be null or whitespace.",
-                Name = "CategoriesCodeValidationRule",
-                Entity = nameof(Category)
+                Name = "CurrenciesCodeValidationRule",
+                Entity = nameof(Currency)
             };
 
             //Act

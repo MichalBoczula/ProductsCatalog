@@ -20,7 +20,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Category cannot be null.");
-            error.Name.ShouldContain("CategoryIsNull");
+            error.Name.ShouldContain("CategoryIsNullValidationRule");
+            error.Entity.ShouldContain("Category");
         }
 
         [Fact]
@@ -31,7 +32,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
             var nullOrEmpty = new ValidationError
             {
                 Message = "Category cannot be null.",
-                Name = "CategoryIsNull",
+                Name = "CategoryIsNullValidationRule",
+                Entity = nameof(Category)
             };
 
             //Act

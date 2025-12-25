@@ -13,7 +13,8 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Currencies
             nullOrWhiteSpace = new ValidationError
             {
                 Message = "Description cannot be null or whitespace.",
-                Name = "DescriptionsIsNullOrWhiteSpace",
+                Name = nameof(CurrenciesDescriptionValidationRule),
+                Entity = nameof(Currency)
             };
         }
 

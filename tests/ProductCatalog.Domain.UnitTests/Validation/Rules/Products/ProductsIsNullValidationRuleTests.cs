@@ -1,5 +1,4 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
 using Shouldly;
@@ -21,7 +20,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Product cannot be null.");
-            error.Name.ShouldContain("ProductIsNull");
+            error.Name.ShouldContain("ProductsIsNullValidationRule");
+            error.Entity.ShouldContain("Product");
         }
 
         [Fact]
@@ -32,7 +32,8 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
             var nullOrEmpty = new ValidationError
             {
                 Message = "Product cannot be null.",
-                Name = "ProductIsNull",
+                Name = "ProductsIsNullValidationRule",
+                Entity = nameof(Product)
             };
 
             //Act

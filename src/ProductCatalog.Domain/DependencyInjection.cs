@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Concrete.Policies;
@@ -13,6 +14,7 @@ namespace ProductCatalog.Domain
         {
             services.AddScoped<IValidationPolicy<Product>, ProductsValidationPolicy>();
             services.AddScoped<IValidationPolicy<Category>, CategoriesValidationPolicy>();
+            services.AddScoped<IValidationPolicy<Currency>, CurrenciesValidationPolicy>();
             return services;
         }
     }

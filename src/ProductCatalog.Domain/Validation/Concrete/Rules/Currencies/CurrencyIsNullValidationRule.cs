@@ -13,7 +13,8 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Currencies
             currencyIsNull = new ValidationError
             {
                 Message = "Currency cannot be null.",
-                Name = "CurrencyIsNull",
+                Name = nameof(CurrencyIsNullValidationRule),
+                Entity = nameof(Currency)
             };
         }
 

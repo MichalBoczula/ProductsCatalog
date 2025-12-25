@@ -12,8 +12,9 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Categories
         {
             nullOrWhiteSpace = new ValidationError
             {
-                Message = "Categories name cannot be null or whitespace.",
-                Name = "CategoriesNameIsNullOrWhiteSpace",
+                Message = "Name cannot be null or whitespace.",
+                Name = nameof(CategoriesNameValidationRule),
+                Entity = nameof(Category)
             };
         }
 

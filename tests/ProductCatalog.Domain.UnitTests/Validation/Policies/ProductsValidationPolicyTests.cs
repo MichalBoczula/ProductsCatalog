@@ -11,15 +11,17 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         public void Validate_InValidObject_ShouldReturnWholeRulesSet()
         {
             //Arrange
-            var product = new Product("", "", new Money(10, "usd"), Guid.Empty);
+            var product = new Product("", "", new Money(), Guid.Empty);
             var policy = new ProductsValidationPolicy();
             //Act
             var result = policy.Validate(product);
             //Assert
-            result.GetValidatonErrors().Count().ShouldBe(3);
-            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductsNameIsNullOrWhiteSpace");
-            result.GetValidatonErrors().ShouldContain(e => e.Name == "DescriptionsIsNullOrWhiteSpace");
-            result.GetValidatonErrors().ShouldContain(e => e.Name == "CategoryIdIsNullOrWhiteSpace");
+            result.GetValidatonErrors().Count().ShouldBe(5);
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductsNameValidationRule");
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductsDescriptionValidationRule");
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductsCategoryIdValidationRule");
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "MoneyAmountValidationRule");
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "MoneyCurrencyValidationRule");
         }
 
         [Fact]
@@ -32,11 +34,11 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             var result = policy.Validate(product);
             //Assert
             result.GetValidatonErrors().Count().ShouldBe(1);
-            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductIsNull");
+            result.GetValidatonErrors().ShouldContain(e => e.Name == "ProductsIsNullValidationRule");
         }
 
         [Fact]
-        public void Validate_ValidObject_ShouldReturnEmptyRulesSet()
+        public void Validate_ShouldBeValid()
         {
             //Arrange
             var product = new Product("test", "desc", new Money(10, "usd"), Guid.NewGuid());
@@ -55,12 +57,14 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             //Act
             var result = policy.Describe();
             //Assert
-            result.Rules.Count.ShouldBe(4);
+            result.Rules.Count.ShouldBe(6);
             result.PolicyName.ShouldBe("ProductsValidationPolicy");
             result.Rules.ShouldContain(r => r.RuleName == "ProductsNameValidationRule");
             result.Rules.ShouldContain(r => r.RuleName == "ProductsDescriptionValidationRule");
             result.Rules.ShouldContain(r => r.RuleName == "ProductsCategoryIdValidationRule");
             result.Rules.ShouldContain(r => r.RuleName == "ProductsIsNullValidationRule");
+            result.Rules.ShouldContain(r => r.RuleName == "MoneyAmountValidationRule");
+            result.Rules.ShouldContain(r => r.RuleName == "MoneyCurrencyValidationRule");
         }
     }
 }
