@@ -8,7 +8,6 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
     public sealed class ProductsValidationPolicy : IValidationPolicy<Product>
     {
         private readonly List<IValidationRule<Product>> _rules = [];
-        private readonly ValidationResult validationResult = new();
 
         public ProductsValidationPolicy()
         {
@@ -20,6 +19,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
 
         public ValidationResult Validate(Product client)
         {
+            ValidationResult validationResult = new();
             _rules.ForEach(rule => rule.IsValid(client, validationResult));
             return validationResult;
         }

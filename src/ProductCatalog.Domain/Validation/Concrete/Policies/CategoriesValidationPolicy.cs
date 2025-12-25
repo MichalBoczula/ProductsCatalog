@@ -8,7 +8,6 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
     public sealed class CategoriesValidationPolicy : IValidationPolicy<Category>
     {
         private readonly List<IValidationRule<Category>> _rules = [];
-        private readonly ValidationResult validationResult = new();
 
         public CategoriesValidationPolicy()
         {
@@ -19,6 +18,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
 
         public ValidationResult Validate(Category client)
         {
+            ValidationResult validationResult = new();
             _rules.ForEach(rule => rule.IsValid(client, validationResult));
             return validationResult;
         }
