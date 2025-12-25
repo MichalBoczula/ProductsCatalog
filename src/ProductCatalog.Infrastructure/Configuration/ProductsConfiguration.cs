@@ -5,17 +5,14 @@ using ProductCatalog.Infrastructure.Common;
 
 namespace ProductCatalog.Infrastructure.Configuration
 {
-    internal class ProductsConfiguration : IEntityTypeConfiguration<Product>
+    internal sealed class ProductsConfiguration : IEntityTypeConfiguration<Product>
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable(SqlTableNames.Products);
-
             builder.HasKey(x => x.Id);
-
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(2000).IsRequired();
-
             builder.ComplexProperty(x => x.Price, money =>
             {
                 money.Property(m => m.Amount)
@@ -28,7 +25,6 @@ namespace ProductCatalog.Infrastructure.Configuration
                      .HasMaxLength(3)
                      .IsRequired();
             });
-
             builder.HasIndex(x => x.CategoryId);
         }
     }

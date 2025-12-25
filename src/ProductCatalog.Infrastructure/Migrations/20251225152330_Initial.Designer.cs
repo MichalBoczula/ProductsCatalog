@@ -13,7 +13,7 @@ using ProductCatalog.Infrastructure.Contexts.Commands;
 namespace ProductCatalog.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductsContext))]
-    [Migration("20251225131252_Initial")]
+    [Migration("20251225152330_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -47,9 +47,36 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code");
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("TB_Categories", (string)null);
+                });
+
+            modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Currency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("TB_Currencies", (string)null);
                 });
 
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.ProductAggregate.Product", b =>

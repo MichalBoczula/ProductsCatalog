@@ -26,6 +26,20 @@ namespace ProductCatalog.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TB_Currencies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TB_Currencies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TB_Products",
                 columns: table => new
                 {
@@ -45,7 +59,14 @@ namespace ProductCatalog.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_TB_Categories_Code",
                 table: "TB_Categories",
-                column: "Code");
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TB_Currencies_Code",
+                table: "TB_Currencies",
+                column: "Code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TB_Products_CategoryId",
@@ -58,6 +79,9 @@ namespace ProductCatalog.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "TB_Categories");
+
+            migrationBuilder.DropTable(
+                name: "TB_Currencies");
 
             migrationBuilder.DropTable(
                 name: "TB_Products");
