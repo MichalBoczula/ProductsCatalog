@@ -16,7 +16,7 @@ namespace ProductCatalog.Infrastructure.Configuration
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(2000).IsRequired();
 
-            builder.OwnsOne(x => x.Price, money =>
+            builder.ComplexProperty(x => x.Price, money =>
             {
                 money.Property(m => m.Amount)
                      .HasColumnName("PriceAmount")
@@ -28,8 +28,6 @@ namespace ProductCatalog.Infrastructure.Configuration
                      .HasMaxLength(3)
                      .IsRequired();
             });
-
-            builder.Navigation(x => x.Price).IsRequired();
 
             builder.HasIndex(x => x.CategoryId);
         }
