@@ -4,6 +4,6 @@ namespace ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories
 {
     public interface ICurrenciesQueriesRepository
     {
-        Task<IReadOnlyList<CurrencyReadModel>> GetCurrencies(Guid categoryId, CancellationToken ct);
+        Task<IReadOnlyList<CurrencyReadModel>> GetCurrencies(CancellationToken ct);
     }
 }
