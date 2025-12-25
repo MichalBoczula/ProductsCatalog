@@ -35,7 +35,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
 
             return new ValidationPolicyDescriptor()
             {
-                PolicyName = nameof(ProductsValidationPolicy),
+                PolicyName = nameof(CategoriesValidationPolicy),
                 Rules = allErrors
             };
         }
