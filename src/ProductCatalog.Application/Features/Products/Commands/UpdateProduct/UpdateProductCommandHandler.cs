@@ -15,15 +15,21 @@ namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
     {
         public async Task<ProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productCommandsRepository.GetProductById(request.productId, cancellationToken);
-            
-            var validationResult = _validationPolicy.Validate(product);
-            if (!validationResult.IsValid)
+            var incoming = request.product.Adapt<Product>();
+            var validationResultIncoming = _validationPolicy.Validate(incoming);
+            if (!validationResultIncoming.IsValid)
             {
-                throw new ValidationException(validationResult);
+                throw new ValidationException(validationResultIncoming);
             }
 
-            var incoming = request.product.Adapt(product);
+            var product = await _productCommandsRepository.GetProductById(request.productId, cancellationToken);
+            
+            var validationResultExisting = _validationPolicy.Validate(product);
+            if (!validationResultExisting.IsValid)
+            {
+                throw new ValidationException(validationResultExisting);
+            }
+
             product.AssigneNewProductInformation(incoming);
 
             await _productCommandsRepository.Update(product, cancellationToken);
