@@ -32,7 +32,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             using var connection = CreateConnection();
 
             var result = await connection.QuerySingleOrDefaultAsync<CategoryReadModel?>(
-                sql, new { Id = id });
+                new CommandDefinition(sql, new { Id = id }, cancellationToken: ct));
             return result;
         }
 

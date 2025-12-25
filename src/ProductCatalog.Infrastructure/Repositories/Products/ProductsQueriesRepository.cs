@@ -35,7 +35,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
             using var connection = CreateConnection();
 
             var result = await connection.QuerySingleOrDefaultAsync<ProductReadModel?>(
-                sql, new { Id = id });
+                new CommandDefinition (sql, new { Id = id }, cancellationToken: ct));
 
             return result;
         }
