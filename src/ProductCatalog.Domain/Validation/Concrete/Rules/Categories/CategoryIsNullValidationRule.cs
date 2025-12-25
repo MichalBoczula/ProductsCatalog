@@ -6,11 +6,11 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Categories
 {
     public sealed class CategoryIsNullValidationRule : IValidationRule<Category>
     {
-        private readonly ValidationError productIsNull;
+        private readonly ValidationError categoryIsNull;
 
         public CategoryIsNullValidationRule()
         {
-            productIsNull = new ValidationError
+            categoryIsNull = new ValidationError
             {
                 Message = "Category cannot be null.",
                 Name = "CategoryIsNull",
@@ -20,12 +20,12 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Categories
         public void IsValid(Category entity, ValidationResult validationResults)
         {
             if (entity == null)
-                validationResults.AddValidationError(productIsNull);
+                validationResults.AddValidationError(categoryIsNull);
         }
 
         public List<ValidationError> Describe()
         {
-            return [productIsNull];
+            return [categoryIsNull];
         }
     }
 }

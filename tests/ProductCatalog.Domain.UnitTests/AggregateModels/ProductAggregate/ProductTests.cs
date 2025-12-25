@@ -11,10 +11,12 @@ namespace ProductCatalog.Domain.UnitTests.AggregateModels.ProductAggregate
         {
             //Arrange
             var product = new Product("test", "desc", new Money(10, "usd"), Guid.NewGuid());
+            var actualDate = product.ChangedAt;
             //Act
             product.Deactivate();
             //Assert
             product.IsActive.ShouldBeFalse();
+            actualDate.ShouldBeLessThan(product.ChangedAt);
         }
 
         [Fact]
@@ -25,6 +27,7 @@ namespace ProductCatalog.Domain.UnitTests.AggregateModels.ProductAggregate
             var newCategoryId = Guid.NewGuid();
             var product = new Product("test", "desc", new Money(10, "usd"), oldCategoryId);
             var incoming = new Product("newName", "newDesc", new Money(15, "usd"), newCategoryId);
+            var actualDate = product.ChangedAt;
             //Act
             product.AssigneNewProductInformation(incoming);
             //Assert
@@ -33,6 +36,28 @@ namespace ProductCatalog.Domain.UnitTests.AggregateModels.ProductAggregate
             product.Price.Amount.ShouldBe(15);
             product.Price.Currency.ShouldBe("usd");
             product.CategoryId.ShouldBe(newCategoryId);
+            actualDate.ShouldBeLessThan(product.ChangedAt);
+        }
+
+        [Fact]
+        public void SetChangeDate_ShouldDateBeAssigned()
+        {
+            //Arrange
+            var product = new Product("test", "desc", new Money(10, "usd"), Guid.NewGuid());
+            var actualDate = product.ChangedAt;
+            //Act
+            product.SetChangeDate();
+            //Assert
+            actualDate.ShouldBeLessThan(product.ChangedAt);
+        }
+
+        [Fact]
+        public void CreateAggreageteWithId_ShouldCreateId()
+        {
+            //Arrange & Act
+            var product = new Product("test", "desc", new Money(10, "usd"), Guid.NewGuid());
+            //Assert
+            product.Id.ShouldNotBe(Guid.Empty);
         }
     }
 }
