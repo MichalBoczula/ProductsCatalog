@@ -1,38 +1,37 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
-using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
+﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.Validation.Common;
+using ProductCatalog.Domain.Validation.Concrete.Rules.Categories;
 using Shouldly;
 
-namespace ProductCatalog.Domain.UnitTests.Validation.Rules
+namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
 {
-    public class ProductsCategoryIdValidationRuleTests
+    public class CategoryIsNullValidationRuleTests
     {
         [Fact]
-        public void IsValida_EmptyGuid_ShouldReturnError()
+        public void IsValid_CategoryIsNull_ShouldReturnError()
         {
             //Arrange
-            var product = new Product("test", "desc", new Money(10, "usd"), Guid.Empty);
-            var rule = new ProductsCategoryIdValidationRule();
+            Category product = null;
+            var rule = new CategoryIsNullValidationRule();
             var validationResult = new ValidationResult();
             //Act
             rule.IsValid(product, validationResult);
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
-            error.Message.ShouldContain("CategoryId cannot be null or empty.");
-            error.Name.ShouldContain("CategoryIdIsNullOrWhiteSpace");
+            error.Message.ShouldContain("Category cannot be null.");
+            error.Name.ShouldContain("CategoryIsNull");
         }
 
         [Fact]
         public void Describe_ShouldReturnCorrectRule()
         {
             //Arrange
-            var rule = new ProductsCategoryIdValidationRule();
+            var rule = new CategoryIsNullValidationRule();
             var nullOrEmpty = new ValidationError
             {
-                Message = "CategoryId cannot be null or empty.",
-                Name = "CategoryIdIsNullOrWhiteSpace",
+                Message = "Category cannot be null.",
+                Name = "CategoryIsNull",
             };
 
             //Act

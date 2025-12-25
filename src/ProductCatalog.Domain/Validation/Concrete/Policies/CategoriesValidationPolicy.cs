@@ -1,6 +1,7 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
+using ProductCatalog.Domain.Validation.Concrete.Rules.Categories;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
@@ -11,7 +12,9 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
 
         public CategoriesValidationPolicy()
         {
-            
+            _rules.Add(new CategoriesNameValidationRule());
+            _rules.Add(new CategoriesCodeValidationRule());
+            _rules.Add(new CategoryIsNullValidationRule());
         }
 
         public ValidationResult Validate(Category client)

@@ -1,54 +1,54 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.Validation.Common;
+using ProductCatalog.Domain.Validation.Concrete.Rules.Categories;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
 using Shouldly;
 
-namespace ProductCatalog.Domain.UnitTests.Validation.Rules
+namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Categories
 {
-    public class ProductsDescriptionValidationRuleTests
+    public class CategoriesNameValidationRuleTests
     {
         [Fact]
-        public void IsValid_DescriptionIsEmpty_ShouldReturnError()
+        public void IsValid_NameIsEmpty_ShouldReturnError()
         {
             //Arrange
-            var product = new Product("test", "", new Money(10, "usd"), Guid.NewGuid());
-            var rule = new ProductsDescriptionValidationRule();
+            var product = new Category("code", "");
+            var rule = new CategoriesNameValidationRule();
             var validationResult = new ValidationResult();
             //Act
             rule.IsValid(product, validationResult);
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
-            error.Message.ShouldContain("Descriptions cannot be null or whitespace.");
-            error.Name.ShouldContain("DescriptionsIsNullOrWhiteSpace");
+            error.Message.ShouldContain("Categories name cannot be null or whitespace.");
+            error.Name.ShouldContain("CategoriesNameIsNullOrWhiteSpace");
         }
 
         [Fact]
-        public void IsValid_DescriptionIsNull_ShouldReturnError()
+        public void IsValid_NameIsNull_ShouldReturnError()
         {
             //Arrange
-            var product = new Product("test", null, new Money(10, "usd"), Guid.NewGuid());
-            var rule = new ProductsDescriptionValidationRule();
+            var product = new Category("code", null);
+            var rule = new CategoriesNameValidationRule();
             var validationResult = new ValidationResult();
             //Act
             rule.IsValid(product, validationResult);
             //Assert
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
-            error.Message.ShouldContain("Descriptions cannot be null or whitespace.");
-            error.Name.ShouldContain("DescriptionsIsNullOrWhiteSpace");
+            error.Message.ShouldContain("Categories name cannot be null or whitespace.");
+            error.Name.ShouldContain("CategoriesNameIsNullOrWhiteSpace");
         }
 
         [Fact]
         public void Describe_ShouldReturnCorrectRule()
         {
             //Arrange
-            var rule = new ProductsDescriptionValidationRule();
+            var rule = new CategoriesNameValidationRule();
             var nullOrEmpty = new ValidationError
             {
-                Message = "Descriptions cannot be null or whitespace.",
-                Name = "DescriptionsIsNullOrWhiteSpace",
+                Message = "Categories name cannot be null or whitespace.",
+                Name = "CategoriesNameIsNullOrWhiteSpace",
             };
 
             //Act

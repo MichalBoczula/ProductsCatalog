@@ -4,7 +4,7 @@ using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Products;
 using Shouldly;
 
-namespace ProductCatalog.Domain.UnitTests.Validation.Rules
+namespace ProductCatalog.Domain.UnitTests.Validation.Rules.Products
 {
     public class ProductsNameValidationRuleTests
     {
