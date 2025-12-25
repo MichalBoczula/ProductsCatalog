@@ -1,11 +1,15 @@
 ﻿using Mapster;
 using ProductCatalog.Application.Common.Dtos.Categories;
+using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
+using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
+using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 using ProductCatalog.Domain.ReadModels;
@@ -20,6 +24,7 @@ namespace ProductCatalog.Application.Mapping
             CreateMappingForMoney();
             CreateMappingForCategories();
             CreateMappingForReadModels();
+            CreateMappingForCurrencies();
         }
 
         private static void CreateMappingForProducts()
@@ -56,7 +61,11 @@ namespace ProductCatalog.Application.Mapping
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
                     });
+
             TypeAdapterConfig<CategoryReadModel, CategoryDto>
+                .NewConfig();
+
+            TypeAdapterConfig<CurrencyReadModel, CurrencyDto>
                 .NewConfig();
         }
 
@@ -71,6 +80,20 @@ namespace ProductCatalog.Application.Mapping
                 .MapToConstructor(true);
 
             TypeAdapterConfig<Category, CategoryDto>
+                .NewConfig();
+        }
+
+        private static void CreateMappingForCurrencies()
+        {
+            TypeAdapterConfig<CreateCurrencyExternalDto, Currency>
+                .NewConfig()
+                .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateCurrencyExternalDto, Currency>
+                .NewConfig()
+                .MapToConstructor(true);
+
+            TypeAdapterConfig<Currency, CurrencyDto>
                 .NewConfig();
         }
     }

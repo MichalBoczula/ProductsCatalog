@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Diagnostics;
 using ProductCatalog.Api.Configuration;
 using ProductCatalog.Api.Endpoints;
 using ProductCatalog.Application;
 using ProductCatalog.Domain;
-using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Infrastructure;
 
 namespace ProductCatalog.Api
@@ -44,6 +42,7 @@ namespace ProductCatalog.Api
 
             app.MapProductsEndpoints();
             app.MapCategoriesEndpoints();
+            app.MapCurrenciesEndpoints();
 
             app.MapHealthChecks("/health");
 

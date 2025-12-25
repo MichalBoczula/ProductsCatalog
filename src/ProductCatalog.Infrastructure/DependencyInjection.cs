@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
+using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using ProductCatalog.Infrastructure.Repositories.Categories;
+using ProductCatalog.Infrastructure.Repositories.Currencies;
 using ProductCatalog.Infrastructure.Repositories.Products;
 
 namespace ProductCatalog.Infrastructure
@@ -28,6 +30,9 @@ namespace ProductCatalog.Infrastructure
 
             services.AddScoped<ICategoriesCommandsRepository, CategoriesCommandsRepository>();
             services.AddScoped<ICategoriesQueriesRepository, CategoriesQueriesRepository>();
+
+            services.AddScoped<ICurrenciesQueriesRepository, CurrenciesQueriesRepository>();
+            services.AddScoped<ICurrencyCommandsRepository, CurrencyCommandsRepository>();
 
             return services;
         }
