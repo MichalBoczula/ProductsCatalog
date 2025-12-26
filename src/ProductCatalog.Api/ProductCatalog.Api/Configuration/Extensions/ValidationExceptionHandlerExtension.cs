@@ -21,7 +21,6 @@ namespace ProductCatalog.Api.Configuration.Extensions
                 {
                     ["errors"] = validationException.ValidationResult.GetValidatonErrors(),
                     ["traceId"] = context.TraceIdentifier
-
                 }
             }, cancellationToken);
         }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
@@ -6,6 +7,7 @@ using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Features.Products.Queries.GetProductById;
 using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
+
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -33,7 +35,8 @@ namespace ProductCatalog.Api.Endpoints
             })
             .WithName("GetProductById")
             .Produces<ProductDto>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Get a product by ID",
@@ -50,7 +53,8 @@ namespace ProductCatalog.Api.Endpoints
             })
             .WithName("GetProductByCategoryId")
             .Produces<ProductDto>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Get a products by categoryId",
@@ -68,6 +72,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("CreateProduct")
             .Produces<ProductDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Create product",
@@ -82,6 +87,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("UpdateProduct")
             .Produces<ProductDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Update product",
@@ -96,6 +102,7 @@ namespace ProductCatalog.Api.Endpoints
            .WithName("RemoveProduct")
            .Produces<ProductDto>(StatusCodes.Status200OK)
            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
            .WithOpenApi(operation => new(operation)
            {
                Summary = "Delete product",

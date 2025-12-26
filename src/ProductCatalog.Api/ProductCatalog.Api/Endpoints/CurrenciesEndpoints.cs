@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
@@ -33,6 +34,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("GetCurrencies")
             .Produces<IReadOnlyList<CurrencyDto>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "List currencies",
@@ -50,6 +52,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("")
             .Produces<CurrencyDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Create currency",
@@ -64,6 +67,7 @@ namespace ProductCatalog.Api.Endpoints
            .WithName("UpdateCurrency")
            .Produces<CurrencyDto>(StatusCodes.Status200OK)
            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
            .WithOpenApi(operation => new(operation)
            {
                Summary = "Update currency",
@@ -78,6 +82,7 @@ namespace ProductCatalog.Api.Endpoints
            .WithName("RemoveCurrency")
            .Produces<CurrencyDto>(StatusCodes.Status200OK)
            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
            .WithOpenApi(operation => new(operation)
            {
                Summary = "Delete currency",

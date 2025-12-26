@@ -2,6 +2,7 @@
 using MediatR;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
+using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId
 {
@@ -12,7 +13,11 @@ namespace ProductCatalog.Application.Features.Products.Queries.GetProductsByCate
         public async Task<IReadOnlyList<ProductDto>?> Handle(GetProductsByCategoryIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _productQueriesRepository.GetByCategoryId(request.categoryId, cancellationToken);
-            return result.Adapt<List<ProductDto>>();
+            if (result is null)
+            {
+                throw new ResourceNotFoundException(nameof(GetProductsByCategoryIdQuery), request.categoryId, nameof(List<ProductDto>));
+            }
+            return result.Adapt<List<ProductDto>>().AsReadOnly();
         }
     }
 }

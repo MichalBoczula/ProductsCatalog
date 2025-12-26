@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
@@ -34,6 +35,7 @@ namespace ProductCatalog.Api.Endpoints
            .WithName("GetCategories")
            .Produces<IReadOnlyList<CategoryDto>>(StatusCodes.Status200OK)
            .Produces(StatusCodes.Status404NotFound)
+           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
            .WithOpenApi(operation => new(operation)
            {
                Summary = "List categories",
@@ -50,7 +52,8 @@ namespace ProductCatalog.Api.Endpoints
             })
             .WithName("GetCategoryById")
             .Produces<CategoryDto>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Get category by ID",
@@ -68,6 +71,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("CreateCategory")
             .Produces<CategoryDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Create category",
@@ -82,6 +86,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("UpdateCategory")
             .Produces<CategoryDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
             {
                 Summary = "Update category",
@@ -96,6 +101,7 @@ namespace ProductCatalog.Api.Endpoints
            .WithName("RemoveCategory")
            .Produces<CategoryDto>(StatusCodes.Status200OK)
            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
            .WithOpenApi(operation => new(operation)
            {
                Summary = "Delete category",

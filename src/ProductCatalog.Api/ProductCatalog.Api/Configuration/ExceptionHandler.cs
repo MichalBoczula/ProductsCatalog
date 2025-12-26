@@ -17,6 +17,10 @@ namespace ProductCatalog.Api.Configuration
                     ValidationExceptionHandlerExtension.HandleValidationException(
                         context, validationException, cancellationToken),
 
+                ResourceNotFoundException notFoundException => 
+                    NotFoundExceptionHandlerExtension.HandleNotFoundException(
+                        context, notFoundException, cancellationToken),
+
                 _ => DefaultExceptionHandlerExtension.HandleDefaultException(context, cancellationToken)
             });
 
