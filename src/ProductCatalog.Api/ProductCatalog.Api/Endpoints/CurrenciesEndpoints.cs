@@ -1,11 +1,10 @@
 ﻿using MediatR;
+using ProductCatalog.Api.Configuration.Common;
+using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
-using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
-using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -13,15 +12,17 @@ namespace ProductCatalog.Api.Endpoints
     {
         public static IEndpointRouteBuilder MapCurrenciesEndpoints(this IEndpointRouteBuilder app)
         {
-            MapCurenciesQueries(app);
-            MapCurrenciesCommands(app);
+            var group = app.MapGroup("/currencies").WithTags("Currencies");
 
-            return app;
+            MapCurenciesQueries(group);
+            MapCurrenciesCommands(group);
+
+            return group;
         }
 
-        private static void MapCurenciesQueries(IEndpointRouteBuilder app)
+        private static void MapCurenciesQueries(IEndpointRouteBuilder group)
         {
-            app.MapGet("/currencies", async (IMediator mediator) =>
+            group.MapGet("", async (IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetCurrenciesQuery());
 
@@ -30,34 +31,58 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
             .WithName("GetCurrencies")
-            .WithOpenApi();
+            .Produces<IReadOnlyList<CurrencyDto>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "List currencies",
+                Description = "Returns all currencies; 404 if no currencies are found.",
+            });
         }
 
-        private static void MapCurrenciesCommands(IEndpointRouteBuilder app)
+        private static void MapCurrenciesCommands(IEndpointRouteBuilder group)
         {
-            app.MapPost("/currencies", async (CreateCurrencyExternalDto currency, IMediator mediator) =>
+            group.MapPost("", async (CreateCurrencyExternalDto currency, IMediator mediator) =>
             {
                 var result = await mediator.Send(new CreateCurrencyCommand(currency));
                 return Results.Created($"/currencies/{result.Id}", result);
             })
-            .WithName("CreateCurrency")
-            .WithOpenApi();
+            .WithName("")
+            .Produces<CurrencyDto>(StatusCodes.Status201Created)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Create currency",
+                Description = "Creates a new currency and returns the created resource.",
+            });
 
-            app.MapPut("/currencies/{id:guid}", async (Guid id, UpdateCurrencyExternalDto currency, IMediator mediator) =>
+            group.MapPut("/{id:guid}", async (Guid id, UpdateCurrencyExternalDto currency, IMediator mediator) =>
             {
                 var result = await mediator.Send(new UpdateCurrencyCommand(id, currency));
                 return Results.Ok(result);
             })
            .WithName("UpdateCurrency")
-           .WithOpenApi();
+           .Produces<CurrencyDto>(StatusCodes.Status200OK)
+           .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .WithOpenApi(operation => new(operation)
+           {
+               Summary = "Update currency",
+               Description = "Updates an existing currency and returns the updated resource.",
+           });
 
-            app.MapDelete("/currencies/{id:guid}", async (Guid id, IMediator mediator) =>
+            group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new DeleteCurrencyCommand(id));
                 return Results.Ok(result);
             })
            .WithName("RemoveCurrency")
-           .WithOpenApi();
+           .Produces<CurrencyDto>(StatusCodes.Status200OK)
+           .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .WithOpenApi(operation => new(operation)
+           {
+               Summary = "Delete currency",
+               Description = "Soft deletes a currency and returns the deactivated resource.",
+           });
         }
     }
 }

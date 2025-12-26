@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using ProductCatalog.Api.Configuration.Common;
+using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
@@ -11,15 +13,17 @@ namespace ProductCatalog.Api.Endpoints
     {
         public static IEndpointRouteBuilder MapProductsEndpoints(this IEndpointRouteBuilder app)
         {
-            MapProductsQueries(app);
-            MapProductsCommands(app);
+            var group = app.MapGroup("/products").WithTags("Products");
 
-            return app;
+            MapProductsQueries(group);
+            MapProductsCommands(group);
+
+            return group;
         }
 
-        private static void MapProductsQueries(IEndpointRouteBuilder app)
+        private static void MapProductsQueries(IEndpointRouteBuilder group)
         {
-            app.MapGet("/products/{id:guid}", async (Guid id, IMediator mediator) =>
+            group.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetProductByIdQuery(id));
 
@@ -28,9 +32,15 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
             .WithName("GetProductById")
-            .WithOpenApi();
+            .Produces<ProductDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Get a product by ID",
+                Description = "Returns the product details when the ID exists; 404 otherwise."
+            });
 
-            app.MapGet("/products/categories/{categoryId:guid}", async (Guid categoryId, IMediator mediator) =>
+            group.MapGet("/categories/{categoryId:guid}", async (Guid categoryId, IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetProductsByCategoryIdQuery(categoryId));
 
@@ -39,34 +49,58 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
             .WithName("GetProductByCategoryId")
-            .WithOpenApi();
+            .Produces<ProductDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Get a products by categoryId",
+                Description = "Returns the products lists when categoryId exists; 404 otherwise."
+            });
         }
 
-        private static void MapProductsCommands(IEndpointRouteBuilder app)
+        private static void MapProductsCommands(IEndpointRouteBuilder group)
         {
-            app.MapPost("/products", async (CreateProductExternalDto product, IMediator mediator) =>
+            group.MapPost("", async (CreateProductExternalDto product, IMediator mediator) =>
             {
                 var result = await mediator.Send(new CreateProductCommand(product));
                 return Results.Created($"/products/{result.Id}", result);
             })
             .WithName("CreateProduct")
-            .WithOpenApi();
+            .Produces<ProductDto>(StatusCodes.Status201Created)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Create product",
+                Description = "Creates a new product and returns the created resource.",
+            });
 
-            app.MapPut("/products/{id:guid}", async (Guid id, UpdateProductExternalDto product, IMediator mediator) =>
+            group.MapPut("/{id:guid}", async (Guid id, UpdateProductExternalDto product, IMediator mediator) =>
             {
                 var result = await mediator.Send(new UpdateProductCommand(id, product));
                 return Results.Ok(result);
             })
             .WithName("UpdateProduct")
-            .WithOpenApi();
+            .Produces<ProductDto>(StatusCodes.Status200OK)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Update product",
+                Description = "Updates an existing product and returns the updated resource.",
+            });
 
-            app.MapDelete("/products/{id:guid}", async (Guid id, IMediator mediator) =>
+            group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new RemoveProductCommand(id));
                 return Results.Ok(result);
             })
            .WithName("RemoveProduct")
-           .WithOpenApi();
+           .Produces<ProductDto>(StatusCodes.Status200OK)
+           .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .WithOpenApi(operation => new(operation)
+           {
+               Summary = "Delete product",
+               Description = "Soft deletes a product and returns the deactivated resource.",
+           });
         }
     }
 }

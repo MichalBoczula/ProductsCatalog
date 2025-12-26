@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using ProductCatalog.Api.Configuration.Common;
+using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
@@ -11,15 +13,17 @@ namespace ProductCatalog.Api.Endpoints
     {
         public static IEndpointRouteBuilder MapCategoriesEndpoints(this IEndpointRouteBuilder app)
         {
-            MapCategoriesQueries(app);
-            MapCategoriesCommands(app);
+            var group = app.MapGroup("/categories").WithTags("Categories");
 
-            return app;
+            MapCategoriesQueries(group);
+            MapCategoriesCommands(group);
+
+            return group;
         }
 
-        private static void MapCategoriesQueries(IEndpointRouteBuilder app)
+        private static void MapCategoriesQueries(IEndpointRouteBuilder group)
         {
-            app.MapGet("/categories", async (IMediator mediator) =>
+            group.MapGet("", async (IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetCategoriesQuery());
 
@@ -28,9 +32,15 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
            .WithName("GetCategories")
-           .WithOpenApi();
+           .Produces<IReadOnlyList<CategoryDto>>(StatusCodes.Status200OK)
+           .Produces(StatusCodes.Status404NotFound)
+           .WithOpenApi(operation => new(operation)
+           {
+               Summary = "List categories",
+               Description = "Returns all categories; 404 if no categories are found.",
+           });
 
-            app.MapGet("/categories/{id:guid}", async (Guid id, IMediator mediator) =>
+            group.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetCategoryByIdQuery(id));
 
@@ -39,34 +49,58 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
             .WithName("GetCategoryById")
-            .WithOpenApi();
+            .Produces<CategoryDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Get category by ID",
+                Description = "Returns the category when the ID exists; 404 otherwise.",
+            });
         }
 
-        private static void MapCategoriesCommands(IEndpointRouteBuilder app)
+        private static void MapCategoriesCommands(IEndpointRouteBuilder group)
         {
-            app.MapPost("/categories", async (CreateCategoryExternalDto category, IMediator mediator) =>
+            group.MapPost("", async (CreateCategoryExternalDto category, IMediator mediator) =>
             {
                 var result = await mediator.Send(new CreateCategoryCommand(category));
                 return Results.Created($"/categories/{result.Id}", result);
             })
             .WithName("CreateCategory")
-            .WithOpenApi();
+            .Produces<CategoryDto>(StatusCodes.Status201Created)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Create category",
+                Description = "Creates a new category and returns the created resource.",
+            });
 
-            app.MapPut("/categories/{id:guid}", async (Guid id, UpdateCategoryExternalDto category, IMediator mediator) =>
+            group.MapPut("/{id:guid}", async (Guid id, UpdateCategoryExternalDto category, IMediator mediator) =>
             {
                 var result = await mediator.Send(new UpdateCategoryCommand(id, category));
                 return Results.Ok(result);
             })
             .WithName("UpdateCategory")
-            .WithOpenApi();
+            .Produces<CategoryDto>(StatusCodes.Status200OK)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Update category",
+                Description = "Updates an existing category and returns the updated resource.",
+            });
 
-            app.MapDelete("/categories/{id:guid}", async (Guid id, IMediator mediator) =>
+            group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new DeleteCategoryCommand(id));
                 return Results.Ok(result);
             })
            .WithName("RemoveCategory")
-           .WithOpenApi();
+           .Produces<CategoryDto>(StatusCodes.Status200OK)
+           .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+           .WithOpenApi(operation => new(operation)
+           {
+               Summary = "Delete category",
+               Description = "Soft deletes a category and returns the deactivated resource.",
+           });
         }
     }
 }

@@ -3,7 +3,7 @@
     public sealed class ValidationResult
     {
         public bool IsValid => !_validationErrors.Any();
-        private readonly List<ValidationError> _validationErrors = new();
+        public List<ValidationError> _validationErrors { get; } = new();
 
         public void AddValidationError(ValidationError validationError)
         {
