@@ -15,7 +15,7 @@ namespace ProductCatalog.Api
             builder.Services.AddAuthorization();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c => c.SupportNonNullableReferenceTypes());
 
             builder.Services.AddDomain();
             builder.Services.AddInfrastructure(builder.Configuration);

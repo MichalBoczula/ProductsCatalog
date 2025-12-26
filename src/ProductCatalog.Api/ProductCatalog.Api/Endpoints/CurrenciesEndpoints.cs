@@ -49,7 +49,7 @@ namespace ProductCatalog.Api.Endpoints
                 var result = await mediator.Send(new CreateCurrencyCommand(currency));
                 return Results.Created($"/currencies/{result.Id}", result);
             })
-            .WithName("")
+            .WithName("CreateCurrency")
             .Produces<CurrencyDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
