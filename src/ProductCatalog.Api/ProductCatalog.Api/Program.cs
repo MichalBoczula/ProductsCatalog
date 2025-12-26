@@ -3,6 +3,8 @@ using ProductCatalog.Api.Endpoints;
 using ProductCatalog.Application;
 using ProductCatalog.Domain;
 using ProductCatalog.Infrastructure;
+using ProductCatalog.Infrastructure.Extensions;
+
 
 namespace ProductCatalog.Api
 {
@@ -45,6 +47,8 @@ namespace ProductCatalog.Api
             app.MapCurrenciesEndpoints();
 
             app.MapHealthChecks("/health");
+
+            app.ApplyMigrations();
 
             app.Run();
         }
