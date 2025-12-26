@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ProductCatalog.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -111,6 +113,46 @@ namespace ProductCatalog.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TB_Products_History", x => x.Id);
+                });
+
+            migrationBuilder.InsertData(
+                table: "TB_Categories",
+                columns: new[] { "Id", "ChangedAt", "Code", "IsActive", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("587480bb-c126-4f9b-b531-b0244daa4ba4"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2867), "MOBILE", true, "Mobile" },
+                    { new Guid("9656c5c5-8ed9-46e1-a5df-025f5d7885d4"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2870), "PC", true, "Personal Computer" },
+                    { new Guid("f5fd7b52-275e-4710-a578-40a522ac139c"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2871), "TABLET", true, "Tablet" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TB_Categories_History",
+                columns: new[] { "Id", "CategoryId", "ChangedAt", "Code", "IsActive", "Name", "Operation" },
+                values: new object[,]
+                {
+                    { new Guid("24daf035-652f-404a-8fd7-785fae68b341"), new Guid("587480bb-c126-4f9b-b531-b0244daa4ba4"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2867), "MOBILE", true, "Mobile", 0 },
+                    { new Guid("b3d060f4-81f4-4d64-b4ac-77b3f39b1e29"), new Guid("9656c5c5-8ed9-46e1-a5df-025f5d7885d4"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2870), "PC", true, "Personal Computer", 0 },
+                    { new Guid("fc500d67-46a9-492a-a861-77fcd73f1bfc"), new Guid("f5fd7b52-275e-4710-a578-40a522ac139c"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2871), "TABLET", true, "Tablet", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TB_Currencies",
+                columns: new[] { "Id", "ChangedAt", "Code", "Description", "IsActive" },
+                values: new object[,]
+                {
+                    { new Guid("12da255e-6408-4b28-a5b1-84758f889348"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3044), "EUR", "Euro", true },
+                    { new Guid("1a017544-890c-4219-891f-cd5549473d4e"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3042), "USD", "US Dollar", true },
+                    { new Guid("e73b3ef4-ec2c-4262-81ef-0ac21fbc1ec3"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3043), "PLN", "Polish Złoty", true }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TB_Currencies_History",
+                columns: new[] { "Id", "ChangedAt", "Code", "CurrencyId", "Description", "IsActive", "Operation" },
+                values: new object[,]
+                {
+                    { new Guid("1b0d0b8c-2926-415b-a1b8-1843fc189747"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3042), "USD", new Guid("1a017544-890c-4219-891f-cd5549473d4e"), "US Dollar", true, 0 },
+                    { new Guid("58ad897f-178c-45c9-a8f0-3302a265a9aa"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3043), "PLN", new Guid("e73b3ef4-ec2c-4262-81ef-0ac21fbc1ec3"), "Polish Złoty", true, 0 },
+                    { new Guid("5bbe9f3d-6299-40b6-a9e6-e851de397563"), new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3044), "EUR", new Guid("12da255e-6408-4b28-a5b1-84758f889348"), "Euro", true, 0 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -5,7 +5,8 @@ using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
-using ProductCatalog.Infrastructure.Configuration;
+using ProductCatalog.Infrastructure.Configuration.Aggregates;
+using ProductCatalog.Infrastructure.Configuration.DataSeed;
 using ProductCatalog.Infrastructure.Configuration.Histories;
 
 namespace ProductCatalog.Infrastructure.Contexts.Commands
@@ -30,6 +31,8 @@ namespace ProductCatalog.Infrastructure.Contexts.Commands
             modelBuilder.ApplyConfiguration(new ProductsHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new CurrenciesHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new CategoriesHistoryConfiguration());
+
+            modelBuilder.SeedData();
         }
     }
 }

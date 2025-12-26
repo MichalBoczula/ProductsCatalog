@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Infrastructure.Common;
 
-namespace ProductCatalog.Infrastructure.Configuration
+namespace ProductCatalog.Infrastructure.Configuration.Aggregates
 {
     internal sealed class CategoriesConfiguration : IEntityTypeConfiguration<Category>
     {

@@ -51,6 +51,32 @@ namespace ProductCatalog.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("TB_Categories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("587480bb-c126-4f9b-b531-b0244daa4ba4"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2867),
+                            Code = "MOBILE",
+                            IsActive = true,
+                            Name = "Mobile"
+                        },
+                        new
+                        {
+                            Id = new Guid("9656c5c5-8ed9-46e1-a5df-025f5d7885d4"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2870),
+                            Code = "PC",
+                            IsActive = true,
+                            Name = "Personal Computer"
+                        },
+                        new
+                        {
+                            Id = new Guid("f5fd7b52-275e-4710-a578-40a522ac139c"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2871),
+                            Code = "TABLET",
+                            IsActive = true,
+                            Name = "Tablet"
+                        });
                 });
 
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History.CategoriesHistory", b =>
@@ -88,6 +114,38 @@ namespace ProductCatalog.Infrastructure.Migrations
                     b.HasIndex("ChangedAt");
 
                     b.ToTable("TB_Categories_History", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("24daf035-652f-404a-8fd7-785fae68b341"),
+                            CategoryId = new Guid("587480bb-c126-4f9b-b531-b0244daa4ba4"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2867),
+                            Code = "MOBILE",
+                            IsActive = true,
+                            Name = "Mobile",
+                            Operation = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("b3d060f4-81f4-4d64-b4ac-77b3f39b1e29"),
+                            CategoryId = new Guid("9656c5c5-8ed9-46e1-a5df-025f5d7885d4"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2870),
+                            Code = "PC",
+                            IsActive = true,
+                            Name = "Personal Computer",
+                            Operation = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("fc500d67-46a9-492a-a861-77fcd73f1bfc"),
+                            CategoryId = new Guid("f5fd7b52-275e-4710-a578-40a522ac139c"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2871),
+                            Code = "TABLET",
+                            IsActive = true,
+                            Name = "Tablet",
+                            Operation = 0
+                        });
                 });
 
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Currency", b =>
@@ -117,6 +175,32 @@ namespace ProductCatalog.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("TB_Currencies", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1a017544-890c-4219-891f-cd5549473d4e"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3042),
+                            Code = "USD",
+                            Description = "US Dollar",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            Id = new Guid("e73b3ef4-ec2c-4262-81ef-0ac21fbc1ec3"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3043),
+                            Code = "PLN",
+                            Description = "Polish Złoty",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            Id = new Guid("12da255e-6408-4b28-a5b1-84758f889348"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3044),
+                            Code = "EUR",
+                            Description = "Euro",
+                            IsActive = true
+                        });
                 });
 
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History.CurrenciesHistory", b =>
@@ -154,6 +238,38 @@ namespace ProductCatalog.Infrastructure.Migrations
                     b.HasIndex("CurrencyId");
 
                     b.ToTable("TB_Currencies_History", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1b0d0b8c-2926-415b-a1b8-1843fc189747"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3042),
+                            Code = "USD",
+                            CurrencyId = new Guid("1a017544-890c-4219-891f-cd5549473d4e"),
+                            Description = "US Dollar",
+                            IsActive = true,
+                            Operation = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("58ad897f-178c-45c9-a8f0-3302a265a9aa"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3043),
+                            Code = "PLN",
+                            CurrencyId = new Guid("e73b3ef4-ec2c-4262-81ef-0ac21fbc1ec3"),
+                            Description = "Polish Złoty",
+                            IsActive = true,
+                            Operation = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("5bbe9f3d-6299-40b6-a9e6-e851de397563"),
+                            ChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3044),
+                            Code = "EUR",
+                            CurrencyId = new Guid("12da255e-6408-4b28-a5b1-84758f889348"),
+                            Description = "Euro",
+                            IsActive = true,
+                            Operation = 0
+                        });
                 });
 
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.ProductAggregate.History.ProductsHistory", b =>

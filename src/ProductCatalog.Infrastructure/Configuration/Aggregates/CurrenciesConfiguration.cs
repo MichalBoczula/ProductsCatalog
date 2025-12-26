@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Infrastructure.Common;
 
-namespace ProductCatalog.Infrastructure.Configuration
+namespace ProductCatalog.Infrastructure.Configuration.Aggregates
 {
     internal sealed class CurrenciesConfiguration : IEntityTypeConfiguration<Currency>
     {
