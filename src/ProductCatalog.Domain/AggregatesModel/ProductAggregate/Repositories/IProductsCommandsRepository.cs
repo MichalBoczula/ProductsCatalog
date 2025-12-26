@@ -1,9 +1,13 @@
-﻿namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories
+﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
+
+namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories
 {
     public interface IProductsCommandsRepository
     {
-        Task Add(Product product, CancellationToken ct);
-        Task Update(Product product, CancellationToken cancellationToken);
+        void Add(Product product);
+        void Update(Product product);
         Task<Product?> GetProductById(Guid productId, CancellationToken cancellationToken);
+        void WriteHistory(ProductsHistory entity);
+        Task SaveChanges(CancellationToken cancellationToken);
     }
 }

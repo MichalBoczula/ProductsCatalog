@@ -32,7 +32,7 @@ namespace ProductCatalog.Infrastructure
             services.AddScoped<ICategoriesQueriesRepository, CategoriesQueriesRepository>();
 
             services.AddScoped<ICurrenciesQueriesRepository, CurrenciesQueriesRepository>();
-            services.AddScoped<ICurrencyCommandsRepository, CurrencyCommandsRepository>();
+            services.AddScoped<ICurrenciesCommandsRepository, CurrenciesCommandsRepository>();
 
             return services;
         }

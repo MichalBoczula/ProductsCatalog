@@ -2,14 +2,16 @@
 using MediatR;
 using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
+using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
 {
     internal sealed class UpdateCurrencyCommandHandler
-        (ICurrencyCommandsRepository _currencyCommandsRepository,
+        (ICurrenciesCommandsRepository _currencyCommandsRepository,
          IValidationPolicy<Currency> _validationPolicy)
         : IRequestHandler<UpdateCurrencyCommand, CurrencyDto>
     {
@@ -32,7 +34,21 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
             }
 
             currency.AssigneNewCurrencyInformation(incoming);
-            await _currencyCommandsRepository.Update(currency, cancellationToken);
+            _currencyCommandsRepository.Update(currency);
+
+            var currenciesHistory = new CurrenciesHistory
+            {
+                CurrencyId = currency.Id,
+                Code = currency.Code,
+                Description = currency.Description,
+                IsActive = currency.IsActive,
+                ChangedAt = currency.ChangedAt,
+                Operation = Operation.Updated
+            };
+
+            _currencyCommandsRepository.WriteHistory(currenciesHistory);
+
+            await _currencyCommandsRepository.SaveChanges(cancellationToken);
             return currency.Adapt<CurrencyDto>();
         }
     }

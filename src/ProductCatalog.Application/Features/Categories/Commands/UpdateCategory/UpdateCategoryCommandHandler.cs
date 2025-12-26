@@ -2,7 +2,9 @@
 using MediatR;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
@@ -30,7 +32,21 @@ namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
             }
 
             category.AssigneNewCategoryInformation(incoming);
-            await _categoriesCommandsRepository.Update(category, cancellationToken);
+            _categoriesCommandsRepository.Update(category);
+
+            var categoriesHistory = new CategoriesHistory
+            {
+                CategoryId = category.Id,
+                Code = category.Code,
+                Name = category.Name,
+                IsActive = category.IsActive,
+                ChangedAt = category.ChangedAt,
+                Operation = Operation.Updated
+            };
+
+            _categoriesCommandsRepository.WriteHistory(categoriesHistory);
+
+            await _categoriesCommandsRepository.SaveChanges(cancellationToken);
             return category.Adapt<CategoryDto>();
         }
     }

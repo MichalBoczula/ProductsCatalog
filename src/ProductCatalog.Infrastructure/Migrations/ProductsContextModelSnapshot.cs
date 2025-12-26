@@ -53,6 +53,43 @@ namespace ProductCatalog.Infrastructure.Migrations
                     b.ToTable("TB_Categories", (string)null);
                 });
 
+            modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History.CategoriesHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Operation")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ChangedAt");
+
+                    b.ToTable("TB_Categories_History", (string)null);
+                });
+
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Currency", b =>
                 {
                     b.Property<Guid>("Id")
@@ -80,6 +117,90 @@ namespace ProductCatalog.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("TB_Currencies", (string)null);
+                });
+
+            modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History.CurrenciesHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("CurrencyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Operation")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChangedAt");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("TB_Currencies_History", (string)null);
+                });
+
+            modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.ProductAggregate.History.ProductsHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Operation")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PriceAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PriceCurrency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChangedAt");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("TB_Products_History", (string)null);
                 });
 
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.ProductAggregate.Product", b =>

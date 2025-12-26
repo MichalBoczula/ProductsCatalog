@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 
@@ -14,22 +15,30 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
             _context = context;
         }
 
-        public async Task Add(Product product, CancellationToken ct)
+        public void Add(Product product)
         {
             _context.Products.Add(product);
-            await _context.SaveChangesAsync(ct);
         }
 
-        public async Task Update(Product product, CancellationToken cancellationToken)
+        public void Update(Product product)
         {
             _context.Products.Update(product);
-            await _context.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<Product?> GetProductById(Guid productId, CancellationToken cancellationToken)
         {
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
             return product;
+        }
+
+        public void WriteHistory(ProductsHistory entity)
+        {
+            _context.ProductsHistories.Add(entity);
+        }
+
+        public async Task SaveChanges(CancellationToken cancellationToken)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

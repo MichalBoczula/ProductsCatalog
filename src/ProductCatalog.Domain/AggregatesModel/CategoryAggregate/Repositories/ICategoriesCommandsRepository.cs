@@ -1,9 +1,13 @@
-﻿namespace ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories
+﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
+
+namespace ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories
 {
     public interface ICategoriesCommandsRepository
     {
-        Task AddAsync(Category category, CancellationToken cancellationToken);
-        Task Update(Category category, CancellationToken cancellationToken);
+        void Add(Category category);
+        void Update(Category category);
         Task<Category?> GetCategoryById(Guid categoryId, CancellationToken cancellationToken);
+        void WriteHistory(CategoriesHistory entity);
+        Task SaveChanges(CancellationToken cancellationToken);
     }
 }

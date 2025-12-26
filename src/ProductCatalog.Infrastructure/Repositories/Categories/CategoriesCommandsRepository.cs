@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 
@@ -14,22 +15,30 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             _context = context;
         }
 
-        public async Task AddAsync(Category category, CancellationToken cancellationToken)
+        public void Add(Category category)
         {
             _context.Categories.Add(category);
-            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task Update(Category category, CancellationToken cancellationToken)
+        public void Update(Category category)
         {
             _context.Categories.Update(category);
-            await _context.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<Category?> GetCategoryById(Guid categoryId, CancellationToken cancellationToken)
         {
             var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId, cancellationToken);
             return category;
+        }
+
+        public void WriteHistory(CategoriesHistory entity)
+        {
+            _context.CategoriesHistories.Add(entity);
+        }
+
+        public async Task SaveChanges(CancellationToken cancellationToken)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
