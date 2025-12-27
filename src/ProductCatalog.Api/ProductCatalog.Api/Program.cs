@@ -44,6 +44,7 @@ namespace ProductCatalog.Api
             app.MapProductsEndpoints();
             app.MapCategoriesEndpoints();
             app.MapCurrenciesEndpoints();
+            app.MapDocumentationsEndpoints();
 
             app.MapHealthChecks("/health");
 
