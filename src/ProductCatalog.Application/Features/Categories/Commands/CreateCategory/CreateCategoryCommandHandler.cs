@@ -18,7 +18,7 @@ namespace ProductCatalog.Application.Features.Categories.Commands.CreateCategory
         public async Task<CategoryDto> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = request.category.Adapt<Category>();
-            var validationResult = _validationPolicy.Validate(category);
+            var validationResult = await _validationPolicy.Validate(category);
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult);

@@ -18,7 +18,7 @@ namespace ProductCatalog.Application.Features.Products.Commands.RemoveProduct
         public async Task<ProductDto> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
         {
             var product = await _productCommandsRepository.GetProductById(request.productId, cancellationToken);
-            var validationResult = _validation.Validate(product);
+            var validationResult = await _validation.Validate(product);
             if(!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult);

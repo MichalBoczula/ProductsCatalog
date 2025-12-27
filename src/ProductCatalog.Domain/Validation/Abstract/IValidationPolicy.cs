@@ -4,7 +4,7 @@ namespace ProductCatalog.Domain.Validation.Abstract
 {
     public interface IValidationPolicy<T>
     {
-        ValidationResult Validate(T entity);
+        Task<ValidationResult> Validate(T entity);
         ValidationPolicyDescriptor Describe();
     }
 }

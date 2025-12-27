@@ -18,7 +18,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Categories
             };
         }
 
-        public void IsValid(Category entity, ValidationResult validationResults)
+        public async Task IsValid(Category entity, ValidationResult validationResults)
         {
             if (entity == null)
                 validationResults.AddValidationError(categoryIsNull);

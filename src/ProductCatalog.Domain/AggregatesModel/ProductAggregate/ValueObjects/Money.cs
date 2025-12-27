@@ -8,7 +8,7 @@
         public Money(decimal amount, string currency)
         {
             Amount = amount;
-            Currency = currency;
+            Currency = currency.ToUpper();
         }
     }
 }

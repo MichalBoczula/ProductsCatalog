@@ -18,7 +18,7 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency
         public async Task<CurrencyDto> Handle(DeleteCurrencyCommand request, CancellationToken cancellationToken)
         {
             var currency = await _currencyCommandsRepository.GetCurrencyById(request.currencyId, cancellationToken);
-            var validationResult = validationPolicy.Validate(currency);
+            var validationResult = await validationPolicy.Validate(currency);
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult);

@@ -18,7 +18,7 @@ namespace ProductCatalog.Application.Features.Categories.Commands.DeleteCategory
         public async Task<CategoryDto> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = await _categoriesCommandsRepository.GetCategoryById(request.id, cancellationToken);
-            var validationResult = _validationPolicy.Validate(category);
+            var validationResult = await _validationPolicy.Validate(category);
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult);

@@ -18,7 +18,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Products.MoneyRule
             };
         }
 
-        public void IsValid(Money entity, ValidationResult validationResults)
+        public async Task IsValid(Money entity, ValidationResult validationResults)
         {
             if (entity.Amount <= 0)
                 validationResults.AddValidationError(amountIsZeroOrBelow);

@@ -18,7 +18,7 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency
         public async Task<CurrencyDto> Handle(CreateCurrencyCommand request, CancellationToken cancellationToken)
         {
             var currency = request.currency.Adapt<Currency>();
-            var validationResult = _validationPolicy.Validate(currency);
+            var validationResult = await _validationPolicy.Validate(currency);
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult);

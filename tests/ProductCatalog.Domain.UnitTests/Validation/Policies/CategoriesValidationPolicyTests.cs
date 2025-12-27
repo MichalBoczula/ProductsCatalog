@@ -7,13 +7,13 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
     public class CategoriesValidationPolicyTests
     {
         [Fact]
-        public void Validate_ShouldReturnErrors()
+        public async Task Validate_ShouldReturnErrors()
         {
             //Arrange
             var category = new Category("", "");
             var policy = new CategoriesValidationPolicy();
             //Act
-            var result = policy.Validate(category);
+            var result = await policy.Validate(category);
             //Assert
             result.GetValidatonErrors().Count().ShouldBe(2);
             result.GetValidatonErrors().ShouldContain(e => e.Name == "CategoriesCodeValidationRule");
@@ -21,26 +21,26 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         }
 
         [Fact]
-        public void Validate_CategoryIsNull_ShouldReturnErrorInRulesSet()
+        public async Task Validate_CategoryIsNull_ShouldReturnErrorInRulesSet()
         {
             //Arrange
             Category category = null;
             var policy = new CategoriesValidationPolicy();
             //Act
-            var result = policy.Validate(category);
+            var result = await policy.Validate(category);
             //Assert
             result.GetValidatonErrors().Count().ShouldBe(1);
             result.GetValidatonErrors().ShouldContain(e => e.Name == "CategoryIsNullValidationRule");
         }
 
         [Fact]
-        public void Validate_ShouldBeValid()
+        public async Task Validate_ShouldBeValid()
         {
             //Arrange
             var category = new Category("code", "name");
             var policy = new CategoriesValidationPolicy();
             //Act
-            var result = policy.Validate(category);
+            var result = await policy.Validate(category);
             //Assert
             result.GetValidatonErrors().Count().ShouldBe(0);
         }

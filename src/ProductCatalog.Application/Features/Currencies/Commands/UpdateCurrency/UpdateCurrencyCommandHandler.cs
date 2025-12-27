@@ -18,7 +18,7 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
         public async Task<CurrencyDto> Handle(UpdateCurrencyCommand request, CancellationToken cancellationToken)
         {
             var incoming = request.currency.Adapt<Currency>();
-            var validationResultIncoming = _validationPolicy.Validate(incoming);
+            var validationResultIncoming = await _validationPolicy.Validate(incoming);
            
             if(!validationResultIncoming.IsValid)
             {
@@ -26,7 +26,7 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
             }
 
             var currency = await _currencyCommandsRepository.GetCurrencyById(request.currencyId, cancellationToken);
-            var validationResultExisting = _validationPolicy.Validate(currency);
+            var validationResultExisting = await _validationPolicy.Validate(currency);
 
             if (!validationResultExisting.IsValid)
             {

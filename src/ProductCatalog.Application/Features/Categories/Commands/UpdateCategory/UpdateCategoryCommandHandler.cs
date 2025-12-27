@@ -18,14 +18,14 @@ namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
         public async Task<CategoryDto> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
             var incoming = request.category.Adapt<Category>();
-            var validationResultIncoming = _validationPolicy.Validate(incoming);
+            var validationResultIncoming = await _validationPolicy.Validate(incoming);
             if (!validationResultIncoming.IsValid)
             {
                 throw new ValidationException(validationResultIncoming);
             }
 
             var category = await _categoriesCommandsRepository.GetCategoryById(request.id, cancellationToken);
-            var validationResultExisiting = _validationPolicy.Validate(category);
+            var validationResultExisiting = await _validationPolicy.Validate(category);
             if (!validationResultExisiting.IsValid)
             {
                 throw new ValidationException(validationResultExisiting);

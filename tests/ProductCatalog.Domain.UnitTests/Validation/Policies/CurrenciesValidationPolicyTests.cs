@@ -7,13 +7,13 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
     public class CurrenciesValidationPolicyTests
     {
         [Fact]
-        public void Validate_ShouldReturnErrors()
+        public async Task Validate_ShouldReturnErrors()
         {
             //Arrange
             var currency = new Currency("", "");
             var policy = new CurrenciesValidationPolicy();
             //Act
-            var result = policy.Validate(currency);
+            var result = await policy.Validate(currency);
             //Assert
             result.GetValidatonErrors().Count().ShouldBe(2);
             result.GetValidatonErrors().ShouldContain(e => e.Name == "CurrenciesCodeValidationRule");
@@ -21,26 +21,26 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         }
 
         [Fact]
-        public void Validate_CategoryIsNull_ShouldReturnErrorInRulesSet()
+        public async Task Validate_CategoryIsNull_ShouldReturnErrorInRulesSet()
         {
             //Arrange
             Currency currency = null;
             var policy = new CurrenciesValidationPolicy();
             //Act
-            var result = policy.Validate(currency);
+            var result = await policy.Validate(currency);
             //Assert
             result.GetValidatonErrors().Count().ShouldBe(1);
             result.GetValidatonErrors().ShouldContain(e => e.Name == "CurrencyIsNullValidationRule");
         }
 
         [Fact]
-        public void Validate_ShouldBeValid()
+        public async Task Validate_ShouldBeValid()
         {
             //Arrange
             var currency = new Currency("code", "desc");
             var policy = new CurrenciesValidationPolicy();
             //Act
-            var result = policy.Validate(currency);
+            var result = await policy.Validate(currency);
             //Assert
             result.GetValidatonErrors().Count().ShouldBe(0);
         }

@@ -17,7 +17,7 @@ namespace ProductCatalog.Domain.AggregatesModel.CategoryAggregate
 
         public void AssigneNewCategoryInformation(Category incoming)
         {
-            Code = incoming.Code;
+            Code = incoming.Code.ToUpper();
             Name = incoming.Name;
             this.SetChangeDate();
         }

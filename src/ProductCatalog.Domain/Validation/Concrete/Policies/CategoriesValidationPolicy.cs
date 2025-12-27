@@ -16,7 +16,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
             _rules.Add(new CategoryIsNullValidationRule());
         }
 
-        public ValidationResult Validate(Category client)
+        public async Task<ValidationResult> Validate(Category client)
         {
             ValidationResult validationResult = new();
             _rules.ForEach(rule => rule.IsValid(client, validationResult));

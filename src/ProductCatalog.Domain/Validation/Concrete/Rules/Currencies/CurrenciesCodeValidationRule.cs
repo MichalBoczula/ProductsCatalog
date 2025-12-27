@@ -18,7 +18,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.Currencies
             };
         }
 
-        public void IsValid(Currency entity, ValidationResult validationResults)
+        public async Task IsValid(Currency entity, ValidationResult validationResults)
         {
             if (entity == null) return;
             if (string.IsNullOrWhiteSpace(entity.Code))

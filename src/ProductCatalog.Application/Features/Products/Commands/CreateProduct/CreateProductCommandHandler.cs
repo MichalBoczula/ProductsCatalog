@@ -18,7 +18,7 @@ namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
         public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var product = request.product.Adapt<Product>();
-            var validationResult = _validationPolicy.Validate(product);
+            var validationResult = await _validationPolicy.Validate(product);
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult);

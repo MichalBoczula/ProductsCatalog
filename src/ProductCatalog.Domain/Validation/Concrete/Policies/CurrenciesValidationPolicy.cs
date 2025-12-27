@@ -16,7 +16,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
             _rules.Add(new CurrencyIsNullValidationRule());
         }
 
-        public ValidationResult Validate(Currency client)
+        public async Task<ValidationResult> Validate(Currency client)
         {
             ValidationResult validationResult = new();
             _rules.ForEach(rule => rule.IsValid(client, validationResult));
