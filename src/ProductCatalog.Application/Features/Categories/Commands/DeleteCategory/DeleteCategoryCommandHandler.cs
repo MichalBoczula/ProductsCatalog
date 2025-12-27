@@ -27,15 +27,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.DeleteCategory
             category.Deactivate();
             _categoriesCommandsRepository.Update(category);
 
-            var categoriesHistory = new CategoriesHistory
-            {
-                CategoryId = category.Id,
-                Code = category.Code,
-                Name = category.Name,
-                IsActive = category.IsActive,
-                ChangedAt = category.ChangedAt,
-                Operation = Operation.Deleted
-            };
+            var categoriesHistory = category.BuildAdapter()
+               .AddParameters("operation", Operation.Deleted)
+               .AdaptToType<CategoriesHistory>();
 
             _categoriesCommandsRepository.WriteHistory(categoriesHistory);
            

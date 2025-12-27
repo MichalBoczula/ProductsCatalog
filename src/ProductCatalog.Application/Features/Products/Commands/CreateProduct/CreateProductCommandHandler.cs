@@ -25,18 +25,9 @@ namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
             }
             _productCommandsRepository.Add(product);
 
-            var productsHistory = new ProductsHistory
-            {
-                ProductId = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                PriceAmount = product.Price.Amount,
-                PriceCurrency = product.Price.Currency,
-                IsActive = product.IsActive,
-                CategoryId = product.CategoryId,
-                ChangedAt = product.ChangedAt,
-                Operation = Operation.Inserted
-            };
+            var productsHistory = product.BuildAdapter()
+                            .AddParameters("operation", Operation.Inserted)
+                            .AdaptToType<ProductsHistory>();
 
             _productCommandsRepository.WriteHistory(productsHistory);
             await _productCommandsRepository.SaveChanges(cancellationToken);

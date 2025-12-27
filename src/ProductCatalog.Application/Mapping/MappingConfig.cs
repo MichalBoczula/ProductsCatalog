@@ -9,14 +9,18 @@ using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
+using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
 
 namespace ProductCatalog.Application.Mapping
 {
-    internal class MappingConfig
+    internal sealed class MappingConfig
     {
         public static void RegisterMappings()
         {
@@ -25,6 +29,7 @@ namespace ProductCatalog.Application.Mapping
             CreateMappingForCategories();
             CreateMappingForReadModels();
             CreateMappingForCurrencies();
+            CreateMappingForHistory();
         }
 
         private static void CreateMappingForProducts()
@@ -95,6 +100,27 @@ namespace ProductCatalog.Application.Mapping
 
             TypeAdapterConfig<Currency, CurrencyDto>
                 .NewConfig();
+        }
+
+        private static void CreateMappingForHistory()
+        {
+            TypeAdapterConfig<Product, ProductsHistory>
+                .NewConfig()
+                .Map(dest => dest.ProductId, src => src.Id)
+                .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
+                .Ignore(dest => dest.Id);
+
+            TypeAdapterConfig<Category, CategoriesHistory>
+                .NewConfig()
+                .Map(dest => dest.CategoryId, src => src.Id)
+                .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
+                .Ignore(dest => dest.Id);
+
+            TypeAdapterConfig<Currency, CurrenciesHistory>
+                .NewConfig()
+                .Map(dest => dest.CurrencyId, src => src.Id)
+                .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
+                .Ignore(dest => dest.Id);
         }
     }
 }

@@ -35,18 +35,9 @@ namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
             product.AssigneNewProductInformation(incoming);
             _productCommandsRepository.Update(product);
 
-            var productsHistory = new ProductsHistory
-            {
-                ProductId = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                PriceAmount = product.Price.Amount,
-                PriceCurrency = product.Price.Currency,
-                IsActive = product.IsActive,
-                CategoryId = product.CategoryId,
-                ChangedAt = product.ChangedAt,
-                Operation = Operation.Updated
-            };
+            var productsHistory = product.BuildAdapter()
+                         .AddParameters("operation", Operation.Updated)
+                         .AdaptToType<ProductsHistory>();
 
             _productCommandsRepository.WriteHistory(productsHistory);
             

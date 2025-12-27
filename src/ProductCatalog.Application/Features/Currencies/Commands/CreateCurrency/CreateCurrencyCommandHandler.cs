@@ -26,15 +26,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency
 
             _currencyCommandsRepository.Add(currency);
 
-            var currenciesHistory = new CurrenciesHistory
-            {
-                CurrencyId = currency.Id,
-                Code = currency.Code,
-                Description = currency.Description,
-                IsActive = currency.IsActive,
-                ChangedAt = currency.ChangedAt,
-                Operation = Operation.Inserted
-            };
+            var currenciesHistory = currency.BuildAdapter()
+                .AddParameters("operation", Operation.Inserted)
+                .AdaptToType<CurrenciesHistory>();
 
             _currencyCommandsRepository.WriteHistory(currenciesHistory);
 

@@ -27,15 +27,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency
             currency.Deactivate();
             _currencyCommandsRepository.Update(currency);
 
-            var currenciesHistory = new CurrenciesHistory
-            {
-                CurrencyId = currency.Id,
-                Code = currency.Code,
-                Description = currency.Description,
-                IsActive = currency.IsActive,
-                ChangedAt = currency.ChangedAt,
-                Operation = Operation.Deleted
-            };
+            var currenciesHistory = currency.BuildAdapter()
+                .AddParameters("operation", Operation.Deleted)
+                .AdaptToType<CurrenciesHistory>();
 
             _currencyCommandsRepository.WriteHistory(currenciesHistory);
             

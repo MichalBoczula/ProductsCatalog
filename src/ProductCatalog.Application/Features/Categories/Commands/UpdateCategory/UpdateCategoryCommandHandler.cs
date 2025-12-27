@@ -34,15 +34,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
             category.AssigneNewCategoryInformation(incoming);
             _categoriesCommandsRepository.Update(category);
 
-            var categoriesHistory = new CategoriesHistory
-            {
-                CategoryId = category.Id,
-                Code = category.Code,
-                Name = category.Name,
-                IsActive = category.IsActive,
-                ChangedAt = category.ChangedAt,
-                Operation = Operation.Updated
-            };
+            var categoriesHistory = category.BuildAdapter()
+               .AddParameters("operation", Operation.Updated)
+               .AdaptToType<CategoriesHistory>();
 
             _categoriesCommandsRepository.WriteHistory(categoriesHistory);
 

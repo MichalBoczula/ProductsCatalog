@@ -4,8 +4,6 @@ using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
@@ -27,15 +25,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.CreateCategory
             }
             _categoriesCommandsRepository.Add(category);
 
-            var categoriesHistory = new CategoriesHistory
-            {
-                CategoryId = category.Id,
-                Code = category.Code,
-                Name = category.Name,
-                IsActive = category.IsActive,
-                ChangedAt = category.ChangedAt,
-                Operation = Operation.Inserted
-            };
+            var categoriesHistory = category.BuildAdapter()
+               .AddParameters("operation", Operation.Inserted)
+               .AdaptToType<CategoriesHistory>();
 
             _categoriesCommandsRepository.WriteHistory(categoriesHistory);
 
