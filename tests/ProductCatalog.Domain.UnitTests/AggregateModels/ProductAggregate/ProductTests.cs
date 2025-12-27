@@ -34,7 +34,7 @@ namespace ProductCatalog.Domain.UnitTests.AggregateModels.ProductAggregate
             product.Name.ShouldBe("newName");
             product.Description.ShouldBe("newDesc");
             product.Price.Amount.ShouldBe(15);
-            product.Price.Currency.ShouldBe("usd");
+            product.Price.Currency.ShouldBe("USD");
             product.CategoryId.ShouldBe(newCategoryId);
             actualDate.ShouldBeLessThan(product.ChangedAt);
         }

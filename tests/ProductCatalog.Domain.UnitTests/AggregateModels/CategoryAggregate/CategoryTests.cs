@@ -23,12 +23,12 @@ namespace ProductCatalog.Domain.UnitTests.AggregateModels.CategoryAggregate
         {
             //Arrange
             var category = new Category("test", "desc");
-            var incoming = new Category("newCode", "newName");
+            var incoming = new Category("NEWCODE", "newName");
             var actualDate = category.ChangedAt;
             //Act
             category.AssigneNewCategoryInformation(incoming);
             //Assert
-            category.Code.ShouldBe("newCode");
+            category.Code.ShouldBe("NEWCODE");
             category.Name.ShouldBe("newName");
             actualDate.ShouldBeLessThan(category.ChangedAt);
         }
