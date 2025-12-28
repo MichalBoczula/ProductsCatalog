@@ -7,17 +7,15 @@ using ProductCatalog.Domain.Validation.Common;
 namespace ProductCatalog.Application.Features.Categories.Queries.GetCategoryById
 {
     internal sealed class GetCategoryByIdQueryHandler
-        (ICategoriesQueriesRepository _categoriesQueriesRepository)
+        (ICategoriesQueriesRepository _categoriesQueriesRepository,
+         GetCategoryByIdQueryFlowDescribtor _getCategoryByIdQueryFlowDescribtor)
         : IRequestHandler<GetCategoryByIdQuery, CategoryDto>
     {
         public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-            var category = await _categoriesQueriesRepository.GetById(request.categoryId, cancellationToken);
-            if (category is null)
-            {
-                throw new ResourceNotFoundException(nameof(GetCategoryByIdQuery), request.categoryId, nameof(CategoryDto));
-            }
-            return category.Adapt<CategoryDto>();
+            var category = await _getCategoryByIdQueryFlowDescribtor.GetCategory(_categoriesQueriesRepository, request.categoryId, cancellationToken);
+            var existingCategory = _getCategoryByIdQueryFlowDescribtor.EnsureCategoryFound(category, request.categoryId);
+            return _getCategoryByIdQueryFlowDescribtor.MapCategoryToDto(existingCategory);
         }
     }
 }
