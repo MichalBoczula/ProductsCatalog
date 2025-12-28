@@ -28,7 +28,7 @@ namespace ProductCatalog.Api.Endpoints
         {
             var group = app.MapGroup("/documentation").WithTags("Documentation");
 
-            group.MapGet("/", (
+            group.MapGet("/flow", (
                 [FromServices] IFlowDescriber<CreateProductCommand> createProductFlowDescriber,
                 [FromServices] IFlowDescriber<UpdateProductCommand> updateProductFlowDescriber,
                 [FromServices] IFlowDescriber<RemoveProductCommand> removeProductFlowDescriber,
