@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
@@ -16,6 +17,8 @@ using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategory
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
+using ProductCatalog.Domain.Validation.Abstract;
+using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -68,6 +71,20 @@ namespace ProductCatalog.Api.Endpoints
             {
                 Summary = "Describe all request flows",
                 Description = "Returns the ordered steps executed when handling every documented request."
+            });
+
+            group.MapGet("/validation-policies", ([FromServices] IEnumerable<IValidationPolicyDescriptorProvider> validationPolicyProviders) =>
+                Results.Ok(validationPolicyProviders
+                    .Select(provider => provider.Describe())
+                    .OrderBy(descriptor => descriptor.PolicyName)
+                    .ToList()))
+            .WithName("DescribeValidationPolicies")
+            .Produces<IReadOnlyCollection<ValidationPolicyDescriptor>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Describe all validation policies",
+                Description = "Returns validation policies with their rules and possible validation errors."
             });
 
             return group;

@@ -15,6 +15,9 @@ namespace ProductCatalog.Domain
             services.AddScoped<IValidationPolicy<Product>, ProductsValidationPolicy>();
             services.AddScoped<IValidationPolicy<Category>, CategoriesValidationPolicy>();
             services.AddScoped<IValidationPolicy<Currency>, CurrenciesValidationPolicy>();
+            services.AddScoped<IValidationPolicyDescriptorProvider, ProductsValidationPolicy>();
+            services.AddScoped<IValidationPolicyDescriptorProvider, CategoriesValidationPolicy>();
+            services.AddScoped<IValidationPolicyDescriptorProvider, CurrenciesValidationPolicy>();
             return services;
         }
     }

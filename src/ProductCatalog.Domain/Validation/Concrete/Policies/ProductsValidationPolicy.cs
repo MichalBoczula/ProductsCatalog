@@ -10,7 +10,7 @@ using ProductCatalog.Domain.Validation.Concrete.Rules.Products.MoneyRule;
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
     public sealed class ProductsValidationPolicy
-        : IValidationPolicy<Product>
+        : IValidationPolicy<Product>, IValidationPolicyDescriptorProvider
     {
         private readonly List<IValidationRule<Product>> _rules = [];
         private readonly List<IValidationRule<Money>> _moneyRules = [];
