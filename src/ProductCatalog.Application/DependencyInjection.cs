@@ -9,6 +9,11 @@ using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
+using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
+using ProductCatalog.Application.Features.Products.Queries.GetProductById;
+using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Mapping;
 
 namespace ProductCatalog.Application
@@ -46,6 +51,21 @@ namespace ProductCatalog.Application
 
             services.AddScoped<DeleteCategoryCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<DeleteCategoryCommand>, DeleteCategoryCommandFlowDescribtor>();
+
+            services.AddScoped<GetCurrenciesQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetCurrenciesQuery>, GetCurrenciesQueryFlowDescribtor>();
+
+            services.AddScoped<GetCategoriesQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetCategoriesQuery>, GetCategoriesQueryFlowDescribtor>();
+
+            services.AddScoped<GetCategoryByIdQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetCategoryByIdQuery>, GetCategoryByIdQueryFlowDescribtor>();
+
+            services.AddScoped<GetProductByIdQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetProductByIdQuery>, GetProductByIdQueryFlowDescribtor>();
+
+            services.AddScoped<GetProductsByCategoryIdQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetProductsByCategoryIdQuery>, GetProductsByCategoryIdQueryFlowDescribtor>();
 
             return services;
         }
