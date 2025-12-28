@@ -5,7 +5,7 @@ using ProductCatalog.Domain.Validation.Concrete.Rules.Categories;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
-    public sealed class CategoriesValidationPolicy : IValidationPolicy<Category>
+    public sealed class CategoriesValidationPolicy : IValidationPolicy<Category>, IValidationPolicyDescriptorProvider
     {
         private readonly List<IValidationRule<Category>> _rules = [];
 

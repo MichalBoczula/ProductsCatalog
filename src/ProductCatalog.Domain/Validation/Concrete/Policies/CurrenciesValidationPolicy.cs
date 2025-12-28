@@ -5,7 +5,7 @@ using ProductCatalog.Domain.Validation.Concrete.Rules.Currencies;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
-    public class CurrenciesValidationPolicy : IValidationPolicy<Currency>
+    public class CurrenciesValidationPolicy : IValidationPolicy<Currency>, IValidationPolicyDescriptorProvider
     {
         private readonly List<IValidationRule<Currency>> _rules = [];
 
