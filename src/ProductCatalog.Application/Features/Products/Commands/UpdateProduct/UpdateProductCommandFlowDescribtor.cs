@@ -21,9 +21,9 @@ namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
         }
 
         [FlowStep(2)]
-        public async Task<ValidationResult> ValidateIncomingProduct(Product product, IValidationPolicy<Product> validationPolicy)
+        public Task<ValidationResult> ValidateIncomingProduct(Product product, IValidationPolicy<Product> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(product);
+            var validationResult = validationPolicy.Validate(product);
             return validationResult;
         }
 
@@ -87,9 +87,9 @@ namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
         }
 
         [FlowStep(11)]
-        public async Task SaveChanges(IProductsCommandsRepository productCommandsRepository, CancellationToken cancellationToken)
+        public Task SaveChanges(IProductsCommandsRepository productCommandsRepository, CancellationToken cancellationToken)
         {
-            await productCommandsRepository.SaveChanges(cancellationToken);
+            return productCommandsRepository.SaveChanges(cancellationToken);
         }
 
         [FlowStep(12)]

@@ -21,9 +21,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
         }
 
         [FlowStep(2)]
-        public async Task<ValidationResult> ValidateIncomingCurrency(Currency currency, IValidationPolicy<Currency> validationPolicy)
+        public Task<ValidationResult> ValidateIncomingCurrency(Currency currency, IValidationPolicy<Currency> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(currency);
+            var validationResult = validationPolicy.Validate(currency);
             return validationResult;
         }
 
@@ -37,15 +37,15 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
         }
 
         [FlowStep(4)]
-        public async Task<Currency> LoadExistingCurrency(Guid currencyId, ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
+        public Task<Currency> LoadExistingCurrency(Guid currencyId, ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
         {
-            return await currencyCommandsRepository.GetCurrencyById(currencyId, cancellationToken);
+            return currencyCommandsRepository.GetCurrencyById(currencyId, cancellationToken);
         }
 
         [FlowStep(5)]
-        public async Task<ValidationResult> ValidateExistingCurrency(Currency currency, IValidationPolicy<Currency> validationPolicy)
+        public Task<ValidationResult> ValidateExistingCurrency(Currency currency, IValidationPolicy<Currency> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(currency);
+            var validationResult = validationPolicy.Validate(currency);
             return validationResult;
         }
 
@@ -87,9 +87,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
         }
 
         [FlowStep(11)]
-        public async Task SaveChanges(ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
+        public Task SaveChanges(ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
         {
-            await currencyCommandsRepository.SaveChanges(cancellationToken);
+            return currencyCommandsRepository.SaveChanges(cancellationToken);
         }
 
         [FlowStep(12)]

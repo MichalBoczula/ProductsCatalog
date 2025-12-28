@@ -21,9 +21,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency
         }
 
         [FlowStep(2)]
-        public async Task<ValidationResult> ValidateCurrencyAggregate(Currency currency, IValidationPolicy<Currency> validationPolicy)
+        public Task<ValidationResult> ValidateCurrencyAggregate(Currency currency, IValidationPolicy<Currency> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(currency);
+            var validationResult = validationPolicy.Validate(currency);
             return validationResult;
         }
 
@@ -59,9 +59,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency
         }
 
         [FlowStep(7)]
-        public async Task SaveChanges(ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
+        public Task SaveChanges(ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
         {
-            await currencyCommandsRepository.SaveChanges(cancellationToken);
+            return currencyCommandsRepository.SaveChanges(cancellationToken);
         }
 
         [FlowStep(8)]

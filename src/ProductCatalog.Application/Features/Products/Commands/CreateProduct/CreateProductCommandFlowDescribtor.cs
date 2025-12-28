@@ -22,9 +22,9 @@ namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
         }
 
         [FlowStep(2)]
-        public async Task<ValidationResult> ValidateProductAggregate(Product product, IValidationPolicy<Product> validationPolicy)
+        public Task<ValidationResult> ValidateProductAggregate(Product product, IValidationPolicy<Product> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(product);
+            var validationResult = validationPolicy.Validate(product);
             return validationResult;
         }
 
@@ -60,9 +60,9 @@ namespace ProductCatalog.Application.Features.Products.Commands.CreateProduct
         }
 
         [FlowStep(7)]
-        public async Task SaveChanges(IProductsCommandsRepository _productCommandsRepository, CancellationToken cancellationToken)
+        public Task SaveChanges(IProductsCommandsRepository _productCommandsRepository, CancellationToken cancellationToken)
         {
-            await _productCommandsRepository.SaveChanges(cancellationToken);
+            return _productCommandsRepository.SaveChanges(cancellationToken);
         }
 
         [FlowStep(8)]

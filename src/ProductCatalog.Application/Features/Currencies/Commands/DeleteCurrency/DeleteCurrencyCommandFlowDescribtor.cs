@@ -20,9 +20,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency
         }
 
         [FlowStep(2)]
-        public async Task<ValidationResult> ValidateCurrency(Currency currency, IValidationPolicy<Currency> validationPolicy)
+        public Task<ValidationResult> ValidateCurrency(Currency currency, IValidationPolicy<Currency> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(currency);
+            var validationResult = validationPolicy.Validate(currency);
             return validationResult;
         }
 
@@ -64,9 +64,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency
         }
 
         [FlowStep(8)]
-        public async Task SaveChanges(ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
+        public Task SaveChanges(ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
         {
-            await currencyCommandsRepository.SaveChanges(cancellationToken);
+            return currencyCommandsRepository.SaveChanges(cancellationToken);
         }
 
         [FlowStep(9)]
