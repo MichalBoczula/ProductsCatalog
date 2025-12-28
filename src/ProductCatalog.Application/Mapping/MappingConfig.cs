@@ -20,7 +20,7 @@ using ProductCatalog.Domain.ReadModels;
 
 namespace ProductCatalog.Application.Mapping
 {
-    internal sealed class MappingConfig
+    public static class MappingConfig
     {
         public static void RegisterMappings()
         {

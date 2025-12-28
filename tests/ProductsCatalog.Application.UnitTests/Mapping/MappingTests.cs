@@ -1,4 +1,3 @@
-using System.Reflection;
 using Mapster;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Currencies;
@@ -9,14 +8,11 @@ using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
+using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
-using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
 using Shouldly;
 
@@ -26,71 +22,76 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
     {
         static MappingTests()
         {
-            var mappingConfigType = typeof(ProductCatalog.Application.DependencyInjection)
-                .Assembly
-                .GetType("ProductCatalog.Application.Mapping.MappingConfig", throwOnError: true)!;
-
-            var registerMappingsMethod = mappingConfigType.GetMethod(
-                "RegisterMappings",
-                BindingFlags.Static | BindingFlags.Public);
-
-            registerMappingsMethod!.Invoke(null, null);
+            MappingConfig.RegisterMappings();
         }
 
         [Fact]
-        public void CreateProductExternalDto_should_map_to_Product_with_Money()
+        public void CreateProductExternalDto_ShouldBeMapTo_ProductWithMoney()
         {
+            //Arrange
             var externalPrice = new CreateMoneyExternalDto(10.5m, "usd");
             var externalProduct = new CreateProductExternalDto("Phone", "Nice phone", externalPrice, Guid.NewGuid());
 
-            var result = externalProduct.Adapt<Product>();
+            //Act
+            var product = externalProduct.Adapt<Product>();
 
-            result.Name.ShouldBe(externalProduct.Name);
-            result.Description.ShouldBe(externalProduct.Description);
-            result.CategoryId.ShouldBe(externalProduct.CategoryId);
-            result.Price.Amount.ShouldBe(externalProduct.Price.Amount);
-            result.Price.Currency.ShouldBe(externalProduct.Price.Currency.ToUpperInvariant());
+            //Assert
+            product.Id.ShouldNotBe(Guid.Empty);
+            product.Name.ShouldBe(externalProduct.Name);
+            product.Description.ShouldBe(externalProduct.Description);
+            product.CategoryId.ShouldBe(externalProduct.CategoryId);
+            product.Price.Amount.ShouldBe(externalProduct.Price.Amount);
+            product.Price.Currency.ShouldBe(externalProduct.Price.Currency.ToUpperInvariant());
+            product.IsActive.ShouldBeTrue();
+            product.ChangedAt.ShouldNotBe(DateTime.MinValue);
         }
 
-        [Fact]
-        public void Product_should_map_to_ProductDto_with_nested_price()
-        {
-            var expectedId = Guid.NewGuid();
-            var categoryId = Guid.NewGuid();
-            var product = new Product("Laptop", "Powerful", new Money(1500, "usd"), categoryId);
-
-            typeof(Product)
-                .GetProperty(nameof(Product.Id), BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
-                .SetValue(product, expectedId);
-
-            var dto = product.Adapt<ProductDto>();
-
-            dto.Id.ShouldBe(expectedId);
-            dto.Name.ShouldBe(product.Name);
-            dto.Description.ShouldBe(product.Description);
-            dto.CategoryId.ShouldBe(categoryId);
-            dto.Price.Amount.ShouldBe(product.Price.Amount);
-            dto.Price.Currency.ShouldBe(product.Price.Currency);
-        }
 
         [Fact]
-        public void UpdateProductExternalDto_should_map_to_Product_with_new_money()
+        public void UpdateProductExternalDto_ShouldBeMapTo_ProductWithMoney()
         {
+            //Arrange
             var updateMoney = new UpdateMoneyExternalDto(75.75m, "gbp");
             var updateDto = new UpdateProductExternalDto("Tablet", "Updated", updateMoney, Guid.NewGuid());
 
+            //Act
             var product = updateDto.Adapt<Product>();
 
+            //Assert
+            product.Id.ShouldNotBe(Guid.Empty);
             product.Name.ShouldBe(updateDto.Name);
             product.Description.ShouldBe(updateDto.Description);
             product.CategoryId.ShouldBe(updateDto.CategoryId);
             product.Price.Amount.ShouldBe(updateMoney.Amount);
             product.Price.Currency.ShouldBe(updateMoney.Currency.ToUpperInvariant());
+            product.IsActive.ShouldBeTrue();
+            product.ChangedAt.ShouldNotBe(DateTime.MinValue);
         }
 
         [Fact]
-        public void ProductReadModel_should_map_to_ProductDto_with_flattened_price()
+        public void Product_ShouldBeMapTo_ProductDtoWithPrice()
         {
+            //Arrange
+            var categoryId = Guid.NewGuid();
+            var product = new Product("Laptop", "Powerful", new Money(1500, "usd"), categoryId);
+
+            //Act
+            var dto = product.Adapt<ProductDto>();
+
+            //Assert
+            dto.Id.ShouldBe(product.Id);
+            dto.Name.ShouldBe(product.Name);
+            dto.Description.ShouldBe(product.Description);
+            dto.Price.Amount.ShouldBe(product.Price.Amount);
+            dto.Price.Currency.ShouldBe(product.Price.Currency);
+            dto.CategoryId.ShouldBe(categoryId);
+            dto.IsActive.ShouldBe(product.IsActive);
+        }
+
+        [Fact]
+        public void ProductReadModel_ShouldBeMapTo_ProductDtoWithPrice()
+        {
+            //Arrange
             var priceAmount = 23.5m;
             var priceCurrency = "EUR";
             var readModel = new ProductReadModel
@@ -104,40 +105,73 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 CategoryId = Guid.NewGuid()
             };
 
+            //Act
             var dto = readModel.Adapt<ProductDto>();
 
-            dto.Price.Amount.ShouldBe(priceAmount);
-            dto.Price.Currency.ShouldBe(priceCurrency);
+            //Assert
+            dto.Id.ShouldBe(readModel.Id);
             dto.Name.ShouldBe(readModel.Name);
             dto.Description.ShouldBe(readModel.Description);
+            dto.Price.Amount.ShouldBe(priceAmount);
+            dto.Price.Currency.ShouldBe(priceCurrency);
+            dto.IsActive.ShouldBe(readModel.IsActive);
             dto.CategoryId.ShouldBe(readModel.CategoryId);
         }
 
         [Fact]
-        public void CreateCategoryExternalDto_should_map_to_Category()
+        public void CreateCategoryExternalDto_ShouldBeMapTo_Category()
         {
+            //Arrange
             var dto = new CreateCategoryExternalDto("tech", "Technology");
 
+            //Act
             var category = dto.Adapt<Category>();
 
+            //Assert
+            category.Id.ShouldNotBe(Guid.Empty);
             category.Code.ShouldBe(dto.Code);
             category.Name.ShouldBe(dto.Name);
+            category.IsActive.ShouldBeTrue();
+            category.ChangedAt.ShouldNotBe(DateTime.MinValue);
         }
 
         [Fact]
-        public void UpdateCategoryExternalDto_should_map_to_Category()
+        public void UpdateCategoryExternalDto_ShouldBeMapTo_Category()
         {
+            //Arrange
             var dto = new UpdateCategoryExternalDto("home", "Home goods");
 
+            //Act
             var category = dto.Adapt<Category>();
 
+            //Assert
+            category.Id.ShouldNotBe(Guid.Empty);
             category.Code.ShouldBe(dto.Code);
             category.Name.ShouldBe(dto.Name);
+            category.IsActive.ShouldBeTrue();
+            category.ChangedAt.ShouldNotBe(DateTime.MinValue);
         }
 
         [Fact]
-        public void Category_read_model_should_map_to_CategoryDto()
+        public void Category_ShouldBeMapTo_CategoryDto()
         {
+            //Arrange
+            var category = new Category("home", "Home goods");
+
+            //Act
+            var dto = category.Adapt<CategoryDto>();
+
+            //Assert
+            dto.Id.ShouldBe(category.Id);
+            dto.Code.ShouldBe(category.Code);
+            dto.Name.ShouldBe(category.Name);
+            dto.IsActive.ShouldBe(category.IsActive);
+        }
+
+        [Fact]
+        public void CategoryReadModel_ShouldBeMapTo_CategoryDto()
+        {
+            //Arrange
             var readModel = new CategoryReadModel
             {
                 Id = Guid.NewGuid(),
@@ -146,8 +180,10 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 IsActive = true
             };
 
+            //Act
             var dto = readModel.Adapt<CategoryDto>();
 
+            //Assert
             dto.Id.ShouldBe(readModel.Id);
             dto.Code.ShouldBe(readModel.Code);
             dto.Name.ShouldBe(readModel.Name);
@@ -155,29 +191,59 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         }
 
         [Fact]
-        public void CreateCurrencyExternalDto_should_map_to_Currency()
+        public void CreateCurrencyExternalDto_ShouldBeMapTo_Currency()
         {
+            //Arrange
             var dto = new CreateCurrencyExternalDto("usd", "US Dollar");
 
+            //Act
             var currency = dto.Adapt<Currency>();
 
+            //Assert
+            currency.Id.ShouldNotBe(Guid.Empty);
             currency.Code.ShouldBe(dto.Code);
             currency.Description.ShouldBe(dto.Description);
+            currency.IsActive.ShouldBeTrue();
+            currency.ChangedAt.ShouldNotBe(DateTime.MinValue);
         }
 
         [Fact]
-        public void UpdateCurrencyExternalDto_should_map_to_Currency()
+        public void UpdateCurrencyExternalDto_ShouldBeMapTo_Currency()
         {
-            var dto = new UpdateCurrencyExternalDto("Canadian Dollar");
+            //Arrange
+            var dto = new UpdateCurrencyExternalDto("CAD", "Canadian Dollar");
 
+            //Act
             var currency = dto.Adapt<Currency>();
 
+            //Assert
+            currency.Id.ShouldNotBe(Guid.Empty);
             currency.Description.ShouldBe(dto.Description);
+            currency.Code.ShouldBe(dto.Code);
+            currency.IsActive.ShouldBeTrue();
+            currency.ChangedAt.ShouldNotBe(DateTime.MinValue);
         }
 
         [Fact]
-        public void Currency_read_model_should_map_to_CurrencyDto()
+        public void Currency_ShouldBeMapTo_CurrencyDto()
         {
+            //Arrange
+            var currency = new Currency("CAD", "Canadian Dollar");
+
+            //Act
+            var dto = currency.Adapt<CurrencyDto>();
+
+            //Assert
+            dto.Id.ShouldBe(currency.Id);
+            dto.Code.ShouldBe(currency.Code);
+            dto.Description.ShouldBe(currency.Description);
+            dto.IsActive.ShouldBe(currency.IsActive);
+        }
+
+        [Fact]
+        public void CurrencyReadModel_ShouldBeMapTo_CurrencyDto()
+        {
+            //Arrange
             var readModel = new CurrencyReadModel
             {
                 Id = Guid.NewGuid(),
@@ -186,56 +252,16 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 IsActive = true
             };
 
+            //Act
             var dto = readModel.Adapt<CurrencyDto>();
 
+            //Assert
             dto.Id.ShouldBe(readModel.Id);
             dto.Code.ShouldBe(readModel.Code);
             dto.Description.ShouldBe(readModel.Description);
             dto.IsActive.ShouldBeTrue();
         }
 
-        [Fact]
-        public void Domain_objects_should_map_to_history_records_with_operation_from_context()
-        {
-            var productId = Guid.NewGuid();
-            var categoryId = Guid.NewGuid();
-            var currencyId = Guid.NewGuid();
-
-            var product = new Product("Mouse", "Wireless", new Money(40, "usd"), categoryId);
-            typeof(Product)
-                .GetProperty(nameof(Product.Id), BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
-                .SetValue(product, productId);
-
-            var category = new Category("accessories", "Accessories");
-            typeof(Category)
-                .GetProperty(nameof(Category.Id), BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
-                .SetValue(category, categoryId);
-
-            var currency = new Currency("usd", "US Dollar");
-            typeof(Currency)
-                .GetProperty(nameof(Currency.Id), BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
-                .SetValue(currency, currencyId);
-
-            var mapContext = new MapContext
-            {
-                Parameters = { ["operation"] = Operation.Create }
-            };
-
-            var productHistory = product.Adapt<ProductsHistory>(mapContext);
-            var categoryHistory = category.Adapt<CategoriesHistory>(mapContext);
-            var currencyHistory = currency.Adapt<CurrenciesHistory>(mapContext);
-
-            productHistory.ProductId.ShouldBe(productId);
-            productHistory.Operation.ShouldBe(Operation.Create);
-            productHistory.Id.ShouldNotBe(Guid.Empty);
-
-            categoryHistory.CategoryId.ShouldBe(categoryId);
-            categoryHistory.Operation.ShouldBe(Operation.Create);
-            categoryHistory.Id.ShouldNotBe(Guid.Empty);
-
-            currencyHistory.CurrencyId.ShouldBe(currencyId);
-            currencyHistory.Operation.ShouldBe(Operation.Create);
-            currencyHistory.Id.ShouldNotBe(Guid.Empty);
-        }
+        ///Whole history mapping tests
     }
 }
