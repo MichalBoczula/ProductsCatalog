@@ -12,37 +12,33 @@ namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
 {
     internal sealed class UpdateProductCommandHandler
         (IProductsCommandsRepository _productCommandsRepository,
-         IValidationPolicy<Product> _validationPolicy)
+         IValidationPolicy<Product> _validationPolicy,
+         UpdateProductCommandFlowDescribtor _updateProductCommandFlowDescribtor)
         : IRequestHandler<UpdateProductCommand, ProductDto>
     {
         public async Task<ProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var incoming = request.product.Adapt<Product>();
-            var validationResultIncoming = await _validationPolicy.Validate(incoming);
-            if (!validationResultIncoming.IsValid)
-            {
-                throw new ValidationException(validationResultIncoming);
-            }
+            var incoming = _updateProductCommandFlowDescribtor.MapRequestToProductAggregate(request);
+            var validationResultIncoming = await _updateProductCommandFlowDescribtor
+                .ValidateIncomingProduct(incoming, _validationPolicy);
+            _updateProductCommandFlowDescribtor.ThrowValidationExceptionIfIncomingInvalid(validationResultIncoming);
 
-            var product = await _productCommandsRepository.GetProductById(request.productId, cancellationToken);
-            
-            var validationResultExisting = await _validationPolicy.Validate(product);
-            if (!validationResultExisting.IsValid)
-            {
-                throw new ValidationException(validationResultExisting);
-            }
+            var product = await _updateProductCommandFlowDescribtor
+                .LoadExistingProduct(request.productId, _productCommandsRepository, cancellationToken);
 
-            product.AssigneNewProductInformation(incoming);
-            _productCommandsRepository.Update(product);
+            var validationResultExisting = await _updateProductCommandFlowDescribtor
+                .ValidateExistingProduct(product, _validationPolicy);
+            _updateProductCommandFlowDescribtor.ThrowValidationExceptionIfExistingInvalid(validationResultExisting);
 
-            var productsHistory = product.BuildAdapter()
-                         .AddParameters("operation", Operation.Updated)
-                         .AdaptToType<ProductsHistory>();
+            _updateProductCommandFlowDescribtor.AssignNewProductInformation(product, incoming);
+            _updateProductCommandFlowDescribtor.UpdateProductInRepository(product, _productCommandsRepository);
 
-            _productCommandsRepository.WriteHistory(productsHistory);
-            
-            await _productCommandsRepository.SaveChanges(cancellationToken);
-            return product.Adapt<ProductDto>();
+            var productsHistory = _updateProductCommandFlowDescribtor.CreateProductHistoryEntry(product);
+
+            _updateProductCommandFlowDescribtor.WriteHistoryToRepository(_productCommandsRepository, productsHistory);
+
+            await _updateProductCommandFlowDescribtor.SaveChanges(_productCommandsRepository, cancellationToken);
+            return _updateProductCommandFlowDescribtor.MapProductToProductDto(product);
         }
     }
 }

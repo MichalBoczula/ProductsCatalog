@@ -12,29 +12,28 @@ namespace ProductCatalog.Application.Features.Products.Commands.RemoveProduct
 {
     internal sealed class RemoveProductCommandHandler
         (IProductsCommandsRepository _productCommandsRepository,
-         IValidationPolicy<Product> _validation)
+         IValidationPolicy<Product> _validation,
+         RemoveProductCommandFlowDescribtor _removeProductCommandFlowDescribtor)
         : IRequestHandler<RemoveProductCommand, ProductDto>
     {
         public async Task<ProductDto> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _productCommandsRepository.GetProductById(request.productId, cancellationToken);
-            var validationResult = await _validation.Validate(product);
-            if(!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult);
-            }
+            var product = await _removeProductCommandFlowDescribtor
+                .LoadProduct(request.productId, _productCommandsRepository, cancellationToken);
 
-            product.Deactivate();
-            _productCommandsRepository.Update(product);
+            var validationResult = await _removeProductCommandFlowDescribtor
+                .ValidateProduct(product, _validation);
+            _removeProductCommandFlowDescribtor.ThrowValidationExceptionIfNotValid(validationResult);
 
-            var productsHistory = product.BuildAdapter()
-                           .AddParameters("operation", Operation.Deleted)
-                           .AdaptToType<ProductsHistory>();
+            _removeProductCommandFlowDescribtor.DeactivateProduct(product);
+            _removeProductCommandFlowDescribtor.UpdateProductInRepository(product, _productCommandsRepository);
 
-            _productCommandsRepository.WriteHistory(productsHistory);
+            var productsHistory = _removeProductCommandFlowDescribtor.CreateProductHistoryEntry(product);
 
-            await _productCommandsRepository.SaveChanges(cancellationToken);
-            return product.Adapt<ProductDto>();
+            _removeProductCommandFlowDescribtor.WriteHistoryToRepository(_productCommandsRepository, productsHistory);
+
+            await _removeProductCommandFlowDescribtor.SaveChanges(_productCommandsRepository, cancellationToken);
+            return _removeProductCommandFlowDescribtor.MapProductToProductDto(product);
         }
     }
 }
