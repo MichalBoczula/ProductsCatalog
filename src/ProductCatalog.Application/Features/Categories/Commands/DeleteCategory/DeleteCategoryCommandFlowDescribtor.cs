@@ -14,9 +14,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.DeleteCategory
     internal sealed class DeleteCategoryCommandFlowDescribtor : FlowDescriberBase<DeleteCategoryCommand>
     {
         [FlowStep(1)]
-        public Task<Category> LoadCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
+        public async Task<Category> LoadCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            return categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
+            return await categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
         }
 
         [FlowStep(2)]
