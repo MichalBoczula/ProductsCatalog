@@ -17,7 +17,6 @@ namespace ProductCatalog.Domain.AggregatesModel.CurrencyAggregate
 
         public void AssigneNewCurrencyInformation(Currency incoming)
         {
-            Code = incoming.Code;
             Description = incoming.Description;
             this.SetChangeDate();
         }

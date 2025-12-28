@@ -1,39 +1,31 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
-using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
-using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency
 {
     internal sealed class CreateCurrencyCommandHandler
         (ICurrenciesCommandsRepository _currencyCommandsRepository,
-         IValidationPolicy<Currency> _validationPolicy)
+          IValidationPolicy<Currency> _validationPolicy,
+          CreateCurrencyCommandFlowDescribtor _createCurrencyCommandFlowDescribtor)
         : IRequestHandler<CreateCurrencyCommand, CurrencyDto>
     {
         public async Task<CurrencyDto> Handle(CreateCurrencyCommand request, CancellationToken cancellationToken)
         {
-            var currency = request.currency.Adapt<Currency>();
-            var validationResult = await _validationPolicy.Validate(currency);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult);
-            }
+            var currency = _createCurrencyCommandFlowDescribtor.MapRequestToCurrencyAggregate(request);
+            var validationResult = await _createCurrencyCommandFlowDescribtor
+                .ValidateCurrencyAggregate(currency, _validationPolicy);
 
-            _currencyCommandsRepository.Add(currency);
+            _createCurrencyCommandFlowDescribtor.ThrowValidationExceptionIfNotValid(validationResult);
+            _createCurrencyCommandFlowDescribtor.AddCurrencyToRepository(currency, _currencyCommandsRepository);
 
-            var currenciesHistory = currency.BuildAdapter()
-                .AddParameters("operation", Operation.Inserted)
-                .AdaptToType<CurrenciesHistory>();
+            var currenciesHistory = _createCurrencyCommandFlowDescribtor.CreateCurrencyHistoryEntry(currency);
+            _createCurrencyCommandFlowDescribtor.WriteHistoryToRepository(_currencyCommandsRepository, currenciesHistory);
 
-            _currencyCommandsRepository.WriteHistory(currenciesHistory);
-
-            await _currencyCommandsRepository.SaveChanges(cancellationToken);
-            return currency.Adapt<CurrencyDto>();
+            await _createCurrencyCommandFlowDescribtor.SaveChanges(_currencyCommandsRepository, cancellationToken);
+            return _createCurrencyCommandFlowDescribtor.MapCurrencyToCurrencyDto(currency);
         }
     }
 }

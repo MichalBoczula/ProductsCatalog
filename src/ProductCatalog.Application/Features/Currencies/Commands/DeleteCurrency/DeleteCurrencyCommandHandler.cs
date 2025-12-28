@@ -1,40 +1,34 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
-using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
-using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency
 {
-    public sealed record DeleteCurrencyCommandHandler
+    internal sealed record DeleteCurrencyCommandHandler
         (ICurrenciesCommandsRepository _currencyCommandsRepository,
-         IValidationPolicy<Currency> validationPolicy)
+         IValidationPolicy<Currency> validationPolicy,
+         DeleteCurrencyCommandFlowDescribtor _deleteCurrencyCommandFlowDescribtor)
         : IRequestHandler<DeleteCurrencyCommand, CurrencyDto>
     {
         public async Task<CurrencyDto> Handle(DeleteCurrencyCommand request, CancellationToken cancellationToken)
         {
-            var currency = await _currencyCommandsRepository.GetCurrencyById(request.currencyId, cancellationToken);
-            var validationResult = await validationPolicy.Validate(currency);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult);
-            }
+            var currency = await _deleteCurrencyCommandFlowDescribtor
+               .LoadCurrency(request.currencyId, _currencyCommandsRepository, cancellationToken);
 
-            currency.Deactivate();
-            _currencyCommandsRepository.Update(currency);
+            var validationResult = await _deleteCurrencyCommandFlowDescribtor
+               .ValidateCurrency(currency, validationPolicy);
+            _deleteCurrencyCommandFlowDescribtor.ThrowValidationExceptionIfNotValid(validationResult);
 
-            var currenciesHistory = currency.BuildAdapter()
-                .AddParameters("operation", Operation.Deleted)
-                .AdaptToType<CurrenciesHistory>();
+            _deleteCurrencyCommandFlowDescribtor.DeactivateCurrency(currency);
+            _deleteCurrencyCommandFlowDescribtor.UpdateCurrencyInRepository(currency, _currencyCommandsRepository);
 
-            _currencyCommandsRepository.WriteHistory(currenciesHistory);
-            
-            await _currencyCommandsRepository.SaveChanges(cancellationToken);
-            return currency.Adapt<CurrencyDto>();
+            var currenciesHistory = _deleteCurrencyCommandFlowDescribtor.CreateCurrencyHistoryEntry(currency);
+            _deleteCurrencyCommandFlowDescribtor.WriteHistoryToRepository(_currencyCommandsRepository, currenciesHistory);
+
+            await _deleteCurrencyCommandFlowDescribtor.SaveChanges(_currencyCommandsRepository, cancellationToken);
+            return _deleteCurrencyCommandFlowDescribtor.MapCurrencyToCurrencyDto(currency);
         }
     }
 }
