@@ -1,47 +1,35 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
-using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
-using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
 {
     internal sealed class UpdateCategoryCommandHandler
         (ICategoriesCommandsRepository _categoriesCommandsRepository,
-         IValidationPolicy<Category> _validationPolicy) 
+         IValidationPolicy<Category> _validationPolicy,
+         UpdateCategoryCommandFlowDescribtor _updateCategoryCommandFlowDescribtor) 
         : IRequestHandler<UpdateCategoryCommand, CategoryDto>
     {
         public async Task<CategoryDto> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var incoming = request.category.Adapt<Category>();
-            var validationResultIncoming = await _validationPolicy.Validate(incoming);
-            if (!validationResultIncoming.IsValid)
-            {
-                throw new ValidationException(validationResultIncoming);
-            }
+            var incoming = _updateCategoryCommandFlowDescribtor.MapRequestToCategoryAggregate(request);
+            var validationResultIncoming = await _updateCategoryCommandFlowDescribtor.ValidateIncomingCategory(incoming, _validationPolicy);
+            _updateCategoryCommandFlowDescribtor.ThrowValidationExceptionIfIncomingInvalid(validationResultIncoming);
 
-            var category = await _categoriesCommandsRepository.GetCategoryById(request.id, cancellationToken);
-            var validationResultExisiting = await _validationPolicy.Validate(category);
-            if (!validationResultExisiting.IsValid)
-            {
-                throw new ValidationException(validationResultExisiting);
-            }
+            var category = await _updateCategoryCommandFlowDescribtor.LoadExistingCategory(request.id, _categoriesCommandsRepository, cancellationToken);
+            var validationResultExisiting = await _updateCategoryCommandFlowDescribtor.ValidateExistingCategory(category, _validationPolicy);
+            _updateCategoryCommandFlowDescribtor.ThrowValidationExceptionIfExistingInvalid(validationResultExisiting);
 
-            category.AssigneNewCategoryInformation(incoming);
-            _categoriesCommandsRepository.Update(category);
+            _updateCategoryCommandFlowDescribtor.AssignNewCategoryInformation(category, incoming);
+            _updateCategoryCommandFlowDescribtor.UpdateCategoryInRepository(category, _categoriesCommandsRepository);
 
-            var categoriesHistory = category.BuildAdapter()
-               .AddParameters("operation", Operation.Updated)
-               .AdaptToType<CategoriesHistory>();
+            var categoriesHistory = _updateCategoryCommandFlowDescribtor.CreateCategoryHistoryEntry(category);
+            _updateCategoryCommandFlowDescribtor.WriteHistoryToRepository(_categoriesCommandsRepository, categoriesHistory);
 
-            _categoriesCommandsRepository.WriteHistory(categoriesHistory);
-
-            await _categoriesCommandsRepository.SaveChanges(cancellationToken);
-            return category.Adapt<CategoryDto>();
+            await _updateCategoryCommandFlowDescribtor.SaveChanges(_categoriesCommandsRepository, cancellationToken);
+            return _updateCategoryCommandFlowDescribtor.MapCategoryToCategoryDto(category);
         }
     }
 }

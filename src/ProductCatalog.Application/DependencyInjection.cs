@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
+using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
+using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
@@ -34,6 +37,15 @@ namespace ProductCatalog.Application
 
             services.AddScoped<DeleteCurrencyCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<DeleteCurrencyCommand>, DeleteCurrencyCommandFlowDescribtor>();
+
+            services.AddScoped<CreateCategoryCommandFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<CreateCategoryCommand>, CreateCategoryCommandFlowDescribtor>();
+
+            services.AddScoped<UpdateCategoryCommandFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<UpdateCategoryCommand>, UpdateCategoryCommandFlowDescribtor>();
+
+            services.AddScoped<DeleteCategoryCommandFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<DeleteCategoryCommand>, DeleteCategoryCommandFlowDescribtor>();
 
             return services;
         }

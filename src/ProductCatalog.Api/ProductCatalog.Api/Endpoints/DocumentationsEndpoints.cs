@@ -7,6 +7,9 @@ using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
+using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
+using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -98,6 +101,48 @@ namespace ProductCatalog.Api.Endpoints
             {
                 Summary = "Describe the delete currency request flow",
                 Description = "Returns the ordered steps executed when handling DeleteCurrencyCommand."
+            });
+
+            group.MapGet("/categories/create", ([FromServices] IFlowDescriber<CreateCategoryCommand> flowDescriber) =>
+            {
+                var description = flowDescriber.DescribeFlow(default!);
+                return Results.Ok(description);
+            })
+            .WithName("DescribeCreateCategoryFlow")
+            .Produces<FlowDescription>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Describe the create category request flow",
+                Description = "Returns the ordered steps executed when handling CreateCategoryCommand."
+            });
+
+            group.MapGet("/categories/update", ([FromServices] IFlowDescriber<UpdateCategoryCommand> flowDescriber) =>
+            {
+                var description = flowDescriber.DescribeFlow(default!);
+                return Results.Ok(description);
+            })
+            .WithName("DescribeUpdateCategoryFlow")
+            .Produces<FlowDescription>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Describe the update category request flow",
+                Description = "Returns the ordered steps executed when handling UpdateCategoryCommand."
+            });
+
+            group.MapGet("/categories/delete", ([FromServices] IFlowDescriber<DeleteCategoryCommand> flowDescriber) =>
+            {
+                var description = flowDescriber.DescribeFlow(default!);
+                return Results.Ok(description);
+            })
+            .WithName("DescribeDeleteCategoryFlow")
+            .Produces<FlowDescription>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Describe the delete category request flow",
+                Description = "Returns the ordered steps executed when handling DeleteCategoryCommand."
             });
 
             return group;
