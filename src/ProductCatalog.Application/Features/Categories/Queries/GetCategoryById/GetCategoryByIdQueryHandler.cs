@@ -1,8 +1,6 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
-using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Categories.Queries.GetCategoryById
 {

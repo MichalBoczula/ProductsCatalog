@@ -21,9 +21,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.CreateCategory
         }
 
         [FlowStep(2)]
-        public async Task<ValidationResult> ValidateCategoryAggregate(Category category, IValidationPolicy<Category> validationPolicy)
+        public Task<ValidationResult> ValidateCategoryAggregate(Category category, IValidationPolicy<Category> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(category);
+            var validationResult = validationPolicy.Validate(category);
             return validationResult;
         }
 
@@ -59,9 +59,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.CreateCategory
         }
 
         [FlowStep(7)]
-        public async Task SaveChanges(ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
+        public Task SaveChanges(ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            await categoriesCommandsRepository.SaveChanges(cancellationToken);
+            return categoriesCommandsRepository.SaveChanges(cancellationToken);
         }
 
         [FlowStep(8)]

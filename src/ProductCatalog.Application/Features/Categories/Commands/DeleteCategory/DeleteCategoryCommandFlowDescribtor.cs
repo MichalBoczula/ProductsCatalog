@@ -14,15 +14,15 @@ namespace ProductCatalog.Application.Features.Categories.Commands.DeleteCategory
     internal sealed class DeleteCategoryCommandFlowDescribtor : FlowDescriberBase<DeleteCategoryCommand>
     {
         [FlowStep(1)]
-        public async Task<Category> LoadCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
+        public Task<Category> LoadCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            return await categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
+            return categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
         }
 
         [FlowStep(2)]
-        public async Task<ValidationResult> ValidateCategory(Category category, IValidationPolicy<Category> validationPolicy)
+        public Task<ValidationResult> ValidateCategory(Category category, IValidationPolicy<Category> validationPolicy)
         {
-            var validationResult = await validationPolicy.Validate(category);
+            var validationResult = validationPolicy.Validate(category);
             return validationResult;
         }
 
@@ -64,9 +64,10 @@ namespace ProductCatalog.Application.Features.Categories.Commands.DeleteCategory
         }
 
         [FlowStep(8)]
-        public async Task SaveChanges(ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
+        public Task SaveChanges(ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            await categoriesCommandsRepository.SaveChanges(cancellationToken);
+            categoriesCommandsRepository.SaveChanges(cancellationToken);
+            return Task.CompletedTask;
         }
 
         [FlowStep(9)]

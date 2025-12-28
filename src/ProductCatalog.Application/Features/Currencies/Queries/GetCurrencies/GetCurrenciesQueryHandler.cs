@@ -1,5 +1,4 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 

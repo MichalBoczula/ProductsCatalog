@@ -1,5 +1,4 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 
