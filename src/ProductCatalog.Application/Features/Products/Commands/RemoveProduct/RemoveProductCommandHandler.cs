@@ -1,12 +1,8 @@
-﻿using Mapster;
-using MediatR;
+﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
-using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
-using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.Products.Commands.RemoveProduct
 {
