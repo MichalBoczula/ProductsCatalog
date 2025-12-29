@@ -5,7 +5,6 @@ using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Domain.ReadModels;
 using ProductCatalog.Domain.Validation.Common;
 using Shouldly;
-using System.Linq;
 
 namespace ProductsCatalog.Application.UnitTests.Features.Products.Queries;
 
