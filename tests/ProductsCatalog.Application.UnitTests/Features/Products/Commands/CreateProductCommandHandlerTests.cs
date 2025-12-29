@@ -9,7 +9,7 @@ using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using Shouldly;
 
-namespace ProductsCatalog.Application.UnitTests.Features.Commands.Products;
+namespace ProductsCatalog.Application.UnitTests.Features.Products.Commands;
 
 public class CreateProductCommandHandlerTests
 {
