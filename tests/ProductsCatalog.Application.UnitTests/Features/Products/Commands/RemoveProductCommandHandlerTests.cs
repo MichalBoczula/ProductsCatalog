@@ -88,4 +88,44 @@ public class RemoveProductCommandHandlerTests
         result.Name.ShouldBe(product.Name);
         result.Description.ShouldBe(product.Description);
     }
+
+    [Fact]
+    public async Task Handle_WhenValidationFails_ShouldThrowValidationException()
+    {
+        // Arrange
+        var product = new Product("Phone", "Nice phone", new Money(99.99m, "usd"), Guid.NewGuid());
+        var productId = product.Id;
+        var command = new RemoveProductCommand(productId);
+
+        var productRepositoryMock = new Mock<IProductsCommandsRepository>(MockBehavior.Strict);
+        var validationPolicyMock = new Mock<IValidationPolicy<Product>>(MockBehavior.Strict);
+
+        var invalidResult = new ValidationResult();
+        invalidResult.AddValidationError(new ValidationError
+        {
+            Entity = nameof(Product),
+            Name = nameof(Product.Name),
+            Message = "Invalid product"
+        });
+
+        productRepositoryMock
+            .Setup(repo => repo.GetProductById(productId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(product);
+
+        validationPolicyMock
+            .Setup(policy => policy.Validate(product))
+            .ReturnsAsync(invalidResult);
+
+        var handler = new RemoveProductCommandHandler(
+            productRepositoryMock.Object,
+            validationPolicyMock.Object,
+            new RemoveProductCommandFlowDescribtor());
+
+        // Act & Assert
+        await Should.ThrowAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+
+        productRepositoryMock.Verify(repo => repo.Update(It.IsAny<Product>()), Times.Never);
+        productRepositoryMock.Verify(repo => repo.WriteHistory(It.IsAny<ProductsHistory>()), Times.Never);
+        productRepositoryMock.Verify(repo => repo.SaveChanges(It.IsAny<CancellationToken>()), Times.Never);
+    }
 }

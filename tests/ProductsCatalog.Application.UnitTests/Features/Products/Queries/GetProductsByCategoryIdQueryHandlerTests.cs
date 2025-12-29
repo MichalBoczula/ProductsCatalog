@@ -1,10 +1,11 @@
-using System.Linq;
 using Moq;
 using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Domain.ReadModels;
+using ProductCatalog.Domain.Validation.Common;
 using Shouldly;
+using System.Linq;
 
 namespace ProductsCatalog.Application.UnitTests.Features.Products.Queries;
 
@@ -67,5 +68,29 @@ public class GetProductsByCategoryIdQueryHandlerTests
         result!.Count.ShouldBe(products.Count);
         result.Select(p => p.Id).ShouldBe(products.Select(p => p.Id));
         result.Select(p => p.Name).ShouldBe(products.Select(p => p.Name));
+    }
+
+    [Fact]
+    public async Task Handle_WhenProductsNotFound_ShouldThrowResourceNotFoundException()
+    {
+        // Arrange
+        var categoryId = Guid.NewGuid();
+        var query = new GetProductsByCategoryIdQuery(categoryId);
+
+        var queriesRepositoryMock = new Mock<IProductsQueriesRepository>(MockBehavior.Strict);
+        queriesRepositoryMock
+            .Setup(repo => repo.GetByCategoryId(categoryId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((IReadOnlyList<ProductReadModel>?)null);
+
+        var handler = new GetProductsByCategoryIdQueryHandler(
+            queriesRepositoryMock.Object,
+            new GetProductsByCategoryIdQueryFlowDescribtor());
+
+        // Act & Assert
+        await Should.ThrowAsync<ResourceNotFoundException>(() => handler.Handle(query, CancellationToken.None));
+
+        queriesRepositoryMock.Verify(
+            repo => repo.GetByCategoryId(categoryId, It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 }
