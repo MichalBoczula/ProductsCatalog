@@ -4,6 +4,7 @@ using ProductCatalog.Application;
 using ProductCatalog.Domain;
 using ProductCatalog.Infrastructure;
 using ProductCatalog.Infrastructure.Extensions;
+using Serilog;
 
 namespace ProductCatalog.Api
 {
@@ -12,6 +13,14 @@ namespace ProductCatalog.Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseSerilog((context, services, configuration) => configuration
+               .ReadFrom.Configuration(context.Configuration)
+               .ReadFrom.Services(services)
+               .Enrich.FromLogContext()
+               .Enrich.WithEnvironmentName()
+               .Enrich.WithMachineName()
+               .WriteTo.Console());
 
             builder.Services.AddAuthorization();
 
@@ -33,6 +42,8 @@ namespace ProductCatalog.Api
             var app = builder.Build();
 
             app.UseExceptionHandler(_ => { });
+
+            app.UseSerilogRequestLogging();
 
             app.UseSwagger();
             app.UseSwaggerUI();

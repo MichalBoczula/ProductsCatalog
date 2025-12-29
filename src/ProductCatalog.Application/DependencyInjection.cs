@@ -1,17 +1,19 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using ProductCatalog.Application.Common.Behaviors;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
+using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
-using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
-using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
-using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Application.Features.Products.Queries.GetProductById;
 using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Mapping;
@@ -24,6 +26,8 @@ namespace ProductCatalog.Application
             this IServiceCollection services)
         {
             MappingConfig.RegisterMappings();
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
             services.AddScoped<CreateProductCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<CreateProductCommand>, CreateProductCommandFlowDescribtor>();
