@@ -1,9 +1,10 @@
 using Moq;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
@@ -11,23 +12,20 @@ using Shouldly;
 
 namespace ProductsCatalog.Application.UnitTests.Features.Products.Commands;
 
-public class CreateProductCommandHandlerTests
+public class RemoveProductCommandHandlerTests
 {
-    static CreateProductCommandHandlerTests()
+    static RemoveProductCommandHandlerTests()
     {
         MappingConfig.RegisterMappings();
     }
 
     [Fact]
-    public async Task Handle_ShouldInvokeDependenciesInOrderAndReturnDto()
+    public async Task Handle_ShouldInvokeDependenciesInOrderAndReturnDeactivatedDto()
     {
         // Arrange
-        var command = new CreateProductCommand(
-            new CreateProductExternalDto(
-                "Phone",
-                "Nice phone",
-                new CreateMoneyExternalDto(99.99m, "usd"),
-                Guid.NewGuid()));
+        var product = new Product("Phone", "Nice phone", new Money(99.99m, "usd"), Guid.NewGuid());
+        var productId = product.Id;
+        var command = new RemoveProductCommand(productId);
 
         var productRepositoryMock = new Mock<IProductsCommandsRepository>(MockBehavior.Strict);
         var validationPolicyMock = new Mock<IValidationPolicy<Product>>(MockBehavior.Strict);
@@ -35,44 +33,49 @@ public class CreateProductCommandHandlerTests
         var validationResult = new ValidationResult();
         var sequence = new MockSequence();
 
+        productRepositoryMock.InSequence(sequence)
+            .Setup(repo => repo.GetProductById(productId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(product);
+
         validationPolicyMock.InSequence(sequence)
-            .Setup(policy => policy.Validate(It.IsAny<Product>()))
+            .Setup(policy => policy.Validate(product))
             .ReturnsAsync(validationResult);
 
         productRepositoryMock.InSequence(sequence)
-            .Setup(repo => repo.Add(It.IsAny<Product>()));
+            .Setup(repo => repo.Update(It.Is<Product>(p => !p.IsActive)));
 
         productRepositoryMock.InSequence(sequence)
-            .Setup(repo => repo.WriteHistory(It.IsAny<ProductsHistory>()));
+            .Setup(repo => repo.WriteHistory(It.Is<ProductsHistory>(history =>
+                history.Operation == Operation.Deleted &&
+                history.ProductId == productId &&
+                history.Name == product.Name &&
+                history.CategoryId == product.CategoryId)));
 
         productRepositoryMock.InSequence(sequence)
             .Setup(repo => repo.SaveChanges(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var handler = new CreateProductCommandHandler(
+        var handler = new RemoveProductCommandHandler(
             productRepositoryMock.Object,
             validationPolicyMock.Object,
-            new CreateProductCommandFlowDescribtor());
+            new RemoveProductCommandFlowDescribtor());
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        validationPolicyMock.Verify(policy => policy.Validate(It.IsAny<Product>()), Times.Once);
+        productRepositoryMock.Verify(
+            repo => repo.GetProductById(productId, It.IsAny<CancellationToken>()),
+            Times.Once);
+
+        validationPolicyMock.Verify(policy => policy.Validate(product), Times.Once);
 
         productRepositoryMock.Verify(
-            repo => repo.Add(It.Is<Product>(p =>
-                p.Name == command.product.Name &&
-                p.Description == command.product.Description &&
-                p.CategoryId == command.product.CategoryId)),
+            repo => repo.Update(It.Is<Product>(p => p.IsActive == false)),
             Times.Once);
 
         productRepositoryMock.Verify(
-            repo => repo.WriteHistory(It.Is<ProductsHistory>(history =>
-                history.Operation == Operation.Inserted &&
-                history.ProductId != Guid.Empty &&
-                history.Name == command.product.Name &&
-                history.CategoryId == command.product.CategoryId)),
+            repo => repo.WriteHistory(It.IsAny<ProductsHistory>()),
             Times.Once);
 
         productRepositoryMock.Verify(
@@ -80,25 +83,19 @@ public class CreateProductCommandHandlerTests
             Times.Once);
 
         result.ShouldNotBeNull();
-        result.Id.ShouldNotBe(Guid.Empty);
-        result.Name.ShouldBe(command.product.Name);
-        result.Description.ShouldBe(command.product.Description);
-        result.CategoryId.ShouldBe(command.product.CategoryId);
-        result.Price.Amount.ShouldBe(command.product.Price.Amount);
-        result.Price.Currency.ShouldBe(command.product.Price.Currency.ToUpperInvariant());
-        result.IsActive.ShouldBeTrue();
+        result.Id.ShouldBe(productId);
+        result.IsActive.ShouldBeFalse();
+        result.Name.ShouldBe(product.Name);
+        result.Description.ShouldBe(product.Description);
     }
 
     [Fact]
     public async Task Handle_WhenValidationFails_ShouldThrowValidationException()
     {
         // Arrange
-        var command = new CreateProductCommand(
-            new CreateProductExternalDto(
-                "Phone",
-                "Nice phone",
-                new CreateMoneyExternalDto(99.99m, "usd"),
-                Guid.NewGuid()));
+        var product = new Product("Phone", "Nice phone", new Money(99.99m, "usd"), Guid.NewGuid());
+        var productId = product.Id;
+        var command = new RemoveProductCommand(productId);
 
         var productRepositoryMock = new Mock<IProductsCommandsRepository>(MockBehavior.Strict);
         var validationPolicyMock = new Mock<IValidationPolicy<Product>>(MockBehavior.Strict);
@@ -108,22 +105,26 @@ public class CreateProductCommandHandlerTests
         {
             Entity = nameof(Product),
             Name = nameof(Product.Name),
-            Message = "Invalid name"
+            Message = "Invalid product"
         });
 
+        productRepositoryMock
+            .Setup(repo => repo.GetProductById(productId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(product);
+
         validationPolicyMock
-            .Setup(policy => policy.Validate(It.IsAny<Product>()))
+            .Setup(policy => policy.Validate(product))
             .ReturnsAsync(invalidResult);
 
-        var handler = new CreateProductCommandHandler(
+        var handler = new RemoveProductCommandHandler(
             productRepositoryMock.Object,
             validationPolicyMock.Object,
-            new CreateProductCommandFlowDescribtor());
+            new RemoveProductCommandFlowDescribtor());
 
         // Act & Assert
         await Should.ThrowAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
 
-        productRepositoryMock.Verify(repo => repo.Add(It.IsAny<Product>()), Times.Never);
+        productRepositoryMock.Verify(repo => repo.Update(It.IsAny<Product>()), Times.Never);
         productRepositoryMock.Verify(repo => repo.WriteHistory(It.IsAny<ProductsHistory>()), Times.Never);
         productRepositoryMock.Verify(repo => repo.SaveChanges(It.IsAny<CancellationToken>()), Times.Never);
     }
