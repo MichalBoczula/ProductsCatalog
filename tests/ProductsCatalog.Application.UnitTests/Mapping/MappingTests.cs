@@ -10,9 +10,13 @@ using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
+using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
+using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
 using Shouldly;
 
@@ -263,5 +267,74 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         }
 
         ///Whole history mapping tests
+        [Fact]
+        public void Product_ShouldBeMapTo_ProductsHistory()
+        {
+            //Arrange
+            var categoryId = Guid.NewGuid();
+            var product = new Product("Console", "Next gen", new Money(499.99m, "usd"), categoryId);
+            var operation = Operation.Updated;
+
+            //Act
+            var history = product.BuildAdapter()
+                .AddParameters("operation", operation)
+                .AdaptToType<ProductsHistory>();
+
+            //Assert
+            history.Id.ShouldNotBe(Guid.Empty);
+            history.ProductId.ShouldBe(product.Id);
+            history.Name.ShouldBe(product.Name);
+            history.Description.ShouldBe(product.Description);
+            history.PriceAmount.ShouldBe(product.Price.Amount);
+            history.PriceCurrency.ShouldBe(product.Price.Currency);
+            history.CategoryId.ShouldBe(categoryId);
+            history.IsActive.ShouldBe(product.IsActive);
+            history.ChangedAt.ShouldBe(product.ChangedAt);
+            history.Operation.ShouldBe(operation);
+        }
+
+        [Fact]
+        public void Category_ShouldBeMapTo_CategoriesHistory()
+        {
+            //Arrange
+            var category = new Category("sport", "Sport");
+            var operation = Operation.Inserted;
+
+            //Act
+            var history = category.BuildAdapter()
+                .AddParameters("operation", operation)
+                .AdaptToType<CategoriesHistory>();
+
+            //Assert
+            history.Id.ShouldNotBe(Guid.Empty);
+            history.CategoryId.ShouldBe(category.Id);
+            history.Code.ShouldBe(category.Code);
+            history.Name.ShouldBe(category.Name);
+            history.IsActive.ShouldBe(category.IsActive);
+            history.ChangedAt.ShouldBe(category.ChangedAt);
+            history.Operation.ShouldBe(operation);
+        }
+
+        [Fact]
+        public void Currency_ShouldBeMapTo_CurrenciesHistory()
+        {
+            //Arrange
+            var currency = new Currency("eur", "Euro");
+            var operation = Operation.Deleted;
+
+            //Act
+            var history = currency.BuildAdapter()
+                .AddParameters("operation", operation)
+                .AdaptToType<CurrenciesHistory>();
+
+            //Assert
+            history.Id.ShouldNotBe(Guid.Empty);
+            history.CurrencyId.ShouldBe(currency.Id);
+            history.Code.ShouldBe(currency.Code);
+            history.Description.ShouldBe(currency.Description);
+            history.IsActive.ShouldBe(currency.IsActive);
+            history.ChangedAt.ShouldBe(currency.ChangedAt);
+            history.Operation.ShouldBe(operation);
+        }
     }
 }
