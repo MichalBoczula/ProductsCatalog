@@ -9,7 +9,7 @@ using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using Shouldly;
 
-namespace ProductsCatalog.Application.UnitTests.Products;
+namespace ProductsCatalog.Application.UnitTests.Features.Commands.Products;
 
 public class CreateProductCommandHandlerTests
 {
@@ -80,6 +80,7 @@ public class CreateProductCommandHandlerTests
             Times.Once);
 
         result.ShouldNotBeNull();
+        result.Id.ShouldNotBe(Guid.Empty);
         result.Name.ShouldBe(command.product.Name);
         result.Description.ShouldBe(command.product.Description);
         result.CategoryId.ShouldBe(command.product.CategoryId);
