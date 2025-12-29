@@ -18,7 +18,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             _connectionString = ConnectionStringExtensions.Initialize(configuration);
         }
 
-        public Task<CategoryReadModel?> GetById(Guid id, CancellationToken ct)
+        public async Task<CategoryReadModel?> GetById(Guid id, CancellationToken ct)
         {
             var sql = $@"
                 SELECT Id,
@@ -31,7 +31,7 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
 
             using var connection = CreateConnection();
 
-            var result = connection.QuerySingleOrDefaultAsync<CategoryReadModel?>(
+            var result = await connection.QuerySingleOrDefaultAsync<CategoryReadModel?>(
                 new CommandDefinition(sql, new { Id = id }, cancellationToken: ct));
             return result;
         }
