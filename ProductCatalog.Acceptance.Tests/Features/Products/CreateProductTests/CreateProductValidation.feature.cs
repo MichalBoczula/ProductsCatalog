@@ -11,27 +11,27 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace ProductCatalog.Acceptance.Tests.Features.Products
+namespace ProductCatalog.Acceptance.Tests.Features.Products.CreateProductTests
 {
     
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class CreateProductFeature : object, global::Xunit.IClassFixture<CreateProductFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class CreateProductValidationFeature : object, global::Xunit.IClassFixture<CreateProductValidationFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Products", "Create product", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Products/CreateProductTests", "Create product validation", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CreateProduct.feature"
+#line 1 "CreateProductValidation.feature"
 #line hidden
         
-        public CreateProductFeature(CreateProductFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CreateProductValidationFeature(CreateProductValidationFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Products
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Products/CreateProduct.feature.ndjson", 3);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Products/CreateProductTests/CreateProductValidation.feature.ndjson", 3);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,15 +133,15 @@ namespace ProductCatalog.Acceptance.Tests.Features.Products
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Create product returns created response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Create product")]
-        [global::Xunit.TraitAttribute("Description", "Create product returns created response")]
-        public async global::System.Threading.Tasks.Task CreateProductReturnsCreatedResponse()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Create product fails when category is invalid")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Create product validation")]
+        [global::Xunit.TraitAttribute("Description", "Create product fails when category is invalid")]
+        public async global::System.Threading.Tasks.Task CreateProductFailsWhenCategoryIsInvalid()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create product returns created response", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create product fails when category is invalid", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 3
@@ -155,19 +155,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.Products
             {
                 await this.ScenarioStartAsync();
 #line 4
-    await testRunner.GivenAsync("an existing category with code \"MOBILE\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 5
     await testRunner.AndAsync("an existing currency with code \"USD\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 6
-    await testRunner.AndAsync("I have valid product details", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 5
+    await testRunner.AndAsync("I have invalid product details", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 7
+#line 6
     await testRunner.WhenAsync("I submit the create product request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 8
-    await testRunner.ThenAsync("the product is created successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 7
+    await testRunner.ThenAsync("the product creation fails with validation errors", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -180,12 +177,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Products
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await CreateProductFeature.FeatureSetupAsync();
+                await CreateProductValidationFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await CreateProductFeature.FeatureTearDownAsync();
+                await CreateProductValidationFeature.FeatureTearDownAsync();
             }
         }
     }

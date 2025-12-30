@@ -7,7 +7,7 @@ using ProductCatalog.Application.Common.Dtos.Currencies;
 using Reqnroll;
 using Shouldly;
 
-namespace ProductCatalog.Acceptance.Tests.Features.Products;
+namespace ProductCatalog.Acceptance.Tests.Features.Products.Common;
 
 [Binding]
 public class SharedProductSteps
