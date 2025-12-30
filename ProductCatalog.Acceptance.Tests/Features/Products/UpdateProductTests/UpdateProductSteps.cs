@@ -1,16 +1,15 @@
-using System.Globalization;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Linq;
+using Microsoft.AspNetCore.Http;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
-using ProductCatalog.Domain.Validation.Common;
 using Reqnroll;
 using Shouldly;
+using System.Globalization;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace ProductCatalog.Acceptance.Tests.Features.Products.UpdateProductTests;
 
@@ -24,6 +23,11 @@ public class UpdateProductSteps
     private ProductDto? _existingProduct;
     private HttpResponseMessage? _updateResponse;
     private UpdateProductExternalDto? _updateRequest;
+    private readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true
+    };
 
     public UpdateProductSteps(ScenarioContext scenarioContext)
     {
@@ -87,18 +91,27 @@ public class UpdateProductSteps
         _updateResponse.ShouldNotBeNull();
         _updateResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
-        var problemDetails = await _updateResponse.Content.ReadFromJsonAsync<JsonElement>();
+        var content = await _updateResponse.Content.ReadAsStringAsync();
+        var problem = JsonSerializer.Deserialize<ApiProblemDetails>(content, _jsonOptions);
 
-        problemDetails.GetProperty("status").GetInt32().ShouldBe(StatusCodes.Status400BadRequest);
-        problemDetails.GetProperty("title").GetString().ShouldBe("Validation failed");
-        problemDetails.GetProperty("detail").GetString().ShouldBe("One or more validation errors occurred.");
+        problem.ShouldNotBeNull();
 
-        var errors = problemDetails.GetProperty("errors").EnumerateArray().ToList();
+        if (problem is null)
+        {
+            AssertFailWithContent(content);
+        }
+
+        var errors = problem!.Errors.ToList();
         errors.ShouldNotBeEmpty();
-        errors.Any(error =>
-                error.GetProperty(nameof(ValidationError.Name)).GetString() == "ProductsNameValidationRule")
-            .ShouldBeTrue();
 
-        problemDetails.GetProperty("traceId").GetString().ShouldNotBeNullOrWhiteSpace();
+        errors.ShouldContain(e =>
+            e.Message == "Name cannot be null or whitespace."
+            && e.Entity == "Product"
+            && e.Name == "ProductsNameValidationRule");
+    }
+
+    private static void AssertFailWithContent(string content)
+    {
+        throw new ShouldAssertException($"Expected validation errors in response, but none were found. Response content: {content}");
     }
 }

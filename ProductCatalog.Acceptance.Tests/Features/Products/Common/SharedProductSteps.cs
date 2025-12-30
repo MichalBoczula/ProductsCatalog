@@ -18,10 +18,12 @@ public class SharedProductSteps
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         PropertyNameCaseInsensitive = true
     };
+    private readonly ScenarioContext _scenarioContext;
 
-    public SharedProductSteps(ProductScenarioContext context)
+    public SharedProductSteps(ProductScenarioContext context, ScenarioContext scenarioContext)
     {
         _context = context;
+        _scenarioContext = scenarioContext;
     }
 
     [Given(@"an existing currency with code ""(.*)""")]
@@ -62,6 +64,17 @@ public class SharedProductSteps
                 MediaTypeNames.Application.Json);
 
         _context.Response = await TestRunHooks.Client.PostAsync("/products", content);
+    }
+
+    [Then("the response status code should be (.*)")]
+    public void ThenTheResponseStatusCodeShouldBe(int statusCode)
+    {
+        var response = _scenarioContext.TryGetValue("response", out HttpResponseMessage? httpResponse)
+            ? httpResponse
+            : null;
+
+        response.ShouldNotBeNull();
+        ((int)response.StatusCode).ShouldBe(statusCode);
     }
 
     private async Task<T?> DeserializeResponse<T>(HttpResponseMessage response)
