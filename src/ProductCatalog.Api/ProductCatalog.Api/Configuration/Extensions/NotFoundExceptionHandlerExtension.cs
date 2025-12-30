@@ -3,7 +3,7 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Api.Configuration.Extensions
 {
-    internal static class NotFoundExceptionHandlerExtension
+    public static class NotFoundExceptionHandlerExtension
     {
         public static async Task HandleNotFoundException(this HttpContext context, ResourceNotFoundException exception, CancellationToken cancellationToken)
         {

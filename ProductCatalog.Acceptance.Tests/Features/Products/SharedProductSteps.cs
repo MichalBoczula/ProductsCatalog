@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Application.Common.Dtos.Currencies;
 using Reqnroll;
 using Shouldly;
 
@@ -28,7 +28,10 @@ public class SharedProductSteps
     public async Task GivenAnExistingCurrencyWithCode(string code)
     {
         var payload = new CreateCurrencyExternalDto(code, $"{code} description");
-        var content = new StringContent(JsonSerializer.Serialize(payload, _jsonOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+        var content = new StringContent(
+            JsonSerializer.Serialize(payload, _jsonOptions),
+                Encoding.UTF8,
+                MediaTypeNames.Application.Json);
 
         var response = await TestRunHooks.Client.PostAsync("/currencies", content);
 
@@ -37,13 +40,13 @@ public class SharedProductSteps
             var existing = await TestRunHooks.Client.GetAsync("/currencies");
             existing.EnsureSuccessStatusCode();
 
-            var currencies = await DeserializeResponse<IReadOnlyList<Application.Common.Dtos.Currencies.CurrencyDto>>(existing);
+            var currencies = await DeserializeResponse<IReadOnlyList<CurrencyDto>>(existing);
             _context.CurrencyCode = currencies?.FirstOrDefault(c => c.Code == code)?.Code ?? string.Empty;
             _context.CurrencyCode.ShouldNotBeNullOrWhiteSpace();
             return;
         }
 
-        var currency = await DeserializeResponse<Application.Common.Dtos.Currencies.CurrencyDto>(response);
+        var currency = await DeserializeResponse<CurrencyDto>(response);
         currency.ShouldNotBeNull();
         _context.CurrencyCode = currency.Code;
     }
@@ -53,7 +56,11 @@ public class SharedProductSteps
     {
         _context.Request.ShouldNotBeNull();
 
-        var content = new StringContent(JsonSerializer.Serialize(_context.Request, _jsonOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+        var content = new StringContent(
+            JsonSerializer.Serialize(_context.Request, _jsonOptions),
+                Encoding.UTF8,
+                MediaTypeNames.Application.Json);
+
         _context.Response = await TestRunHooks.Client.PostAsync("/products", content);
     }
 

@@ -1,7 +1,8 @@
-using System.Text.Json;
+using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using Reqnroll;
 using Shouldly;
+using System.Text.Json;
 
 namespace ProductCatalog.Acceptance.Tests.Features.Products;
 
@@ -9,6 +10,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.Products;
 public class CreateProductValidationSteps
 {
     private readonly ProductScenarioContext _context;
+    private readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true
+    };
 
     public CreateProductValidationSteps(ProductScenarioContext context)
     {
@@ -34,33 +40,22 @@ public class CreateProductValidationSteps
         _context.Response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
 
         var content = await _context.Response.Content.ReadAsStringAsync();
-        using var document = JsonDocument.Parse(content);
+        var problem = JsonSerializer.Deserialize<ApiProblemDetails>(content, _jsonOptions);
 
-        if (!document.RootElement.TryGetProperty("errors", out var errorsElement))
+        problem.ShouldNotBeNull();
+
+        if (problem is null)
         {
             AssertFailWithContent(content);
         }
 
-        errorsElement.ValueKind.ShouldBe(JsonValueKind.Array);
-        var messages = errorsElement.EnumerateArray()
-            .Select(error => TryGetStringProperty(error, "Message"))
-            .Where(message => !string.IsNullOrWhiteSpace(message))
-            .ToList();
+        var errors = problem!.Errors.ToList();
+        errors.ShouldNotBeEmpty();
 
-        messages.ShouldContain("CategoryId does not exist.");
-    }
-
-    private static string? TryGetStringProperty(JsonElement element, string propertyName)
-    {
-        if (element.TryGetProperty(propertyName, out var property))
-        {
-            return property.GetString();
-        }
-
-        var matching = element.EnumerateObject()
-            .FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
-
-        return matching.Value.ValueKind == JsonValueKind.Undefined ? null : matching.Value.GetString();
+        errors.ShouldContain(e =>
+            e.Message == "CategoryId does not exist."
+            && e.Entity == "Product"
+            && e.Name == "ProductsCategoryIdValidationRule");
     }
 
     private static void AssertFailWithContent(string content)

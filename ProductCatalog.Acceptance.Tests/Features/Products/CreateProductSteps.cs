@@ -37,7 +37,9 @@ public class CreateProductSteps
         }
 
         var payload = new CreateCategoryExternalDto(code, $"{code} name");
-        var content = new StringContent(JsonSerializer.Serialize(payload, _jsonOptions), Encoding.UTF8, MediaTypeNames.Application.Json);
+        var content = new StringContent(JsonSerializer.Serialize(payload, _jsonOptions),
+                                        Encoding.UTF8,
+                                        MediaTypeNames.Application.Json);
 
         var response = await TestRunHooks.Client.PostAsync("/categories", content);
         response.EnsureSuccessStatusCode();

@@ -3,7 +3,7 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Api.Configuration.Extensions
 {
-    internal static class ValidationExceptionHandlerExtension
+    public static class ValidationExceptionHandlerExtension
     {
         public static async Task HandleValidationException(this HttpContext context, ValidationException validationException, CancellationToken cancellationToken)
         {
