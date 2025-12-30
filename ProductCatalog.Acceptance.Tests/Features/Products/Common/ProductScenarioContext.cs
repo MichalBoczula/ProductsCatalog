@@ -1,6 +1,6 @@
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 
-namespace ProductCatalog.Acceptance.Tests.Features.Products;
+namespace ProductCatalog.Acceptance.Tests.Features.Products.Common;
 
 public sealed class ProductScenarioContext
 {

@@ -2,6 +2,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using ProductCatalog.Acceptance.Tests.Features.Common;
+using ProductCatalog.Acceptance.Tests.Features.Products.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
@@ -9,7 +10,7 @@ using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using Reqnroll;
 using Shouldly;
 
-namespace ProductCatalog.Acceptance.Tests.Features.Products;
+namespace ProductCatalog.Acceptance.Tests.Features.Products.CreateProductTests;
 
 [Binding]
 public class CreateProductSteps

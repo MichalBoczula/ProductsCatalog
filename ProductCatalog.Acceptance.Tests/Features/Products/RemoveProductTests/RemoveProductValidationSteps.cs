@@ -1,13 +1,14 @@
+using ProductCatalog.Acceptance.Tests.Features.Products.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using Reqnroll;
 using Shouldly;
+using System.Net;
 using System.Text.Json;
 
-namespace ProductCatalog.Acceptance.Tests.Features.Products;
+namespace ProductCatalog.Acceptance.Tests.Features.Products.RemoveProductTests;
 
 [Binding]
-public class CreateProductValidationSteps
+public class RemoveProductValidationSteps
 {
     private readonly ProductScenarioContext _context;
     private readonly JsonSerializerOptions _jsonOptions = new()
@@ -16,28 +17,22 @@ public class CreateProductValidationSteps
         PropertyNameCaseInsensitive = true
     };
 
-    public CreateProductValidationSteps(ProductScenarioContext context)
+    public RemoveProductValidationSteps(ProductScenarioContext context)
     {
         _context = context;
     }
 
-    [Given(@"I have invalid product details")]
-    public void GivenIHaveInvalidProductDetails()
+    [Given(@"a product id that does not exist")]
+    public void GivenAProductIdThatDoesNotExist()
     {
-        _context.CurrencyCode.ShouldNotBeNullOrWhiteSpace();
-
-        _context.Request = new CreateProductExternalDto(
-            "Invalid Product",
-            "Invalid category reference",
-            new CreateMoneyExternalDto(10m, _context.CurrencyCode),
-            Guid.NewGuid());
+        _context.ProductId = Guid.NewGuid();
     }
 
-    [Then(@"the product creation fails with validation errors")]
-    public async Task ThenTheProductCreationFailsWithValidationErrors()
+    [Then(@"the product removal fails with validation errors")]
+    public async Task ThenTheProductRemovalFailsWithValidationErrors()
     {
         _context.Response.ShouldNotBeNull();
-        _context.Response.StatusCode.ShouldBe(System.Net.HttpStatusCode.BadRequest);
+        _context.Response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var content = await _context.Response.Content.ReadAsStringAsync();
         var problem = JsonSerializer.Deserialize<ApiProblemDetails>(content, _jsonOptions);
@@ -53,9 +48,9 @@ public class CreateProductValidationSteps
         errors.ShouldNotBeEmpty();
 
         errors.ShouldContain(e =>
-            e.Message == "CategoryId does not exist."
+            e.Message == "Product cannot be null."
             && e.Entity == "Product"
-            && e.Name == "ProductsCategoryIdValidationRule");
+            && e.Name == "ProductsIsNullValidationRule");
     }
 
     private static void AssertFailWithContent(string content)
