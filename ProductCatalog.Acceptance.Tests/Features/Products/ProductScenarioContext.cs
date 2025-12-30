@@ -6,6 +6,7 @@ public sealed class ProductScenarioContext
 {
     public string CurrencyCode { get; set; } = string.Empty;
     public Guid CategoryId { get; set; }
+    public Guid ProductId { get; set; }
     public HttpResponseMessage? Response { get; set; }
     public CreateProductExternalDto? Request { get; set; }
 }
