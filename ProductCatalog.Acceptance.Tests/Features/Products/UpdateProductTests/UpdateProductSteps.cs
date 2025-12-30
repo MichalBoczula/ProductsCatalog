@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Linq;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Products;
@@ -19,13 +20,15 @@ public class UpdateProductSteps
     private const string CategoryId = "587480bb-c126-4f9b-b531-b0244daa4ba4";
 
     private readonly HttpClient _client;
+    private readonly ScenarioContext _scenarioContext;
     private ProductDto? _existingProduct;
     private HttpResponseMessage? _updateResponse;
     private UpdateProductExternalDto? _updateRequest;
 
-    public UpdateProductSteps()
+    public UpdateProductSteps(ScenarioContext scenarioContext)
     {
         _client = TestRunHooks.Client;
+        _scenarioContext = scenarioContext;
     }
 
     [Given("an existing product")]
@@ -57,13 +60,7 @@ public class UpdateProductSteps
             Guid.Parse(CategoryId));
 
         _updateResponse = await _client.PutAsJsonAsync($"/products/{_existingProduct!.Id}", _updateRequest);
-    }
-
-    [Then("the response status code should be (.*)")]
-    public void ThenTheResponseStatusCodeShouldBe(int statusCode)
-    {
-        _updateResponse.ShouldNotBeNull();
-        ((int)_updateResponse.StatusCode).ShouldBe(statusCode);
+        _scenarioContext["response"] = _updateResponse;
     }
 
     [Then("the updated product contract matches the request")]
