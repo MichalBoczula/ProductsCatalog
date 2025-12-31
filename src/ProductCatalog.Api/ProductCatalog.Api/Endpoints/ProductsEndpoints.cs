@@ -52,7 +52,7 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
             .WithName("GetProductByCategoryId")
-            .Produces<ProductDto>(StatusCodes.Status200OK)
+            .Produces<List<ProductDto>>(StatusCodes.Status200OK)
             .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
             .WithOpenApi(operation => new(operation)
