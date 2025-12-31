@@ -8,7 +8,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
-namespace ProductCatalog.Acceptance.Tests
+namespace ProductCatalog.Acceptance.Tests.Features.Currencies
 {
     [Binding]
     public class CreateCurrencySteps
