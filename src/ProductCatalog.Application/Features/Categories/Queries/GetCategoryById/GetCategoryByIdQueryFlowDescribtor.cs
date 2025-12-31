@@ -11,9 +11,9 @@ namespace ProductCatalog.Application.Features.Categories.Queries.GetCategoryById
     internal sealed class GetCategoryByIdQueryFlowDescribtor : FlowDescriberBase<GetCategoryByIdQuery>
     {
         [FlowStep(1)]
-        public Task<CategoryReadModel?> GetCategory(ICategoriesQueriesRepository categoriesQueriesRepository, Guid categoryId, CancellationToken cancellationToken)
+        public async Task<CategoryReadModel?> GetCategory(ICategoriesQueriesRepository categoriesQueriesRepository, Guid categoryId, CancellationToken cancellationToken)
         {
-            return categoriesQueriesRepository.GetById(categoryId, cancellationToken);
+            return await categoriesQueriesRepository.GetById(categoryId, cancellationToken);
         }
 
         [FlowStep(2)]

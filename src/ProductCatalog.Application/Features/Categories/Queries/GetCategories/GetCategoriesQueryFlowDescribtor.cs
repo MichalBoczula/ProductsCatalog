@@ -10,9 +10,9 @@ namespace ProductCatalog.Application.Features.Categories.Queries.GetCategories
     internal sealed class GetCategoriesQueryFlowDescribtor : FlowDescriberBase<GetCategoriesQuery>
     {
         [FlowStep(1)]
-        public Task<IReadOnlyList<CategoryReadModel>> GetCategories(ICategoriesQueriesRepository categoriesQueriesRepository, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<CategoryReadModel>> GetCategories(ICategoriesQueriesRepository categoriesQueriesRepository, CancellationToken cancellationToken)
         {
-            return categoriesQueriesRepository.GetCategories(cancellationToken);
+            return await categoriesQueriesRepository.GetCategories(cancellationToken);
         }
 
         [FlowStep(2)]

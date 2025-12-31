@@ -25,9 +25,9 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
             _context.Products.Update(product);
         }
 
-        public Task<Product?> GetProductById(Guid productId, CancellationToken cancellationToken)
+        public async Task<Product?> GetProductById(Guid productId, CancellationToken cancellationToken)
         {
-            var product = _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
             return product;
         }
 
@@ -36,9 +36,9 @@ namespace ProductCatalog.Infrastructure.Repositories.Products
             _context.ProductsHistories.Add(entity);
         }
 
-        public Task SaveChanges(CancellationToken cancellationToken)
+        public async Task SaveChanges(CancellationToken cancellationToken)
         {
-            return _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

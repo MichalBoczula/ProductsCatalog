@@ -25,9 +25,9 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             _context.Categories.Update(category);
         }
 
-        public Task<Category?> GetCategoryById(Guid categoryId, CancellationToken cancellationToken)
+        public async Task<Category?> GetCategoryById(Guid categoryId, CancellationToken cancellationToken)
         {
-            var category = _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId, cancellationToken);
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId, cancellationToken);
             return category;
         }
 
@@ -36,9 +36,9 @@ namespace ProductCatalog.Infrastructure.Repositories.Categories
             _context.CategoriesHistories.Add(entity);
         }
 
-        public Task SaveChanges(CancellationToken cancellationToken)
+        public async Task SaveChanges(CancellationToken cancellationToken)
         {
-            return _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

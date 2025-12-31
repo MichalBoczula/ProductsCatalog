@@ -21,9 +21,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
         }
 
         [FlowStep(2)]
-        public Task<ValidationResult> ValidateIncomingCategory(Category category, IValidationPolicy<Category> validationPolicy)
+        public async Task<ValidationResult> ValidateIncomingCategory(Category category, IValidationPolicy<Category> validationPolicy)
         {
-            var validationResult = validationPolicy.Validate(category);
+            var validationResult = await validationPolicy.Validate(category);
             return validationResult;
         }
 
@@ -37,15 +37,15 @@ namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
         }
 
         [FlowStep(4)]
-        public Task<Category> LoadExistingCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
+        public async Task<Category> LoadExistingCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            return categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
+            return await categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
         }
 
         [FlowStep(5)]
-        public Task<ValidationResult> ValidateExistingCategory(Category category, IValidationPolicy<Category> validationPolicy)
+        public async Task<ValidationResult> ValidateExistingCategory(Category category, IValidationPolicy<Category> validationPolicy)
         {
-            var validationResult = validationPolicy.Validate(category);
+            var validationResult = await validationPolicy.Validate(category);
             return validationResult;
         }
 
@@ -87,9 +87,9 @@ namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
         }
 
         [FlowStep(11)]
-        public Task SaveChanges(ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
+        public async Task SaveChanges(ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            return categoriesCommandsRepository.SaveChanges(cancellationToken);
+            await categoriesCommandsRepository.SaveChanges(cancellationToken);
         }
 
         [FlowStep(12)]

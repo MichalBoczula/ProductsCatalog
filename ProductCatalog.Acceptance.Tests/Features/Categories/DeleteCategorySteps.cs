@@ -4,7 +4,6 @@ using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using Reqnroll;
 using Shouldly;
-using System;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;

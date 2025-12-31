@@ -25,9 +25,9 @@ namespace ProductCatalog.Infrastructure.Repositories.Currencies
             _context.Currencies.Update(currency);
         }
 
-        public Task<Currency?> GetCurrencyById(Guid currencyId, CancellationToken cancellationToken)
+        public async Task<Currency?> GetCurrencyById(Guid currencyId, CancellationToken cancellationToken)
         {
-            var category = _context.Currencies.FirstOrDefaultAsync(c => c.Id == currencyId, cancellationToken);
+            var category = await _context.Currencies.FirstOrDefaultAsync(c => c.Id == currencyId, cancellationToken);
             return category;
         }
 
@@ -36,9 +36,9 @@ namespace ProductCatalog.Infrastructure.Repositories.Currencies
             _context.CurrenciesHistories.Add(entity);
         }
 
-        public Task SaveChanges(CancellationToken cancellationToken)
+        public async Task SaveChanges(CancellationToken cancellationToken)
         {
-            return _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
