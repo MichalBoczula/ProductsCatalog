@@ -2,14 +2,11 @@ using Microsoft.AspNetCore.Http;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
-using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
-using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using Reqnroll;
 using Shouldly;
-using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -33,7 +30,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Products.GetProductsByCategor
         public async Task GivenAnExistingListOfProductsWithCode(string categoryCode)
         {
             var categoryRequest = new CreateCategoryExternalDto("Test", "Test");
-                var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest);
+            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest);
             var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>();
             _categoryId = category.Id;
 
