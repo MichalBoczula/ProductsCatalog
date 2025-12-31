@@ -11,10 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ReqnrollFeatureFile Remove="Features\Categories\CreateCategoryTests\CreateCategory.feature" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.22" />
@@ -42,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Categories\CreateCategoryTests\" />
+    <Folder Include="Features\Categories\" />
   </ItemGroup>
 
 </Project>
