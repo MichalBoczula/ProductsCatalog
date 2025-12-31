@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProductCatalog.Api;
@@ -37,6 +38,15 @@ namespace ProductCatalog.Acceptance.Tests
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.ConfigureAppConfiguration((_, config) =>
+            {
+                var overrides = new Dictionary<string, string?>
+                {
+                    ["ConnectionStrings:ProductCatalogDb"] = _connectionString
+                };
+                config.AddInMemoryCollection(overrides);
+            });
+
             builder.ConfigureServices(services =>
             {
                 services.RemoveAll<DbContextOptions<ProductsContext>>();
