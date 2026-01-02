@@ -5,7 +5,7 @@
       "project": "src/ProductCatalog.Api/ProductCatalog.Api/ProductCatalog.Api.csproj",
       "noBuild": false,
       "configuration": "Release",
-      "useDocumentProvider": true,
+      "useDocumentProvider": false,
       "defaultPropertyNameHandling": "CamelCase"
     }
   },

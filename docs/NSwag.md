@@ -42,6 +42,9 @@ The generated client is written to `clients/angular/api-client.ts`. Adjust the p
   }
   ```
 
+## Troubleshooting
+- If you see `No service for type 'NSwag.Generation.IOpenApiDocumentGenerator' has been registered`, set `useDocumentProvider` to `false` in `nswag.json` (already configured) so NSwag reflects the project instead of expecting NSwag’s ASP.NET Core document services at runtime.
+
 ## Auth and base URL
 - The generated client uses `API_BASE_URL` as an Angular injection token for the base URL. Provide this token in your Angular module or a dedicated provider.
 - Add your auth handling (e.g., an `HttpInterceptor` for bearer tokens) in the consuming Angular app.
