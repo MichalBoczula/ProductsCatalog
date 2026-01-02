@@ -18,7 +18,7 @@ namespace ProductCatalog.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.22")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -344,8 +344,10 @@ namespace ProductCatalog.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Price", "ProductCatalog.Domain.AggregatesModel.ProductAggregate.Product.Price#Money", b1 =>
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Price", "ProductCatalog.Domain.AggregatesModel.ProductAggregate.Product.Price#Money", b1 =>
                         {
+                            b1.IsRequired();
+
                             b1.Property<decimal>("Amount")
                                 .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
