@@ -1,0 +1,49 @@
+{
+  "$schema": "https://raw.githubusercontent.com/RicoSuter/NSwag/master/src/NSwag.Commands/configuration.schema.json",
+  "runtime": "Net100",
+  "defaultVariables": {
+    "configuration": "Release"
+  },
+  "documentGenerator": {
+    "aspNetCoreToOpenApi": {
+      "project": "src/ProductCatalog.Api/ProductCatalog.Api/ProductCatalog.Api.csproj",
+      "configuration": "$(configuration)",
+      "aspNetCoreEnvironment": "Development",
+      "msBuildProjectExtensionsPath": "obj",
+      "output": "clients/openapi.json"
+    }
+  },
+  "codeGenerators": {
+    "openApiToTypeScriptClient": {
+      "className": "ProductCatalogClient",
+      "moduleName": "",
+      "template": "Angular",
+      "useSingletonProvider": true,
+      "httpClass": "HttpClient",
+      "injectionTokenType": "InjectionToken",
+      "rxJsVersion": "8.0",
+      "generateClientInterfaces": true,
+      "generateOptionalParameters": true,
+      "useTransformOptionsMethod": true,
+      "useTransformResultMethod": true,
+      "typeStyle": "Interface",
+      "serviceHost": "",
+      "serviceSchemes": [
+        "http",
+        "https"
+      ],
+      "output": "clients/angular/product-catalog-client.ts"
+    },
+    "openApiToCSharpClient": {
+      "className": "ProductCatalogClient",
+      "namespace": "ProductCatalog.Client",
+      "useHttpClientCreationMethod": true,
+      "disposeHttpClient": false,
+      "generateClientInterfaces": true,
+      "injectHttpClient": true,
+      "useBaseUrl": true,
+      "generateOptionalParameters": true,
+      "output": "clients/dotnet/ProductCatalogClient.cs"
+    }
+  }
+}
