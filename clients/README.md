@@ -10,6 +10,7 @@ This repository ships an NSwag configuration that generates:
 
 - .NET SDK that can build the API project (currently targeting `net10.0`).
 - The `dotnet` local tools manifest in `.config/dotnet-tools.json` (restored automatically in the steps below).
+- NSwag CLI 14.6.3 currently requires the `"runtime": "Net80"` setting in `nswag.clients.json`; the generated clients still target the API’s `net10.0` outputs.
 
 ## Regenerating the clients
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/RicoSuter/NSwag/master/src/NSwag.Commands/configuration.schema.json",
-  "runtime": "Net100",
+  "runtime": "Net80",
   "defaultVariables": {
     "configuration": "Release"
   },
