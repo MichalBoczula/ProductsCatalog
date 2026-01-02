@@ -39,6 +39,8 @@ namespace ProductCatalog.Api
             builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
 
+            builder.Services.AddOpenApiDocument();
+
             var app = builder.Build();
 
             app.UseExceptionHandler(_ => { });
@@ -47,6 +49,10 @@ namespace ProductCatalog.Api
 
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseReDoc(options =>
+            {
+                options.Path = "/redoc";
+            });
 
             app.UseHttpsRedirection();
 
