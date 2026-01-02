@@ -7,7 +7,7 @@ This repository is configured to generate an Angular-friendly TypeScript client 
 - The API project builds successfully (the NSwag step builds the API by default).
 
 ## How to generate locally
-1. Restore the local tools:
+1. Restore the local tools (manifest now pins `nswag.consolecore` 14.6.3):
    ```bash
    dotnet tool restore
    ```

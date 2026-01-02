@@ -1,5 +1,5 @@
 {
-  "runtime": "Net80",
+  "runtime": "Net100",
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
       "project": "src/ProductCatalog.Api/ProductCatalog.Api/ProductCatalog.Api.csproj",
