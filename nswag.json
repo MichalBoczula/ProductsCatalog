@@ -1,0 +1,27 @@
+{
+  "runtime": "Net80",
+  "documentGenerator": {
+    "aspNetCoreToOpenApi": {
+      "project": "src/ProductCatalog.Api/ProductCatalog.Api/ProductCatalog.Api.csproj",
+      "noBuild": false,
+      "configuration": "Release",
+      "useDocumentProvider": true,
+      "defaultPropertyNameHandling": "CamelCase"
+    }
+  },
+  "codeGenerators": {
+    "openApiToTypeScriptClient": {
+      "template": "Angular",
+      "httpClass": "HttpClient",
+      "rxJsVersion": 7,
+      "useAbortSignal": true,
+      "generateClientInterfaces": true,
+      "generateClientClasses": true,
+      "generateOptionalParameters": true,
+      "baseUrlTokenName": "API_BASE_URL",
+      "injectionTokenType": "InjectionToken",
+      "typeStyle": "Class",
+      "output": "clients/angular/api-client.ts"
+    }
+  }
+}
