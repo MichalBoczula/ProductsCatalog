@@ -1,5 +1,6 @@
 using Mapster;
 using ProductCatalog.Application.Common.Dtos.Categories;
+using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;

@@ -65,13 +65,10 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(descriptions);
             })
             .WithName("DescribeAllFlows")
+            .WithSummary("Describe all request flows")
+            .WithDescription("Returns the ordered steps executed when handling every documented request.")
             .Produces<IReadOnlyCollection<FlowDescription>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-            .WithOpenApi(operation => new(operation)
-            {
-                Summary = "Describe all request flows",
-                Description = "Returns the ordered steps executed when handling every documented request."
-            });
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapGet("/validation-policies", ([FromServices] IEnumerable<IValidationPolicyDescriptorProvider> validationPolicyProviders) =>
                 Results.Ok(validationPolicyProviders
@@ -79,13 +76,10 @@ namespace ProductCatalog.Api.Endpoints
                     .OrderBy(descriptor => descriptor.PolicyName)
                     .ToList()))
             .WithName("DescribeValidationPolicies")
+            .WithSummary("Describe all validation policies")
+            .WithDescription("Returns validation policies with their rules and possible validation errors.")
             .Produces<IReadOnlyCollection<ValidationPolicyDescriptor>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-            .WithOpenApi(operation => new(operation)
-            {
-                Summary = "Describe all validation policies",
-                Description = "Returns validation policies with their rules and possible validation errors."
-            });
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             return group;
         }
