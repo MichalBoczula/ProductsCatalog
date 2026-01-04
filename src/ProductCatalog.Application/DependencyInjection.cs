@@ -14,6 +14,8 @@ using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
@@ -67,6 +69,12 @@ namespace ProductCatalog.Application
 
             services.AddScoped<DeleteMobilePhoneCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<DeleteMobilePhoneCommand>, DeleteMobilePhoneCommandFlowDescribtor>();
+
+            services.AddScoped<GetMobilePhoneByIdQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetMobilePhoneByIdQuery>, GetMobilePhoneByIdQueryFlowDescribtor>();
+
+            services.AddScoped<GetMobilePhonesQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetMobilePhonesQuery>, GetMobilePhonesQueryFlowDescribtor>();
 
             services.AddScoped<GetCurrenciesQueryFlowDescribtor>();
             services.AddScoped<IFlowDescriber<GetCurrenciesQuery>, GetCurrenciesQueryFlowDescribtor>();

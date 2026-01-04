@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Validation.Abstract;

@@ -1,7 +1,7 @@
 ﻿using Mapster;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
-using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Validation.Abstract;
