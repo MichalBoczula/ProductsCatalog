@@ -1,5 +1,6 @@
 using Mapster;
 using ProductCatalog.Application.Common.Dtos.Categories;
+using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
@@ -8,6 +9,7 @@ using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Mapping;
@@ -16,6 +18,7 @@ using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
@@ -122,6 +125,86 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Price.Currency.ShouldBe(priceCurrency);
             dto.IsActive.ShouldBe(readModel.IsActive);
             dto.CategoryId.ShouldBe(readModel.CategoryId);
+        }
+
+        [Fact]
+        public void CreateMobilePhoneExternalDto_ShouldBeMapTo_MobilePhone()
+        {
+            //Arrange
+            var commonDescription = new CommonDescriptionExtrernalDto("Phone", "Good phone", "main-photo", new List<string> { "photo1" });
+            var price = new CreateMoneyExternalDto(250.5m, "usd");
+            var dto = new CreateMobilePhoneExternalDto(commonDescription, true, false, Guid.NewGuid(), price);
+
+            //Act
+            var mobilePhone = dto.Adapt<MobilePhone>();
+
+            //Assert
+            mobilePhone.Id.ShouldNotBe(Guid.Empty);
+            mobilePhone.CommonDescription.Name.ShouldBe(commonDescription.Name);
+            mobilePhone.CommonDescription.Description.ShouldBe(commonDescription.Description);
+            mobilePhone.CommonDescription.MainPhoto.ShouldBe(commonDescription.MainPhoto);
+            mobilePhone.CommonDescription.OtherPhotos.ShouldBe(commonDescription.OtherPhotos);
+            mobilePhone.FingerPrint.ShouldBeTrue();
+            mobilePhone.FaceId.ShouldBeFalse();
+            mobilePhone.CategoryId.ShouldBe(dto.CategoryId);
+            mobilePhone.Price.Amount.ShouldBe(price.Amount);
+            mobilePhone.Price.Currency.ShouldBe(price.Currency.ToUpperInvariant());
+            mobilePhone.IsActive.ShouldBeTrue();
+            mobilePhone.ChangedAt.ShouldNotBe(DateTime.MinValue);
+        }
+
+        [Fact]
+        public void UpdateMobilePhoneExternalDto_ShouldBeMapTo_MobilePhone()
+        {
+            //Arrange
+            var commonDescription = new CommonDescriptionExtrernalDto("Phone 2", "Better phone", "main-photo2", new List<string>());
+            var price = new UpdateMoneyExternalDto(300.25m, "eur");
+            var dto = new UpdateMobilePhoneExternalDto(commonDescription, false, true, Guid.NewGuid(), price);
+
+            //Act
+            var mobilePhone = dto.Adapt<MobilePhone>();
+
+            //Assert
+            mobilePhone.Id.ShouldNotBe(Guid.Empty);
+            mobilePhone.CommonDescription.Name.ShouldBe(commonDescription.Name);
+            mobilePhone.CommonDescription.Description.ShouldBe(commonDescription.Description);
+            mobilePhone.CommonDescription.MainPhoto.ShouldBe(commonDescription.MainPhoto);
+            mobilePhone.CommonDescription.OtherPhotos.ShouldBe(commonDescription.OtherPhotos);
+            mobilePhone.FingerPrint.ShouldBeFalse();
+            mobilePhone.FaceId.ShouldBeTrue();
+            mobilePhone.CategoryId.ShouldBe(dto.CategoryId);
+            mobilePhone.Price.Amount.ShouldBe(price.Amount);
+            mobilePhone.Price.Currency.ShouldBe(price.Currency.ToUpperInvariant());
+            mobilePhone.IsActive.ShouldBeTrue();
+            mobilePhone.ChangedAt.ShouldNotBe(DateTime.MinValue);
+        }
+
+        [Fact]
+        public void MobilePhone_ShouldBeMapTo_MobilePhoneDto()
+        {
+            //Arrange
+            var categoryId = Guid.NewGuid();
+            var mobilePhone = new MobilePhone(
+                new CommonDescription("Phone", "Good phone", "main-photo", new List<string>()),
+                true,
+                true,
+                categoryId,
+                new Money(199.99m, "usd"));
+
+            //Act
+            var dto = mobilePhone.Adapt<MobilePhoneDto>();
+
+            //Assert
+            dto.Id.ShouldBe(mobilePhone.Id);
+            dto.CommonDescription.Name.ShouldBe(mobilePhone.CommonDescription.Name);
+            dto.CommonDescription.Description.ShouldBe(mobilePhone.CommonDescription.Description);
+            dto.CommonDescription.MainPhoto.ShouldBe(mobilePhone.CommonDescription.MainPhoto);
+            dto.CommonDescription.OtherPhotos.ShouldBe(mobilePhone.CommonDescription.OtherPhotos);
+            dto.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
+            dto.FaceId.ShouldBe(mobilePhone.FaceId);
+            dto.CategoryId.ShouldBe(categoryId);
+            dto.Price.Amount.ShouldBe(mobilePhone.Price.Amount);
+            dto.Price.Currency.ShouldBe(mobilePhone.Price.Currency);
         }
 
         [Fact]

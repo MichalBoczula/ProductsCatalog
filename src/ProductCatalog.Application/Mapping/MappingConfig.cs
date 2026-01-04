@@ -9,6 +9,7 @@ using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
@@ -116,6 +117,10 @@ namespace ProductCatalog.Application.Mapping
         private static void CreateMappingForMobilePhone()
         {
             TypeAdapterConfig<CreateMobilePhoneExternalDto, MobilePhone>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateMobilePhoneExternalDto, MobilePhone>
                .NewConfig()
                .MapToConstructor(true);
 

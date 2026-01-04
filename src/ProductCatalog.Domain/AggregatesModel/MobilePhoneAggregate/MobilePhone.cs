@@ -38,5 +38,15 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             CategoryId = categoryId;
             Price = price;
         }
+
+        public void AssigneNewMobilePhoneInformation(MobilePhone incoming)
+        {
+            CommonDescription = incoming.CommonDescription;
+            FingerPrint = incoming.FingerPrint;
+            FaceId = incoming.FaceId;
+            CategoryId = incoming.CategoryId;
+            Price = incoming.Price;
+            SetChangeDate();
+        }
     }
 }
