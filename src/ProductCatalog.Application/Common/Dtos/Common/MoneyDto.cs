@@ -1,4 +1,4 @@
-﻿namespace ProductCatalog.Application.Common.Dtos.Products
+﻿namespace ProductCatalog.Application.Common.Dtos.Common
 {
     public sealed record MoneyDto
     {

@@ -8,8 +8,10 @@ namespace ProductCatalog.Infrastructure.Common
         public const string Products = "TB_Products";
         public const string Categories = "TB_Categories";
         public const string Currencies = "TB_Currencies";
+        public const string MobilePhones = "TB_MobilePhones";
         public const string ProductsHistory = "TB_Products_History";
         public const string CategoriesHistory = "TB_Categories_History";
         public const string CurrenciesHistory = "TB_Currencies_History";
+        public const string MobilePhonesHistory = "TB_MobilePhones_History";
     }
 }

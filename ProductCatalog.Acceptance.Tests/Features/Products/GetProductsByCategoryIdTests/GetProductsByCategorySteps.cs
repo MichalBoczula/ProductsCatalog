@@ -4,6 +4,8 @@ using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Common;
+using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using Reqnroll;
 using Shouldly;

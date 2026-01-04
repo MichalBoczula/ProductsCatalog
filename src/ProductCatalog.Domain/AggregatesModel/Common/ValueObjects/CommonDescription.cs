@@ -5,9 +5,9 @@
         public string Name { get; private set; }
         public string Description { get; private set; }
         public string MainPhoto { get; private set; }
-        public List<string> OtherPhotos { get; private set; }
+        public IReadOnlyList<string> OtherPhotos { get; private set; }
 
-        public CommonDescription(string name, string description, string mainPhoto, List<string> otherPhotos)
+        public CommonDescription(string name, string description, string mainPhoto, IReadOnlyList<string> otherPhotos)
         {
             Name = name;
             Description = description;

@@ -5,6 +5,8 @@ using System.Text.Json;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Acceptance.Tests.Features.Products.Common;
 using ProductCatalog.Application.Common.Dtos.Products;
+using ProductCatalog.Application.Features.Common;
+using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using Reqnroll;
 using Shouldly;

@@ -1,4 +1,6 @@
-﻿namespace ProductCatalog.Application.Common.Dtos.Products
+﻿using ProductCatalog.Application.Common.Dtos.Common;
+
+namespace ProductCatalog.Application.Common.Dtos.Products
 {
     public sealed record ProductDto
     {

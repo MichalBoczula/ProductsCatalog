@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Http;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Products;
+using ProductCatalog.Application.Features.Common;
+using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using Reqnroll;

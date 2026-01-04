@@ -1,5 +1,7 @@
 using ProductCatalog.Acceptance.Tests.Features.Products.Common;
 using ProductCatalog.Api.Configuration.Common;
+using ProductCatalog.Application.Features.Common;
+using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using Reqnroll;
 using Shouldly;

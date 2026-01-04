@@ -77,6 +77,7 @@ namespace ProductCatalog.Api
             app.MapCategoriesEndpoints();
             app.MapCurrenciesEndpoints();
             app.MapDocumentationsEndpoints();
+            app.MapMobilePhonesEndpoints();
 
             app.MapHealthChecks("/health");
 
