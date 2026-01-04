@@ -11,6 +11,7 @@ using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
+using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
@@ -56,6 +57,9 @@ namespace ProductCatalog.Application
 
             services.AddScoped<DeleteCategoryCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<DeleteCategoryCommand>, DeleteCategoryCommandFlowDescribtor>();
+
+            services.AddScoped<CreateMobilePhoneCommandFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<CreateMobilePhoneCommand>, CreateMobilePhoneCommandFlowDescribtor>();
 
             services.AddScoped<UpdateMobilePhoneCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<UpdateMobilePhoneCommand>, UpdateMobilePhoneCommandFlowDescribtor>();

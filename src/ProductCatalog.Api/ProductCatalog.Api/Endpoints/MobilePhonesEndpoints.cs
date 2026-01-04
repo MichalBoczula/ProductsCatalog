@@ -25,8 +25,11 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Created($"/mobile-phones/{result.Id}", result);
             })
             .WithName("CreateMobilePhone")
-            .WithSummary("Create a new mobile phone")
-            .WithDescription("Creates a new mobile phone in the product catalog.")
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Create mobile phone",
+                Description = "Creates a new mobile phone and returns the created resource.",
+            })
             .Produces<MobilePhoneDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
