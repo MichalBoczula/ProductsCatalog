@@ -2,6 +2,7 @@
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.Currencies;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
@@ -18,10 +19,12 @@ using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
+using System.Text.Json;
 
 namespace ProductCatalog.Application.Mapping
 {
@@ -55,6 +58,23 @@ namespace ProductCatalog.Application.Mapping
         {
             TypeAdapterConfig<ProductReadModel, ProductDto>
                 .NewConfig()
+                .Map(dest => dest.Price,
+                    src => new MoneyDto
+                    {
+                        Amount = src.PriceAmount,
+                        Currency = src.PriceCurrency
+                    });
+
+            TypeAdapterConfig<MobilePhoneReadModel, MobilePhoneDto>
+                .NewConfig()
+                .Map(dest => dest.CommonDescription,
+                    src => new CommonDescriptionDto
+                    {
+                        Name = src.Name,
+                        Description = src.Description,
+                        MainPhoto = src.MainPhoto,
+                        OtherPhotos = JsonSerializer.Deserialize<IReadOnlyList<string>>(src.OtherPhotos) ?? Array.Empty<string>()
+                    })
                 .Map(dest => dest.Price,
                     src => new MoneyDto
                     {

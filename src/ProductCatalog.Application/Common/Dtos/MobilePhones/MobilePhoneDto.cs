@@ -1,0 +1,14 @@
+﻿using ProductCatalog.Application.Common.Dtos.Common;
+
+namespace ProductCatalog.Application.Common.Dtos.MobilePhones
+{
+    public sealed record MobilePhoneDto
+    {
+        public required CommonDescriptionDto CommonDescription { get; init; }
+        public required MoneyDto Price { get; init; }
+        public required bool FingerPrint { get; init; }
+        public required bool FaceId { get; init; }
+        public required Guid CategoryId { get; init; }
+        public required Guid Id { get; init; }
+    }
+}

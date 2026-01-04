@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone
 {

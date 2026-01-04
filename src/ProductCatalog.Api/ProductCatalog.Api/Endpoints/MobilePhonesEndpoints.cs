@@ -1,9 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Api.Configuration.Common;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -13,9 +16,39 @@ namespace ProductCatalog.Api.Endpoints
         {
             var group = app.MapGroup("/mobile-phones").WithTags("MobilePhones");
 
+            MapMobilePhonesQueries(group);
             MapMobilePhonesCommands(group);
 
             return group;
+        }
+
+        private static void MapMobilePhonesQueries(IEndpointRouteBuilder group)
+        {
+            group.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetMobilePhoneByIdQuery(id));
+
+                return result is null ?
+                    Results.NotFound()
+                  : Results.Ok(result);
+            })
+            .WithSummary("Get mobile phone by Id")
+            .WithDescription("Returns the mobile phone details when the Id exists; 404 otherwise.")
+            .WithName("GetMobilePhoneById")
+            .Produces<MobilePhoneDto>(StatusCodes.Status200OK)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+
+            group.MapGet("", async ([FromQuery] int amount, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetMobilePhonesQuery(amount));
+                return Results.Ok(result);
+            })
+            .WithSummary("Get mobile phones")
+            .WithDescription("Returns a list of mobile phones limited by the provided amount.")
+            .WithName("GetMobilePhones")
+            .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }
 
         private static void MapMobilePhonesCommands(IEndpointRouteBuilder group)

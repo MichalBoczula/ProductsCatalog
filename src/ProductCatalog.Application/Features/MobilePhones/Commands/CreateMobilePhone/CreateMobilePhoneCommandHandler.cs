@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Validation.Abstract;

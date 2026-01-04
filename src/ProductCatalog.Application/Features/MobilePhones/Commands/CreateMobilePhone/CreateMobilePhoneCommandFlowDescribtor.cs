@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;

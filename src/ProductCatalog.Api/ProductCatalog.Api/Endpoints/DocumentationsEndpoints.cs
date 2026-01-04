@@ -15,6 +15,8 @@ using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.Products.Queries.GetProductById;
 using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
@@ -44,6 +46,8 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<CreateMobilePhoneCommand> createMobilePhoneFlowDescriber,
                 [FromServices] IFlowDescriber<UpdateMobilePhoneCommand> updateMobilePhoneFlowDescriber,
                 [FromServices] IFlowDescriber<DeleteMobilePhoneCommand> deleteMobilePhoneFlowDescriber,
+                [FromServices] IFlowDescriber<GetMobilePhoneByIdQuery> getMobilePhoneByIdFlowDescriber,
+                [FromServices] IFlowDescriber<GetMobilePhonesQuery> getMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCurrenciesQuery> getCurrenciesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoriesQuery> getCategoriesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoryByIdQuery> getCategoryByIdFlowDescriber,
@@ -64,6 +68,8 @@ namespace ProductCatalog.Api.Endpoints
                     createMobilePhoneFlowDescriber.DescribeFlow(default!),
                     updateMobilePhoneFlowDescriber.DescribeFlow(default!),
                     deleteMobilePhoneFlowDescriber.DescribeFlow(default!),
+                    getMobilePhoneByIdFlowDescriber.DescribeFlow(default!),
+                    getMobilePhonesFlowDescriber.DescribeFlow(default!),
                     getCurrenciesFlowDescriber.DescribeFlow(default!),
                     getCategoriesFlowDescriber.DescribeFlow(default!),
                     getCategoryByIdFlowDescriber.DescribeFlow(default!),
