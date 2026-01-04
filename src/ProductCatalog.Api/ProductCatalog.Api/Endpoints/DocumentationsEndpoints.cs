@@ -12,6 +12,9 @@ using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
+using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.Products.Queries.GetProductById;
 using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
@@ -38,6 +41,9 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<CreateCategoryCommand> createCategoryFlowDescriber,
                 [FromServices] IFlowDescriber<UpdateCategoryCommand> updateCategoryFlowDescriber,
                 [FromServices] IFlowDescriber<DeleteCategoryCommand> deleteCategoryFlowDescriber,
+                [FromServices] IFlowDescriber<CreateMobilePhoneCommand> createMobilePhoneFlowDescriber,
+                [FromServices] IFlowDescriber<UpdateMobilePhoneCommand> updateMobilePhoneFlowDescriber,
+                [FromServices] IFlowDescriber<DeleteMobilePhoneCommand> deleteMobilePhoneFlowDescriber,
                 [FromServices] IFlowDescriber<GetCurrenciesQuery> getCurrenciesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoriesQuery> getCategoriesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoryByIdQuery> getCategoryByIdFlowDescriber,
@@ -55,6 +61,9 @@ namespace ProductCatalog.Api.Endpoints
                     createCategoryFlowDescriber.DescribeFlow(default!),
                     updateCategoryFlowDescriber.DescribeFlow(default!),
                     deleteCategoryFlowDescriber.DescribeFlow(default!),
+                    createMobilePhoneFlowDescriber.DescribeFlow(default!),
+                    updateMobilePhoneFlowDescriber.DescribeFlow(default!),
+                    deleteMobilePhoneFlowDescriber.DescribeFlow(default!),
                     getCurrenciesFlowDescriber.DescribeFlow(default!),
                     getCategoriesFlowDescriber.DescribeFlow(default!),
                     getCategoryByIdFlowDescriber.DescribeFlow(default!),
