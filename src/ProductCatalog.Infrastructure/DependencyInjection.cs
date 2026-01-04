@@ -37,6 +37,7 @@ namespace ProductCatalog.Infrastructure
             services.AddScoped<ICurrenciesCommandsRepository, CurrenciesCommandsRepository>();
 
             services.AddScoped<IMobilePhonesCommandsRepository, MobilePhonesCommandsRepository>();
+            services.AddScoped<IMobilePhonesQueriesRepository, MobilePhonesQueriesRepository>();
 
             return services;
         }
