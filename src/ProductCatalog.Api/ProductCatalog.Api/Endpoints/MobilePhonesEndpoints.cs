@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 
 namespace ProductCatalog.Api.Endpoints
@@ -39,6 +40,18 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Update mobile phone")
             .WithDescription("Updates an existing mobile phone and returns the updated resource.")
             .WithName("UpdateMobilePhone")
+            .Produces<MobilePhoneDto>(StatusCodes.Status200OK)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+
+            group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new DeleteMobilePhoneCommand(id));
+                return Results.Ok(result);
+            })
+            .WithSummary("Delete mobile phone")
+            .WithDescription("Soft deletes a mobile phone and returns the deactivated resource.")
+            .WithName("DeleteMobilePhone")
             .Produces<MobilePhoneDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
