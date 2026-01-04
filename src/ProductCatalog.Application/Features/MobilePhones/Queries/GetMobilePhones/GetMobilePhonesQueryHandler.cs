@@ -15,7 +15,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
                 .GetMobilePhones(_mobilePhonesQueriesRepository, request.amount, cancellationToken);
 
             var existingMobilePhones = _getMobilePhonesQueryFlowDescribtor
-                .EnsureMobilePhonesFound(mobilePhones, request.amount);
+                .EnsureMobilePhonesFound(mobilePhones);
 
             return _getMobilePhonesQueryFlowDescribtor.MapMobilePhonesToDto(existingMobilePhones);
         }

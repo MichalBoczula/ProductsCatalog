@@ -17,11 +17,11 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
         }
 
         [FlowStep(2)]
-        public IReadOnlyList<MobilePhoneReadModel> EnsureMobilePhonesFound(IReadOnlyList<MobilePhoneReadModel> mobilePhones, int amount)
+        public IReadOnlyList<MobilePhoneReadModel> EnsureMobilePhonesFound(IReadOnlyList<MobilePhoneReadModel> mobilePhones)
         {
             if (mobilePhones is null)
             {
-                throw new ResourceNotFoundException(nameof(GetMobilePhonesQuery), amount, nameof(List<MobilePhoneDto>));
+                throw new ResourceNotFoundException(nameof(GetMobilePhonesQuery), Guid.Empty, nameof(List<MobilePhoneDto>));
             }
 
             return mobilePhones;
