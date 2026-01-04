@@ -61,7 +61,6 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        PriceCurrency,
                        IsActive
                 FROM {SqlTableNames.MobilePhones}
-                ORDER BY Name;
                 ";
 
             using var connection = CreateConnection();
