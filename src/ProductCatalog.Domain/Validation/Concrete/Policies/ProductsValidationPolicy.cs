@@ -1,7 +1,7 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Products;

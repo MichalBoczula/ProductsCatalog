@@ -1,5 +1,5 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using Shouldly;
 
 namespace ProductCatalog.Domain.UnitTests.AggregateModels.ProductAggregate

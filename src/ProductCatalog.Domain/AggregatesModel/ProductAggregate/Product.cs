@@ -1,5 +1,5 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.Common;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 
 namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate
 {
@@ -12,7 +12,11 @@ namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate
 
         private Product() { }
 
-        public Product(string name, string description, Money price, Guid categoryId)
+        public Product(
+            string name,
+            string description,
+            Money price,
+            Guid categoryId)
         {
             Name = name;
             Description = description;

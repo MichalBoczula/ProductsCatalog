@@ -1,4 +1,4 @@
-﻿namespace ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects
+﻿namespace ProductCatalog.Domain.AggregatesModel.Common.ValueObjects
 {
     public record struct Money
     {

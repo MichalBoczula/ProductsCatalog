@@ -1,10 +1,10 @@
 using Moq;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Mapping;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;

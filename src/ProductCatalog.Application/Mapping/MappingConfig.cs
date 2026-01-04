@@ -10,11 +10,11 @@ using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
 

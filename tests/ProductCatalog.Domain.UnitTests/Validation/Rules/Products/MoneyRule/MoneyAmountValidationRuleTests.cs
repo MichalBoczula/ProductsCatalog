@@ -1,5 +1,5 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Products.MoneyRule;
 using Shouldly;

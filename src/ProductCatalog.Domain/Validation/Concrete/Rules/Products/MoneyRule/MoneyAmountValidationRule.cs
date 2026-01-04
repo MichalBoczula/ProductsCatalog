@@ -1,4 +1,4 @@
-﻿using ProductCatalog.Domain.AggregatesModel.ProductAggregate.ValueObjects;
+﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
