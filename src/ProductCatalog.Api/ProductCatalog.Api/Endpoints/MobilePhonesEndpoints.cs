@@ -1,9 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Products;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
+using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -28,9 +27,24 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("CreateMobilePhone")
             .WithSummary("Create a new mobile phone")
             .WithDescription("Creates a new mobile phone in the product catalog.")
-            .Produces<ProductDto>(StatusCodes.Status201Created)
+            .Produces<MobilePhoneDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+
+            group.MapPut("/{id:guid}", async (Guid id, UpdateMobilePhoneExternalDto mobilePhone, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new UpdateMobilePhoneCommand(id, mobilePhone));
+                return Results.Ok(result);
+            })
+            .WithName("UpdateMobilePhone")
+            .Produces<MobilePhoneDto>(StatusCodes.Status200OK)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .WithOpenApi(operation => new(operation)
+            {
+                Summary = "Update mobile phone",
+                Description = "Updates an existing mobile phone and returns the updated resource.",
+            });
         }
     }
 }

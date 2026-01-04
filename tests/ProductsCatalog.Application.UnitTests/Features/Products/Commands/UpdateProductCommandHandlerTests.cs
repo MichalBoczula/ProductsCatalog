@@ -1,4 +1,5 @@
 using Moq;
+using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;

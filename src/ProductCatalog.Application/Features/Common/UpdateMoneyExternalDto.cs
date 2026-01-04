@@ -1,4 +1,4 @@
-﻿namespace ProductCatalog.Application.Features.Products.Commands.UpdateProduct
+﻿namespace ProductCatalog.Application.Features.Common
 {
     public sealed record UpdateMoneyExternalDto(decimal Amount, string Currency);
 }
