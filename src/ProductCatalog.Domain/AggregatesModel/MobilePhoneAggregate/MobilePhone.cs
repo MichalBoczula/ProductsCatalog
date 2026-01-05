@@ -1,5 +1,6 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.Common;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 
 namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
 {
@@ -7,7 +8,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
     {
         public CommonDescription CommonDescription { get; private set; }
         public ElectronicDetails ElectronicDetails { get; private set; }
-        //public Connectivity Connectivity { get; private set; }
+        public Connectivity Connectivity { get; private set; }
         //public SatelliteNavigationSystem SatelliteNavigationSystem { get; private set; }
         //public Sensors Sensors { get; private set; }
         public bool FingerPrint { get; private set; }
@@ -20,7 +21,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         public MobilePhone(
             CommonDescription commonDescription,
             ElectronicDetails electronicDetails,
-            //Connectivity connectivity,
+            Connectivity connectivity,
             //SatelliteNavigationSystem satelliteNavigationSystem,
             //Sensors sensors,
             bool fingerPrint,
@@ -30,7 +31,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         {
             CommonDescription = commonDescription;
             ElectronicDetails = electronicDetails;
-            //Connectivity = connectivity;
+            Connectivity = connectivity;
             //SatelliteNavigationSystem = satelliteNavigationSystem;
             //Sensors = sensors;
             FingerPrint = fingerPrint;
@@ -43,6 +44,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         {
             CommonDescription = incoming.CommonDescription;
             ElectronicDetails = incoming.ElectronicDetails;
+            Connectivity = incoming.Connectivity;
             FingerPrint = incoming.FingerPrint;
             FaceId = incoming.FaceId;
             CategoryId = incoming.CategoryId;

@@ -37,6 +37,14 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
                 desc.Property(p => p.Height).HasColumnName("Height").IsRequired();
             });
 
+            builder.ComplexProperty(x => x.Connectivity, desc =>
+            {
+                desc.Property(p => p.Has5G).HasColumnName("5G").IsRequired();
+                desc.Property(p => p.Bluetooth).HasColumnName("Bluetooth").IsRequired();
+                desc.Property(p => p.WiFi).HasColumnName("WiFi").IsRequired();
+                desc.Property(p => p.NFC).HasColumnName("NFC").IsRequired();
+            });
+
             builder.ComplexProperty(x => x.Price, money =>
                 {
                     money.Property(m => m.Amount)
