@@ -226,11 +226,15 @@ namespace ProductCatalog.Application.Mapping
         {
             TypeAdapterConfig<CreateMobilePhoneExternalDto, MobilePhone>
                .NewConfig()
-               .MapToConstructor(true);
+               .MapToConstructor(true)
+               .Map(dest => dest.SatelliteNavigationSystems, src => src.SatelliteNavigationSystems)
+               .Map(dest => dest.Sensors, src => src.Sensors);
 
             TypeAdapterConfig<UpdateMobilePhoneExternalDto, MobilePhone>
                .NewConfig()
-               .MapToConstructor(true);
+               .MapToConstructor(true)
+               .Map(dest => dest.SatelliteNavigationSystems, src => src.SatelliteNavigationSystems)
+               .Map(dest => dest.Sensors, src => src.Sensors);
 
             TypeAdapterConfig<MobilePhone, MobilePhoneDto>
                 .NewConfig();
