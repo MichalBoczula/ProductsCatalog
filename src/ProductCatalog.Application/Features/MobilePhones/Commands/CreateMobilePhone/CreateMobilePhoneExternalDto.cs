@@ -6,6 +6,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
     public sealed record CreateMobilePhoneExternalDto(
         CommonDescriptionExtrernalDto CommonDescription,
         CreateElectronicDetailsExternalDto ElectronicDetails,
+        CreateConnectivityExternalDto Connectivity,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,

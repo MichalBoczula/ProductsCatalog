@@ -20,6 +20,7 @@ using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
@@ -90,6 +91,14 @@ namespace ProductCatalog.Application.Mapping
                         BatteryType = src.BatteryType,
                         BatteryCapacity = src.BatteryCapacity
                     })
+                .Map(dest => dest.Connectivity,
+                    src => new ConnectivityDto
+                    {
+                        Has5G = src.Has5G,
+                        WiFi = src.WiFi,
+                        NFC = src.NFC,
+                        Bluetooth = src.Bluetooth
+                    })
                 .Map(dest => dest.Price,
                     src => new MoneyDto
                     {
@@ -157,6 +166,17 @@ namespace ProductCatalog.Application.Mapping
                .MapToConstructor(true);
 
             TypeAdapterConfig<ElectronicDetails, ElectronicDetailsDto>
+                .NewConfig();
+
+            TypeAdapterConfig<CreateConnectivityExternalDto, Connectivity>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateConnectivityExternalDto, Connectivity>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<Connectivity, ConnectivityDto>
                 .NewConfig();
         }
 
