@@ -6,6 +6,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
     public sealed record UpdateMobilePhoneExternalDto(
         CommonDescriptionExtrernalDto CommonDescription,
         UpdateElectronicDetailsExternalDto ElectronicDetails,
+        UpdateConnectivityExternalDto Connectivity,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,

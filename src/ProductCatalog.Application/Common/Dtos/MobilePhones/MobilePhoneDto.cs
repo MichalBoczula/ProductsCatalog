@@ -6,6 +6,7 @@ namespace ProductCatalog.Application.Common.Dtos.MobilePhones
     {
         public required CommonDescriptionDto CommonDescription { get; init; }
         public required ElectronicDetailsDto ElectronicDetails { get; init; }
+        public required ConnectivityDto Connectivity { get; init; }
         public required MoneyDto Price { get; init; }
         public required bool FingerPrint { get; init; }
         public required bool FaceId { get; init; }
