@@ -9,8 +9,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         public CommonDescription CommonDescription { get; private set; }
         public ElectronicDetails ElectronicDetails { get; private set; }
         public Connectivity Connectivity { get; private set; }
-        //public SatelliteNavigationSystem SatelliteNavigationSystem { get; private set; }
-        //public Sensors Sensors { get; private set; }
+        public SatelliteNavigationSystem SatelliteNavigationSystems { get; private set; }
+        public Sensors Sensors { get; private set; }
         public bool FingerPrint { get; private set; }
         public bool FaceId { get; private set; }
         public Guid CategoryId { get; private set; }
@@ -22,8 +22,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             CommonDescription commonDescription,
             ElectronicDetails electronicDetails,
             Connectivity connectivity,
-            //SatelliteNavigationSystem satelliteNavigationSystem,
-            //Sensors sensors,
+            SatelliteNavigationSystem satelliteNavigationSystem,
+            Sensors sensors,
             bool fingerPrint,
             bool faceId,
             Guid categoryId,
@@ -32,8 +32,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             CommonDescription = commonDescription;
             ElectronicDetails = electronicDetails;
             Connectivity = connectivity;
-            //SatelliteNavigationSystem = satelliteNavigationSystem;
-            //Sensors = sensors;
+            SatelliteNavigationSystems = satelliteNavigationSystem;
+            Sensors = sensors;
             FingerPrint = fingerPrint;
             FaceId = faceId;
             CategoryId = categoryId;
@@ -45,6 +45,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             CommonDescription = incoming.CommonDescription;
             ElectronicDetails = incoming.ElectronicDetails;
             Connectivity = incoming.Connectivity;
+            SatelliteNavigationSystems = incoming.SatelliteNavigationSystems;
+            Sensors = incoming.Sensors;
             FingerPrint = incoming.FingerPrint;
             FaceId = incoming.FaceId;
             CategoryId = incoming.CategoryId;
