@@ -75,6 +75,21 @@ namespace ProductCatalog.Application.Mapping
                         MainPhoto = src.MainPhoto,
                         OtherPhotos = JsonSerializer.Deserialize<IReadOnlyList<string>>(src.OtherPhotos) ?? Array.Empty<string>()
                     })
+                .Map(dest => dest.ElectronicDetails,
+                    src => new ElectronicDetailsDto
+                    {
+                        CPU = src.CPU,
+                        GPU = src.GPU,
+                        Ram = src.Ram,
+                        Storage = src.Storage,
+                        DisplayType = src.DisplayType,
+                        RefreshRateHz = src.RefreshRateHz,
+                        ScreenSizeInches = src.ScreenSizeInches,
+                        Width = src.Width,
+                        Height = src.Height,
+                        BatteryType = src.BatteryType,
+                        BatteryCapacity = src.BatteryCapacity
+                    })
                 .Map(dest => dest.Price,
                     src => new MoneyDto
                     {
@@ -131,6 +146,17 @@ namespace ProductCatalog.Application.Mapping
                .MapToConstructor(true);
 
             TypeAdapterConfig<CommonDescription, CommonDescriptionDto>
+                .NewConfig();
+
+            TypeAdapterConfig<CreateElectronicDetailsExternalDto, ElectronicDetails>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateElectronicDetailsExternalDto, ElectronicDetails>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<ElectronicDetails, ElectronicDetailsDto>
                 .NewConfig();
         }
 
