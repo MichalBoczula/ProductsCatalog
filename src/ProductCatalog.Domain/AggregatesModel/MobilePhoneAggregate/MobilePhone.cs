@@ -42,6 +42,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         public void AssigneNewMobilePhoneInformation(MobilePhone incoming)
         {
             CommonDescription = incoming.CommonDescription;
+            ElectronicDetails = incoming.ElectronicDetails;
             FingerPrint = incoming.FingerPrint;
             FaceId = incoming.FaceId;
             CategoryId = incoming.CategoryId;
