@@ -11,8 +11,6 @@ using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
-using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
@@ -39,20 +37,6 @@ namespace ProductCatalog.Application.Mapping
             CreateMappingForReadModels();
             CreateMappingForCurrencies();
             CreateMappingForHistory();
-        }
-
-        private static void CreateMappingForProducts()
-        {
-            TypeAdapterConfig<CreateProductExternalDto, Product>
-                .NewConfig()
-                .MapToConstructor(true);
-
-            TypeAdapterConfig<UpdateProductExternalDto, Product>
-                .NewConfig()
-                .MapToConstructor(true);
-
-            TypeAdapterConfig<Product, ProductDto>
-                .NewConfig();
         }
 
         private static void CreateMappingForReadModels()
@@ -187,10 +171,13 @@ namespace ProductCatalog.Application.Mapping
 
             TypeAdapterConfig<ElectronicDetails, ElectronicDetailsDto>
                 .NewConfig();
+        }
 
+        private static void CreateMappingForMobilePhone()
+        {
             TypeAdapterConfig<CreateConnectivityExternalDto, Connectivity>
-               .NewConfig()
-               .MapToConstructor(true);
+              .NewConfig()
+              .MapToConstructor(true);
 
             TypeAdapterConfig<UpdateConnectivityExternalDto, Connectivity>
                .NewConfig()
@@ -220,10 +207,7 @@ namespace ProductCatalog.Application.Mapping
 
             TypeAdapterConfig<Sensors, SensorsDto>
                 .NewConfig();
-        }
 
-        private static void CreateMappingForMobilePhone()
-        {
             TypeAdapterConfig<CreateMobilePhoneExternalDto, MobilePhone>
                .NewConfig()
                .MapToConstructor(true)

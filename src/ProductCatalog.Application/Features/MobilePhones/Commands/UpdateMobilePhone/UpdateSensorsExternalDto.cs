@@ -1,4 +1,4 @@
-﻿namespace ProductCatalog.Application.Features.Common
+﻿namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone
 {
     public sealed record UpdateSensorsExternalDto(
         bool Accelerometer,
