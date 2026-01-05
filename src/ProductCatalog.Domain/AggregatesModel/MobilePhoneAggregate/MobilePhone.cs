@@ -22,7 +22,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             CommonDescription commonDescription,
             ElectronicDetails electronicDetails,
             Connectivity connectivity,
-            SatelliteNavigationSystem satelliteNavigationSystem,
+            SatelliteNavigationSystem satelliteNavigationSystems,
             Sensors sensors,
             bool fingerPrint,
             bool faceId,
@@ -32,7 +32,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             CommonDescription = commonDescription;
             ElectronicDetails = electronicDetails;
             Connectivity = connectivity;
-            SatelliteNavigationSystems = satelliteNavigationSystem;
+            SatelliteNavigationSystems = satelliteNavigationSystems;
             Sensors = sensors;
             FingerPrint = fingerPrint;
             FaceId = faceId;

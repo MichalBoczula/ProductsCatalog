@@ -7,6 +7,8 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
         CommonDescriptionExtrernalDto CommonDescription,
         UpdateElectronicDetailsExternalDto ElectronicDetails,
         UpdateConnectivityExternalDto Connectivity,
+        UpdateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
+        UpdateSensorsExternalDto Sensors,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,

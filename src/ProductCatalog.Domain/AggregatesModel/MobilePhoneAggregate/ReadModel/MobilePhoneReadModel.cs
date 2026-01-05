@@ -18,6 +18,18 @@
         public required int Height { get; init; }
         public required string BatteryType { get; init; }
         public required int BatteryCapacity { get; init; }
+        public required bool GPS { get; init; }
+        public required bool AGPS { get; init; }
+        public required bool Galileo { get; init; }
+        public required bool GLONASS { get; init; }
+        public required bool QZSS { get; init; }
+        public required bool Accelerometer { get; init; }
+        public required bool Gyroscope { get; init; }
+        public required bool Proximity { get; init; }
+        public required bool Compass { get; init; }
+        public required bool Barometer { get; init; }
+        public required bool Halla { get; init; }
+        public required bool AmbientLight { get; init; }
         public required bool Has5G { get; init; }
         public required bool WiFi { get; init; }
         public required bool NFC { get; init; }

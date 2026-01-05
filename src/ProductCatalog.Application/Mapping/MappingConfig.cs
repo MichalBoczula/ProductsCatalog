@@ -99,6 +99,26 @@ namespace ProductCatalog.Application.Mapping
                         NFC = src.NFC,
                         Bluetooth = src.Bluetooth
                     })
+                .Map(dest => dest.SatelliteNavigationSystems,
+                    src => new SatelliteNavigationSystemDto
+                    {
+                        GPS = src.GPS,
+                        AGPS = src.AGPS,
+                        Galileo = src.Galileo,
+                        GLONASS = src.GLONASS,
+                        QZSS = src.QZSS
+                    })
+                .Map(dest => dest.Sensors,
+                    src => new SensorsDto
+                    {
+                        Accelerometer = src.Accelerometer,
+                        Gyroscope = src.Gyroscope,
+                        Proximity = src.Proximity,
+                        Compass = src.Compass,
+                        Barometer = src.Barometer,
+                        Halla = src.Halla,
+                        AmbientLight = src.AmbientLight
+                    })
                 .Map(dest => dest.Price,
                     src => new MoneyDto
                     {
@@ -178,17 +198,43 @@ namespace ProductCatalog.Application.Mapping
 
             TypeAdapterConfig<Connectivity, ConnectivityDto>
                 .NewConfig();
+
+            TypeAdapterConfig<CreateSatelliteNavigationSystemExternalDto, SatelliteNavigationSystem>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateSatelliteNavigationSystemExternalDto, SatelliteNavigationSystem>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<SatelliteNavigationSystem, SatelliteNavigationSystemDto>
+                .NewConfig();
+
+            TypeAdapterConfig<CreateSensorsExternalDto, Sensors>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<UpdateSensorsExternalDto, Sensors>
+               .NewConfig()
+               .MapToConstructor(true);
+
+            TypeAdapterConfig<Sensors, SensorsDto>
+                .NewConfig();
         }
 
         private static void CreateMappingForMobilePhone()
         {
             TypeAdapterConfig<CreateMobilePhoneExternalDto, MobilePhone>
                .NewConfig()
-               .MapToConstructor(true);
+               .MapToConstructor(true)
+               .Map(dest => dest.SatelliteNavigationSystems, src => src.SatelliteNavigationSystems)
+               .Map(dest => dest.Sensors, src => src.Sensors);
 
             TypeAdapterConfig<UpdateMobilePhoneExternalDto, MobilePhone>
                .NewConfig()
-               .MapToConstructor(true);
+               .MapToConstructor(true)
+               .Map(dest => dest.SatelliteNavigationSystems, src => src.SatelliteNavigationSystems)
+               .Map(dest => dest.Sensors, src => src.Sensors);
 
             TypeAdapterConfig<MobilePhone, MobilePhoneDto>
                 .NewConfig();
