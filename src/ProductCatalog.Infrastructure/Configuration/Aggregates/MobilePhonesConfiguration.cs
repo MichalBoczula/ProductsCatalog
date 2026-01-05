@@ -45,7 +45,27 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
                 desc.Property(p => p.NFC).HasColumnName("NFC").IsRequired();
             });
 
-            builder.ComplexProperty(x => x.Price, money =>
+            builder.ComplexProperty(x => x.SatelliteNavigationSystems, desc =>
+            {
+                desc.Property(p => p.GPS).HasColumnName("GPS").IsRequired();
+                desc.Property(p => p.AGPS).HasColumnName("AGPS").IsRequired();
+                desc.Property(p => p.Galileo).HasColumnName("Galileo").IsRequired();
+                desc.Property(p => p.GLONASS).HasColumnName("GLONASS").IsRequired();
+                desc.Property(p => p.QZSS).HasColumnName("QZSS").IsRequired();
+            });
+
+            builder.ComplexProperty(x => x.Sensors, desc =>
+            {
+                desc.Property(p => p.Accelerometer).HasColumnName("Accelerometer").IsRequired();
+                desc.Property(p => p.Gyroscope).HasColumnName("Gyroscope").IsRequired();
+                desc.Property(p => p.Proximity).HasColumnName("Proximity").IsRequired();
+                desc.Property(p => p.Compass).HasColumnName("Compass").IsRequired();
+                desc.Property(p => p.Barometer).HasColumnName("Barometer").IsRequired();
+                desc.Property(p => p.Halla).HasColumnName("Halla").IsRequired();
+                desc.Property(p => p.AmbientLight).HasColumnName("AmbientLight").IsRequired();
+            });
+
+        builder.ComplexProperty(x => x.Price, money =>
                 {
                     money.Property(m => m.Amount)
                          .HasColumnName("PriceAmount")
