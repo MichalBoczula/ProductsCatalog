@@ -6,7 +6,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
     public class MobilePhone : AggregateRoot
     {
         public CommonDescription CommonDescription { get; private set; }
-        //public ElectronicDetails ElectronicDetails { get; private set; }
+        public ElectronicDetails ElectronicDetails { get; private set; }
         //public Connectivity Connectivity { get; private set; }
         //public SatelliteNavigationSystem SatelliteNavigationSystem { get; private set; }
         //public Sensors Sensors { get; private set; }
@@ -19,7 +19,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
 
         public MobilePhone(
             CommonDescription commonDescription,
-            //ElectronicDetails electronicDetails,
+            ElectronicDetails electronicDetails,
             //Connectivity connectivity,
             //SatelliteNavigationSystem satelliteNavigationSystem,
             //Sensors sensors,
@@ -29,7 +29,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             Money price)
         {
             CommonDescription = commonDescription;
-            //ElectronicDetails = electronicDetails;
+            ElectronicDetails = electronicDetails;
             //Connectivity = connectivity;
             //SatelliteNavigationSystem = satelliteNavigationSystem;
             //Sensors = sensors;
