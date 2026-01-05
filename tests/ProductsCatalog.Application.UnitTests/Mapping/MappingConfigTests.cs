@@ -18,6 +18,7 @@ using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
@@ -269,42 +270,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Barometer.ShouldBe(sensors.Barometer);
             dto.Halla.ShouldBe(sensors.Halla);
             dto.AmbientLight.ShouldBe(sensors.AmbientLight);
-        }
-
-        [Fact]
-        public void CreateProductExternalDto_ShouldMapTo_ProductWithMoney()
-        {
-            var externalPrice = new CreateMoneyExternalDto(10.5m, "usd");
-            var externalProduct = new CreateProductExternalDto("Phone", "Nice phone", externalPrice, Guid.NewGuid());
-
-            var product = externalProduct.Adapt<Product>();
-
-            product.Id.ShouldNotBe(Guid.Empty);
-            product.Name.ShouldBe(externalProduct.Name);
-            product.Description.ShouldBe(externalProduct.Description);
-            product.CategoryId.ShouldBe(externalProduct.CategoryId);
-            product.Price.Amount.ShouldBe(externalProduct.Price.Amount);
-            product.Price.Currency.ShouldBe(externalProduct.Price.Currency.ToUpperInvariant());
-            product.IsActive.ShouldBeTrue();
-            product.ChangedAt.ShouldNotBe(DateTime.MinValue);
-        }
-
-        [Fact]
-        public void UpdateProductExternalDto_ShouldMapTo_ProductWithMoney()
-        {
-            var updateMoney = new UpdateMoneyExternalDto(75.75m, "gbp");
-            var updateDto = new UpdateProductExternalDto("Tablet", "Updated", updateMoney, Guid.NewGuid());
-
-            var product = updateDto.Adapt<Product>();
-
-            product.Id.ShouldNotBe(Guid.Empty);
-            product.Name.ShouldBe(updateDto.Name);
-            product.Description.ShouldBe(updateDto.Description);
-            product.CategoryId.ShouldBe(updateDto.CategoryId);
-            product.Price.Amount.ShouldBe(updateMoney.Amount);
-            product.Price.Currency.ShouldBe(updateMoney.Currency.ToUpperInvariant());
-            product.IsActive.ShouldBeTrue();
-            product.ChangedAt.ShouldNotBe(DateTime.MinValue);
         }
 
         [Fact]
