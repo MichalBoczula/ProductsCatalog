@@ -7,6 +7,8 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
         CommonDescriptionExtrernalDto CommonDescription,
         CreateElectronicDetailsExternalDto ElectronicDetails,
         CreateConnectivityExternalDto Connectivity,
+        CreateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
+        CreateSensorsExternalDto Sensors,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,
