@@ -8,14 +8,27 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.CommonDescriptions
     {
         private readonly ValidationError nullOrWhiteSpace;
 
+        public CommonDescriptionsOtherPhotosRule()
+        {
+            nullOrWhiteSpace = new ValidationError
+            {
+                Message = "Other photos cannot be null or whitespace.",
+                Name = nameof(CommonDescriptionsOtherPhotosRule),
+                Entity = nameof(CommonDescription)
+            };
+        }
+
         public Task IsValid(CommonDescription entity, ValidationResult validationResults)
         {
-            throw new NotImplementedException();
+            if (entity.OtherPhotos is null || entity.OtherPhotos.Any(string.IsNullOrWhiteSpace))
+                validationResults.AddValidationError(nullOrWhiteSpace);
+
+            return Task.CompletedTask;
         }
 
         public List<ValidationError> Describe()
         {
-            throw new NotImplementedException();
+            return [nullOrWhiteSpace];
         }
     }
 }
