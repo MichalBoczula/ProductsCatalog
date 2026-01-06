@@ -1,9 +1,9 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.Validation.Common;
-using ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetails;
+using ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetailsRules;
 using Shouldly;
 
-namespace ProductCatalog.Domain.UnitTests.Validation.Rules.ElectronicDetails
+namespace ProductCatalog.Domain.UnitTests.Validation.Rules.ElectronicDetailsRules
 {
     public class ElectronicDetailsNumbersValidationRuleTests
     {

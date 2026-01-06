@@ -2,7 +2,7 @@
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
-namespace ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetails
+namespace ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetailsRules
 {
     public sealed class ElectronicDetailsNumbersValidationRule : IValidationRule<ElectronicDetails>
     {

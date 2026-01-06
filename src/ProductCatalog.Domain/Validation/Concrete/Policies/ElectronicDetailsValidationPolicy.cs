@@ -1,7 +1,7 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
-using ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetails;
+using ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetailsRules;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
