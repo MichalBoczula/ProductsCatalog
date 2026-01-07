@@ -36,9 +36,6 @@ namespace ProductCatalog.Api.Configuration.Extensions
                 return (string.Empty, Array.Empty<string>());
             }
 
-            // Example message:
-            // "JSON deserialization for type 'ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone.CreateSensorsExternalDto'
-            //  was missing required properties including: 'halla'; 'ambientLight'."
             var match = Regex.Match(message, @"type '([^']+)' was missing required properties including:(.+)", RegexOptions.IgnoreCase);
             if (!match.Success)
             {
