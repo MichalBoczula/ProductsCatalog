@@ -1,17 +1,18 @@
 ﻿using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Features.Common;
+using System.Text.Json.Serialization;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone
 {
     public sealed record CreateMobilePhoneExternalDto(
-        CommonDescriptionExtrernalDto CommonDescription,
-        CreateElectronicDetailsExternalDto ElectronicDetails,
-        CreateConnectivityExternalDto Connectivity,
-        CreateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
-        CreateSensorsExternalDto Sensors,
+        [property: JsonRequired] CommonDescriptionExtrernalDto CommonDescription,
+        [property: JsonRequired] CreateElectronicDetailsExternalDto ElectronicDetails,
+        [property: JsonRequired] CreateConnectivityExternalDto Connectivity,
+        [property: JsonRequired] CreateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
+        [property: JsonRequired] CreateSensorsExternalDto Sensors,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,
-        CreateMoneyExternalDto Price
+        [property: JsonRequired] CreateMoneyExternalDto Price
     );
 }

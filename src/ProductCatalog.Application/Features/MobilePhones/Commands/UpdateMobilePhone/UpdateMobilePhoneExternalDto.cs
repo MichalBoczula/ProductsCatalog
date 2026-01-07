@@ -1,16 +1,17 @@
 ﻿using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Features.Common;
+using System.Text.Json.Serialization;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone
 {
     public sealed record UpdateMobilePhoneExternalDto(
-        CommonDescriptionExtrernalDto CommonDescription,
-        UpdateElectronicDetailsExternalDto ElectronicDetails,
-        UpdateConnectivityExternalDto Connectivity,
-        UpdateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
-        UpdateSensorsExternalDto Sensors,
+        [property: JsonRequired] CommonDescriptionExtrernalDto CommonDescription,
+        [property: JsonRequired] UpdateElectronicDetailsExternalDto ElectronicDetails,
+        [property: JsonRequired] UpdateConnectivityExternalDto Connectivity,
+        [property: JsonRequired] UpdateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
+        [property: JsonRequired] UpdateSensorsExternalDto Sensors,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,
-        UpdateMoneyExternalDto Price);
+        [property: JsonRequired] UpdateMoneyExternalDto Price);
 }
