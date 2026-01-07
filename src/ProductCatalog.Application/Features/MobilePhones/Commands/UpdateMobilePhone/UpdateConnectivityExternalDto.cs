@@ -1,8 +1,10 @@
-﻿namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone
+﻿using System.Text.Json.Serialization;
+
+namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone
 {
     public sealed record UpdateConnectivityExternalDto(
-        bool Has5G,
-        bool WiFi,
-        bool NFC,
-        bool Bluetooth);
+        [property: JsonRequired] bool Has5G,
+        [property: JsonRequired] bool WiFi,
+        [property: JsonRequired] bool NFC,
+        [property: JsonRequired] bool Bluetooth);
 }
