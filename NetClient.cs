@@ -259,6 +259,111 @@ namespace ProductsCatalog.Client
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<ValidationPolicyDescriptor>> DescribeValidationPoliciesAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Get mobile phone by Id
+        /// </summary>
+        /// <remarks>
+        /// Returns the mobile phone details when the Id exists; 404 otherwise.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> GetMobilePhoneByIdAsync(System.Guid id);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get mobile phone by Id
+        /// </summary>
+        /// <remarks>
+        /// Returns the mobile phone details when the Id exists; 404 otherwise.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> GetMobilePhoneByIdAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Update mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Updates an existing mobile phone and returns the updated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> UpdateMobilePhoneAsync(System.Guid id, UpdateMobilePhoneExternalDto body);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Updates an existing mobile phone and returns the updated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> UpdateMobilePhoneAsync(System.Guid id, UpdateMobilePhoneExternalDto body, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Delete mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Soft deletes a mobile phone and returns the deactivated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> DeleteMobilePhoneAsync(System.Guid id);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Delete mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Soft deletes a mobile phone and returns the deactivated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> DeleteMobilePhoneAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Get mobile phones
+        /// </summary>
+        /// <remarks>
+        /// Returns a list of mobile phones limited by the provided amount.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneDto>> GetMobilePhonesAsync(int amount);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get mobile phones
+        /// </summary>
+        /// <remarks>
+        /// Returns a list of mobile phones limited by the provided amount.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneDto>> GetMobilePhonesAsync(int amount, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Create mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Creates a new mobile phone and returns the created resource.
+        /// </remarks>
+        /// <returns>Created</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> CreateMobilePhoneAsync(CreateMobilePhoneExternalDto body);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Create mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Creates a new mobile phone and returns the created resource.
+        /// </remarks>
+        /// <returns>Created</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MobilePhoneDto> CreateMobilePhoneAsync(CreateMobilePhoneExternalDto body, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Get a product by ID
         /// </summary>
         /// <remarks>
@@ -1644,6 +1749,578 @@ namespace ProductsCatalog.Client
         }
 
         /// <summary>
+        /// Get mobile phone by Id
+        /// </summary>
+        /// <remarks>
+        /// Returns the mobile phone details when the Id exists; 404 otherwise.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<MobilePhoneDto> GetMobilePhoneByIdAsync(System.Guid id)
+        {
+            return GetMobilePhoneByIdAsync(id, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get mobile phone by Id
+        /// </summary>
+        /// <remarks>
+        /// Returns the mobile phone details when the Id exists; 404 otherwise.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<MobilePhoneDto> GetMobilePhoneByIdAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "mobile-phones/{id}"
+                    urlBuilder_.Append("mobile-phones/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<MobilePhoneDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<NotFoundProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<NotFoundProblemDetails>("Not Found", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Update mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Updates an existing mobile phone and returns the updated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<MobilePhoneDto> UpdateMobilePhoneAsync(System.Guid id, UpdateMobilePhoneExternalDto body)
+        {
+            return UpdateMobilePhoneAsync(id, body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Updates an existing mobile phone and returns the updated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<MobilePhoneDto> UpdateMobilePhoneAsync(System.Guid id, UpdateMobilePhoneExternalDto body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            if (body == null)
+                throw new System.ArgumentNullException("body");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "mobile-phones/{id}"
+                    urlBuilder_.Append("mobile-phones/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<MobilePhoneDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ApiProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ApiProblemDetails>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Delete mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Soft deletes a mobile phone and returns the deactivated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<MobilePhoneDto> DeleteMobilePhoneAsync(System.Guid id)
+        {
+            return DeleteMobilePhoneAsync(id, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Delete mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Soft deletes a mobile phone and returns the deactivated resource.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<MobilePhoneDto> DeleteMobilePhoneAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "mobile-phones/{id}"
+                    urlBuilder_.Append("mobile-phones/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<MobilePhoneDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ApiProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ApiProblemDetails>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Get mobile phones
+        /// </summary>
+        /// <remarks>
+        /// Returns a list of mobile phones limited by the provided amount.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneDto>> GetMobilePhonesAsync(int amount)
+        {
+            return GetMobilePhonesAsync(amount, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get mobile phones
+        /// </summary>
+        /// <remarks>
+        /// Returns a list of mobile phones limited by the provided amount.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneDto>> GetMobilePhonesAsync(int amount, System.Threading.CancellationToken cancellationToken)
+        {
+            if (amount == null)
+                throw new System.ArgumentNullException("amount");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "mobile-phones"
+                    urlBuilder_.Append("mobile-phones");
+                    urlBuilder_.Append('?');
+                    urlBuilder_.Append(System.Uri.EscapeDataString("amount")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(amount, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<MobilePhoneDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Create mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Creates a new mobile phone and returns the created resource.
+        /// </remarks>
+        /// <returns>Created</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<MobilePhoneDto> CreateMobilePhoneAsync(CreateMobilePhoneExternalDto body)
+        {
+            return CreateMobilePhoneAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Create mobile phone
+        /// </summary>
+        /// <remarks>
+        /// Creates a new mobile phone and returns the created resource.
+        /// </remarks>
+        /// <returns>Created</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<MobilePhoneDto> CreateMobilePhoneAsync(CreateMobilePhoneExternalDto body, System.Threading.CancellationToken cancellationToken)
+        {
+            if (body == null)
+                throw new System.ArgumentNullException("body");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(body, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "mobile-phones"
+                    urlBuilder_.Append("mobile-phones");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<MobilePhoneDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ApiProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ApiProblemDetails>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Get a product by ID
         /// </summary>
         /// <remarks>
@@ -2413,6 +3090,60 @@ namespace ProductsCatalog.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CommonDescriptionDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("mainPhoto", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MainPhoto { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("otherPhotos", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> OtherPhotos { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CommonDescriptionExtrernalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("mainPhoto", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MainPhoto { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("otherPhotos", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> OtherPhotos { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ConnectivityDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("has5G", Required = Newtonsoft.Json.Required.Always)]
+        public bool Has5G { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wiFi", Required = Newtonsoft.Json.Required.Always)]
+        public bool WiFi { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("nfc", Required = Newtonsoft.Json.Required.Always)]
+        public bool Nfc { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("bluetooth", Required = Newtonsoft.Json.Required.Always)]
+        public bool Bluetooth { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CreateCategoryExternalDto
     {
 
@@ -2425,6 +3156,24 @@ namespace ProductsCatalog.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateConnectivityExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("has5G", Required = Newtonsoft.Json.Required.Always)]
+        public bool Has5G { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wiFi", Required = Newtonsoft.Json.Required.Always)]
+        public bool WiFi { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("nfc", Required = Newtonsoft.Json.Required.Always)]
+        public bool Nfc { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("bluetooth", Required = Newtonsoft.Json.Required.Always)]
+        public bool Bluetooth { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CreateCurrencyExternalDto
     {
 
@@ -2433,6 +3182,84 @@ namespace ProductsCatalog.Client
 
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateElectronicDetailsExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("cpu", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Cpu { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("gpu", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Gpu { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ram", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Ram { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("storage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Storage { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("refreshRateHz", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RefreshRateHz { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("screenSizeInches", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double ScreenSizeInches { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Width { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Height { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("batteryType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string BatteryType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("batteryCapacity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int BatteryCapacity { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateMobilePhoneExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("commonDescription", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CommonDescriptionExtrernalDto CommonDescription { get; set; } = new CommonDescriptionExtrernalDto();
+
+        [Newtonsoft.Json.JsonProperty("electronicDetails", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CreateElectronicDetailsExternalDto ElectronicDetails { get; set; } = new CreateElectronicDetailsExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("connectivity", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CreateConnectivityExternalDto Connectivity { get; set; } = new CreateConnectivityExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("satelliteNavigationSystems", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CreateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems { get; set; } = new CreateSatelliteNavigationSystemExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("sensors", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CreateSensorsExternalDto Sensors { get; set; } = new CreateSensorsExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool FingerPrint { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool FaceId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid CategoryId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CreateMoneyExternalDto Price { get; set; } = new CreateMoneyExternalDto();
 
     }
 
@@ -2467,6 +3294,54 @@ namespace ProductsCatalog.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateSatelliteNavigationSystemExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("gps", Required = Newtonsoft.Json.Required.Always)]
+        public bool Gps { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("agps", Required = Newtonsoft.Json.Required.Always)]
+        public bool Agps { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("galileo", Required = Newtonsoft.Json.Required.Always)]
+        public bool Galileo { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("glonass", Required = Newtonsoft.Json.Required.Always)]
+        public bool Glonass { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("qzss", Required = Newtonsoft.Json.Required.Always)]
+        public bool Qzss { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateSensorsExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("accelerometer", Required = Newtonsoft.Json.Required.Always)]
+        public bool Accelerometer { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("gyroscope", Required = Newtonsoft.Json.Required.Always)]
+        public bool Gyroscope { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("proximity", Required = Newtonsoft.Json.Required.Always)]
+        public bool Proximity { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("compass", Required = Newtonsoft.Json.Required.Always)]
+        public bool Compass { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("barometer", Required = Newtonsoft.Json.Required.Always)]
+        public bool Barometer { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("halla", Required = Newtonsoft.Json.Required.Always)]
+        public bool Halla { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ambientLight", Required = Newtonsoft.Json.Required.Always)]
+        public bool AmbientLight { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CurrencyDto
     {
 
@@ -2488,6 +3363,51 @@ namespace ProductsCatalog.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ElectronicDetailsDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("cpu", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Cpu { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("gpu", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Gpu { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ram", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Ram { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("storage", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Storage { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string DisplayType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("refreshRateHz", Required = Newtonsoft.Json.Required.Always)]
+        public int RefreshRateHz { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("screenSizeInches", Required = Newtonsoft.Json.Required.Always)]
+        public double ScreenSizeInches { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Always)]
+        public int Width { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        public int Height { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("batteryType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string BatteryType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("batteryCapacity", Required = Newtonsoft.Json.Required.Always)]
+        public int BatteryCapacity { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class FlowDescription
     {
 
@@ -2497,6 +3417,53 @@ namespace ProductsCatalog.Client
 
         [Newtonsoft.Json.JsonProperty("steps", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.ICollection<string> Steps { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class MobilePhoneDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("commonDescription", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CommonDescriptionDto CommonDescription { get; set; } = new CommonDescriptionDto();
+
+        [Newtonsoft.Json.JsonProperty("electronicDetails", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public ElectronicDetailsDto ElectronicDetails { get; set; } = new ElectronicDetailsDto();
+
+        [Newtonsoft.Json.JsonProperty("connectivity", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public ConnectivityDto Connectivity { get; set; } = new ConnectivityDto();
+
+        [Newtonsoft.Json.JsonProperty("satelliteNavigationSystems", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SatelliteNavigationSystemDto SatelliteNavigationSystems { get; set; } = new SatelliteNavigationSystemDto();
+
+        [Newtonsoft.Json.JsonProperty("sensors", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SensorsDto Sensors { get; set; } = new SensorsDto();
+
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public MoneyDto Price { get; set; } = new MoneyDto();
+
+        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.Always)]
+        public bool FingerPrint { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.Always)]
+        public bool FaceId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid CategoryId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsActive { get; set; }
 
     }
 
@@ -2606,6 +3573,54 @@ namespace ProductsCatalog.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SatelliteNavigationSystemDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("gps", Required = Newtonsoft.Json.Required.Always)]
+        public bool Gps { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("agps", Required = Newtonsoft.Json.Required.Always)]
+        public bool Agps { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("galileo", Required = Newtonsoft.Json.Required.Always)]
+        public bool Galileo { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("glonass", Required = Newtonsoft.Json.Required.Always)]
+        public bool Glonass { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("qzss", Required = Newtonsoft.Json.Required.Always)]
+        public bool Qzss { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SensorsDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("accelerometer", Required = Newtonsoft.Json.Required.Always)]
+        public bool Accelerometer { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("gyroscope", Required = Newtonsoft.Json.Required.Always)]
+        public bool Gyroscope { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("proximity", Required = Newtonsoft.Json.Required.Always)]
+        public bool Proximity { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("compass", Required = Newtonsoft.Json.Required.Always)]
+        public bool Compass { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("barometer", Required = Newtonsoft.Json.Required.Always)]
+        public bool Barometer { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("halla", Required = Newtonsoft.Json.Required.Always)]
+        public bool Halla { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ambientLight", Required = Newtonsoft.Json.Required.Always)]
+        public bool AmbientLight { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class UpdateCategoryExternalDto
     {
 
@@ -2618,6 +3633,24 @@ namespace ProductsCatalog.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConnectivityExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("has5G", Required = Newtonsoft.Json.Required.Always)]
+        public bool Has5G { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("wiFi", Required = Newtonsoft.Json.Required.Always)]
+        public bool WiFi { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("nfc", Required = Newtonsoft.Json.Required.Always)]
+        public bool Nfc { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("bluetooth", Required = Newtonsoft.Json.Required.Always)]
+        public bool Bluetooth { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class UpdateCurrencyExternalDto
     {
 
@@ -2626,6 +3659,84 @@ namespace ProductsCatalog.Client
 
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateElectronicDetailsExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("cpu", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Cpu { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("gpu", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Gpu { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ram", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Ram { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("storage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Storage { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("displayType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string DisplayType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("refreshRateHz", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int RefreshRateHz { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("screenSizeInches", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double ScreenSizeInches { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Width { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Height { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("batteryType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string BatteryType { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("batteryCapacity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int BatteryCapacity { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateMobilePhoneExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("commonDescription", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CommonDescriptionExtrernalDto CommonDescription { get; set; } = new CommonDescriptionExtrernalDto();
+
+        [Newtonsoft.Json.JsonProperty("electronicDetails", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public UpdateElectronicDetailsExternalDto ElectronicDetails { get; set; } = new UpdateElectronicDetailsExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("connectivity", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public UpdateConnectivityExternalDto Connectivity { get; set; } = new UpdateConnectivityExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("satelliteNavigationSystems", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public UpdateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems { get; set; } = new UpdateSatelliteNavigationSystemExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("sensors", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public UpdateSensorsExternalDto Sensors { get; set; } = new UpdateSensorsExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool FingerPrint { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool FaceId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid CategoryId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public UpdateMoneyExternalDto Price { get; set; } = new UpdateMoneyExternalDto();
 
     }
 
@@ -2656,6 +3767,54 @@ namespace ProductsCatalog.Client
 
         [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid CategoryId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateSatelliteNavigationSystemExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("gps", Required = Newtonsoft.Json.Required.Always)]
+        public bool Gps { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("agps", Required = Newtonsoft.Json.Required.Always)]
+        public bool Agps { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("galileo", Required = Newtonsoft.Json.Required.Always)]
+        public bool Galileo { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("glonass", Required = Newtonsoft.Json.Required.Always)]
+        public bool Glonass { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("qzss", Required = Newtonsoft.Json.Required.Always)]
+        public bool Qzss { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateSensorsExternalDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("accelerometer", Required = Newtonsoft.Json.Required.Always)]
+        public bool Accelerometer { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("gyroscope", Required = Newtonsoft.Json.Required.Always)]
+        public bool Gyroscope { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("proximity", Required = Newtonsoft.Json.Required.Always)]
+        public bool Proximity { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("compass", Required = Newtonsoft.Json.Required.Always)]
+        public bool Compass { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("barometer", Required = Newtonsoft.Json.Required.Always)]
+        public bool Barometer { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("halla", Required = Newtonsoft.Json.Required.Always)]
+        public bool Halla { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("ambientLight", Required = Newtonsoft.Json.Required.Always)]
+        public bool AmbientLight { get; set; }
 
     }
 
