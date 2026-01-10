@@ -33,14 +33,11 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
            .WithName("GetCategories")
+           .WithSummary("Get all categories")
+           .WithDescription("Returns all categories; 404 if no categories are found.")
            .Produces<IReadOnlyList<CategoryDto>>(StatusCodes.Status200OK)
            .Produces(StatusCodes.Status404NotFound)
-           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-           .WithOpenApi(operation => new(operation)
-           {
-               Summary = "List categories",
-               Description = "Returns all categories; 404 if no categories are found.",
-           });
+           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
@@ -51,14 +48,11 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
             .WithName("GetCategoryById")
+            .WithDescription("Returns the category when the ID exists; 404 otherwise.")
+            .WithSummary("Get category by ID")
             .Produces<CategoryDto>(StatusCodes.Status200OK)
             .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-            .WithOpenApi(operation => new(operation)
-            {
-                Summary = "Get category by ID",
-                Description = "Returns the category when the ID exists; 404 otherwise.",
-            });
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }
 
         private static void MapCategoriesCommands(IEndpointRouteBuilder group)
@@ -69,14 +63,11 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Created($"/categories/{result.Id}", result);
             })
             .WithName("CreateCategory")
+            .WithDescription("Creates a new category and returns the created resource.")
+            .WithSummary("Create category")
             .Produces<CategoryDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-            .WithOpenApi(operation => new(operation)
-            {
-                Summary = "Create category",
-                Description = "Creates a new category and returns the created resource.",
-            });
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapPut("/{id:guid}", async (Guid id, UpdateCategoryExternalDto category, IMediator mediator) =>
             {
@@ -84,14 +75,11 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithName("UpdateCategory")
+            .WithSummary("Update category")
+            .WithDescription("Updates an existing category and returns the updated resource.")
             .Produces<CategoryDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-            .WithOpenApi(operation => new(operation)
-            {
-                Summary = "Update category",
-                Description = "Updates an existing category and returns the updated resource.",
-            });
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
@@ -99,14 +87,11 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
            .WithName("RemoveCategory")
+           .WithSummary("Delete category")
+           .WithDescription("Soft deletes a category and returns the deactivated resource.")
            .Produces<CategoryDto>(StatusCodes.Status200OK)
            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-           .WithOpenApi(operation => new(operation)
-           {
-               Summary = "Delete category",
-               Description = "Soft deletes a category and returns the deactivated resource.",
-           });
+           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }
     }
 }
