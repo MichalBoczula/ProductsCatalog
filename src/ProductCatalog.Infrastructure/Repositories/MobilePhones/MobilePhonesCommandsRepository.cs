@@ -32,8 +32,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
 
         public void WriteHistory(MobilePhonesHistory entity)
         {
-            throw new NotImplementedException();
-            //_db.MobilePhonesHistory.Add(entity);
+            _db.MobilePhonesHistories.Add(entity);
         }
 
         public Task SaveChanges(CancellationToken cancellationToken)
