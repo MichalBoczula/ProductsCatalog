@@ -17,6 +17,7 @@ using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
@@ -241,6 +242,48 @@ namespace ProductCatalog.Application.Mapping
             TypeAdapterConfig<Currency, CurrenciesHistory>
                 .NewConfig()
                 .Map(dest => dest.CurrencyId, src => src.Id)
+                .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
+                .Ignore(dest => dest.Id);
+
+            TypeAdapterConfig<MobilePhone, MobilePhonesHistory>
+                .NewConfig()
+                .Map(dest => dest.MobilePhoneId, src => src.Id)
+                .Map(dest => dest.Name, src => src.CommonDescription.Name)
+                .Map(dest => dest.Description, src => src.CommonDescription.Description)
+                .Map(dest => dest.MainPhoto, src => src.CommonDescription.MainPhoto)
+                .Map(dest => dest.OtherPhotos, src => JsonSerializer.Serialize(src.CommonDescription.OtherPhotos))
+                .Map(dest => dest.CPU, src => src.ElectronicDetails.CPU)
+                .Map(dest => dest.GPU, src => src.ElectronicDetails.GPU)
+                .Map(dest => dest.Ram, src => src.ElectronicDetails.Ram)
+                .Map(dest => dest.Storage, src => src.ElectronicDetails.Storage)
+                .Map(dest => dest.DisplayType, src => src.ElectronicDetails.DisplayType)
+                .Map(dest => dest.RefreshRateHz, src => src.ElectronicDetails.RefreshRateHz)
+                .Map(dest => dest.ScreenSizeInches, src => src.ElectronicDetails.ScreenSizeInches)
+                .Map(dest => dest.Width, src => src.ElectronicDetails.Width)
+                .Map(dest => dest.Height, src => src.ElectronicDetails.Height)
+                .Map(dest => dest.BatteryType, src => src.ElectronicDetails.BatteryType)
+                .Map(dest => dest.BatteryCapacity, src => src.ElectronicDetails.BatteryCapacity)
+                .Map(dest => dest.GPS, src => src.SatelliteNavigationSystems.GPS)
+                .Map(dest => dest.AGPS, src => src.SatelliteNavigationSystems.AGPS)
+                .Map(dest => dest.Galileo, src => src.SatelliteNavigationSystems.Galileo)
+                .Map(dest => dest.GLONASS, src => src.SatelliteNavigationSystems.GLONASS)
+                .Map(dest => dest.QZSS, src => src.SatelliteNavigationSystems.QZSS)
+                .Map(dest => dest.Accelerometer, src => src.Sensors.Accelerometer)
+                .Map(dest => dest.Gyroscope, src => src.Sensors.Gyroscope)
+                .Map(dest => dest.Proximity, src => src.Sensors.Proximity)
+                .Map(dest => dest.Compass, src => src.Sensors.Compass)
+                .Map(dest => dest.Barometer, src => src.Sensors.Barometer)
+                .Map(dest => dest.Halla, src => src.Sensors.Halla)
+                .Map(dest => dest.AmbientLight, src => src.Sensors.AmbientLight)
+                .Map(dest => dest.Has5G, src => src.Connectivity.Has5G)
+                .Map(dest => dest.WiFi, src => src.Connectivity.WiFi)
+                .Map(dest => dest.NFC, src => src.Connectivity.NFC)
+                .Map(dest => dest.Bluetooth, src => src.Connectivity.Bluetooth)
+                .Map(dest => dest.FingerPrint, src => src.FingerPrint)
+                .Map(dest => dest.FaceId, src => src.FaceId)
+                .Map(dest => dest.CategoryId, src => src.CategoryId)
+                .Map(dest => dest.PriceAmount, src => src.Price.Amount)
+                .Map(dest => dest.PriceCurrency, src => src.Price.Currency)
                 .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
                 .Ignore(dest => dest.Id);
         }

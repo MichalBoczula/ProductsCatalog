@@ -3,7 +3,9 @@ using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
@@ -39,12 +41,28 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
         }
 
         [FlowStep(5)]
+        public MobilePhonesHistory CreateMobilePhoneHistoryEntry(MobilePhone mobilePhone)
+        {
+            var mobilePhonesHistory = mobilePhone.BuildAdapter()
+                .AddParameters("operation", Operation.Inserted)
+                .AdaptToType<MobilePhonesHistory>();
+
+            return mobilePhonesHistory;
+        }
+
+        [FlowStep(6)]
+        public void WriteHistoryToRepository(IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, MobilePhonesHistory mobilePhonesHistory)
+        {
+            mobilePhonesCommandsRepository.WriteHistory(mobilePhonesHistory);
+        }
+
+        [FlowStep(7)]
         public Task SaveChanges(IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, CancellationToken cancellationToken)
         {
             return mobilePhonesCommandsRepository.SaveChanges(cancellationToken);
         }
 
-        [FlowStep(6)]
+        [FlowStep(8)]
         public MobilePhoneDto MapMobilePhoneToMobilePhoneDto(MobilePhone mobilePhone)
         {
             return mobilePhone.Adapt<MobilePhoneDto>();
