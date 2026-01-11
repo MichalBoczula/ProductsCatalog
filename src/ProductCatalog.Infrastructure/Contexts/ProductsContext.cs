@@ -4,6 +4,7 @@ using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Infrastructure.Configuration.Aggregates;
@@ -21,6 +22,7 @@ namespace ProductCatalog.Infrastructure.Contexts.Commands
         public DbSet<ProductsHistory> ProductsHistories { get; set; }
         public DbSet<CategoriesHistory> CategoriesHistories { get; set; }
         public DbSet<CurrenciesHistory> CurrenciesHistories { get; set; }
+        public DbSet<MobilePhonesHistory> MobilePhonesHistories { get; set; }
 
         public ProductsContext(DbContextOptions<ProductsContext> options) : base(options) { }
 
@@ -34,6 +36,7 @@ namespace ProductCatalog.Infrastructure.Contexts.Commands
             modelBuilder.ApplyConfiguration(new ProductsHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new CurrenciesHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new CategoriesHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new MobilePhonesHistoryConfiguration());
 
             modelBuilder.SeedData();
         }
