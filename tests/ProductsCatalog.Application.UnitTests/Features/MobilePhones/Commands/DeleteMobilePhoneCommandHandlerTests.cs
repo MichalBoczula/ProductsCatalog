@@ -4,6 +4,7 @@ using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.Common;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
@@ -73,6 +74,9 @@ public class DeleteMobilePhoneCommandHandlerTests
 
         mobilePhonesRepoMock.InSequence(sequence)
             .Setup(repo => repo.Update(It.Is<MobilePhone>(phone => !phone.IsActive)));
+
+        mobilePhonesRepoMock.InSequence(sequence)
+          .Setup(r => r.WriteHistory(It.IsAny<MobilePhonesHistory>()));
 
         mobilePhonesRepoMock.InSequence(sequence)
             .Setup(repo => repo.SaveChanges(It.IsAny<CancellationToken>()))

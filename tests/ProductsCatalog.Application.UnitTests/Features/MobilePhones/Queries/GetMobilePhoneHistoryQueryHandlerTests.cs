@@ -72,7 +72,7 @@ public class GetMobilePhoneHistoryQueryHandlerTests
                 PriceCurrency = "USD",
                 IsActive = true,
                 ChangedAt = changedAt,
-                Operation = Operation.Created
+                Operation = Operation.Inserted
             }
         }.AsReadOnly();
 
@@ -107,7 +107,7 @@ public class GetMobilePhoneHistoryQueryHandlerTests
         result[0].Price.Amount.ShouldBe(historyEntries[0].PriceAmount);
         result[0].Price.Currency.ShouldBe(historyEntries[0].PriceCurrency);
         result[0].ChangedAt.ShouldBe(changedAt);
-        result[0].Operation.ShouldBe(Operation.Created);
+        result[0].Operation.ShouldBe(Operation.Inserted);
     }
 
     [Fact]

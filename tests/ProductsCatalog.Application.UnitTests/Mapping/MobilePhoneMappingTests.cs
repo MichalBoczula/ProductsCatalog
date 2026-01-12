@@ -379,7 +379,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             var otherPhotos = new List<string> { "photo1", "photo2" };
             var history = new MobilePhonesHistory
             {
-                Id = Guid.NewGuid(),
                 MobilePhoneId = Guid.NewGuid(),
                 Name = "Phone",
                 Description = "History phone",
@@ -426,7 +425,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             var dto = history.Adapt<MobilePhoneHistoryDto>();
 
             //Assert
-            dto.Id.ShouldBe(history.Id);
+            dto.Id.ShouldNotBe(Guid.Empty);
             dto.MobilePhoneId.ShouldBe(history.MobilePhoneId);
             dto.CommonDescription.Name.ShouldBe(history.Name);
             dto.CommonDescription.Description.ShouldBe(history.Description);

@@ -4,6 +4,7 @@ using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
@@ -61,6 +62,9 @@ public class CreateMobilePhoneCommandHandlerTests
 
         mobilePhonesRepoMock.InSequence(sequence)
             .Setup(repo => repo.Add(It.IsAny<MobilePhone>()));
+
+        mobilePhonesRepoMock.InSequence(sequence)
+            .Setup(r => r.WriteHistory(It.IsAny<MobilePhonesHistory>()));
 
         mobilePhonesRepoMock.InSequence(sequence)
             .Setup(repo => repo.SaveChanges(It.IsAny<CancellationToken>()))

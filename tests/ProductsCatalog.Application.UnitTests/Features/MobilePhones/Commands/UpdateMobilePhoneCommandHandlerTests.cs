@@ -5,6 +5,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhon
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
@@ -99,6 +100,9 @@ public class UpdateMobilePhoneCommandHandlerTests
 
         mobilePhonesRepoMock.InSequence(sequence)
             .Setup(repo => repo.Update(It.IsAny<MobilePhone>()));
+
+        mobilePhonesRepoMock.InSequence(sequence)
+          .Setup(r => r.WriteHistory(It.IsAny<MobilePhonesHistory>()));
 
         mobilePhonesRepoMock.InSequence(sequence)
             .Setup(repo => repo.SaveChanges(It.IsAny<CancellationToken>()))
