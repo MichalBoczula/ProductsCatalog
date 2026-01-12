@@ -6,6 +6,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhon
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 
 namespace ProductCatalog.Api.Endpoints
@@ -48,6 +49,21 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of mobile phones limited by the provided amount.")
             .WithName("GetMobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+
+            group.MapGet("/{id:guid}/history", async (
+                Guid id,
+                [FromQuery] int pageNumber,
+                [FromQuery] int pageSize,
+                IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetMobilePhoneHistoryQuery(id, pageNumber, pageSize));
+                return Results.Ok(result);
+            })
+            .WithSummary("Get mobile phone history")
+            .WithDescription("Returns the change history for a mobile phone.")
+            .WithName("GetMobilePhoneHistory")
+            .Produces<List<MobilePhoneHistoryDto>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }
 

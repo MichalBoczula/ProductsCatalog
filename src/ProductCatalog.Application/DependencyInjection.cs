@@ -15,6 +15,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhon
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
 using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
@@ -72,6 +73,9 @@ namespace ProductCatalog.Application
 
             services.AddScoped<GetMobilePhoneByIdQueryFlowDescribtor>();
             services.AddScoped<IFlowDescriber<GetMobilePhoneByIdQuery>, GetMobilePhoneByIdQueryFlowDescribtor>();
+
+            services.AddScoped<GetMobilePhoneHistoryQueryFlowDescribtor>();
+            services.AddScoped<IFlowDescriber<GetMobilePhoneHistoryQuery>, GetMobilePhoneHistoryQueryFlowDescribtor>();
 
             services.AddScoped<GetMobilePhonesQueryFlowDescribtor>();
             services.AddScoped<IFlowDescriber<GetMobilePhonesQuery>, GetMobilePhonesQueryFlowDescribtor>();
