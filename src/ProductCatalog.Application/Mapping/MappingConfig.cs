@@ -286,6 +286,66 @@ namespace ProductCatalog.Application.Mapping
                 .Map(dest => dest.PriceCurrency, src => src.Price.Currency)
                 .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
                 .Ignore(dest => dest.Id);
+
+            TypeAdapterConfig<MobilePhonesHistory, MobilePhoneHistoryDto>
+                .NewConfig()
+                .Map(dest => dest.CommonDescription,
+                    src => new CommonDescriptionDto
+                    {
+                        Name = src.Name,
+                        Description = src.Description,
+                        MainPhoto = src.MainPhoto,
+                        OtherPhotos = JsonSerializer.Deserialize<IReadOnlyList<string>>(src.OtherPhotos) ?? Array.Empty<string>()
+                    })
+                .Map(dest => dest.ElectronicDetails,
+                    src => new ElectronicDetailsDto
+                    {
+                        CPU = src.CPU,
+                        GPU = src.GPU,
+                        Ram = src.Ram,
+                        Storage = src.Storage,
+                        DisplayType = src.DisplayType,
+                        RefreshRateHz = src.RefreshRateHz,
+                        ScreenSizeInches = src.ScreenSizeInches,
+                        Width = src.Width,
+                        Height = src.Height,
+                        BatteryType = src.BatteryType,
+                        BatteryCapacity = src.BatteryCapacity
+                    })
+                .Map(dest => dest.Connectivity,
+                    src => new ConnectivityDto
+                    {
+                        Has5G = src.Has5G,
+                        WiFi = src.WiFi,
+                        NFC = src.NFC,
+                        Bluetooth = src.Bluetooth
+                    })
+                .Map(dest => dest.SatelliteNavigationSystems,
+                    src => new SatelliteNavigationSystemDto
+                    {
+                        GPS = src.GPS,
+                        AGPS = src.AGPS,
+                        Galileo = src.Galileo,
+                        GLONASS = src.GLONASS,
+                        QZSS = src.QZSS
+                    })
+                .Map(dest => dest.Sensors,
+                    src => new SensorsDto
+                    {
+                        Accelerometer = src.Accelerometer,
+                        Gyroscope = src.Gyroscope,
+                        Proximity = src.Proximity,
+                        Compass = src.Compass,
+                        Barometer = src.Barometer,
+                        Halla = src.Halla,
+                        AmbientLight = src.AmbientLight
+                    })
+                .Map(dest => dest.Price,
+                    src => new MoneyDto
+                    {
+                        Amount = src.PriceAmount,
+                        Currency = src.PriceCurrency
+                    });
         }
     }
 }
