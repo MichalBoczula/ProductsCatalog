@@ -7,8 +7,10 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhon
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
+using ProductCatalog.Domain.Common.Enums;
 using Shouldly;
 using Xunit;
 using System.Text.Json;
@@ -301,6 +303,170 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.CategoryId.ShouldBe(readModel.CategoryId);
             dto.Price.Amount.ShouldBe(readModel.PriceAmount);
             dto.Price.Currency.ShouldBe(readModel.PriceCurrency);
+        }
+
+        [Fact]
+        public void MobilePhone_ShouldMapTo_MobilePhonesHistory()
+        {
+            //Arrange
+            var categoryId = Guid.NewGuid();
+            var otherPhotos = new List<string> { "photo1", "photo2" };
+            var mobilePhone = new MobilePhone(
+                new CommonDescription("Phone", "Good phone", "main-photo", otherPhotos),
+                new ElectronicDetails("CPU", "GPU", "6GB", "128GB", "AMOLED", 120, 6.5m, 70, 150, "Li-Ion", 4500),
+                new Connectivity(true, true, false, true),
+                new SatelliteNavigationSystem(true, false, true, true, false),
+                new Sensors(true, true, false, true, false, false, true),
+                true,
+                true,
+                categoryId,
+                new Money(199.99m, "usd"));
+            var operation = Operation.Updated;
+
+            //Act
+            var history = mobilePhone.BuildAdapter()
+                .AddParameters("operation", operation)
+                .AdaptToType<MobilePhonesHistory>();
+
+            //Assert
+            history.Id.ShouldNotBe(Guid.Empty);
+            history.MobilePhoneId.ShouldBe(mobilePhone.Id);
+            history.Name.ShouldBe(mobilePhone.CommonDescription.Name);
+            history.Description.ShouldBe(mobilePhone.CommonDescription.Description);
+            history.MainPhoto.ShouldBe(mobilePhone.CommonDescription.MainPhoto);
+            history.OtherPhotos.ShouldBe(JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos));
+            history.CPU.ShouldBe(mobilePhone.ElectronicDetails.CPU);
+            history.GPU.ShouldBe(mobilePhone.ElectronicDetails.GPU);
+            history.Ram.ShouldBe(mobilePhone.ElectronicDetails.Ram);
+            history.Storage.ShouldBe(mobilePhone.ElectronicDetails.Storage);
+            history.DisplayType.ShouldBe(mobilePhone.ElectronicDetails.DisplayType);
+            history.RefreshRateHz.ShouldBe(mobilePhone.ElectronicDetails.RefreshRateHz);
+            history.ScreenSizeInches.ShouldBe(mobilePhone.ElectronicDetails.ScreenSizeInches);
+            history.Width.ShouldBe(mobilePhone.ElectronicDetails.Width);
+            history.Height.ShouldBe(mobilePhone.ElectronicDetails.Height);
+            history.BatteryType.ShouldBe(mobilePhone.ElectronicDetails.BatteryType);
+            history.BatteryCapacity.ShouldBe(mobilePhone.ElectronicDetails.BatteryCapacity);
+            history.GPS.ShouldBe(mobilePhone.SatelliteNavigationSystems.GPS);
+            history.AGPS.ShouldBe(mobilePhone.SatelliteNavigationSystems.AGPS);
+            history.Galileo.ShouldBe(mobilePhone.SatelliteNavigationSystems.Galileo);
+            history.GLONASS.ShouldBe(mobilePhone.SatelliteNavigationSystems.GLONASS);
+            history.QZSS.ShouldBe(mobilePhone.SatelliteNavigationSystems.QZSS);
+            history.Accelerometer.ShouldBe(mobilePhone.Sensors.Accelerometer);
+            history.Gyroscope.ShouldBe(mobilePhone.Sensors.Gyroscope);
+            history.Proximity.ShouldBe(mobilePhone.Sensors.Proximity);
+            history.Compass.ShouldBe(mobilePhone.Sensors.Compass);
+            history.Barometer.ShouldBe(mobilePhone.Sensors.Barometer);
+            history.Halla.ShouldBe(mobilePhone.Sensors.Halla);
+            history.AmbientLight.ShouldBe(mobilePhone.Sensors.AmbientLight);
+            history.Has5G.ShouldBe(mobilePhone.Connectivity.Has5G);
+            history.WiFi.ShouldBe(mobilePhone.Connectivity.WiFi);
+            history.NFC.ShouldBe(mobilePhone.Connectivity.NFC);
+            history.Bluetooth.ShouldBe(mobilePhone.Connectivity.Bluetooth);
+            history.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
+            history.FaceId.ShouldBe(mobilePhone.FaceId);
+            history.CategoryId.ShouldBe(mobilePhone.CategoryId);
+            history.PriceAmount.ShouldBe(mobilePhone.Price.Amount);
+            history.PriceCurrency.ShouldBe(mobilePhone.Price.Currency);
+            history.IsActive.ShouldBe(mobilePhone.IsActive);
+            history.ChangedAt.ShouldBe(mobilePhone.ChangedAt);
+            history.Operation.ShouldBe(operation);
+        }
+
+        [Fact]
+        public void MobilePhonesHistory_ShouldMapTo_MobilePhoneHistoryDto()
+        {
+            //Arrange
+            var otherPhotos = new List<string> { "photo1", "photo2" };
+            var history = new MobilePhonesHistory
+            {
+                Id = Guid.NewGuid(),
+                MobilePhoneId = Guid.NewGuid(),
+                Name = "Phone",
+                Description = "History phone",
+                MainPhoto = "main-photo",
+                OtherPhotos = JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos),
+                CPU = "CPU",
+                GPU = "GPU",
+                Ram = "8GB",
+                Storage = "256GB",
+                DisplayType = "AMOLED",
+                RefreshRateHz = 120,
+                ScreenSizeInches = 6.8m,
+                Width = 70,
+                Height = 150,
+                BatteryType = "Li-Ion",
+                BatteryCapacity = 5000,
+                GPS = true,
+                AGPS = false,
+                Galileo = true,
+                GLONASS = false,
+                QZSS = true,
+                Accelerometer = true,
+                Gyroscope = false,
+                Proximity = true,
+                Compass = false,
+                Barometer = true,
+                Halla = false,
+                AmbientLight = true,
+                Has5G = true,
+                WiFi = true,
+                NFC = true,
+                Bluetooth = true,
+                FingerPrint = true,
+                FaceId = false,
+                CategoryId = Guid.NewGuid(),
+                PriceAmount = 799.99m,
+                PriceCurrency = "USD",
+                IsActive = true,
+                ChangedAt = DateTime.UtcNow,
+                Operation = Operation.Inserted
+            };
+
+            //Act
+            var dto = history.Adapt<MobilePhoneHistoryDto>();
+
+            //Assert
+            dto.Id.ShouldBe(history.Id);
+            dto.MobilePhoneId.ShouldBe(history.MobilePhoneId);
+            dto.CommonDescription.Name.ShouldBe(history.Name);
+            dto.CommonDescription.Description.ShouldBe(history.Description);
+            dto.CommonDescription.MainPhoto.ShouldBe(history.MainPhoto);
+            dto.CommonDescription.OtherPhotos.ShouldBe(otherPhotos);
+            dto.ElectronicDetails.CPU.ShouldBe(history.CPU);
+            dto.ElectronicDetails.GPU.ShouldBe(history.GPU);
+            dto.ElectronicDetails.Ram.ShouldBe(history.Ram);
+            dto.ElectronicDetails.Storage.ShouldBe(history.Storage);
+            dto.ElectronicDetails.DisplayType.ShouldBe(history.DisplayType);
+            dto.ElectronicDetails.RefreshRateHz.ShouldBe(history.RefreshRateHz);
+            dto.ElectronicDetails.ScreenSizeInches.ShouldBe(history.ScreenSizeInches);
+            dto.ElectronicDetails.Width.ShouldBe(history.Width);
+            dto.ElectronicDetails.Height.ShouldBe(history.Height);
+            dto.ElectronicDetails.BatteryType.ShouldBe(history.BatteryType);
+            dto.ElectronicDetails.BatteryCapacity.ShouldBe(history.BatteryCapacity);
+            dto.Connectivity.Has5G.ShouldBe(history.Has5G);
+            dto.Connectivity.WiFi.ShouldBe(history.WiFi);
+            dto.Connectivity.NFC.ShouldBe(history.NFC);
+            dto.Connectivity.Bluetooth.ShouldBe(history.Bluetooth);
+            dto.SatelliteNavigationSystems.GPS.ShouldBe(history.GPS);
+            dto.SatelliteNavigationSystems.AGPS.ShouldBe(history.AGPS);
+            dto.SatelliteNavigationSystems.Galileo.ShouldBe(history.Galileo);
+            dto.SatelliteNavigationSystems.GLONASS.ShouldBe(history.GLONASS);
+            dto.SatelliteNavigationSystems.QZSS.ShouldBe(history.QZSS);
+            dto.Sensors.Accelerometer.ShouldBe(history.Accelerometer);
+            dto.Sensors.Gyroscope.ShouldBe(history.Gyroscope);
+            dto.Sensors.Proximity.ShouldBe(history.Proximity);
+            dto.Sensors.Compass.ShouldBe(history.Compass);
+            dto.Sensors.Barometer.ShouldBe(history.Barometer);
+            dto.Sensors.Halla.ShouldBe(history.Halla);
+            dto.Sensors.AmbientLight.ShouldBe(history.AmbientLight);
+            dto.FingerPrint.ShouldBe(history.FingerPrint);
+            dto.FaceId.ShouldBe(history.FaceId);
+            dto.CategoryId.ShouldBe(history.CategoryId);
+            dto.Price.Amount.ShouldBe(history.PriceAmount);
+            dto.Price.Currency.ShouldBe(history.PriceCurrency);
+            dto.IsActive.ShouldBe(history.IsActive);
+            dto.ChangedAt.ShouldBe(history.ChangedAt);
+            dto.Operation.ShouldBe(history.Operation);
         }
     }
 }
