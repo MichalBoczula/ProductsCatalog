@@ -29,6 +29,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
             _updateMobilePhoneCommandFlowDescribtor.AssignNewMobilePhoneInformation(mobilePhone!, incoming);
             _updateMobilePhoneCommandFlowDescribtor.UpdateMobilePhoneInRepository(mobilePhone!, _mobilePhonesCommandsRepository);
 
+            var mobilePhonesHistory = _updateMobilePhoneCommandFlowDescribtor.CreateMobilePhoneHistoryEntry(mobilePhone!);
+            _updateMobilePhoneCommandFlowDescribtor.WriteHistoryToRepository(_mobilePhonesCommandsRepository, mobilePhonesHistory);
+
             await _updateMobilePhoneCommandFlowDescribtor.SaveChanges(_mobilePhonesCommandsRepository, cancellationToken);
             return _updateMobilePhoneCommandFlowDescribtor.MapMobilePhoneToMobilePhoneDto(mobilePhone!);
         }

@@ -24,6 +24,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobile
             _deleteMobilePhoneCommandFlowDescribtor.DeactivateMobilePhone(mobilePhone);
             _deleteMobilePhoneCommandFlowDescribtor.UpdateMobilePhoneInRepository(mobilePhone, _mobilePhonesCommandsRepository);
 
+            var mobilePhonesHistory = _deleteMobilePhoneCommandFlowDescribtor.CreateMobilePhoneHistoryEntry(mobilePhone);
+            _deleteMobilePhoneCommandFlowDescribtor.WriteHistoryToRepository(_mobilePhonesCommandsRepository, mobilePhonesHistory);
+
             await _deleteMobilePhoneCommandFlowDescribtor.SaveChanges(_mobilePhonesCommandsRepository, cancellationToken);
             return _deleteMobilePhoneCommandFlowDescribtor.MapMobilePhoneToMobilePhoneDto(mobilePhone);
         }

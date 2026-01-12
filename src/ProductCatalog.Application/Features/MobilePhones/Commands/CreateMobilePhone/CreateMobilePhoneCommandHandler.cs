@@ -21,6 +21,8 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
             _createMobilePhoneCommandFlowDescribtor.ThrowValidationExceptionIfNotValid(validationResult);
 
             _createMobilePhoneCommandFlowDescribtor.AddMobilePhoneToRepository(mobilePhone, _mobilePhonesCommandsRepository);
+            var mobilePhonesHistory = _createMobilePhoneCommandFlowDescribtor.CreateMobilePhoneHistoryEntry(mobilePhone);
+            _createMobilePhoneCommandFlowDescribtor.WriteHistoryToRepository(_mobilePhonesCommandsRepository, mobilePhonesHistory);
             await _createMobilePhoneCommandFlowDescribtor.SaveChanges(_mobilePhonesCommandsRepository, cancellationToken);
             return _createMobilePhoneCommandFlowDescribtor.MapMobilePhoneToMobilePhoneDto(mobilePhone);
         }
