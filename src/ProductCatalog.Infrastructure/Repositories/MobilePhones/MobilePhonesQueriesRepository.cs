@@ -5,6 +5,7 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Infrastructure.Common;
+using System;
 using System.Data;
 
 namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
@@ -130,9 +131,74 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<MobilePhonesHistory>> GetHistoryOfChanges(CancellationToken ct)
+        public async Task<IReadOnlyList<MobilePhonesHistory>> GetHistoryOfChanges(Guid mobilePhoneId, int pageNumber, int pageSize, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            var offset = Math.Max(pageNumber, 1) - 1;
+            var size = Math.Max(pageSize, 1);
+
+            var sql = $@"
+                SELECT Id,
+                       MobilePhoneId,
+                       Name,
+                       Description,
+                       MainPhoto,
+                       OtherPhotos,
+                       CPU,
+                       GPU,
+                       Ram,
+                       Storage,
+                       DisplayType,
+                       RefreshRateHz,
+                       ScreenSizeInches,
+                       Width,
+                       Height,
+                       BatteryType,
+                       BatteryCapacity,
+                       GPS,
+                       AGPS,
+                       Galileo,
+                       GLONASS,
+                       QZSS,
+                       Accelerometer,
+                       Gyroscope,
+                       Proximity,
+                       Compass,
+                       Barometer,
+                       Halla,
+                       AmbientLight,
+                       Has5G,
+                       WiFi,
+                       NFC,
+                       Bluetooth,
+                       FingerPrint,
+                       FaceId,
+                       CategoryId,
+                       PriceAmount,
+                       PriceCurrency,
+                       IsActive,
+                       ChangedAt,
+                       Operation
+                FROM {SqlTableNames.MobilePhonesHistory}
+                WHERE MobilePhoneId = @MobilePhoneId
+                ORDER BY ChangedAt DESC
+                OFFSET (@Offset * @PageSize) ROWS
+                FETCH NEXT @PageSize ROWS ONLY;
+                ";
+
+            using var connection = CreateConnection();
+
+            var result = await connection.QueryAsync<MobilePhonesHistory>(
+                new CommandDefinition(
+                    sql,
+                    new
+                    {
+                        MobilePhoneId = mobilePhoneId,
+                        Offset = offset,
+                        PageSize = size
+                    },
+                    cancellationToken: ct));
+
+            return result.ToList().AsReadOnly();
         }
     }
 }
