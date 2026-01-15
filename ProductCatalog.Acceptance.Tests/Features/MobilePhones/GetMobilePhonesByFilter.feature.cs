@@ -11,7 +11,7 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones.GetMobilePhonesByFilterTests
+namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 {
     
     
@@ -24,8 +24,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones.GetMobilePhonesB
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones/GetMobilePhonesByFilterTests", "Get mobile phones by filter", "  In order to view available mobile phones\r\n  As a client of the catalog API\r" +
-                "\n  I want to retrieve mobile phones filtered by amount", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get mobile phones by filter", "  In order to view available mobile phones\r\n  As a client of the catalog API\r\n  I" +
+                " want to retrieve mobile phones filtered by amount", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -106,8 +106,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones.GetMobilePhonesB
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetMobilePhonesByFilterTests/GetMobilePhonesByFilter.feature.nd" +
-                    "json", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetMobilePhonesByFilter.feature.ndjson", 4);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()

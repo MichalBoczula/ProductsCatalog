@@ -201,16 +201,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             await this.ScenarioCleanupAsync();
         }
         
-        #region Nested classes
-        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : global::Reqnroll.IAsyncLifetime
+        public class FixtureData : object, global::Xunit.IAsyncLifetime
         {
-            
-            public FixtureData()
-            {
-            }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
@@ -222,8 +216,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 await GetMobilePhoneByIdFeature.FeatureTearDownAsync();
             }
         }
-        
-        #endregion
     }
 }
 #pragma warning restore

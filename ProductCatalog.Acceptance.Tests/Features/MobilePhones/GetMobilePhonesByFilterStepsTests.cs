@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
+using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
@@ -12,10 +13,10 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones.GetMobilePhonesByFilterTests
+namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 {
     [Binding]
-    public class GetMobilePhonesByFilterSteps
+    public class GetMobilePhonesByFilterStepstests
     {
         private readonly JsonSerializerOptions _jsonOptions = new()
         {

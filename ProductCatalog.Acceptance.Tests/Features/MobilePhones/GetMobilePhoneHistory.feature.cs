@@ -136,7 +136,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phone history returns history")]
         [global::Xunit.TraitAttribute("FeatureTitle", "GetMobilePhoneHistory")]
         [global::Xunit.TraitAttribute("Description", "Get mobile phone history returns history")]
-        public async global::System.Threading.Tasks.Task GetMobilePhoneHistoryReturnsMobilePhone()
+        public async global::System.Threading.Tasks.Task GetMobilePhoneHistoryReturnsHistory()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
@@ -201,16 +201,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             await this.ScenarioCleanupAsync();
         }
         
-        #region Nested classes
-        
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
         [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : global::Reqnroll.IAsyncLifetime
+        public class FixtureData : object, global::Xunit.IAsyncLifetime
         {
-            
-            public FixtureData()
-            {
-            }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
@@ -222,8 +216,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 await GetMobilePhoneHistoryFeature.FeatureTearDownAsync();
             }
         }
-        
-        #endregion
     }
 }
 #pragma warning restore
