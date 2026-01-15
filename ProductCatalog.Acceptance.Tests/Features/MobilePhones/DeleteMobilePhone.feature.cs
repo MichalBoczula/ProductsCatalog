@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "DeleteMobilePhone", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Delete mobile phone", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Delete mobile phone returns ok response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DeleteMobilePhone")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Delete mobile phone")]
         [global::Xunit.TraitAttribute("Description", "Delete mobile phone returns ok response")]
         public async global::System.Threading.Tasks.Task DeleteMobilePhoneReturnsOkResponse()
         {
@@ -168,7 +168,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Delete mobile phone fails for missing mobile phone")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DeleteMobilePhone")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Delete mobile phone")]
         [global::Xunit.TraitAttribute("Description", "Delete mobile phone fails for missing mobile phone")]
         public async global::System.Threading.Tasks.Task DeleteMobilePhoneFailsForMissingMobilePhone()
         {
@@ -218,3 +218,5 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
     }
 }
+#pragma warning restore
+#endregion

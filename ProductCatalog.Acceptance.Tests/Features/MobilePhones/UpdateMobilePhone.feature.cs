@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Update mobile phone returns ok response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "UpdateMobilePhone")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Update mobile phone")]
         [global::Xunit.TraitAttribute("Description", "Update mobile phone returns ok response")]
         public async global::System.Threading.Tasks.Task UpdateMobilePhoneReturnsOkResponse()
         {
@@ -168,7 +168,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Update mobile phone fails for missing mobile phone")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "UpdateMobilePhone")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Update mobile phone")]
         [global::Xunit.TraitAttribute("Description", "Update mobile phone fails for missing mobile phone")]
         public async global::System.Threading.Tasks.Task UpdateMobilePhoneFailsForMissingMobilePhone()
         {
