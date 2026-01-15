@@ -26,7 +26,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
             IReadOnlyList<MobilePhonesHistory> historyEntries,
             Guid mobilePhoneId)
         {
-            if (historyEntries is null)
+            if (historyEntries is null || historyEntries.Count == 0)
             {
                 throw new ResourceNotFoundException(nameof(GetMobilePhoneHistoryQuery), mobilePhoneId, nameof(List<MobilePhoneHistoryDto>));
             }
