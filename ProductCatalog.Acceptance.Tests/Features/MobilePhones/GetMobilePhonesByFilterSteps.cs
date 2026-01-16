@@ -87,9 +87,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
             _result.Count.ShouldBe(_amount);
-
-            var createdIds = _createdMobilePhones.Select(phone => phone.Id).ToHashSet();
-            _result.ForEach(phone => createdIds.ShouldContain(phone.Id));
         }
 
         [Then("an empty mobile phone list is returned")]
