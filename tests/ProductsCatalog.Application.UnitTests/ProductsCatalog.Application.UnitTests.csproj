@@ -33,8 +33,4 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Products\Queries\" />
-  </ItemGroup>
-
 </Project>
