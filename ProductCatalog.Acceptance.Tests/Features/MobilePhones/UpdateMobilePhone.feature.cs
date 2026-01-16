@@ -189,7 +189,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             {
                 await this.ScenarioStartAsync();
 #line 9
-    await testRunner.GivenAsync("a mobile phone id that does not exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("mobile phone identify by id not exists", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 10
     await testRunner.WhenAsync("I submit the update mobile phone request for missing mobile phone", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");

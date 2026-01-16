@@ -6,6 +6,6 @@
     Then the mobile phone is updated successfully
 
   Scenario: Update mobile phone fails for missing mobile phone
-    Given a mobile phone id that does not exist
+    Given mobile phone identify by id not exists
     When I submit the update mobile phone request for missing mobile phone
     Then the mobile phone update fails with validation errors

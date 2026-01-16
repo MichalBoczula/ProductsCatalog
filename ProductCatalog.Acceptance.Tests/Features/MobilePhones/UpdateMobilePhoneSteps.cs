@@ -106,8 +106,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _updatedMobilePhone.Sensors.AmbientLight.ShouldBe(_updateRequest.Sensors.AmbientLight);
         }
 
-        [Given("a mobile phone id that does not exist")]
-        public async Task GivenAMobilePhoneIdThatDoesNotExist()
+        [Given("mobile phone identify by id not exists")]
+        public async Task GivenMobilePhoneIdentifyByIdNotExists()
         {
             _missingMobilePhoneId = Guid.NewGuid();
             var categoryId = await CreateCategoryAsync("MOBILE-MISSING");
