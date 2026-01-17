@@ -24,6 +24,9 @@ namespace ProductCatalog.Infrastructure.Extensions
 
         private static void SeedCategoriesAsync(ProductsContext context)
         {
+            if (context.Categories.Any())
+                return;
+
             var categories = new[]
             {
                 new Category("MOBILE", "Mobile"),
@@ -39,6 +42,9 @@ namespace ProductCatalog.Infrastructure.Extensions
 
         private static void SeedCurrenciesAsync(ProductsContext context)
         {
+            if (context.Currencies.Any())
+                return;
+
             var currencies = new[]
             {
                 new Currency("USD", "US Dollar"),
@@ -51,5 +57,6 @@ namespace ProductCatalog.Infrastructure.Extensions
                 context.Currencies.Add(currency);
             }
         }
+
     }
 }
