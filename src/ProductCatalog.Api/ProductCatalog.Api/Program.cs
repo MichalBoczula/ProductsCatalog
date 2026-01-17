@@ -82,6 +82,7 @@ namespace ProductCatalog.Api
             app.MapHealthChecks("/health");
 
             app.ApplyMigrations();
+            app.SeedDataAsync().GetAwaiter().GetResult();
 
             app.Run();
         }
