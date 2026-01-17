@@ -183,43 +183,61 @@ namespace ProductCatalog.Infrastructure.Configuration.DataSeed
                     FaceId = false,
                     IsActive = true,
                     ChangedAt = SamsungGalaxyA56ChangedAt,
-                    Name = "Samsung Galaxy A56 5G 8/256GB Czarny",
-                    Description = "Nagrywaj niesamowite wideo selfie w Super HDR; Filmuj tętniące życiem noce; Rób niesamowite selfie aparatem 12 MP.",
-                    MainPhoto = "samsung-galaxy-a56-5g-black-main.jpg",
-                    OtherPhotos = new[]
+                    CommonDescription = new
                     {
-                        "samsung-galaxy-a56-5g-black-1.jpg",
-                        "samsung-galaxy-a56-5g-black-2.jpg"
+                        Name = "Samsung Galaxy A56 5G 8/256GB Czarny",
+                        Description = "Nagrywaj niesamowite wideo selfie w Super HDR; Filmuj tętniące życiem noce; Rób niesamowite selfie aparatem 12 MP.",
+                        MainPhoto = "samsung-galaxy-a56-5g-black-main.jpg",
+                        OtherPhotos = new[]
+                        {
+                            "samsung-galaxy-a56-5g-black-1.jpg",
+                            "samsung-galaxy-a56-5g-black-2.jpg"
+                        }
                     },
-                    CPU = "Samsung Exynos 1580 (1x 2.9 GHz, A720 + 3x 2.6 GHz A700 + 4x 1.95 GHz A500)",
-                    GPU = "Brak danych",
-                    Ram = "8 GB",
-                    Storage = "256 GB",
-                    DisplayType = "Super AMOLED",
-                    RefreshRateHz = 120,
-                    ScreenSizeInches = 6.7m,
-                    Width = 2340,
-                    Height = 1080,
-                    BatteryType = "Li-Ion",
-                    BatteryCapacity = 5000,
-                    Has5G = true,
-                    WiFi = true,
-                    NFC = true,
-                    Bluetooth = true,
-                    GPS = true,
-                    AGPS = true,
-                    Galileo = true,
-                    GLONASS = true,
-                    QZSS = true,
-                    Sensors_Accelerometer = true,
-                    Sensors_Gyroscope = true,
-                    Proximity = true,
-                    Compass = true,
-                    Barometer = false,
-                    Halla = true,
-                    AmbientLight = true,
-                    Amount = 1999.00m,
-                    Currency = "PLN"
+                    ElectronicDetails = new
+                    {
+                        CPU = "Samsung Exynos 1580 (1x 2.9 GHz, A720 + 3x 2.6 GHz A700 + 4x 1.95 GHz A500)",
+                        GPU = "Brak danych",
+                        Ram = "8 GB",
+                        Storage = "256 GB",
+                        DisplayType = "Super AMOLED",
+                        RefreshRateHz = 120,
+                        ScreenSizeInches = 6.7m,
+                        Width = 2340,
+                        Height = 1080,
+                        BatteryType = "Li-Ion",
+                        BatteryCapacity = 5000
+                    },
+                    Connectivity = new
+                    {
+                        Has5G = true,
+                        WiFi = true,
+                        NFC = true,
+                        Bluetooth = true
+                    },
+                    SatelliteNavigationSystems = new
+                    {
+                        GPS = true,
+                        AGPS = true,
+                        Galileo = true,
+                        GLONASS = true,
+                        QZSS = true
+                    },
+                    Sensors = new
+                    {
+                        Accelerometer = true,
+                        Gyroscope = true,
+                        Proximity = true,
+                        Compass = true,
+                        Barometer = false,
+                        Halla = true,
+                        AmbientLight = true
+                    },
+                    Price = new
+                    {
+                        Amount = 1999.00m,
+                        Currency = "PLN"
+                    }
                 }
             );
 
