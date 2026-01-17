@@ -3,9 +3,14 @@ using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
+using ProductCatalog.Domain.AggregatesModel.Common;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.Common.Enums;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace ProductCatalog.Infrastructure.Configuration.DataSeed
 {
@@ -174,54 +179,38 @@ namespace ProductCatalog.Infrastructure.Configuration.DataSeed
 
         private static void SeedMobilePhones(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MobilePhone>().HasData(
-                new
-                {
-                    Id = SamsungGalaxyA56Id,
-                    CategoryId = MobileCategoryId,
-                    FingerPrint = true,
-                    FaceId = false,
-                    IsActive = true,
-                    ChangedAt = SamsungGalaxyA56ChangedAt,
-                    CommonDescription_Name = "Samsung Galaxy A56 5G 8/256GB Czarny",
-                    CommonDescription_Description = "Nagrywaj niesamowite wideo selfie w Super HDR; Filmuj tętniące życiem noce; Rób niesamowite selfie aparatem 12 MP.",
-                    CommonDescription_MainPhoto = "samsung-galaxy-a56-5g-black-main.jpg",
-                    CommonDescription_OtherPhotos = new[]
+            var samsungGalaxyA56 = new MobilePhone(
+                new CommonDescription(
+                    "Samsung Galaxy A56 5G 8/256GB Czarny",
+                    "Nagrywaj niesamowite wideo selfie w Super HDR; Filmuj tętniące życiem noce; Rób niesamowite selfie aparatem 12 MP.",
+                    "samsung-galaxy-a56-5g-black-main.jpg",
+                    new List<string>
                     {
                         "samsung-galaxy-a56-5g-black-1.jpg",
                         "samsung-galaxy-a56-5g-black-2.jpg"
-                    },
-                    ElectronicDetails_CPU = "Samsung Exynos 1580 (1x 2.9 GHz, A720 + 3x 2.6 GHz A700 + 4x 1.95 GHz A500)",
-                    ElectronicDetails_GPU = "Brak danych",
-                    ElectronicDetails_Ram = "8 GB",
-                    ElectronicDetails_Storage = "256 GB",
-                    ElectronicDetails_DisplayType = "Super AMOLED",
-                    ElectronicDetails_RefreshRateHz = 120,
-                    ElectronicDetails_ScreenSizeInches = 6.7m,
-                    ElectronicDetails_Width = 2340,
-                    ElectronicDetails_Height = 1080,
-                    ElectronicDetails_BatteryType = "Li-Ion",
-                    ElectronicDetails_BatteryCapacity = 5000,
-                    Connectivity_Has5G = true,
-                    Connectivity_WiFi = true,
-                    Connectivity_NFC = true,
-                    Connectivity_Bluetooth = true,
-                    SatelliteNavigationSystems_GPS = true,
-                    SatelliteNavigationSystems_AGPS = true,
-                    SatelliteNavigationSystems_Galileo = true,
-                    SatelliteNavigationSystems_GLONASS = true,
-                    SatelliteNavigationSystems_QZSS = true,
-                    Sensors_Accelerometer = true,
-                    Sensors_Gyroscope = true,
-                    Sensors_Proximity = true,
-                    Sensors_Compass = true,
-                    Sensors_Barometer = false,
-                    Sensors_Halla = true,
-                    Sensors_AmbientLight = true,
-                    Price_Amount = 1999.00m,
-                    Price_Currency = "PLN"
-                }
-            );
+                    }),
+                new ElectronicDetails(
+                    "Samsung Exynos 1580 (1x 2.9 GHz, A720 + 3x 2.6 GHz A700 + 4x 1.95 GHz A500)",
+                    "Brak danych",
+                    "8 GB",
+                    "256 GB",
+                    "Super AMOLED",
+                    120,
+                    6.7m,
+                    2340,
+                    1080,
+                    "Li-Ion",
+                    5000),
+                new Connectivity(true, true, true, true),
+                new SatelliteNavigationSystem(true, true, true, true, true),
+                new Sensors(true, true, true, true, false, true, true),
+                true,
+                false,
+                MobileCategoryId,
+                new Money(1999.00m, "PLN"));
+            SetAggregateSeedValues(samsungGalaxyA56, SamsungGalaxyA56Id, true, SamsungGalaxyA56ChangedAt);
+
+            modelBuilder.Entity<MobilePhone>().HasData(samsungGalaxyA56);
 
             modelBuilder.Entity<MobilePhonesHistory>().HasData(
                 new
@@ -269,6 +258,19 @@ namespace ProductCatalog.Infrastructure.Configuration.DataSeed
                     Operation = Operation.Inserted
                 }
             );
+        }
+
+        private static void SetAggregateSeedValues(AggregateRoot entity, Guid id, bool isActive, DateTime changedAt)
+        {
+            SetAggregateProperty(entity, nameof(AggregateRoot.Id), id);
+            SetAggregateProperty(entity, nameof(AggregateRoot.IsActive), isActive);
+            SetAggregateProperty(entity, nameof(AggregateRoot.ChangedAt), changedAt);
+        }
+
+        private static void SetAggregateProperty<T>(AggregateRoot entity, string name, T value)
+        {
+            var property = typeof(AggregateRoot).GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            property?.SetValue(entity, value);
         }
     }
 }
