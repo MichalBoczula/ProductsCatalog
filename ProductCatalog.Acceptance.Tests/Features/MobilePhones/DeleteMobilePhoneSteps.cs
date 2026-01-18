@@ -125,6 +125,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 new CreateConnectivityExternalDto(true, true, true, true),
                 new CreateSatelliteNavigationSystemExternalDto(true, true, true, true, true),
                 new CreateSensorsExternalDto(true, true, true, true, true, false, true),
+                "camera",
                 true,
                 true,
                 categoryId,
