@@ -10,6 +10,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
         [property: JsonRequired] UpdateConnectivityExternalDto Connectivity,
         [property: JsonRequired] UpdateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
         [property: JsonRequired] UpdateSensorsExternalDto Sensors,
+        [property: JsonRequired] string Camera,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,

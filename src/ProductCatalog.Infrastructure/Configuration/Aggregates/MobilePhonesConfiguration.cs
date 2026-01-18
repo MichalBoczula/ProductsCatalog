@@ -65,7 +65,9 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
                 desc.Property(p => p.AmbientLight).HasColumnName("AmbientLight").IsRequired();
             });
 
-        builder.ComplexProperty(x => x.Price, money =>
+            builder.Property(x => x.Camera).HasMaxLength(200).IsRequired();
+
+            builder.ComplexProperty(x => x.Price, money =>
                 {
                     money.Property(m => m.Amount)
                          .HasColumnName("PriceAmount")

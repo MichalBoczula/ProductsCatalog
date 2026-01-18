@@ -9,6 +9,7 @@ namespace ProductCatalog.Application.Common.Dtos.MobilePhones
         public required ConnectivityDto Connectivity { get; init; }
         public required SatelliteNavigationSystemDto SatelliteNavigationSystems { get; init; }
         public required SensorsDto Sensors { get; init; }
+        public required string Camera { get; init; }
         public required MoneyDto Price { get; init; }
         public required bool FingerPrint { get; init; }
         public required bool FaceId { get; init; }

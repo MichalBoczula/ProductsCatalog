@@ -37,6 +37,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History
         public required bool WiFi { get; init; }
         public required bool NFC { get; init; }
         public required bool Bluetooth { get; init; }
+        public required string Camera { get; init; }
         public required bool FingerPrint { get; init; }
         public required bool FaceId { get; init; }
         public required Guid CategoryId { get; init; }
