@@ -49,8 +49,7 @@ namespace ProductCatalog.Application.Mapping
                     {
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
-                    })
-                .Map(dest => dest.Camera, src => src.Camera);
+                    });
 
             TypeAdapterConfig<MobilePhoneReadModel, MobilePhoneDto>
                 .NewConfig()

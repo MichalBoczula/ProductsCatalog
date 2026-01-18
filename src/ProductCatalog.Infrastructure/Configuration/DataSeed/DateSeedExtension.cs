@@ -3,8 +3,6 @@ using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
-using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
-using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
 
 namespace ProductCatalog.Infrastructure.Configuration.DataSeed
@@ -27,9 +25,6 @@ namespace ProductCatalog.Infrastructure.Configuration.DataSeed
         private static readonly Guid PlnCurrencyHistoryId = Guid.Parse("58ad897f-178c-45c9-a8f0-3302a265a9aa");
         private static readonly Guid EurCurrencyHistoryId = Guid.Parse("5bbe9f3d-6299-40b6-a9e6-e851de397563");
 
-        private static readonly Guid SamsungGalaxyA56Id = Guid.Parse("fe523b04-4ed4-4b6d-824a-e5b6b2aa4f63");
-        private static readonly Guid SamsungGalaxyA56HistoryId = Guid.Parse("f4ed88ac-6e5b-45a0-998b-490138f6c87c");
-
         private static readonly DateTime MobileCategoryChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2867);
         private static readonly DateTime PcCategoryChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2870);
         private static readonly DateTime TabletCategoryChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(2871);
@@ -37,13 +32,11 @@ namespace ProductCatalog.Infrastructure.Configuration.DataSeed
         private static readonly DateTime UsdCurrencyChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3042);
         private static readonly DateTime PlnCurrencyChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3043);
         private static readonly DateTime EurCurrencyChangedAt = new DateTime(2025, 12, 26, 19, 19, 17, 970, DateTimeKind.Utc).AddTicks(3044);
-        private static readonly DateTime SamsungGalaxyA56ChangedAt = new DateTime(2026, 1, 12, 10, 15, 42, 120, DateTimeKind.Utc).AddTicks(1730);
 
         public static void SeedData(this ModelBuilder modelBuilder)
         {
             SeedCategories(modelBuilder);
             SeedCurrencies(modelBuilder);
-            SeedMobilePhones(modelBuilder);
         }
 
         private static void SeedCategories(ModelBuilder modelBuilder)
@@ -167,107 +160,6 @@ namespace ProductCatalog.Infrastructure.Configuration.DataSeed
                     Description = "Euro",
                     IsActive = true,
                     ChangedAt = EurCurrencyChangedAt,
-                    Operation = Operation.Inserted
-                }
-            );
-        }
-
-        private static void SeedMobilePhones(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<MobilePhone>().HasData(
-                new
-                {
-                    Id = SamsungGalaxyA56Id,
-                    CategoryId = MobileCategoryId,
-                    FingerPrint = true,
-                    FaceId = false,
-                    IsActive = true,
-                    ChangedAt = SamsungGalaxyA56ChangedAt,
-                    Name = "Samsung Galaxy A56 5G 8/256GB Czarny",
-                    Description = "Nagrywaj niesamowite wideo selfie w Super HDR; Filmuj tętniące życiem noce; Rób niesamowite selfie aparatem 12 MP.",
-                    MainPhoto = "samsung-galaxy-a56-5g-black-main.jpg",
-                    OtherPhotos = new[]
-                    {
-                        "samsung-galaxy-a56-5g-black-1.jpg",
-                        "samsung-galaxy-a56-5g-black-2.jpg"
-                    },
-                    CPU = "Samsung Exynos 1580 (1x 2.9 GHz, A720 + 3x 2.6 GHz A700 + 4x 1.95 GHz A500)",
-                    GPU = "Brak danych",
-                    Ram = "8 GB",
-                    Storage = "256 GB",
-                    DisplayType = "Super AMOLED",
-                    RefreshRateHz = 120,
-                    ScreenSizeInches = 6.7m,
-                    Width = 2340,
-                    Height = 1080,
-                    BatteryType = "Li-Ion",
-                    BatteryCapacity = 5000,
-                    Has5G = true,
-                    WiFi = true,
-                    NFC = true,
-                    Bluetooth = true,
-                    Camera = "12 MP",
-                    GPS = true,
-                    AGPS = true,
-                    Galileo = true,
-                    GLONASS = true,
-                    QZSS = true,
-                    Sensors_Accelerometer = true,
-                    Sensors_Gyroscope = true,
-                    Proximity = true,
-                    Compass = true,
-                    Barometer = false,
-                    Halla = true,
-                    AmbientLight = true,
-                    Amount = 1999.00m,
-                    Currency = "PLN"
-                }
-            );
-
-            modelBuilder.Entity<MobilePhonesHistory>().HasData(
-                new
-                {
-                    Id = SamsungGalaxyA56HistoryId,
-                    MobilePhoneId = SamsungGalaxyA56Id,
-                    Name = "Samsung Galaxy A56 5G 8/256GB Czarny",
-                    Description = "Nagrywaj niesamowite wideo selfie w Super HDR; Filmuj tętniące życiem noce; Rób niesamowite selfie aparatem 12 MP.",
-                    MainPhoto = "samsung-galaxy-a56-5g-black-main.jpg",
-                    OtherPhotos = "[\"samsung-galaxy-a56-5g-black-1.jpg\",\"samsung-galaxy-a56-5g-black-2.jpg\"]",
-                    CPU = "Samsung Exynos 1580 (1x 2.9 GHz, A720 + 3x 2.6 GHz A700 + 4x 1.95 GHz A500)",
-                    GPU = "Brak danych",
-                    Ram = "8 GB",
-                    Storage = "256 GB",
-                    DisplayType = "Super AMOLED",
-                    RefreshRateHz = 120,
-                    ScreenSizeInches = 6.7m,
-                    Width = 2340,
-                    Height = 1080,
-                    BatteryType = "Li-Ion",
-                    BatteryCapacity = 5000,
-                    GPS = true,
-                    AGPS = true,
-                    Galileo = true,
-                    GLONASS = true,
-                    QZSS = true,
-                    Accelerometer = true,
-                    Gyroscope = true,
-                    Proximity = true,
-                    Compass = true,
-                    Barometer = false,
-                    Halla = true,
-                    AmbientLight = true,
-                    Has5G = true,
-                    WiFi = true,
-                    NFC = true,
-                    Bluetooth = true,
-                    Camera = "12 MP",
-                    FingerPrint = true,
-                    FaceId = false,
-                    CategoryId = MobileCategoryId,
-                    PriceAmount = 1999.00m,
-                    PriceCurrency = "PLN",
-                    IsActive = true,
-                    ChangedAt = SamsungGalaxyA56ChangedAt,
                     Operation = Operation.Inserted
                 }
             );
