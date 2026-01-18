@@ -14,7 +14,7 @@ namespace ProductCatalog.Infrastructure.Configuration.Histories
 
             builder.Property(x => x.ProductId).IsRequired();
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(2000).IsRequired();
+            builder.Property(x => x.Description).HasColumnType("nvarchar(max)").IsRequired();
             builder.Property(x => x.PriceAmount).IsRequired();
             builder.Property(x => x.PriceCurrency).IsRequired();
             builder.Property(x => x.ChangedAt).IsRequired();

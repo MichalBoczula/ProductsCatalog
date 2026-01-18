@@ -17,7 +17,7 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
             builder.ComplexProperty(x => x.CommonDescription, desc =>
             {
                 desc.Property(p => p.Name).HasColumnName("Name").HasMaxLength(200).IsRequired();
-                desc.Property(p => p.Description).HasColumnName("Description").HasMaxLength(200).IsRequired();
+                desc.Property(p => p.Description).HasColumnName("Description").HasColumnType("nvarchar(max)").IsRequired();
                 desc.Property(p => p.MainPhoto).HasColumnName("MainPhoto").HasMaxLength(200).IsRequired();
                 desc.Property(p => p.OtherPhotos).HasColumnName("OtherPhotos").HasColumnType("nvarchar(4000)").IsRequired();
             });

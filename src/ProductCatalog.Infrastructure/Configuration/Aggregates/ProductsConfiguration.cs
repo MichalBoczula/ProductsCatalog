@@ -12,7 +12,7 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
             builder.ToTable(SqlTableNames.Products);
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(2000).IsRequired();
+            builder.Property(x => x.Description).HasColumnType("nvarchar(max)").IsRequired();
             builder.ComplexProperty(x => x.Price, money =>
             {
                 money.Property(m => m.Amount)

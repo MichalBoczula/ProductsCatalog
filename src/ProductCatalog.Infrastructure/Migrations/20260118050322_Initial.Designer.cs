@@ -13,8 +13,8 @@ using ProductCatalog.Infrastructure.Contexts.Commands;
 namespace ProductCatalog.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductsContext))]
-    [Migration("20260105123308_AlterMobilePhone2")]
-    partial class AlterMobilePhone2
+    [Migration("20260118050322_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -275,11 +275,177 @@ namespace ProductCatalog.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History.MobilePhonesHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AGPS")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Accelerometer")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AmbientLight")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Barometer")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BatteryCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BatteryType")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Bluetooth")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CPU")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Camera")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Compass")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayType")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("FaceId")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FingerPrint")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("GLONASS")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("GPS")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("GPU")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Galileo")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Gyroscope")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Halla")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Has5G")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MainPhoto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("MobilePhoneId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("NFC")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Operation")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OtherPhotos")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<decimal>("PriceAmount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PriceCurrency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<bool>("Proximity")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("QZSS")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Ram")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("RefreshRateHz")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ScreenSizeInches")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Storage")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("WiFi")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChangedAt");
+
+                    b.HasIndex("MobilePhoneId");
+
+                    b.ToTable("TB_MobilePhones_History", (string)null);
+                });
+
             modelBuilder.Entity("ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.MobilePhone", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Camera")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
@@ -302,8 +468,7 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                             b1.Property<string>("Description")
                                 .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
+                                .HasColumnType("nvarchar(max)")
                                 .HasColumnName("Description");
 
                             b1.Property<string>("MainPhoto")
@@ -422,6 +587,64 @@ namespace ProductCatalog.Infrastructure.Migrations
                                 .HasColumnName("PriceCurrency");
                         });
 
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "SatelliteNavigationSystems", "ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.MobilePhone.SatelliteNavigationSystems#SatelliteNavigationSystem", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<bool>("AGPS")
+                                .HasColumnType("bit")
+                                .HasColumnName("AGPS");
+
+                            b1.Property<bool>("GLONASS")
+                                .HasColumnType("bit")
+                                .HasColumnName("GLONASS");
+
+                            b1.Property<bool>("GPS")
+                                .HasColumnType("bit")
+                                .HasColumnName("GPS");
+
+                            b1.Property<bool>("Galileo")
+                                .HasColumnType("bit")
+                                .HasColumnName("Galileo");
+
+                            b1.Property<bool>("QZSS")
+                                .HasColumnType("bit")
+                                .HasColumnName("QZSS");
+                        });
+
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Sensors", "ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.MobilePhone.Sensors#Sensors", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<bool>("Accelerometer")
+                                .HasColumnType("bit")
+                                .HasColumnName("Accelerometer");
+
+                            b1.Property<bool>("AmbientLight")
+                                .HasColumnType("bit")
+                                .HasColumnName("AmbientLight");
+
+                            b1.Property<bool>("Barometer")
+                                .HasColumnType("bit")
+                                .HasColumnName("Barometer");
+
+                            b1.Property<bool>("Compass")
+                                .HasColumnType("bit")
+                                .HasColumnName("Compass");
+
+                            b1.Property<bool>("Gyroscope")
+                                .HasColumnType("bit")
+                                .HasColumnName("Gyroscope");
+
+                            b1.Property<bool>("Halla")
+                                .HasColumnType("bit")
+                                .HasColumnName("Halla");
+
+                            b1.Property<bool>("Proximity")
+                                .HasColumnType("bit")
+                                .HasColumnName("Proximity");
+                        });
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -443,8 +666,7 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -490,8 +712,7 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");

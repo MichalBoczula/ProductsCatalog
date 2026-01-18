@@ -322,8 +322,7 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DisplayType")
                         .IsRequired()
@@ -466,8 +465,7 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                             b1.Property<string>("Description")
                                 .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
+                                .HasColumnType("nvarchar(max)")
                                 .HasColumnName("Description");
 
                             b1.Property<string>("MainPhoto")
@@ -665,8 +663,7 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -712,8 +709,7 @@ namespace ProductCatalog.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
