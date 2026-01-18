@@ -11,6 +11,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         public Connectivity Connectivity { get; private set; }
         public SatelliteNavigationSystem SatelliteNavigationSystems { get; private set; }
         public Sensors Sensors { get; private set; }
+        public string Camera { get; private set; }
         public bool FingerPrint { get; private set; }
         public bool FaceId { get; private set; }
         public Guid CategoryId { get; private set; }
@@ -24,6 +25,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             Connectivity connectivity,
             SatelliteNavigationSystem satelliteNavigationSystems,
             Sensors sensors,
+            string camera,
             bool fingerPrint,
             bool faceId,
             Guid categoryId,
@@ -34,6 +36,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             Connectivity = connectivity;
             SatelliteNavigationSystems = satelliteNavigationSystems;
             Sensors = sensors;
+            Camera = camera;
             FingerPrint = fingerPrint;
             FaceId = faceId;
             CategoryId = categoryId;
@@ -47,6 +50,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             Connectivity = incoming.Connectivity;
             SatelliteNavigationSystems = incoming.SatelliteNavigationSystems;
             Sensors = incoming.Sensors;
+            Camera = incoming.Camera;
             FingerPrint = incoming.FingerPrint;
             FaceId = incoming.FaceId;
             CategoryId = incoming.CategoryId;

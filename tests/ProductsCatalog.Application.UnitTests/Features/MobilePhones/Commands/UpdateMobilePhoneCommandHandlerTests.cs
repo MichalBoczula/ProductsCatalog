@@ -49,6 +49,7 @@ public class UpdateMobilePhoneCommandHandlerTests
                 new UpdateConnectivityExternalDto(true, false, true, false),
                 new UpdateSatelliteNavigationSystemExternalDto(true, false, true, true, false),
                 new UpdateSensorsExternalDto(true, false, true, true, false, true, false),
+                "64 MP",
                 true,
                 true,
                 Guid.NewGuid(),
@@ -75,6 +76,7 @@ public class UpdateMobilePhoneCommandHandlerTests
             new Connectivity(false, true, false, true),
             new SatelliteNavigationSystem(true, true, false, false, true),
             new Sensors(true, true, false, false, true, false, true),
+            "12 MP",
             false,
             false,
             Guid.NewGuid(),
@@ -153,6 +155,7 @@ public class UpdateMobilePhoneCommandHandlerTests
                 phone.Sensors.Barometer == command.MobilePhone.Sensors.Barometer &&
                 phone.Sensors.Halla == command.MobilePhone.Sensors.Halla &&
                 phone.Sensors.AmbientLight == command.MobilePhone.Sensors.AmbientLight &&
+                phone.Camera == command.MobilePhone.Camera &&
                 phone.FingerPrint == command.MobilePhone.FingerPrint &&
                 phone.FaceId == command.MobilePhone.FaceId &&
                 phone.CategoryId == command.MobilePhone.CategoryId &&
@@ -196,6 +199,7 @@ public class UpdateMobilePhoneCommandHandlerTests
         result.Sensors.Barometer.ShouldBe(command.MobilePhone.Sensors.Barometer);
         result.Sensors.Halla.ShouldBe(command.MobilePhone.Sensors.Halla);
         result.Sensors.AmbientLight.ShouldBe(command.MobilePhone.Sensors.AmbientLight);
+        result.Camera.ShouldBe(command.MobilePhone.Camera);
         result.FingerPrint.ShouldBe(command.MobilePhone.FingerPrint);
         result.FaceId.ShouldBe(command.MobilePhone.FaceId);
         result.CategoryId.ShouldBe(command.MobilePhone.CategoryId);
@@ -232,6 +236,7 @@ public class UpdateMobilePhoneCommandHandlerTests
                 new UpdateConnectivityExternalDto(true, false, true, false),
                 new UpdateSatelliteNavigationSystemExternalDto(true, false, true, true, false),
                 new UpdateSensorsExternalDto(true, false, true, true, false, true, false),
+                "64 MP",
                 true,
                 true,
                 Guid.NewGuid(),

@@ -45,6 +45,7 @@ public class CreateMobilePhoneCommandHandlerTests
                 new CreateConnectivityExternalDto(true, true, true, true),
                 new CreateSatelliteNavigationSystemExternalDto(true, true, true, false, true),
                 new CreateSensorsExternalDto(true, true, true, false, true, false, true),
+                "48 MP",
                 true,
                 false,
                 Guid.NewGuid(),
@@ -113,6 +114,7 @@ public class CreateMobilePhoneCommandHandlerTests
                 phone.Sensors.Barometer == command.mobilePhoneExternalDto.Sensors.Barometer &&
                 phone.Sensors.Halla == command.mobilePhoneExternalDto.Sensors.Halla &&
                 phone.Sensors.AmbientLight == command.mobilePhoneExternalDto.Sensors.AmbientLight &&
+                phone.Camera == command.mobilePhoneExternalDto.Camera &&
                 phone.FingerPrint == command.mobilePhoneExternalDto.FingerPrint &&
                 phone.FaceId == command.mobilePhoneExternalDto.FaceId &&
                 phone.CategoryId == command.mobilePhoneExternalDto.CategoryId &&
@@ -157,6 +159,7 @@ public class CreateMobilePhoneCommandHandlerTests
         result.Sensors.Barometer.ShouldBe(command.mobilePhoneExternalDto.Sensors.Barometer);
         result.Sensors.Halla.ShouldBe(command.mobilePhoneExternalDto.Sensors.Halla);
         result.Sensors.AmbientLight.ShouldBe(command.mobilePhoneExternalDto.Sensors.AmbientLight);
+        result.Camera.ShouldBe(command.mobilePhoneExternalDto.Camera);
         result.FingerPrint.ShouldBe(command.mobilePhoneExternalDto.FingerPrint);
         result.FaceId.ShouldBe(command.mobilePhoneExternalDto.FaceId);
         result.CategoryId.ShouldBe(command.mobilePhoneExternalDto.CategoryId);
@@ -191,6 +194,7 @@ public class CreateMobilePhoneCommandHandlerTests
                 new CreateConnectivityExternalDto(true, true, true, true),
                 new CreateSatelliteNavigationSystemExternalDto(true, true, true, false, true),
                 new CreateSensorsExternalDto(true, true, true, false, true, false, true),
+                "48 MP",
                 true,
                 false,
                 Guid.NewGuid(),

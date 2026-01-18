@@ -10,6 +10,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
         [property: JsonRequired] CreateConnectivityExternalDto Connectivity,
         [property: JsonRequired] CreateSatelliteNavigationSystemExternalDto SatelliteNavigationSystems,
         [property: JsonRequired] CreateSensorsExternalDto Sensors,
+        [property: JsonRequired] string Camera,
         bool FingerPrint,
         bool FaceId,
         Guid CategoryId,

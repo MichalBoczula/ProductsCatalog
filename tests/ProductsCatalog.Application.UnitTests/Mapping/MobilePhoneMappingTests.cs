@@ -40,6 +40,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 connectivity,
                 navigation,
                 sensors,
+                "50 MP",
                 true,
                 false,
                 Guid.NewGuid(),
@@ -81,6 +82,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             mobilePhone.Sensors.Barometer.ShouldBe(sensors.Barometer);
             mobilePhone.Sensors.Halla.ShouldBe(sensors.Halla);
             mobilePhone.Sensors.AmbientLight.ShouldBe(sensors.AmbientLight);
+            mobilePhone.Camera.ShouldBe(dto.Camera);
             mobilePhone.FingerPrint.ShouldBeTrue();
             mobilePhone.FaceId.ShouldBeFalse();
             mobilePhone.CategoryId.ShouldBe(dto.CategoryId);
@@ -106,6 +108,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 connectivity,
                 navigation,
                 sensors,
+                "108 MP",
                 false,
                 true,
                 Guid.NewGuid(),
@@ -147,6 +150,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             mobilePhone.Sensors.Barometer.ShouldBe(sensors.Barometer);
             mobilePhone.Sensors.Halla.ShouldBe(sensors.Halla);
             mobilePhone.Sensors.AmbientLight.ShouldBe(sensors.AmbientLight);
+            mobilePhone.Camera.ShouldBe(dto.Camera);
             mobilePhone.FingerPrint.ShouldBeFalse();
             mobilePhone.FaceId.ShouldBeTrue();
             mobilePhone.CategoryId.ShouldBe(dto.CategoryId);
@@ -167,6 +171,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 new Connectivity(true, true, false, true),
                 new SatelliteNavigationSystem(true, false, true, true, false),
                 new Sensors(true, true, false, true, false, false, true),
+                "12 MP",
                 true,
                 true,
                 categoryId,
@@ -208,6 +213,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Sensors.Barometer.ShouldBe(mobilePhone.Sensors.Barometer);
             dto.Sensors.Halla.ShouldBe(mobilePhone.Sensors.Halla);
             dto.Sensors.AmbientLight.ShouldBe(mobilePhone.Sensors.AmbientLight);
+            dto.Camera.ShouldBe(mobilePhone.Camera);
             dto.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
             dto.FaceId.ShouldBe(mobilePhone.FaceId);
             dto.CategoryId.ShouldBe(categoryId);
@@ -254,6 +260,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 WiFi = true,
                 NFC = true,
                 Bluetooth = true,
+                Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
                 CategoryId = Guid.NewGuid(),
@@ -298,6 +305,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Connectivity.WiFi.ShouldBe(readModel.WiFi);
             dto.Connectivity.NFC.ShouldBe(readModel.NFC);
             dto.Connectivity.Bluetooth.ShouldBe(readModel.Bluetooth);
+            dto.Camera.ShouldBe(readModel.Camera);
             dto.FingerPrint.ShouldBe(readModel.FingerPrint);
             dto.FaceId.ShouldBe(readModel.FaceId);
             dto.CategoryId.ShouldBe(readModel.CategoryId);
@@ -317,6 +325,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 new Connectivity(true, true, false, true),
                 new SatelliteNavigationSystem(true, false, true, true, false),
                 new Sensors(true, true, false, true, false, false, true),
+                "12 MP",
                 true,
                 true,
                 categoryId,
@@ -362,6 +371,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             history.WiFi.ShouldBe(mobilePhone.Connectivity.WiFi);
             history.NFC.ShouldBe(mobilePhone.Connectivity.NFC);
             history.Bluetooth.ShouldBe(mobilePhone.Connectivity.Bluetooth);
+            history.Camera.ShouldBe(mobilePhone.Camera);
             history.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
             history.FaceId.ShouldBe(mobilePhone.FaceId);
             history.CategoryId.ShouldBe(mobilePhone.CategoryId);
@@ -411,6 +421,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 WiFi = true,
                 NFC = true,
                 Bluetooth = true,
+                Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
                 CategoryId = Guid.NewGuid(),
@@ -446,6 +457,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Connectivity.WiFi.ShouldBe(history.WiFi);
             dto.Connectivity.NFC.ShouldBe(history.NFC);
             dto.Connectivity.Bluetooth.ShouldBe(history.Bluetooth);
+            dto.Camera.ShouldBe(history.Camera);
             dto.SatelliteNavigationSystems.GPS.ShouldBe(history.GPS);
             dto.SatelliteNavigationSystems.AGPS.ShouldBe(history.AGPS);
             dto.SatelliteNavigationSystems.Galileo.ShouldBe(history.Galileo);

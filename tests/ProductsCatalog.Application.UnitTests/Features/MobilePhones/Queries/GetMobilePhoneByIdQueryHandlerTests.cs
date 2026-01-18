@@ -59,6 +59,7 @@ public class GetMobilePhoneByIdQueryHandlerTests
             WiFi = true,
             NFC = true,
             Bluetooth = true,
+            Camera = "12 MP",
             FingerPrint = true,
             FaceId = false,
             CategoryId = categoryId,
@@ -92,6 +93,7 @@ public class GetMobilePhoneByIdQueryHandlerTests
         result.CommonDescription.OtherPhotos.ShouldBe(otherPhotos);
         result.ElectronicDetails.CPU.ShouldBe(mobilePhoneReadModel.CPU);
         result.Connectivity.Has5G.ShouldBe(mobilePhoneReadModel.Has5G);
+        result.Camera.ShouldBe(mobilePhoneReadModel.Camera);
         result.CategoryId.ShouldBe(mobilePhoneReadModel.CategoryId);
         result.Price.Amount.ShouldBe(mobilePhoneReadModel.PriceAmount);
         result.Price.Currency.ShouldBe(mobilePhoneReadModel.PriceCurrency);

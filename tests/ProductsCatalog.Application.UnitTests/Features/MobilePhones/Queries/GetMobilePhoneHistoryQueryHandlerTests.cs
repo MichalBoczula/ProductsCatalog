@@ -65,6 +65,7 @@ public class GetMobilePhoneHistoryQueryHandlerTests
                 WiFi = true,
                 NFC = true,
                 Bluetooth = true,
+                Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
                 CategoryId = categoryId,
@@ -103,6 +104,7 @@ public class GetMobilePhoneHistoryQueryHandlerTests
         result[0].CommonDescription.OtherPhotos.ShouldBe(otherPhotos);
         result[0].ElectronicDetails.CPU.ShouldBe(historyEntries[0].CPU);
         result[0].Connectivity.Has5G.ShouldBe(historyEntries[0].Has5G);
+        result[0].Camera.ShouldBe(historyEntries[0].Camera);
         result[0].CategoryId.ShouldBe(historyEntries[0].CategoryId);
         result[0].Price.Amount.ShouldBe(historyEntries[0].PriceAmount);
         result[0].Price.Currency.ShouldBe(historyEntries[0].PriceCurrency);

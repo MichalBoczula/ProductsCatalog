@@ -44,6 +44,7 @@ namespace ProductCatalog.Infrastructure.Configuration.Histories
             builder.Property(x => x.WiFi).IsRequired();
             builder.Property(x => x.NFC).IsRequired();
             builder.Property(x => x.Bluetooth).IsRequired();
+            builder.Property(x => x.Camera).HasMaxLength(200).IsRequired();
             builder.Property(x => x.FingerPrint).IsRequired();
             builder.Property(x => x.FaceId).IsRequired();
             builder.Property(x => x.CategoryId).IsRequired();

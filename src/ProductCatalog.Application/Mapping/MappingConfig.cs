@@ -49,7 +49,8 @@ namespace ProductCatalog.Application.Mapping
                     {
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
-                    });
+                    })
+                .Map(dest => dest.Camera, src => src.Camera);
 
             TypeAdapterConfig<MobilePhoneReadModel, MobilePhoneDto>
                 .NewConfig()
@@ -213,13 +214,15 @@ namespace ProductCatalog.Application.Mapping
                .NewConfig()
                .MapToConstructor(true)
                .Map(dest => dest.SatelliteNavigationSystems, src => src.SatelliteNavigationSystems)
-               .Map(dest => dest.Sensors, src => src.Sensors);
+               .Map(dest => dest.Sensors, src => src.Sensors)
+               .Map(dest => dest.Camera, src => src.Camera);
 
             TypeAdapterConfig<UpdateMobilePhoneExternalDto, MobilePhone>
                .NewConfig()
                .MapToConstructor(true)
                .Map(dest => dest.SatelliteNavigationSystems, src => src.SatelliteNavigationSystems)
-               .Map(dest => dest.Sensors, src => src.Sensors);
+               .Map(dest => dest.Sensors, src => src.Sensors)
+               .Map(dest => dest.Camera, src => src.Camera);
 
             TypeAdapterConfig<MobilePhone, MobilePhoneDto>
                 .NewConfig();
@@ -279,6 +282,7 @@ namespace ProductCatalog.Application.Mapping
                 .Map(dest => dest.WiFi, src => src.Connectivity.WiFi)
                 .Map(dest => dest.NFC, src => src.Connectivity.NFC)
                 .Map(dest => dest.Bluetooth, src => src.Connectivity.Bluetooth)
+                .Map(dest => dest.Camera, src => src.Camera)
                 .Map(dest => dest.FingerPrint, src => src.FingerPrint)
                 .Map(dest => dest.FaceId, src => src.FaceId)
                 .Map(dest => dest.CategoryId, src => src.CategoryId)
@@ -345,7 +349,8 @@ namespace ProductCatalog.Application.Mapping
                     {
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
-                    });
+                    })
+                .Map(dest => dest.Camera, src => src.Camera);
         }
     }
 }
