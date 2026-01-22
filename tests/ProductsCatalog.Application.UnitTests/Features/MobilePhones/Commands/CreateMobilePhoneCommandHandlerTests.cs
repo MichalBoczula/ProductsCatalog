@@ -49,7 +49,9 @@ public class CreateMobilePhoneCommandHandlerTests
                 true,
                 false,
                 Guid.NewGuid(),
-                new CreateMoneyExternalDto(250.5m, "usd")));
+                new CreateMoneyExternalDto(250.5m, "usd"),
+                "desc2",
+                "desc3"));
 
         var mobilePhonesRepoMock = new Mock<IMobilePhonesCommandsRepository>(MockBehavior.Strict);
         var validationPolicyMock = new Mock<IValidationPolicy<MobilePhone>>(MockBehavior.Strict);
@@ -198,7 +200,9 @@ public class CreateMobilePhoneCommandHandlerTests
                 true,
                 false,
                 Guid.NewGuid(),
-                new CreateMoneyExternalDto(250.5m, "usd")));
+                new CreateMoneyExternalDto(250.5m, "usd"),
+                "desc2",
+                "desc3"));
 
         var mobilePhonesRepoMock = new Mock<IMobilePhonesCommandsRepository>(MockBehavior.Strict);
         var validationPolicyMock = new Mock<IValidationPolicy<MobilePhone>>(MockBehavior.Strict);

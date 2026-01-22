@@ -16,6 +16,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         public bool FaceId { get; private set; }
         public Guid CategoryId { get; private set; }
         public Money Price { get; private set; }
+        public string Description2 { get; private set; }
+        public string Description3 { get; private set; }
 
         private MobilePhone() { }
 
@@ -29,7 +31,9 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             bool fingerPrint,
             bool faceId,
             Guid categoryId,
-            Money price)
+            Money price,
+            string description2,
+            string description3)
         {
             CommonDescription = commonDescription;
             ElectronicDetails = electronicDetails;
@@ -41,6 +45,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             FaceId = faceId;
             CategoryId = categoryId;
             Price = price;
+            Description2 = description2;
+            Description3 = description3;
         }
 
         public void AssigneNewMobilePhoneInformation(MobilePhone incoming)
@@ -55,6 +61,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             FaceId = incoming.FaceId;
             CategoryId = incoming.CategoryId;
             Price = incoming.Price;
+            Description2 = incoming.Description2;
+            Description3 = incoming.Description3;
             SetChangeDate();
         }
     }

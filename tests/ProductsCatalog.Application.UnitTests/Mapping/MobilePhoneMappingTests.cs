@@ -44,7 +44,9 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 true,
                 false,
                 Guid.NewGuid(),
-                price);
+                price,
+                "desc2",
+                "desc3");
 
             //Act
             var mobilePhone = dto.Adapt<MobilePhone>();
@@ -112,7 +114,9 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 false,
                 true,
                 Guid.NewGuid(),
-                price);
+                price,
+                "desc2",
+                "desc3");
 
             //Act
             var mobilePhone = dto.Adapt<MobilePhone>();
@@ -175,7 +179,9 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 true,
                 true,
                 categoryId,
-                new Money(199.99m, "usd"));
+                new Money(199.99m, "usd"),
+                "desc2",
+                "desc3");
 
             //Act
             var dto = mobilePhone.Adapt<MobilePhoneDto>();
@@ -329,7 +335,9 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 true,
                 true,
                 categoryId,
-                new Money(199.99m, "usd"));
+                new Money(199.99m, "usd"),
+                "desc2",
+                "desc3");
             var operation = Operation.Updated;
 
             //Act

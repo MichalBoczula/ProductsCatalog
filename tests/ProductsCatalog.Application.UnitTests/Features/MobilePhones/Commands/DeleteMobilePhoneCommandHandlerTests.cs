@@ -53,7 +53,9 @@ public class DeleteMobilePhoneCommandHandlerTests
             false,
             false,
             Guid.NewGuid(),
-            new Money(199.99m, "usd"));
+            new Money(199.99m, "usd"),
+            "desc2",
+            "desc3");
 
         typeof(AggregateRoot)
             .GetProperty(nameof(AggregateRoot.Id), BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
@@ -140,7 +142,9 @@ public class DeleteMobilePhoneCommandHandlerTests
             false,
             false,
             Guid.NewGuid(),
-            new Money(199.99m, "usd"));
+            new Money(199.99m, "usd"),
+            "desc2",
+            "desc3");
 
         var mobilePhonesRepoMock = new Mock<IMobilePhonesCommandsRepository>(MockBehavior.Strict);
         var validationPolicyMock = new Mock<IValidationPolicy<MobilePhone>>(MockBehavior.Strict);

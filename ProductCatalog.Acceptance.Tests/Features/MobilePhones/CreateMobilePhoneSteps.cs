@@ -124,7 +124,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 true,
                 true,
                 categoryId,
-                new CreateMoneyExternalDto(799.99m, "USD"));
+                new CreateMoneyExternalDto(799.99m, "USD"),
+                "desc2",
+                "desc3");
         }
 
         private async Task<Guid> CreateCategoryAsync()

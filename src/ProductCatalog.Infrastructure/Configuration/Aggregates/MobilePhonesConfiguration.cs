@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Infrastructure.Common;
 
@@ -79,8 +78,10 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
                              .HasMaxLength(3)
                              .IsRequired();
                 });
+
+            builder.Property(x => x.Description2).HasMaxLength(2000).IsRequired();
+            builder.Property(x => x.Description3).HasMaxLength(2000).IsRequired();
             builder.HasIndex(x => x.CategoryId);
-            builder.HasKey(x => x.Id);
         }
     }
 }

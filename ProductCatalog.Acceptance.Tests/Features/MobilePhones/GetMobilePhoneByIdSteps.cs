@@ -69,7 +69,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 true,
                 true,
                 _categoryId,
-                new CreateMoneyExternalDto(799.99m, "USD"));
+                new CreateMoneyExternalDto(799.99m, "USD"),
+                "desc2",
+                "desc3");
 
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request);
             response.EnsureSuccessStatusCode();

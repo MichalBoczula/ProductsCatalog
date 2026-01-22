@@ -170,7 +170,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 true,
                 true,
                 categoryId,
-                new CreateMoneyExternalDto(799.99m, "USD"));
+                new CreateMoneyExternalDto(799.99m, "USD"),
+                "desc2",
+                "desc3");
         }
 
         private static UpdateMobilePhoneExternalDto BuildUpdateMobilePhoneRequest(Guid categoryId)
@@ -200,7 +202,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 false,
                 true,
                 categoryId,
-                new UpdateMoneyExternalDto(899.99m, "EUR"));
+                new UpdateMoneyExternalDto(899.99m, "EUR"),
+                "desc2",
+                "desc3");
         }
 
         private async Task<Guid> CreateCategoryAsync(string prefix)
