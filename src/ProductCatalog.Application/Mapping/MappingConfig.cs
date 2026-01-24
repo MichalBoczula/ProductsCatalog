@@ -287,6 +287,8 @@ namespace ProductCatalog.Application.Mapping
                 .Map(dest => dest.CategoryId, src => src.CategoryId)
                 .Map(dest => dest.PriceAmount, src => src.Price.Amount)
                 .Map(dest => dest.PriceCurrency, src => src.Price.Currency)
+                .Map(dest => dest.Description2, src => src.Description2)
+                .Map(dest => dest.Description3, src => src.Description3)
                 .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
                 .Ignore(dest => dest.Id);
 
@@ -349,7 +351,9 @@ namespace ProductCatalog.Application.Mapping
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
                     })
-                .Map(dest => dest.Camera, src => src.Camera);
+                .Map(dest => dest.Camera, src => src.Camera)
+                .Map(dest => dest.Description2, src => src.Description2)
+                .Map(dest => dest.Description3, src => src.Description3);
         }
     }
 }

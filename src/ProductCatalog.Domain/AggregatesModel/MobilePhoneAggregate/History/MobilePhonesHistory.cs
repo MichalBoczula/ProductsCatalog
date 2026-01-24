@@ -43,6 +43,8 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History
         public required Guid CategoryId { get; init; }
         public required decimal PriceAmount { get; init; }
         public required string PriceCurrency { get; init; }
+        public required string Description2 { get; init; }
+        public required string Description3 { get; init; }
         public required bool IsActive { get; init; }
         public required DateTime ChangedAt { get; init; }
         public required Operation Operation { get; init; }

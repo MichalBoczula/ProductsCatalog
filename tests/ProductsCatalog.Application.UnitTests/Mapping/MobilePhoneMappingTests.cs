@@ -272,6 +272,8 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 CategoryId = Guid.NewGuid(),
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
+                Description2 = "description 2",
+                Description3 = "description 3",
                 IsActive = true
             };
 
@@ -435,6 +437,8 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 CategoryId = Guid.NewGuid(),
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
+                Description2 = "description 2",
+                Description3 = "description 3",
                 IsActive = true,
                 ChangedAt = DateTime.UtcNow,
                 Operation = Operation.Inserted

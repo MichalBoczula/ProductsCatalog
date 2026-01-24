@@ -52,7 +52,9 @@ namespace ProductCatalog.Infrastructure.Configuration.Histories
             builder.Property(x => x.PriceCurrency).HasMaxLength(3).IsRequired();
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.ChangedAt).IsRequired();
-            builder.Property(x => x.Operation).IsRequired();
+            builder.Property(x => x.Operation).IsRequired(); 
+            builder.Property(x => x.Description2).HasMaxLength(2000).IsRequired();
+            builder.Property(x => x.Description3).HasMaxLength(2000).IsRequired();
 
             builder.HasIndex(x => x.MobilePhoneId);
             builder.HasIndex(x => x.ChangedAt);

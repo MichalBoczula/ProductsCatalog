@@ -71,6 +71,8 @@ public class GetMobilePhoneHistoryQueryHandlerTests
                 CategoryId = categoryId,
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
+                Description2 = "description 2",
+                Description3 = "description 3",
                 IsActive = true,
                 ChangedAt = changedAt,
                 Operation = Operation.Inserted

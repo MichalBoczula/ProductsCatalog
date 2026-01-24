@@ -67,6 +67,8 @@ public class GetMobilePhonesQueryHandlerTests
                 CategoryId = categoryId,
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
+                Description2 = "description 2",
+                Description3 = "description 3",
                 IsActive = true
             },
             new()
@@ -109,6 +111,8 @@ public class GetMobilePhonesQueryHandlerTests
                 CategoryId = categoryId,
                 PriceAmount = 499.99m,
                 PriceCurrency = "USD",
+                Description2 = "description 2",
+                Description3 = "description 3",
                 IsActive = true
             }
         }.AsReadOnly();

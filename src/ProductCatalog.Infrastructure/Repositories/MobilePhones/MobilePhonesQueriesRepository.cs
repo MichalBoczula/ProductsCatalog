@@ -61,6 +61,8 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        CategoryId,
                        PriceAmount,
                        PriceCurrency,
+                       Description2,
+                       Description3,
                        IsActive
                 FROM {SqlTableNames.MobilePhones}
                 WHERE Id = @Id;
@@ -116,6 +118,8 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        CategoryId,
                        PriceAmount,
                        PriceCurrency,
+                       Description2,
+                       Description3,
                        IsActive
                 FROM {SqlTableNames.MobilePhones}
                 ";
@@ -178,6 +182,8 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        CategoryId,
                        PriceAmount,
                        PriceCurrency,
+                       Description2,
+                       Description3,
                        IsActive,
                        ChangedAt,
                        Operation
