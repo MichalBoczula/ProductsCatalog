@@ -28,7 +28,7 @@ namespace ProductsCatalog.Client
     public partial interface IClient
     {
         /// <summary>
-        /// List categories
+        /// Get all categories
         /// </summary>
         /// <remarks>
         /// Returns all categories; 404 if no categories are found.
@@ -39,7 +39,7 @@ namespace ProductsCatalog.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// List categories
+        /// Get all categories
         /// </summary>
         /// <remarks>
         /// Returns all categories; 404 if no categories are found.
@@ -199,7 +199,7 @@ namespace ProductsCatalog.Client
         /// Delete currency
         /// </summary>
         /// <remarks>
-        /// Soft deletes a currency and returns the deactivated resource.
+        /// Deletes a currency and returns the deactivated resource.
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -210,7 +210,7 @@ namespace ProductsCatalog.Client
         /// Delete currency
         /// </summary>
         /// <remarks>
-        /// Soft deletes a currency and returns the deactivated resource.
+        /// Deletes a currency and returns the deactivated resource.
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -362,6 +362,27 @@ namespace ProductsCatalog.Client
         /// <returns>Created</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MobilePhoneDto> CreateMobilePhoneAsync(CreateMobilePhoneExternalDto body, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Get mobile phone history
+        /// </summary>
+        /// <remarks>
+        /// Returns the change history for a mobile phone.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneHistoryDto>> GetMobilePhoneHistoryAsync(System.Guid id, int pageNumber, int pageSize);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get mobile phone history
+        /// </summary>
+        /// <remarks>
+        /// Returns the change history for a mobile phone.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneHistoryDto>> GetMobilePhoneHistoryAsync(System.Guid id, int pageNumber, int pageSize, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get a product by ID
@@ -519,7 +540,7 @@ namespace ProductsCatalog.Client
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <summary>
-        /// List categories
+        /// Get all categories
         /// </summary>
         /// <remarks>
         /// Returns all categories; 404 if no categories are found.
@@ -533,7 +554,7 @@ namespace ProductsCatalog.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// List categories
+        /// Get all categories
         /// </summary>
         /// <remarks>
         /// Returns all categories; 404 if no categories are found.
@@ -1438,7 +1459,7 @@ namespace ProductsCatalog.Client
         /// Delete currency
         /// </summary>
         /// <remarks>
-        /// Soft deletes a currency and returns the deactivated resource.
+        /// Deletes a currency and returns the deactivated resource.
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -1452,7 +1473,7 @@ namespace ProductsCatalog.Client
         /// Delete currency
         /// </summary>
         /// <remarks>
-        /// Soft deletes a currency and returns the deactivated resource.
+        /// Deletes a currency and returns the deactivated resource.
         /// </remarks>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -2321,6 +2342,121 @@ namespace ProductsCatalog.Client
         }
 
         /// <summary>
+        /// Get mobile phone history
+        /// </summary>
+        /// <remarks>
+        /// Returns the change history for a mobile phone.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneHistoryDto>> GetMobilePhoneHistoryAsync(System.Guid id, int pageNumber, int pageSize)
+        {
+            return GetMobilePhoneHistoryAsync(id, pageNumber, pageSize, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get mobile phone history
+        /// </summary>
+        /// <remarks>
+        /// Returns the change history for a mobile phone.
+        /// </remarks>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MobilePhoneHistoryDto>> GetMobilePhoneHistoryAsync(System.Guid id, int pageNumber, int pageSize, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            if (pageNumber == null)
+                throw new System.ArgumentNullException("pageNumber");
+
+            if (pageSize == null)
+                throw new System.ArgumentNullException("pageSize");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "mobile-phones/{id}/history"
+                    urlBuilder_.Append("mobile-phones/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/history");
+                    urlBuilder_.Append('?');
+                    urlBuilder_.Append(System.Uri.EscapeDataString("pageNumber")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    urlBuilder_.Append(System.Uri.EscapeDataString("pageSize")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<MobilePhoneHistoryDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Internal Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Get a product by ID
         /// </summary>
         /// <remarks>
@@ -3096,6 +3232,9 @@ namespace ProductsCatalog.Client
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("brand", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Brand { get; set; }
+
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
 
@@ -3113,6 +3252,9 @@ namespace ProductsCatalog.Client
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("brand", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Brand { get; set; }
 
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
@@ -3248,18 +3390,31 @@ namespace ProductsCatalog.Client
         [System.ComponentModel.DataAnnotations.Required]
         public CreateSensorsExternalDto Sensors { get; set; } = new CreateSensorsExternalDto();
 
-        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("camera", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Camera { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.Always)]
         public bool FingerPrint { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.Always)]
         public bool FaceId { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.Guid CategoryId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
         public CreateMoneyExternalDto Price { get; set; } = new CreateMoneyExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("description2", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description2 { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description3", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description3 { get; set; }
 
     }
 
@@ -3444,6 +3599,10 @@ namespace ProductsCatalog.Client
         [System.ComponentModel.DataAnnotations.Required]
         public SensorsDto Sensors { get; set; } = new SensorsDto();
 
+        [Newtonsoft.Json.JsonProperty("camera", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Camera { get; set; }
+
         [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
         public MoneyDto Price { get; set; } = new MoneyDto();
@@ -3453,6 +3612,14 @@ namespace ProductsCatalog.Client
 
         [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.Always)]
         public bool FaceId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description2", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description2 { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description3", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description3 { get; set; }
 
         [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -3464,6 +3631,76 @@ namespace ProductsCatalog.Client
 
         [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class MobilePhoneHistoryDto
+    {
+
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid Id { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("mobilePhoneId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid MobilePhoneId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("commonDescription", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public CommonDescriptionDto CommonDescription { get; set; } = new CommonDescriptionDto();
+
+        [Newtonsoft.Json.JsonProperty("electronicDetails", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public ElectronicDetailsDto ElectronicDetails { get; set; } = new ElectronicDetailsDto();
+
+        [Newtonsoft.Json.JsonProperty("connectivity", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public ConnectivityDto Connectivity { get; set; } = new ConnectivityDto();
+
+        [Newtonsoft.Json.JsonProperty("satelliteNavigationSystems", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SatelliteNavigationSystemDto SatelliteNavigationSystems { get; set; } = new SatelliteNavigationSystemDto();
+
+        [Newtonsoft.Json.JsonProperty("sensors", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SensorsDto Sensors { get; set; } = new SensorsDto();
+
+        [Newtonsoft.Json.JsonProperty("camera", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Camera { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public MoneyDto Price { get; set; } = new MoneyDto();
+
+        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.Always)]
+        public bool FingerPrint { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.Always)]
+        public bool FaceId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description2", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description2 { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description3", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description3 { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid CategoryId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsActive { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("changedAt", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset ChangedAt { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("operation", Required = Newtonsoft.Json.Required.Always)]
+        public Operation Operation { get; set; }
 
     }
 
@@ -3510,6 +3747,18 @@ namespace ProductsCatalog.Client
             get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
             set { _additionalProperties = value; }
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum Operation
+    {
+
+        _0 = 0,
+
+        _1 = 1,
+
+        _2 = 2,
 
     }
 
@@ -3725,18 +3974,31 @@ namespace ProductsCatalog.Client
         [System.ComponentModel.DataAnnotations.Required]
         public UpdateSensorsExternalDto Sensors { get; set; } = new UpdateSensorsExternalDto();
 
-        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("camera", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Camera { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("fingerPrint", Required = Newtonsoft.Json.Required.Always)]
         public bool FingerPrint { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("faceId", Required = Newtonsoft.Json.Required.Always)]
         public bool FaceId { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("categoryId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.Guid CategoryId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
         public UpdateMoneyExternalDto Price { get; set; } = new UpdateMoneyExternalDto();
+
+        [Newtonsoft.Json.JsonProperty("description2", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description2 { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("description3", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Description3 { get; set; }
 
     }
 
