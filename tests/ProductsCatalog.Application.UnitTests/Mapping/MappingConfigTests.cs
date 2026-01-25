@@ -60,7 +60,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         [Fact]
         public void CommonDescriptionExtrernalDto_ShouldMapTo_CommonDescription()
         {
-            var dto = new CommonDescriptionExtrernalDto("Name", "Description", "main", new List<string> { "a", "b" });
+            var dto = new CommonDescriptionExtrernalDto("Name", "Brand", "Description", "main", new List<string> { "a", "b" });
 
             var description = dto.Adapt<CommonDescription>();
 

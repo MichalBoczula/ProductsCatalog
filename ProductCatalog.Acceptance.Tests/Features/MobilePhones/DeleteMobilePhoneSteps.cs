@@ -107,6 +107,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             return new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
                     "Delete Mobile Phone",
+                    "Brand",
                     "Phone created for delete test",
                     "delete-main.jpg",
                     new List<string> { "delete-photo-1.jpg", "delete-photo-2.jpg" }),

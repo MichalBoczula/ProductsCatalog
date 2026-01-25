@@ -104,6 +104,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             return new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
                     name,
+                    "Brand",
                     "Phone created by filter test",
                     "main-photo.jpg",
                     new List<string> { "photo-1.jpg", "photo-2.jpg" }),

@@ -148,6 +148,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             return new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
                     "Baseline Mobile Phone",
+                    "Brand",
                     "Phone created for update test",
                     "base-main.jpg",
                     new List<string> { "base-photo-1.jpg", "base-photo-2.jpg" }),
@@ -179,7 +180,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             return new UpdateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
-                    "Updated Mobile Phone",
+                    "Updated Mobile Phone", 
+                    "Brand",
                     "Updated by acceptance test",
                     "updated-main.jpg",
                     new List<string> { "updated-photo-1.jpg", "updated-photo-2.jpg" }),

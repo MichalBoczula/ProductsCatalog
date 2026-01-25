@@ -28,7 +28,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         public void CreateMobilePhoneExternalDto_ShouldMapTo_MobilePhone()
         {
             //Arrange
-            var commonDescription = new CommonDescriptionExtrernalDto("Phone", "Good phone", "main-photo", new List<string> { "photo1" });
+            var commonDescription = new CommonDescriptionExtrernalDto("Phone", "Brand", "Good phone", "main-photo", new List<string> { "photo1" });
             var electronicDetails = new CreateElectronicDetailsExternalDto("CPU1", "GPU1", "8GB", "128GB", "AMOLED", 120, 6.7m, 70, 150, "Li-Ion", 5000);
             var connectivity = new CreateConnectivityExternalDto(true, true, true, true);
             var navigation = new CreateSatelliteNavigationSystemExternalDto(true, true, true, false, true);
@@ -98,7 +98,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         public void UpdateMobilePhoneExternalDto_ShouldMapTo_MobilePhone()
         {
             //Arrange
-            var commonDescription = new CommonDescriptionExtrernalDto("Phone 2", "Better phone", "main-photo2", new List<string>());
+            var commonDescription = new CommonDescriptionExtrernalDto("Phone 2", "Brand", "Better phone", "main-photo2", new List<string>());
             var electronicDetails = new UpdateElectronicDetailsExternalDto("CPU2", "GPU2", "12GB", "256GB", "IPS", 90, 6.2m, 68, 140, "Li-Po", 4000);
             var connectivity = new UpdateConnectivityExternalDto(false, true, false, true);
             var navigation = new UpdateSatelliteNavigationSystemExternalDto(false, true, false, true, false);

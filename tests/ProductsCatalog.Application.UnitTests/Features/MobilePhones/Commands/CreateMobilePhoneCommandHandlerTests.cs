@@ -27,6 +27,7 @@ public class CreateMobilePhoneCommandHandlerTests
             new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
                     "Phone",
+                    "brand",
                     "Good phone",
                     "main-photo",
                     new List<string> { "photo1" }),
@@ -178,6 +179,7 @@ public class CreateMobilePhoneCommandHandlerTests
             new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
                     "Phone",
+                    "brand",
                     "Good phone",
                     "main-photo",
                     new List<string> { "photo1" }),

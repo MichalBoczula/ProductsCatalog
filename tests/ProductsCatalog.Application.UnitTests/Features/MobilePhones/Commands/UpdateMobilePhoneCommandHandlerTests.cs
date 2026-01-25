@@ -31,6 +31,7 @@ public class UpdateMobilePhoneCommandHandlerTests
             new UpdateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
                     "Phone Updated",
+                    "Brand",
                     "Updated description",
                     "updated-main-photo",
                     new List<string> { "updated-photo" }),
@@ -223,6 +224,7 @@ public class UpdateMobilePhoneCommandHandlerTests
             new UpdateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
                     "Phone Updated",
+                    "Brand",
                     "Updated description",
                     "updated-main-photo",
                     new List<string> { "updated-photo" }),

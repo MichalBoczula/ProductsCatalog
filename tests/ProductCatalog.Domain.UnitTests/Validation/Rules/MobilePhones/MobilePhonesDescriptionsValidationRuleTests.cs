@@ -76,6 +76,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
         {
             var commonDescription = new CommonDescription(
                 "Name",
+                "Brand",
                 "Description",
                 "main-photo.jpg",
                 new List<string> { "other-photo.jpg" });
