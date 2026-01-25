@@ -7,6 +7,7 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History
         public Guid Id { get; private set; } = Guid.NewGuid();
         public required Guid MobilePhoneId { get; init; }
         public required string Name { get; init; }
+        public required string Brand { get; init; }
         public required string Description { get; init; }
         public required string MainPhoto { get; init; }
         public required string OtherPhotos { get; init; }

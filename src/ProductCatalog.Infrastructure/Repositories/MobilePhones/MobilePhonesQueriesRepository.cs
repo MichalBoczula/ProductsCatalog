@@ -25,6 +25,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
             var sql = $@"
                 SELECT Id,
                        Name,
+                       Brand,
                        Description,
                        MainPhoto,
                        OtherPhotos,
@@ -82,6 +83,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 SELECT TOP (@Amount)
                        Id,
                        Name,
+                       Brand,
                        Description,
                        MainPhoto,
                        OtherPhotos,
@@ -146,6 +148,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 SELECT Id,
                        MobilePhoneId,
                        Name,
+                       Brand,
                        Description,
                        MainPhoto,
                        OtherPhotos,

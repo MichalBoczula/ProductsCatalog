@@ -170,7 +170,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             //Arrange
             var categoryId = Guid.NewGuid();
             var mobilePhone = new MobilePhone(
-                new CommonDescription("Phone", "Good phone", "main-photo", new List<string>()),
+                new CommonDescription("Phone", "brand", "Good phone", "main-photo", new List<string>()),
                 new ElectronicDetails("CPU", "GPU", "6GB", "128GB", "AMOLED", 120, 6.5m, 70, 150, "Li-Ion", 4500),
                 new Connectivity(true, true, false, true),
                 new SatelliteNavigationSystem(true, false, true, true, false),
@@ -328,7 +328,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             var categoryId = Guid.NewGuid();
             var otherPhotos = new List<string> { "photo1", "photo2" };
             var mobilePhone = new MobilePhone(
-                new CommonDescription("Phone", "Good phone", "main-photo", otherPhotos),
+                new CommonDescription("Phone", "brand", "Good phone", "main-photo", otherPhotos),
                 new ElectronicDetails("CPU", "GPU", "6GB", "128GB", "AMOLED", 120, 6.5m, 70, 150, "Li-Ion", 4500),
                 new Connectivity(true, true, false, true),
                 new SatelliteNavigationSystem(true, false, true, true, false),
@@ -401,6 +401,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             {
                 MobilePhoneId = Guid.NewGuid(),
                 Name = "Phone",
+                Brand = "brand",
                 Description = "History phone",
                 MainPhoto = "main-photo",
                 OtherPhotos = JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos),

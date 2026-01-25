@@ -14,6 +14,7 @@ namespace ProductCatalog.Infrastructure.Configuration.Histories
 
             builder.Property(x => x.MobilePhoneId).IsRequired();
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
+            builder.Property(p => p.Brand).HasColumnName("Brand").HasMaxLength(200).IsRequired();
             builder.Property(x => x.Description).HasColumnType("nvarchar(max)").IsRequired();
             builder.Property(x => x.MainPhoto).HasMaxLength(200).IsRequired();
             builder.Property(x => x.OtherPhotos).HasColumnType("nvarchar(4000)").IsRequired();

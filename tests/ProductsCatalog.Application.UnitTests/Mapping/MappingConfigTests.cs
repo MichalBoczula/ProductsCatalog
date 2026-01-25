@@ -73,7 +73,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         [Fact]
         public void CommonDescription_ShouldMapTo_CommonDescriptionDto()
         {
-            var description = new CommonDescription("Name", "Desc", "main-photo", new List<string> { "1" });
+            var description = new CommonDescription("Name", "brand", "Desc", "main-photo", new List<string> { "1" });
 
             var dto = description.Adapt<CommonDescriptionDto>();
 

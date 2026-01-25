@@ -35,6 +35,7 @@ public class GetMobilePhoneHistoryQueryHandlerTests
             {
                 MobilePhoneId = mobilePhoneId,
                 Name = "Model X",
+                Brand = "BrandY",
                 Description = "Flagship device",
                 MainPhoto = "main-photo",
                 OtherPhotos = otherPhotosJson,

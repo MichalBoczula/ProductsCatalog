@@ -60,6 +60,7 @@ public class UpdateMobilePhoneCommandHandlerTests
         var existingMobilePhone = new MobilePhone(
             new CommonDescription(
                 "Original Phone",
+                "brand",
                 "Original description",
                 "original-main-photo",
                 new List<string> { "original-photo" }),

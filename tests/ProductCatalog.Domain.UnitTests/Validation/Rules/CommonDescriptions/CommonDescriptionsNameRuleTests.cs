@@ -11,7 +11,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.CommonDescriptions
         public void IsValid_NameIsNull_ShouldReturnError()
         {
             //Arrange
-            var commonDescription = new CommonDescription(null, "desc", "photo", ["photo1"]);
+            var commonDescription = new CommonDescription(null, "brand", "desc", "photo", ["photo1"]);
             var rule = new CommonDescriptionsNameRule();
             var validationResult = new ValidationResult();
             //Act
@@ -28,7 +28,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.CommonDescriptions
         public void IsValid_NameHasValue_ShouldNotReturnError()
         {
             //Arrange
-            var commonDescription = new CommonDescription("name", "desc", "photo", ["photo1"]);
+            var commonDescription = new CommonDescription("name", "brand", "desc", "photo", ["photo1"]);
             var rule = new CommonDescriptionsNameRule();
             var validationResult = new ValidationResult();
             //Act

@@ -26,7 +26,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         public async Task Validate_ShouldBeValid()
         {
             //Arrange
-            var commonDescription = new CommonDescription("name", "description", "mainPhoto", ["photo1"]);
+            var commonDescription = new CommonDescription("name", "brand", "description", "mainPhoto", ["photo1"]);
             var policy = new CommonDescriptionValidationPolicy();
             //Act
             var result = await policy.Validate(commonDescription);

@@ -31,6 +31,7 @@ public class DeleteMobilePhoneCommandHandlerTests
         var mobilePhone = new MobilePhone(
             new CommonDescription(
                 "Original Phone",
+                "brand",
                 "Original description",
                 "original-main-photo",
                 new List<string> { "original-photo" }),
@@ -120,6 +121,7 @@ public class DeleteMobilePhoneCommandHandlerTests
         var mobilePhone = new MobilePhone(
             new CommonDescription(
                 "Original Phone",
+                "brand",
                 "Original description",
                 "original-main-photo",
                 new List<string> { "original-photo" }),
