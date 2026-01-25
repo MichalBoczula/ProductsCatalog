@@ -57,6 +57,7 @@ namespace ProductCatalog.Application.Mapping
                     src => new CommonDescriptionDto
                     {
                         Name = src.Name,
+                        Brand = src.Brand,
                         Description = src.Description,
                         MainPhoto = src.MainPhoto,
                         OtherPhotos = JsonSerializer.Deserialize<IReadOnlyList<string>>(src.OtherPhotos) ?? Array.Empty<string>()
@@ -251,6 +252,7 @@ namespace ProductCatalog.Application.Mapping
                 .NewConfig()
                 .Map(dest => dest.MobilePhoneId, src => src.Id)
                 .Map(dest => dest.Name, src => src.CommonDescription.Name)
+                .Map(dest => dest.Brand, src => src.CommonDescription.Brand)
                 .Map(dest => dest.Description, src => src.CommonDescription.Description)
                 .Map(dest => dest.MainPhoto, src => src.CommonDescription.MainPhoto)
                 .Map(dest => dest.OtherPhotos, src => JsonSerializer.Serialize(src.CommonDescription.OtherPhotos))
@@ -298,6 +300,7 @@ namespace ProductCatalog.Application.Mapping
                     src => new CommonDescriptionDto
                     {
                         Name = src.Name,
+                        Brand = src.Brand,
                         Description = src.Description,
                         MainPhoto = src.MainPhoto,
                         OtherPhotos = JsonSerializer.Deserialize<IReadOnlyList<string>>(src.OtherPhotos) ?? Array.Empty<string>()

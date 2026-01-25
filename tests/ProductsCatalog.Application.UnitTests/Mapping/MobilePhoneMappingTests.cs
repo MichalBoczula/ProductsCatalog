@@ -54,6 +54,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             //Assert
             mobilePhone.Id.ShouldNotBe(Guid.Empty);
             mobilePhone.CommonDescription.Name.ShouldBe(commonDescription.Name);
+            mobilePhone.CommonDescription.Brand.ShouldBe(commonDescription.Brand);
             mobilePhone.CommonDescription.Description.ShouldBe(commonDescription.Description);
             mobilePhone.CommonDescription.MainPhoto.ShouldBe(commonDescription.MainPhoto);
             mobilePhone.CommonDescription.OtherPhotos.ShouldBe(commonDescription.OtherPhotos);
@@ -124,6 +125,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             //Assert
             mobilePhone.Id.ShouldNotBe(Guid.Empty);
             mobilePhone.CommonDescription.Name.ShouldBe(commonDescription.Name);
+            mobilePhone.CommonDescription.Brand.ShouldBe(commonDescription.Brand);
             mobilePhone.CommonDescription.Description.ShouldBe(commonDescription.Description);
             mobilePhone.CommonDescription.MainPhoto.ShouldBe(commonDescription.MainPhoto);
             mobilePhone.CommonDescription.OtherPhotos.ShouldBe(commonDescription.OtherPhotos);
@@ -189,6 +191,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             //Assert
             dto.Id.ShouldBe(mobilePhone.Id);
             dto.CommonDescription.Name.ShouldBe(mobilePhone.CommonDescription.Name);
+            dto.CommonDescription.Brand.ShouldBe(mobilePhone.CommonDescription.Brand);
             dto.CommonDescription.Description.ShouldBe(mobilePhone.CommonDescription.Description);
             dto.CommonDescription.MainPhoto.ShouldBe(mobilePhone.CommonDescription.MainPhoto);
             dto.CommonDescription.OtherPhotos.ShouldBe(mobilePhone.CommonDescription.OtherPhotos);
@@ -236,6 +239,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             {
                 Id = Guid.NewGuid(),
                 Name = "Model X",
+                Brand = "Brand Y",
                 Description = "Flagship device",
                 MainPhoto = "main-photo",
                 OtherPhotos = JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos),
@@ -283,6 +287,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             //Assert
             dto.Id.ShouldBe(readModel.Id);
             dto.CommonDescription.Name.ShouldBe(readModel.Name);
+            dto.CommonDescription.Brand.ShouldBe(readModel.Brand);
             dto.CommonDescription.Description.ShouldBe(readModel.Description);
             dto.CommonDescription.MainPhoto.ShouldBe(readModel.MainPhoto);
             dto.CommonDescription.OtherPhotos.ShouldBe(otherPhotos);
@@ -351,6 +356,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             history.Id.ShouldNotBe(Guid.Empty);
             history.MobilePhoneId.ShouldBe(mobilePhone.Id);
             history.Name.ShouldBe(mobilePhone.CommonDescription.Name);
+            history.Brand.ShouldBe(mobilePhone.CommonDescription.Brand);
             history.Description.ShouldBe(mobilePhone.CommonDescription.Description);
             history.MainPhoto.ShouldBe(mobilePhone.CommonDescription.MainPhoto);
             history.OtherPhotos.ShouldBe(JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos));
@@ -452,6 +458,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Id.ShouldNotBe(Guid.Empty);
             dto.MobilePhoneId.ShouldBe(history.MobilePhoneId);
             dto.CommonDescription.Name.ShouldBe(history.Name);
+            dto.CommonDescription.Brand.ShouldBe(history.Brand);
             dto.CommonDescription.Description.ShouldBe(history.Description);
             dto.CommonDescription.MainPhoto.ShouldBe(history.MainPhoto);
             dto.CommonDescription.OtherPhotos.ShouldBe(otherPhotos);

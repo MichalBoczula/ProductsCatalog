@@ -29,6 +29,7 @@ public class GetMobilePhoneByIdQueryHandlerTests
         {
             Id = mobilePhoneId,
             Name = "Model X",
+            Brand = "Brand Y",
             Description = "Flagship device",
             MainPhoto = "main-photo",
             OtherPhotos = JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos),

@@ -31,6 +31,7 @@ public class GetMobilePhonesQueryHandlerTests
             {
                 Id = Guid.NewGuid(),
                 Name = "Model X",
+                Brand = "Brand Y",
                 Description = "Flagship device",
                 MainPhoto = "main-photo",
                 OtherPhotos = otherPhotosJson,
@@ -75,6 +76,7 @@ public class GetMobilePhonesQueryHandlerTests
             {
                 Id = Guid.NewGuid(),
                 Name = "Model Y",
+                Brand = "Brand Y",
                 Description = "Budget device",
                 MainPhoto = "main-photo-2",
                 OtherPhotos = otherPhotosJson,
