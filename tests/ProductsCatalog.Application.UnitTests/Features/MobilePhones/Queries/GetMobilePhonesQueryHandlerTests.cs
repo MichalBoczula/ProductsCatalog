@@ -141,7 +141,7 @@ public class GetMobilePhonesQueryHandlerTests
         result.ShouldNotBeNull();
         result.Count.ShouldBe(mobilePhones.Count);
         result.Select(phone => phone.Id).ShouldBe(mobilePhones.Select(phone => phone.Id));
-        result.Select(phone => phone.CommonDescription.Name).ShouldBe(mobilePhones.Select(phone => phone.Name));
+        result.Select(phone => phone.Name).ShouldBe(mobilePhones.Select(phone => phone.Name));
         result.Select(phone => phone.Camera).ShouldBe(mobilePhones.Select(phone => phone.Camera));
         result.Select(phone => phone.Price.Amount).ShouldBe(mobilePhones.Select(phone => phone.PriceAmount));
     }

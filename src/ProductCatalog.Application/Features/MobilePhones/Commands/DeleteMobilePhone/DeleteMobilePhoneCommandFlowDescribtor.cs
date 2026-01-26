@@ -70,9 +70,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobile
         }
 
         [FlowStep(9)]
-        public MobilePhoneDto MapMobilePhoneToMobilePhoneDto(MobilePhone mobilePhone)
+        public MobilePhoneDetailsDto MapMobilePhoneToMobilePhoneDto(MobilePhone mobilePhone)
         {
-            return mobilePhone.Adapt<MobilePhoneDto>();
+            return mobilePhone.Adapt<MobilePhoneDetailsDto>();
         }
     }
 }

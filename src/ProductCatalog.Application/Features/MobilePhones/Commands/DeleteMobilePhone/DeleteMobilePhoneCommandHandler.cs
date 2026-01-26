@@ -10,9 +10,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobile
         IMobilePhonesCommandsRepository _mobilePhonesCommandsRepository,
         IValidationPolicy<MobilePhone> _validationPolicy,
         DeleteMobilePhoneCommandFlowDescribtor _deleteMobilePhoneCommandFlowDescribtor)
-        : IRequestHandler<DeleteMobilePhoneCommand, MobilePhoneDto>
+        : IRequestHandler<DeleteMobilePhoneCommand, MobilePhoneDetailsDto>
     {
-        public async Task<MobilePhoneDto> Handle(DeleteMobilePhoneCommand request, CancellationToken cancellationToken)
+        public async Task<MobilePhoneDetailsDto> Handle(DeleteMobilePhoneCommand request, CancellationToken cancellationToken)
         {
             var mobilePhone = await _deleteMobilePhoneCommandFlowDescribtor
                 .LoadMobilePhone(request.mobilePhoneId, _mobilePhonesCommandsRepository, cancellationToken);

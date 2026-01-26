@@ -19,7 +19,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetMobilePhoneByIdSteps
     {
-        private MobilePhoneDto? _createdMobilePhone;
+        private MobilePhoneDetailsDto? _createdMobilePhone;
         private HttpResponseMessage? _response;
         private HttpResponseMessage? _responseFailure;
         private CreateMobilePhoneExternalDto? _request;
@@ -77,7 +77,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request);
             response.EnsureSuccessStatusCode();
 
-            _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDto>(_jsonOptions);
+            _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
             _createdMobilePhone.ShouldNotBeNull();
 
             _mobilePhoneId = _createdMobilePhone!.Id;
@@ -95,7 +95,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            var mobilePhone = await DeserializeResponse<MobilePhoneDto>(_response);
+            var mobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
             mobilePhone.ShouldNotBeNull();
 
             mobilePhone.Id.ShouldBe(_mobilePhoneId);
@@ -161,7 +161,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             problem.Title.ShouldBe("Resource not found.");
             problem.Status.ShouldBe(StatusCodes.Status404NotFound);
-            problem.Detail.ShouldBe($"Resource {nameof(MobilePhoneDto)} identify by id {_mobilePhoneId} cannot be found in databese during action {nameof(GetMobilePhoneByIdQuery)}.");
+            problem.Detail.ShouldBe($"Resource {nameof(MobilePhoneDetailsDto)} identify by id {_mobilePhoneId} cannot be found in databese during action {nameof(GetMobilePhoneByIdQuery)}.");
             problem.Instance.ShouldBe($"/mobile-phones/{_mobilePhoneId}");
             problem.TraceId.ShouldNotBeNullOrWhiteSpace();
         }

@@ -21,16 +21,16 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
         {
             if (mobilePhone is null)
             {
-                throw new ResourceNotFoundException(nameof(GetMobilePhoneByIdQuery), mobilePhoneId, nameof(MobilePhoneDto));
+                throw new ResourceNotFoundException(nameof(GetMobilePhoneByIdQuery), mobilePhoneId, nameof(MobilePhoneDetailsDto));
             }
 
             return mobilePhone;
         }
 
         [FlowStep(3)]
-        public MobilePhoneDto MapMobilePhoneToDto(MobilePhoneReadModel mobilePhone)
+        public MobilePhoneDetailsDto MapMobilePhoneToDto(MobilePhoneReadModel mobilePhone)
         {
-            return mobilePhone.Adapt<MobilePhoneDto>();
+            return mobilePhone.Adapt<MobilePhoneDetailsDto>();
         }
     }
 }

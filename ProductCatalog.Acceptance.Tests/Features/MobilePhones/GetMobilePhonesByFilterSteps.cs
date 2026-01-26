@@ -23,8 +23,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true
         };
-        private readonly List<MobilePhoneDto> _createdMobilePhones = new();
-        private List<MobilePhoneDto> _result = new();
+        private readonly List<MobilePhoneDetailsDto> _createdMobilePhones = new();
+        private List<MobilePhoneDetailsDto> _result = new();
         private HttpResponseMessage? _response;
         private Guid _categoryId;
         private int _amount;
@@ -54,7 +54,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request);
                 response.EnsureSuccessStatusCode();
 
-                var created = await response.Content.ReadFromJsonAsync<MobilePhoneDto>(_jsonOptions);
+                var created = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
                 created.ShouldNotBeNull();
                 _createdMobilePhones.Add(created!);
             }
@@ -85,7 +85,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
+            _result = await DeserializeResponse<List<MobilePhoneDetailsDto>>(_response) ?? new List<MobilePhoneDetailsDto>();
             _result.Count.ShouldBe(_amount);
         }
 
@@ -95,7 +95,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
+            _result = await DeserializeResponse<List<MobilePhoneDetailsDto>>(_response) ?? new List<MobilePhoneDetailsDto>();
             _result.ShouldBeEmpty();
         }
 

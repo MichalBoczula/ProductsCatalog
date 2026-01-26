@@ -10,9 +10,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
         IMobilePhonesCommandsRepository _mobilePhonesCommandsRepository,
         IValidationPolicy<MobilePhone> _validationPolicy,
         UpdateMobilePhoneCommandFlowDescribtor _updateMobilePhoneCommandFlowDescribtor)
-        : IRequestHandler<UpdateMobilePhoneCommand, MobilePhoneDto>
+        : IRequestHandler<UpdateMobilePhoneCommand, MobilePhoneDetailsDto>
     {
-        public async Task<MobilePhoneDto> Handle(UpdateMobilePhoneCommand request, CancellationToken cancellationToken)
+        public async Task<MobilePhoneDetailsDto> Handle(UpdateMobilePhoneCommand request, CancellationToken cancellationToken)
         {
             var incoming = _updateMobilePhoneCommandFlowDescribtor.MapRequestToMobilePhoneAggregate(request);
             var validationResultIncoming = await _updateMobilePhoneCommandFlowDescribtor

@@ -63,9 +63,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
         }
 
         [FlowStep(8)]
-        public MobilePhoneDto MapMobilePhoneToMobilePhoneDto(MobilePhone mobilePhone)
+        public MobilePhoneDetailsDto MapMobilePhoneToMobilePhoneDto(MobilePhone mobilePhone)
         {
-            return mobilePhone.Adapt<MobilePhoneDto>();
+            return mobilePhone.Adapt<MobilePhoneDetailsDto>();
         }
     }
 }

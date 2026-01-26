@@ -7,9 +7,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
     internal sealed class GetMobilePhoneByIdQueryHandler(
         IMobilePhonesQueriesRepository _mobilePhonesQueriesRepository,
         GetMobilePhoneByIdQueryFlowDescribtor _getMobilePhoneByIdQueryFlowDescribtor)
-        : IRequestHandler<GetMobilePhoneByIdQuery, MobilePhoneDto?>
+        : IRequestHandler<GetMobilePhoneByIdQuery, MobilePhoneDetailsDto?>
     {
-        public async Task<MobilePhoneDto?> Handle(GetMobilePhoneByIdQuery request, CancellationToken cancellationToken)
+        public async Task<MobilePhoneDetailsDto?> Handle(GetMobilePhoneByIdQuery request, CancellationToken cancellationToken)
         {
             var mobilePhone = await _getMobilePhoneByIdQueryFlowDescribtor
                 .GetMobilePhone(_mobilePhonesQueriesRepository, request.id, cancellationToken);

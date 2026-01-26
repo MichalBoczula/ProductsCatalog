@@ -20,8 +20,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     {
         private CreateMobilePhoneExternalDto _createRequest = default!;
         private UpdateMobilePhoneExternalDto _updateRequest = default!;
-        private MobilePhoneDto? _createdMobilePhone;
-        private MobilePhoneDto? _updatedMobilePhone;
+        private MobilePhoneDetailsDto? _createdMobilePhone;
+        private MobilePhoneDetailsDto? _updatedMobilePhone;
         private HttpResponseMessage? _response;
         private ApiProblemDetails? _apiProblem;
         private Guid _missingMobilePhoneId;
@@ -40,7 +40,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
-            _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDto>(_jsonOptions);
+            _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
             _createdMobilePhone.ShouldNotBeNull();
 
             var updatedCategoryId = await CreateCategoryAsync("MOBILE-UPD");
@@ -57,7 +57,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _updateRequest,
                 _jsonOptions);
 
-            _updatedMobilePhone = await DeserializeResponse<MobilePhoneDto>(_response);
+            _updatedMobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
         }
 
         [Then("the mobile phone is updated successfully")]

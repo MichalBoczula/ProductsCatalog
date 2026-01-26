@@ -46,7 +46,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.Created);
 
-            var mobilePhone = await DeserializeResponse<MobilePhoneDto>(_response);
+            var mobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
             mobilePhone.ShouldNotBeNull();
 
             mobilePhone.Id.ShouldNotBe(Guid.Empty);

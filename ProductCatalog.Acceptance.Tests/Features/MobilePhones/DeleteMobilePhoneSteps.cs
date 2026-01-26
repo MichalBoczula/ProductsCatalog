@@ -18,8 +18,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     public class DeleteMobilePhoneSteps
     {
         private CreateMobilePhoneExternalDto _createRequest = default!;
-        private MobilePhoneDto? _createdMobilePhone;
-        private MobilePhoneDto? _deletedMobilePhone;
+        private MobilePhoneDetailsDto? _createdMobilePhone;
+        private MobilePhoneDetailsDto? _deletedMobilePhone;
         private HttpResponseMessage? _response;
         private ApiProblemDetails? _apiProblem;
         private Guid _missingMobilePhoneId;
@@ -38,7 +38,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
-            _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDto>(_jsonOptions);
+            _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
             _createdMobilePhone.ShouldNotBeNull();
         }
 
@@ -48,7 +48,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _createdMobilePhone.ShouldNotBeNull();
 
             _response = await TestRunHooks.Client.DeleteAsync($"/mobile-phones/{_createdMobilePhone!.Id}");
-            _deletedMobilePhone = await DeserializeResponse<MobilePhoneDto>(_response);
+            _deletedMobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
         }
 
         [Then("the mobile phone is deleted successfully")]

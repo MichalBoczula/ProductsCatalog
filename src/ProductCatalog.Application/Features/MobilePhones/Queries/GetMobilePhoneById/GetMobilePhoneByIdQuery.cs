@@ -3,5 +3,5 @@ using ProductCatalog.Application.Common.Dtos.MobilePhones;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById
 {
-    public sealed record GetMobilePhoneByIdQuery(Guid id) : IRequest<MobilePhoneDto?>;
+    public sealed record GetMobilePhoneByIdQuery(Guid id) : IRequest<MobilePhoneDetailsDto?>;
 }

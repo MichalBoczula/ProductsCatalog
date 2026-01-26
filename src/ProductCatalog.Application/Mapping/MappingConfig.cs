@@ -51,7 +51,7 @@ namespace ProductCatalog.Application.Mapping
                         Currency = src.PriceCurrency
                     });
 
-            TypeAdapterConfig<MobilePhoneReadModel, MobilePhoneDto>
+            TypeAdapterConfig<MobilePhoneReadModel, MobilePhoneDetailsDto>
                 .NewConfig()
                 .Map(dest => dest.CommonDescription,
                     src => new CommonDescriptionDto
@@ -224,8 +224,13 @@ namespace ProductCatalog.Application.Mapping
                .Map(dest => dest.Sensors, src => src.Sensors)
                .Map(dest => dest.Camera, src => src.Camera);
 
-            TypeAdapterConfig<MobilePhone, MobilePhoneDto>
+            TypeAdapterConfig<MobilePhone, MobilePhoneDetailsDto>
                 .NewConfig();
+
+            TypeAdapterConfig<MobilePhoneReadModel, MobilePhoneDto>
+                .NewConfig()
+                .Map(dest => dest.Price.Amount, src => src.PriceAmount)
+                .Map(dest => dest.Price.Currency, src => src.PriceCurrency);
         }
 
         private static void CreateMappingForHistory()

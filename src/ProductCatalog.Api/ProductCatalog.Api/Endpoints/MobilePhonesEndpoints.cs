@@ -36,7 +36,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Get mobile phone by Id")
             .WithDescription("Returns the mobile phone details when the Id exists; 404 otherwise.")
             .WithName("GetMobilePhoneById")
-            .Produces<MobilePhoneDto>(StatusCodes.Status200OK)
+            .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
             .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
@@ -48,7 +48,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Get mobile phones")
             .WithDescription("Returns a list of mobile phones limited by the provided amount.")
             .WithName("GetMobilePhones")
-            .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<List<MobilePhoneDetailsDto>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapGet("/{id:guid}/history", async (
@@ -77,7 +77,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Create mobile phone")
             .WithDescription("Creates a new mobile phone and returns the created resource.")
             .WithName("CreateMobilePhone")
-            .Produces<MobilePhoneDto>(StatusCodes.Status201Created)
+            .Produces<MobilePhoneDetailsDto>(StatusCodes.Status201Created)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
@@ -89,7 +89,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Update mobile phone")
             .WithDescription("Updates an existing mobile phone and returns the updated resource.")
             .WithName("UpdateMobilePhone")
-            .Produces<MobilePhoneDto>(StatusCodes.Status200OK)
+            .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
@@ -101,7 +101,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Delete mobile phone")
             .WithDescription("Soft deletes a mobile phone and returns the deactivated resource.")
             .WithName("DeleteMobilePhone")
-            .Produces<MobilePhoneDto>(StatusCodes.Status200OK)
+            .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }

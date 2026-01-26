@@ -21,7 +21,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
         {
             if (mobilePhones is null)
             {
-                throw new ResourceNotFoundException(nameof(GetMobilePhonesQuery), Guid.Empty, nameof(List<MobilePhoneDto>));
+                throw new ResourceNotFoundException(nameof(GetMobilePhonesQuery), Guid.Empty, nameof(List<MobilePhoneDetailsDto>));
             }
 
             return mobilePhones;

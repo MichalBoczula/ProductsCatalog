@@ -186,7 +186,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 "desc3");
 
             //Act
-            var dto = mobilePhone.Adapt<MobilePhoneDto>();
+            var dto = mobilePhone.Adapt<MobilePhoneDetailsDto>();
 
             //Assert
             dto.Id.ShouldBe(mobilePhone.Id);
@@ -231,7 +231,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         }
 
         [Fact]
-        public void MobilePhoneReadModel_ShouldMapTo_MobilePhoneDto()
+        public void MobilePhoneReadModel_ShouldMapTo_MobilePhoneDetailsDto()
         {
             //Arrange
             var otherPhotos = new List<string> { "photo1", "photo2" };
@@ -282,7 +282,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             };
 
             //Act
-            var dto = readModel.Adapt<MobilePhoneDto>();
+            var dto = readModel.Adapt<MobilePhoneDetailsDto>();
 
             //Assert
             dto.Id.ShouldBe(readModel.Id);
@@ -498,6 +498,70 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.IsActive.ShouldBe(history.IsActive);
             dto.ChangedAt.ShouldBe(history.ChangedAt);
             dto.Operation.ShouldBe(history.Operation);
+        }
+
+        [Fact]
+        public void MobilePhoneReadModel_ShouldMapTo_MobilePhoneDto()
+        {
+            //Arrange
+            var otherPhotos = new List<string> { "photo1", "photo2" };
+            var readModel = new MobilePhoneReadModel
+            {
+                Id = Guid.NewGuid(),
+                Name = "Model X",
+                Brand = "Brand Y",
+                Description = "Flagship device",
+                MainPhoto = "main-photo",
+                OtherPhotos = JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos),
+                CPU = "CPU",
+                GPU = "GPU",
+                Ram = "12GB",
+                Storage = "256GB",
+                DisplayType = "AMOLED",
+                RefreshRateHz = 120,
+                ScreenSizeInches = 6.8m,
+                Width = 70,
+                Height = 150,
+                BatteryType = "Li-Ion",
+                BatteryCapacity = 5000,
+                GPS = true,
+                AGPS = false,
+                Galileo = true,
+                GLONASS = false,
+                QZSS = true,
+                Accelerometer = true,
+                Gyroscope = false,
+                Proximity = true,
+                Compass = false,
+                Barometer = true,
+                Halla = false,
+                AmbientLight = true,
+                Has5G = true,
+                WiFi = true,
+                NFC = true,
+                Bluetooth = true,
+                Camera = "12 MP",
+                FingerPrint = true,
+                FaceId = false,
+                CategoryId = Guid.NewGuid(),
+                PriceAmount = 799.99m,
+                PriceCurrency = "USD",
+                Description2 = "description 2",
+                Description3 = "description 3",
+                IsActive = true
+            };
+
+            //Act
+            var dto = readModel.Adapt<MobilePhoneDto>();
+
+            //Assert
+            dto.Id.ShouldBe(readModel.Id);
+            dto.Name.ShouldBe(readModel.Name);
+            dto.Camera.ShouldBe(readModel.Camera);
+            dto.DisplayType.ShouldBe(readModel.DisplayType);
+            dto.ScreenSizeInches.ShouldBe(readModel.ScreenSizeInches);
+            dto.Price.Amount.ShouldBe(readModel.PriceAmount);
+            dto.Price.Currency.ShouldBe(readModel.PriceCurrency);
         }
     }
 }

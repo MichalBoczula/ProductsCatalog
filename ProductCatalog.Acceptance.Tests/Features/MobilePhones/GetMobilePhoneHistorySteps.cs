@@ -172,7 +172,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request);
             response.EnsureSuccessStatusCode();
 
-            var createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDto>(_jsonOptions);
+            var createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
             createdMobilePhone.ShouldNotBeNull();
 
             _mobilePhoneId = createdMobilePhone!.Id;

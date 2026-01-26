@@ -11,9 +11,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
         IMobilePhonesCommandsRepository _mobilePhonesCommandsRepository,
         IValidationPolicy<MobilePhone> _validationPolicy,
         CreateMobilePhoneCommandFlowDescribtor _createMobilePhoneCommandFlowDescribtor
-        ) : IRequestHandler<CreateMobilePhoneCommand, MobilePhoneDto>
+        ) : IRequestHandler<CreateMobilePhoneCommand, MobilePhoneDetailsDto>
     {
-        public async Task<MobilePhoneDto> Handle(CreateMobilePhoneCommand request, CancellationToken cancellationToken)
+        public async Task<MobilePhoneDetailsDto> Handle(CreateMobilePhoneCommand request, CancellationToken cancellationToken)
         {
             var mobilePhone = _createMobilePhoneCommandFlowDescribtor.MapRequestToMobilePhoneAggregate(request);
             var validationResult = await _createMobilePhoneCommandFlowDescribtor
