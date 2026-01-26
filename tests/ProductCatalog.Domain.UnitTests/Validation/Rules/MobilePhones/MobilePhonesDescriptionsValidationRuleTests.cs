@@ -17,7 +17,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
         {
             //Arrange
             var mobilePhone = CreateMobilePhone(null, "Description 3");
-            var rule = new MobilePhonesDescriptionsValidationRule();
+            var rule = new MobilePhonesStringValidationRule();
             var validationResult = new ValidationResult();
             //Act
             rule.IsValid(mobilePhone, validationResult);
@@ -34,7 +34,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
         {
             //Arrange
             var mobilePhone = CreateMobilePhone("Description 2", "   ");
-            var rule = new MobilePhonesDescriptionsValidationRule();
+            var rule = new MobilePhonesStringValidationRule();
             var validationResult = new ValidationResult();
             //Act
             rule.IsValid(mobilePhone, validationResult);
@@ -51,7 +51,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
         {
             //Arrange
             var mobilePhone = CreateMobilePhone("Description 2", "Description 3");
-            var rule = new MobilePhonesDescriptionsValidationRule();
+            var rule = new MobilePhonesStringValidationRule();
             var validationResult = new ValidationResult();
             //Act
             rule.IsValid(mobilePhone, validationResult);
@@ -63,7 +63,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
         public void Describe_ShouldReturnCorrectRules()
         {
             //Arrange
-            var rule = new MobilePhonesDescriptionsValidationRule();
+            var rule = new MobilePhonesStringValidationRule();
             //Act
             var result = rule.Describe();
             //Assert

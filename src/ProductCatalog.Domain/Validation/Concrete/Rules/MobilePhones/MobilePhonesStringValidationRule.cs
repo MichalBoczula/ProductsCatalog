@@ -4,23 +4,30 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 {
-    public sealed class MobilePhonesDescriptionsValidationRule : IValidationRule<MobilePhone>
+    public sealed class MobilePhonesStringValidationRule : IValidationRule<MobilePhone>
     {
         private readonly ValidationError description2IsNullOrWhitespace;
         private readonly ValidationError description3IsNullOrWhitespace;
+        private readonly ValidationError camera;
 
-        public MobilePhonesDescriptionsValidationRule()
+        public MobilePhonesStringValidationRule()
         {
             description2IsNullOrWhitespace = new ValidationError
             {
                 Message = "Description2 cannot be null or whitespace.",
-                Name = nameof(MobilePhonesDescriptionsValidationRule),
+                Name = nameof(MobilePhonesStringValidationRule),
                 Entity = nameof(MobilePhone)
             };
             description3IsNullOrWhitespace = new ValidationError
             {
                 Message = "Description3 cannot be null or whitespace.",
-                Name = nameof(MobilePhonesDescriptionsValidationRule),
+                Name = nameof(MobilePhonesStringValidationRule),
+                Entity = nameof(MobilePhone)
+            };
+            camera = new ValidationError
+            {
+                Message = "Camera cannot be null or whitespace.",
+                Name = nameof(MobilePhonesStringValidationRule),
                 Entity = nameof(MobilePhone)
             };
         }
@@ -34,11 +41,14 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 
             if (string.IsNullOrWhiteSpace(entity.Description3))
                 validationResults.AddValidationError(description3IsNullOrWhitespace);
+
+            if (string.IsNullOrWhiteSpace(entity.Camera))
+                validationResults.AddValidationError(description3IsNullOrWhitespace);
         }
 
         public List<ValidationError> Describe()
         {
-            return [description2IsNullOrWhitespace, description3IsNullOrWhitespace];
+            return [description2IsNullOrWhitespace, description3IsNullOrWhitespace, camera];
         }
     }
 }

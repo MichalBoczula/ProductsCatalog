@@ -20,7 +20,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
             ICurrenciesQueriesRepository currenciesQueriesRepository)
         {
             _rules.Add(new MobilePhonesCommonDescriptionValidationRule());
-            _rules.Add(new MobilePhonesDescriptionsValidationRule());
+            _rules.Add(new MobilePhonesStringValidationRule());
             _rules.Add(new MobilePhonesCategoryIdValidationRule(categoriesQueriesRepository));
             _rules.Add(new MobilePhonesIsNullValidationRule());
 

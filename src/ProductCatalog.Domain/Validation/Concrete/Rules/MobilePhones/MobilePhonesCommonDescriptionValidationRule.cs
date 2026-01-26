@@ -9,6 +9,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
         private readonly ValidationError commonDescriptionIsNull;
         private readonly ValidationError nameIsNullOrWhitespace;
         private readonly ValidationError descriptionIsNullOrWhitespace;
+        private readonly ValidationError brandIsNullOrWhitespace;
 
         public MobilePhonesCommonDescriptionValidationRule()
         {
@@ -30,6 +31,12 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
                 Name = nameof(MobilePhonesCommonDescriptionValidationRule),
                 Entity = nameof(MobilePhone)
             };
+            brandIsNullOrWhitespace = new ValidationError
+            {
+                Message = "Brand cannot be null or whitespace.",
+                Name = nameof(MobilePhonesCommonDescriptionValidationRule),
+                Entity = nameof(MobilePhone)
+            };
         }
 
         public async Task IsValid(MobilePhone entity, ValidationResult validationResults)
@@ -47,11 +54,14 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 
             if (string.IsNullOrWhiteSpace(entity.CommonDescription.Description))
                 validationResults.AddValidationError(descriptionIsNullOrWhitespace);
+
+            if (string.IsNullOrWhiteSpace(entity.CommonDescription.Brand))
+                validationResults.AddValidationError(brandIsNullOrWhitespace);
         }
 
         public List<ValidationError> Describe()
         {
-            return [commonDescriptionIsNull, nameIsNullOrWhitespace, descriptionIsNullOrWhitespace];
+            return [commonDescriptionIsNull, nameIsNullOrWhitespace, descriptionIsNullOrWhitespace, brandIsNullOrWhitespace];
         }
     }
 }
