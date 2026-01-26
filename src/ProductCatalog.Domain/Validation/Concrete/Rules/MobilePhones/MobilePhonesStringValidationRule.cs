@@ -43,7 +43,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
                 validationResults.AddValidationError(description3IsNullOrWhitespace);
 
             if (string.IsNullOrWhiteSpace(entity.Camera))
-                validationResults.AddValidationError(description3IsNullOrWhitespace);
+                validationResults.AddValidationError(camera);
         }
 
         public List<ValidationError> Describe()
