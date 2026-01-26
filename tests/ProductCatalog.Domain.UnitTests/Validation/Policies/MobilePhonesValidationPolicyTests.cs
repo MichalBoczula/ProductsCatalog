@@ -35,6 +35,24 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         }
 
         [Fact]
+        public async Task Validate_WhenBrandAndCameraAreInvalid_ShouldReturnErrors()
+        {
+            //Arrange
+            var categoryId = Guid.NewGuid();
+            var currencyCode = "USD";
+            var policy = new MobilePhonesValidationPolicy(
+                new FakeCategoriesQueriesRepository(categoryId),
+                new FakeCurrenciesQueriesRepository(currencyCode));
+            var mobilePhone = CreateMobilePhone(categoryId, currencyCode, "Description 2", "Description 3", " ", " ");
+            //Act
+            var result = await policy.Validate(mobilePhone);
+            //Assert
+            result.GetValidatonErrors().Count.ShouldBe(2);
+            result.GetValidatonErrors().ShouldContain(e => e.Message.Contains("Brand cannot be null or whitespace."));
+            result.GetValidatonErrors().ShouldContain(e => e.Message.Contains("Camera cannot be null or whitespace."));
+        }
+
+        [Fact]
         public void Describe_ShouldIncludeDescriptionsRule()
         {
             //Arrange
@@ -44,14 +62,20 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             //Act
             var result = policy.Describe();
             //Assert
-            result.Rules.ShouldContain(r => r.RuleName == "MobilePhonesDescriptionsValidationRule");
+            result.Rules.ShouldContain(r => r.RuleName == "MobilePhonesStringValidationRule");
         }
 
-        private static MobilePhone CreateMobilePhone(Guid categoryId, string currencyCode, string description2, string description3)
+        private static MobilePhone CreateMobilePhone(
+            Guid categoryId,
+            string currencyCode,
+            string description2,
+            string description3,
+            string brand = "Brand",
+            string camera = "Camera")
         {
             var commonDescription = new CommonDescription(
                 "Name",
-                "Brand",
+                brand,
                 "Description",
                 "main-photo.jpg",
                 new List<string> { "other-photo.jpg" });
@@ -78,7 +102,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
                 connectivity,
                 navigationSystem,
                 sensors,
-                "Camera",
+                camera,
                 true,
                 true,
                 categoryId,

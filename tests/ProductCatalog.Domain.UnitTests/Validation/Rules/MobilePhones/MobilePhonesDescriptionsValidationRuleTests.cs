@@ -25,7 +25,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Description2 cannot be null or whitespace.");
-            error.Name.ShouldContain("MobilePhonesDescriptionsValidationRule");
+            error.Name.ShouldContain("MobilePhonesStringValidationRule");
             error.Entity.ShouldContain("MobilePhone");
         }
 
@@ -42,7 +42,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
             validationResult.GetValidatonErrors().Count().ShouldBe(1);
             var error = validationResult.GetValidatonErrors().First();
             error.Message.ShouldContain("Description3 cannot be null or whitespace.");
-            error.Name.ShouldContain("MobilePhonesDescriptionsValidationRule");
+            error.Name.ShouldContain("MobilePhonesStringValidationRule");
             error.Entity.ShouldContain("MobilePhone");
         }
 
@@ -60,6 +60,23 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
         }
 
         [Fact]
+        public void IsValid_CameraIsNull_ShouldReturnError()
+        {
+            //Arrange
+            var mobilePhone = CreateMobilePhone("Description 2", "Description 3", null);
+            var rule = new MobilePhonesStringValidationRule();
+            var validationResult = new ValidationResult();
+            //Act
+            rule.IsValid(mobilePhone, validationResult);
+            //Assert
+            validationResult.GetValidatonErrors().Count().ShouldBe(1);
+            var error = validationResult.GetValidatonErrors().First();
+            error.Message.ShouldContain("Camera cannot be null or whitespace.");
+            error.Name.ShouldContain("MobilePhonesStringValidationRule");
+            error.Entity.ShouldContain("MobilePhone");
+        }
+
+        [Fact]
         public void Describe_ShouldReturnCorrectRules()
         {
             //Arrange
@@ -67,12 +84,13 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
             //Act
             var result = rule.Describe();
             //Assert
-            result.Count.ShouldBe(2);
+            result.Count.ShouldBe(3);
             result.ShouldContain(e => e.Message.Contains("Description2 cannot be null or whitespace."));
             result.ShouldContain(e => e.Message.Contains("Description3 cannot be null or whitespace."));
+            result.ShouldContain(e => e.Message.Contains("Camera cannot be null or whitespace."));
         }
 
-        private static MobilePhone CreateMobilePhone(string description2, string description3)
+        private static MobilePhone CreateMobilePhone(string description2, string description3, string camera = "Camera")
         {
             var commonDescription = new CommonDescription(
                 "Name",
@@ -103,7 +121,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
                 connectivity,
                 navigationSystem,
                 sensors,
-                "Camera",
+                camera,
                 true,
                 true,
                 Guid.NewGuid(),
