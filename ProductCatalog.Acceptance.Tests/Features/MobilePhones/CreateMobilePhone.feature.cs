@@ -155,7 +155,47 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             {
                 await this.ScenarioStartAsync();
 #line 4
-    await testRunner.GivenAsync("I have valid mobile phone details", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    global::Reqnroll.Table table0 = new global::Reqnroll.Table(new string[] { "Field", "Value" });
+    table0.AddRow(new string[] { "Name", "Test Mobile Phone" });
+    table0.AddRow(new string[] { "Brand", "Brand" });
+    table0.AddRow(new string[] { "Description", "Phone created by acceptance test" });
+    table0.AddRow(new string[] { "MainPhoto", "main-photo.jpg" });
+    table0.AddRow(new string[] { "OtherPhotos", "photo-1.jpg, photo-2.jpg" });
+    table0.AddRow(new string[] { "CPU", "Octa-core" });
+    table0.AddRow(new string[] { "GPU", "Adreno" });
+    table0.AddRow(new string[] { "Ram", "8GB" });
+    table0.AddRow(new string[] { "Storage", "256GB" });
+    table0.AddRow(new string[] { "DisplayType", "OLED" });
+    table0.AddRow(new string[] { "RefreshRateHz", "120" });
+    table0.AddRow(new string[] { "ScreenSizeInches", "6.4" });
+    table0.AddRow(new string[] { "Width", "72" });
+    table0.AddRow(new string[] { "Height", "152" });
+    table0.AddRow(new string[] { "BatteryType", "Li-Ion" });
+    table0.AddRow(new string[] { "BatteryCapacity", "4500" });
+    table0.AddRow(new string[] { "Has5G", "true" });
+    table0.AddRow(new string[] { "WiFi", "true" });
+    table0.AddRow(new string[] { "NFC", "true" });
+    table0.AddRow(new string[] { "Bluetooth", "true" });
+    table0.AddRow(new string[] { "GPS", "true" });
+    table0.AddRow(new string[] { "AGPS", "true" });
+    table0.AddRow(new string[] { "Galileo", "true" });
+    table0.AddRow(new string[] { "GLONASS", "true" });
+    table0.AddRow(new string[] { "QZSS", "true" });
+    table0.AddRow(new string[] { "Accelerometer", "true" });
+    table0.AddRow(new string[] { "Gyroscope", "true" });
+    table0.AddRow(new string[] { "Proximity", "true" });
+    table0.AddRow(new string[] { "Compass", "true" });
+    table0.AddRow(new string[] { "Barometer", "true" });
+    table0.AddRow(new string[] { "Halla", "false" });
+    table0.AddRow(new string[] { "AmbientLight", "true" });
+    table0.AddRow(new string[] { "Camera", "camera" });
+    table0.AddRow(new string[] { "FingerPrint", "true" });
+    table0.AddRow(new string[] { "FaceId", "true" });
+    table0.AddRow(new string[] { "PriceAmount", "799.99" });
+    table0.AddRow(new string[] { "PriceCurrency", "USD" });
+    table0.AddRow(new string[] { "Description2", "desc2" });
+    table0.AddRow(new string[] { "Description3", "desc3" });
+    await testRunner.GivenAsync("I have valid mobile phone details", ((string)(null)), table0, "Given ");
 #line hidden
 #line 5
     await testRunner.WhenAsync("I submit the create mobile phone request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
@@ -189,7 +229,47 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             {
                 await this.ScenarioStartAsync();
 #line 9
-    await testRunner.GivenAsync("I have invalid mobile phone details", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] { "Field", "Value" });
+    table1.AddRow(new string[] { "Name", "Test Mobile Phone" });
+    table1.AddRow(new string[] { "Brand", "Brand" });
+    table1.AddRow(new string[] { "Description", "Phone created by acceptance test" });
+    table1.AddRow(new string[] { "MainPhoto", "main-photo.jpg" });
+    table1.AddRow(new string[] { "OtherPhotos", "photo-1.jpg, photo-2.jpg" });
+    table1.AddRow(new string[] { "CPU", "Octa-core" });
+    table1.AddRow(new string[] { "GPU", "Adreno" });
+    table1.AddRow(new string[] { "Ram", "8GB" });
+    table1.AddRow(new string[] { "Storage", "256GB" });
+    table1.AddRow(new string[] { "DisplayType", "OLED" });
+    table1.AddRow(new string[] { "RefreshRateHz", "120" });
+    table1.AddRow(new string[] { "ScreenSizeInches", "6.4" });
+    table1.AddRow(new string[] { "Width", "72" });
+    table1.AddRow(new string[] { "Height", "152" });
+    table1.AddRow(new string[] { "BatteryType", "Li-Ion" });
+    table1.AddRow(new string[] { "BatteryCapacity", "4500" });
+    table1.AddRow(new string[] { "Has5G", "true" });
+    table1.AddRow(new string[] { "WiFi", "true" });
+    table1.AddRow(new string[] { "NFC", "true" });
+    table1.AddRow(new string[] { "Bluetooth", "true" });
+    table1.AddRow(new string[] { "GPS", "true" });
+    table1.AddRow(new string[] { "AGPS", "true" });
+    table1.AddRow(new string[] { "Galileo", "true" });
+    table1.AddRow(new string[] { "GLONASS", "true" });
+    table1.AddRow(new string[] { "QZSS", "true" });
+    table1.AddRow(new string[] { "Accelerometer", "true" });
+    table1.AddRow(new string[] { "Gyroscope", "true" });
+    table1.AddRow(new string[] { "Proximity", "true" });
+    table1.AddRow(new string[] { "Compass", "true" });
+    table1.AddRow(new string[] { "Barometer", "true" });
+    table1.AddRow(new string[] { "Halla", "false" });
+    table1.AddRow(new string[] { "AmbientLight", "true" });
+    table1.AddRow(new string[] { "Camera", "camera" });
+    table1.AddRow(new string[] { "FingerPrint", "true" });
+    table1.AddRow(new string[] { "FaceId", "true" });
+    table1.AddRow(new string[] { "PriceAmount", "799.99" });
+    table1.AddRow(new string[] { "PriceCurrency", "USD" });
+    table1.AddRow(new string[] { "Description2", "desc2" });
+    table1.AddRow(new string[] { "Description3", "desc3" });
+    await testRunner.GivenAsync("I have invalid mobile phone details", ((string)(null)), table1, "Given ");
 #line hidden
 #line 10
     await testRunner.WhenAsync("I submit the create invalid mobile phone request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");

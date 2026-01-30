@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -28,10 +29,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         };
 
         [Given("I have valid mobile phone details")]
-        public async Task GivenIHaveValidMobilePhoneDetails()
+        public async Task GivenIHaveValidMobilePhoneDetails(Table table)
         {
             var categoryId = await CreateCategoryAsync();
-            _validRequest = BuildMobilePhoneRequest(categoryId);
+            _validRequest = BuildMobilePhoneRequest(categoryId, table);
         }
 
         [When("I submit the create mobile phone request")]
@@ -57,6 +58,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             mobilePhone.Price.Amount.ShouldBe(_validRequest.Price.Amount);
             mobilePhone.Price.Currency.ShouldBe(_validRequest.Price.Currency);
             mobilePhone.CommonDescription.Name.ShouldBe(_validRequest.CommonDescription.Name);
+            mobilePhone.CommonDescription.Brand.ShouldBe(_validRequest.CommonDescription.Brand);
             mobilePhone.CommonDescription.Description.ShouldBe(_validRequest.CommonDescription.Description);
             mobilePhone.CommonDescription.MainPhoto.ShouldBe(_validRequest.CommonDescription.MainPhoto);
             mobilePhone.CommonDescription.OtherPhotos.ShouldBe(_validRequest.CommonDescription.OtherPhotos);
@@ -64,12 +66,38 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             mobilePhone.ElectronicDetails.GPU.ShouldBe(_validRequest.ElectronicDetails.GPU);
             mobilePhone.ElectronicDetails.Ram.ShouldBe(_validRequest.ElectronicDetails.Ram);
             mobilePhone.ElectronicDetails.Storage.ShouldBe(_validRequest.ElectronicDetails.Storage);
+            mobilePhone.ElectronicDetails.DisplayType.ShouldBe(_validRequest.ElectronicDetails.DisplayType);
+            mobilePhone.ElectronicDetails.RefreshRateHz.ShouldBe(_validRequest.ElectronicDetails.RefreshRateHz);
+            mobilePhone.ElectronicDetails.ScreenSizeInches.ShouldBe(_validRequest.ElectronicDetails.ScreenSizeInches);
+            mobilePhone.ElectronicDetails.Width.ShouldBe(_validRequest.ElectronicDetails.Width);
+            mobilePhone.ElectronicDetails.Height.ShouldBe(_validRequest.ElectronicDetails.Height);
+            mobilePhone.ElectronicDetails.BatteryType.ShouldBe(_validRequest.ElectronicDetails.BatteryType);
+            mobilePhone.ElectronicDetails.BatteryCapacity.ShouldBe(_validRequest.ElectronicDetails.BatteryCapacity);
+            mobilePhone.Connectivity.Has5G.ShouldBe(_validRequest.Connectivity.Has5G);
+            mobilePhone.Connectivity.WiFi.ShouldBe(_validRequest.Connectivity.WiFi);
+            mobilePhone.Connectivity.NFC.ShouldBe(_validRequest.Connectivity.NFC);
+            mobilePhone.Connectivity.Bluetooth.ShouldBe(_validRequest.Connectivity.Bluetooth);
+            mobilePhone.SatelliteNavigationSystems.GPS.ShouldBe(_validRequest.SatelliteNavigationSystems.GPS);
+            mobilePhone.SatelliteNavigationSystems.AGPS.ShouldBe(_validRequest.SatelliteNavigationSystems.AGPS);
+            mobilePhone.SatelliteNavigationSystems.Galileo.ShouldBe(_validRequest.SatelliteNavigationSystems.Galileo);
+            mobilePhone.SatelliteNavigationSystems.GLONASS.ShouldBe(_validRequest.SatelliteNavigationSystems.GLONASS);
+            mobilePhone.SatelliteNavigationSystems.QZSS.ShouldBe(_validRequest.SatelliteNavigationSystems.QZSS);
+            mobilePhone.Sensors.Accelerometer.ShouldBe(_validRequest.Sensors.Accelerometer);
+            mobilePhone.Sensors.Gyroscope.ShouldBe(_validRequest.Sensors.Gyroscope);
+            mobilePhone.Sensors.Proximity.ShouldBe(_validRequest.Sensors.Proximity);
+            mobilePhone.Sensors.Compass.ShouldBe(_validRequest.Sensors.Compass);
+            mobilePhone.Sensors.Barometer.ShouldBe(_validRequest.Sensors.Barometer);
+            mobilePhone.Sensors.Halla.ShouldBe(_validRequest.Sensors.Halla);
+            mobilePhone.Sensors.AmbientLight.ShouldBe(_validRequest.Sensors.AmbientLight);
+            mobilePhone.Camera.ShouldBe(_validRequest.Camera);
+            mobilePhone.Description2.ShouldBe(_validRequest.Description2);
+            mobilePhone.Description3.ShouldBe(_validRequest.Description3);
         }
 
         [Given("I have invalid mobile phone details")]
-        public void GivenIHaveInvalidMobilePhoneDetails()
+        public void GivenIHaveInvalidMobilePhoneDetails(Table table)
         {
-            _invalidRequest = BuildMobilePhoneRequest(Guid.NewGuid());
+            _invalidRequest = BuildMobilePhoneRequest(Guid.NewGuid(), table);
         }
 
         [When("I submit the create invalid mobile phone request")]
@@ -97,37 +125,145 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 && error.Name == "MobilePhonesCategoryIdValidationRule");
         }
 
-        private static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(Guid categoryId)
+        private static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(Guid categoryId, Table? table)
         {
+            var values = MergeDefaultValues(table);
             return new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
-                    "Test Mobile Phone", 
-                    "Brand",
-                    "Phone created by acceptance test",
-                    "main-photo.jpg",
-                    new List<string> { "photo-1.jpg", "photo-2.jpg" }),
+                    GetValue(values, "Name"),
+                    GetValue(values, "Brand"),
+                    GetValue(values, "Description"),
+                    GetValue(values, "MainPhoto"),
+                    ParseList(values, "OtherPhotos")),
                 new CreateElectronicDetailsExternalDto(
-                    "Octa-core",
-                    "Adreno",
-                    "8GB",
-                    "256GB",
-                    "OLED",
-                    120,
-                    6.4m,
-                    72,
-                    152,
-                    "Li-Ion",
-                    4500),
-                new CreateConnectivityExternalDto(true, true, true, true),
-                new CreateSatelliteNavigationSystemExternalDto(true, true, true, true, true),
-                new CreateSensorsExternalDto(true, true, true, true, true, false, true),
-                "camera",
-                true,
-                true,
+                    GetValue(values, "CPU"),
+                    GetValue(values, "GPU"),
+                    GetValue(values, "Ram"),
+                    GetValue(values, "Storage"),
+                    GetValue(values, "DisplayType"),
+                    ParseInt(values, "RefreshRateHz"),
+                    ParseDecimal(values, "ScreenSizeInches"),
+                    ParseInt(values, "Width"),
+                    ParseInt(values, "Height"),
+                    GetValue(values, "BatteryType"),
+                    ParseInt(values, "BatteryCapacity")),
+                new CreateConnectivityExternalDto(
+                    ParseBool(values, "Has5G"),
+                    ParseBool(values, "WiFi"),
+                    ParseBool(values, "NFC"),
+                    ParseBool(values, "Bluetooth")),
+                new CreateSatelliteNavigationSystemExternalDto(
+                    ParseBool(values, "GPS"),
+                    ParseBool(values, "AGPS"),
+                    ParseBool(values, "Galileo"),
+                    ParseBool(values, "GLONASS"),
+                    ParseBool(values, "QZSS")),
+                new CreateSensorsExternalDto(
+                    ParseBool(values, "Accelerometer"),
+                    ParseBool(values, "Gyroscope"),
+                    ParseBool(values, "Proximity"),
+                    ParseBool(values, "Compass"),
+                    ParseBool(values, "Barometer"),
+                    ParseBool(values, "Halla"),
+                    ParseBool(values, "AmbientLight")),
+                GetValue(values, "Camera"),
+                ParseBool(values, "FingerPrint"),
+                ParseBool(values, "FaceId"),
                 categoryId,
-                new CreateMoneyExternalDto(799.99m, "USD"),
-                "desc2",
-                "desc3");
+                new CreateMoneyExternalDto(
+                    ParseDecimal(values, "PriceAmount"),
+                    GetValue(values, "PriceCurrency")),
+                GetValue(values, "Description2"),
+                GetValue(values, "Description3"));
+        }
+
+        private static Dictionary<string, string> MergeDefaultValues(Table? table)
+        {
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Name"] = "Test Mobile Phone",
+                ["Brand"] = "Brand",
+                ["Description"] = "Phone created by acceptance test",
+                ["MainPhoto"] = "main-photo.jpg",
+                ["OtherPhotos"] = "photo-1.jpg, photo-2.jpg",
+                ["CPU"] = "Octa-core",
+                ["GPU"] = "Adreno",
+                ["Ram"] = "8GB",
+                ["Storage"] = "256GB",
+                ["DisplayType"] = "OLED",
+                ["RefreshRateHz"] = "120",
+                ["ScreenSizeInches"] = "6.4",
+                ["Width"] = "72",
+                ["Height"] = "152",
+                ["BatteryType"] = "Li-Ion",
+                ["BatteryCapacity"] = "4500",
+                ["Has5G"] = "true",
+                ["WiFi"] = "true",
+                ["NFC"] = "true",
+                ["Bluetooth"] = "true",
+                ["GPS"] = "true",
+                ["AGPS"] = "true",
+                ["Galileo"] = "true",
+                ["GLONASS"] = "true",
+                ["QZSS"] = "true",
+                ["Accelerometer"] = "true",
+                ["Gyroscope"] = "true",
+                ["Proximity"] = "true",
+                ["Compass"] = "true",
+                ["Barometer"] = "true",
+                ["Halla"] = "false",
+                ["AmbientLight"] = "true",
+                ["Camera"] = "camera",
+                ["FingerPrint"] = "true",
+                ["FaceId"] = "true",
+                ["PriceAmount"] = "799.99",
+                ["PriceCurrency"] = "USD",
+                ["Description2"] = "desc2",
+                ["Description3"] = "desc3"
+            };
+
+            if (table is null)
+            {
+                return values;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                values[row["Field"]] = row["Value"];
+            }
+
+            return values;
+        }
+
+        private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing '{key}' value in mobile phone contract table.");
+            }
+
+            return value;
+        }
+
+        private static bool ParseBool(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return bool.Parse(GetValue(values, key));
+        }
+
+        private static int ParseInt(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return int.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ParseDecimal(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return decimal.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static IReadOnlyList<string> ParseList(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return GetValue(values, key)
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
         private async Task<Guid> CreateCategoryAsync()
