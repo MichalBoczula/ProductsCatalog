@@ -47,7 +47,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone history is returned successfully")]
-        public async Task ThenTheMobilePhoneHistoryIsReturnedSuccessfully()
+        public async Task ThenTheMobilePhoneHistoryIsReturnedSuccessfully(Table table)
         {
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -98,6 +98,29 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             historyEntry.Sensors.AmbientLight.ShouldBe(_request.Sensors.AmbientLight);
             historyEntry.Operation.ShouldBe(Operation.Inserted);
             historyEntry.ChangedAt.ShouldNotBe(default(DateTime));
+
+            var expectations = ToExpectationMap(table);
+            if (expectations.TryGetValue("Operation", out var expectedOperation))
+            {
+                historyEntry.Operation.ShouldBe(Enum.Parse<Operation>(expectedOperation, true));
+            }
+
+            if (expectations.TryGetValue("IsActive", out var expectedIsActive))
+            {
+                historyEntry.IsActive.ShouldBe(bool.Parse(expectedIsActive));
+            }
+
+            if (expectations.TryGetValue("ChangedAt", out var expectedChangedAt))
+            {
+                if (string.Equals(expectedChangedAt, "set", StringComparison.OrdinalIgnoreCase))
+                {
+                    historyEntry.ChangedAt.ShouldNotBe(default(DateTime));
+                }
+                else if (string.Equals(expectedChangedAt, "unset", StringComparison.OrdinalIgnoreCase))
+                {
+                    historyEntry.ChangedAt.ShouldBe(default(DateTime));
+                }
+            }
         }
 
         [Given("a missing mobile phone id")]
@@ -254,6 +277,18 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             }
 
             return values;
+        }
+
+        private static Dictionary<string, string> ToExpectationMap(Table table)
+        {
+            var expectations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var row in table.Rows)
+            {
+                expectations[row["Field"]] = row["Expected"];
+            }
+
+            return expectations;
         }
 
         private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
