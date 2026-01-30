@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -32,7 +33,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         };
 
         [Given("an existing mobile phone which will be updated")]
-        public async Task GivenAnExistingMobilePhoneWhichWillBeUpdated()
+        public async Task GivenAnExistingMobilePhoneWhichWillBeUpdated(Table table)
         {
             var categoryId = await CreateCategoryAsync("MOBILE-BASE");
             _createRequest = BuildCreateMobilePhoneRequest(categoryId);
@@ -44,7 +45,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _createdMobilePhone.ShouldNotBeNull();
 
             var updatedCategoryId = await CreateCategoryAsync("MOBILE-UPD");
-            _updateRequest = BuildUpdateMobilePhoneRequest(updatedCategoryId);
+            _updateRequest = BuildUpdateMobilePhoneRequest(updatedCategoryId, table);
         }
 
         [When("I submit the update mobile phone request")]
@@ -107,11 +108,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Given("mobile phone identify by id not exists")]
-        public async Task GivenMobilePhoneIdentifyByIdNotExists()
+        public async Task GivenMobilePhoneIdentifyByIdNotExists(Table table)
         {
             _missingMobilePhoneId = Guid.NewGuid();
             var categoryId = await CreateCategoryAsync("MOBILE-MISSING");
-            _updateRequest = BuildUpdateMobilePhoneRequest(categoryId);
+            _updateRequest = BuildUpdateMobilePhoneRequest(categoryId, table);
         }
 
         [When("I submit the update mobile phone request for missing mobile phone")]
@@ -176,37 +177,145 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 "desc3");
         }
 
-        private static UpdateMobilePhoneExternalDto BuildUpdateMobilePhoneRequest(Guid categoryId)
+        private static UpdateMobilePhoneExternalDto BuildUpdateMobilePhoneRequest(Guid categoryId, Table? table)
         {
+            var values = MergeDefaultValues(table);
             return new UpdateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
-                    "Updated Mobile Phone", 
-                    "Brand",
-                    "Updated by acceptance test",
-                    "updated-main.jpg",
-                    new List<string> { "updated-photo-1.jpg", "updated-photo-2.jpg" }),
+                    GetValue(values, "Name"),
+                    GetValue(values, "Brand"),
+                    GetValue(values, "Description"),
+                    GetValue(values, "MainPhoto"),
+                    ParseList(values, "OtherPhotos")),
                 new UpdateElectronicDetailsExternalDto(
-                    "Deca-core",
-                    "Mali",
-                    "12GB",
-                    "512GB",
-                    "AMOLED",
-                    144,
-                    6.8m,
-                    74,
-                    160,
-                    "Li-Poly",
-                    5200),
-                new UpdateConnectivityExternalDto(false, true, false, true),
-                new UpdateSatelliteNavigationSystemExternalDto(true, false, true, true, false),
-                new UpdateSensorsExternalDto(true, false, true, true, false, true, true),
-                "camera",
-                false,
-                true,
+                    GetValue(values, "CPU"),
+                    GetValue(values, "GPU"),
+                    GetValue(values, "Ram"),
+                    GetValue(values, "Storage"),
+                    GetValue(values, "DisplayType"),
+                    ParseInt(values, "RefreshRateHz"),
+                    ParseDecimal(values, "ScreenSizeInches"),
+                    ParseInt(values, "Width"),
+                    ParseInt(values, "Height"),
+                    GetValue(values, "BatteryType"),
+                    ParseInt(values, "BatteryCapacity")),
+                new UpdateConnectivityExternalDto(
+                    ParseBool(values, "Has5G"),
+                    ParseBool(values, "WiFi"),
+                    ParseBool(values, "NFC"),
+                    ParseBool(values, "Bluetooth")),
+                new UpdateSatelliteNavigationSystemExternalDto(
+                    ParseBool(values, "GPS"),
+                    ParseBool(values, "AGPS"),
+                    ParseBool(values, "Galileo"),
+                    ParseBool(values, "GLONASS"),
+                    ParseBool(values, "QZSS")),
+                new UpdateSensorsExternalDto(
+                    ParseBool(values, "Accelerometer"),
+                    ParseBool(values, "Gyroscope"),
+                    ParseBool(values, "Proximity"),
+                    ParseBool(values, "Compass"),
+                    ParseBool(values, "Barometer"),
+                    ParseBool(values, "Halla"),
+                    ParseBool(values, "AmbientLight")),
+                GetValue(values, "Camera"),
+                ParseBool(values, "FingerPrint"),
+                ParseBool(values, "FaceId"),
                 categoryId,
-                new UpdateMoneyExternalDto(899.99m, "EUR"),
-                "desc2",
-                "desc3");
+                new UpdateMoneyExternalDto(
+                    ParseDecimal(values, "PriceAmount"),
+                    GetValue(values, "PriceCurrency")),
+                GetValue(values, "Description2"),
+                GetValue(values, "Description3"));
+        }
+
+        private static Dictionary<string, string> MergeDefaultValues(Table? table)
+        {
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Name"] = "Updated Mobile Phone",
+                ["Brand"] = "Brand",
+                ["Description"] = "Updated by acceptance test",
+                ["MainPhoto"] = "updated-main.jpg",
+                ["OtherPhotos"] = "updated-photo-1.jpg, updated-photo-2.jpg",
+                ["CPU"] = "Deca-core",
+                ["GPU"] = "Mali",
+                ["Ram"] = "12GB",
+                ["Storage"] = "512GB",
+                ["DisplayType"] = "AMOLED",
+                ["RefreshRateHz"] = "144",
+                ["ScreenSizeInches"] = "6.8",
+                ["Width"] = "74",
+                ["Height"] = "160",
+                ["BatteryType"] = "Li-Poly",
+                ["BatteryCapacity"] = "5200",
+                ["Has5G"] = "false",
+                ["WiFi"] = "true",
+                ["NFC"] = "false",
+                ["Bluetooth"] = "true",
+                ["GPS"] = "true",
+                ["AGPS"] = "false",
+                ["Galileo"] = "true",
+                ["GLONASS"] = "true",
+                ["QZSS"] = "false",
+                ["Accelerometer"] = "true",
+                ["Gyroscope"] = "false",
+                ["Proximity"] = "true",
+                ["Compass"] = "true",
+                ["Barometer"] = "false",
+                ["Halla"] = "true",
+                ["AmbientLight"] = "true",
+                ["Camera"] = "camera",
+                ["FingerPrint"] = "false",
+                ["FaceId"] = "true",
+                ["PriceAmount"] = "899.99",
+                ["PriceCurrency"] = "EUR",
+                ["Description2"] = "desc2",
+                ["Description3"] = "desc3"
+            };
+
+            if (table is null)
+            {
+                return values;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                values[row["Field"]] = row["Value"];
+            }
+
+            return values;
+        }
+
+        private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing '{key}' value in mobile phone contract table.");
+            }
+
+            return value;
+        }
+
+        private static bool ParseBool(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return bool.Parse(GetValue(values, key));
+        }
+
+        private static int ParseInt(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return int.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ParseDecimal(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return decimal.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static IReadOnlyList<string> ParseList(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return GetValue(values, key)
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
         private async Task<Guid> CreateCategoryAsync(string prefix)
