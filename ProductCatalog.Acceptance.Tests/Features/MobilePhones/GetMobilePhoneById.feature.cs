@@ -154,13 +154,133 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "Name",
+                            "Test Mobile Phone"});
+                table1.AddRow(new string[] {
+                            "Brand",
+                            "Brand"});
+                table1.AddRow(new string[] {
+                            "Description",
+                            "Phone created by acceptance test"});
+                table1.AddRow(new string[] {
+                            "MainPhoto",
+                            "main-photo.jpg"});
+                table1.AddRow(new string[] {
+                            "OtherPhotos",
+                            "photo-1.jpg, photo-2.jpg"});
+                table1.AddRow(new string[] {
+                            "CPU",
+                            "Octa-core"});
+                table1.AddRow(new string[] {
+                            "GPU",
+                            "Adreno"});
+                table1.AddRow(new string[] {
+                            "Ram",
+                            "8GB"});
+                table1.AddRow(new string[] {
+                            "Storage",
+                            "256GB"});
+                table1.AddRow(new string[] {
+                            "DisplayType",
+                            "OLED"});
+                table1.AddRow(new string[] {
+                            "RefreshRateHz",
+                            "120"});
+                table1.AddRow(new string[] {
+                            "ScreenSizeInches",
+                            "6.4"});
+                table1.AddRow(new string[] {
+                            "Width",
+                            "72"});
+                table1.AddRow(new string[] {
+                            "Height",
+                            "152"});
+                table1.AddRow(new string[] {
+                            "BatteryType",
+                            "Li-Ion"});
+                table1.AddRow(new string[] {
+                            "BatteryCapacity",
+                            "4500"});
+                table1.AddRow(new string[] {
+                            "Has5G",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "WiFi",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "NFC",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Bluetooth",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "GPS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "AGPS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Galileo",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "GLONASS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "QZSS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Accelerometer",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Gyroscope",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Proximity",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Compass",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Barometer",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Halla",
+                            "false"});
+                table1.AddRow(new string[] {
+                            "AmbientLight",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Camera",
+                            "camera"});
+                table1.AddRow(new string[] {
+                            "FingerPrint",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "FaceId",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "PriceAmount",
+                            "799.99"});
+                table1.AddRow(new string[] {
+                            "PriceCurrency",
+                            "USD"});
+                table1.AddRow(new string[] {
+                            "Description2",
+                            "desc2"});
+                table1.AddRow(new string[] {
+                            "Description3",
+                            "desc3"});
 #line 4
-    await testRunner.GivenAsync("an existing mobile phone id", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("an existing mobile phone id", ((string)(null)), table1, "Given ");
 #line hidden
-#line 5
+#line 45
     await testRunner.WhenAsync("I request the mobile phone by id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 6
+#line 46
     await testRunner.ThenAsync("the mobile phone details are returned successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -178,7 +298,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phone by id fails for missing mobile phone", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 8
+#line 48
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -188,13 +308,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
-#line 9
+#line 49
     await testRunner.GivenAsync("a mobile phone without specific id doesnt exists", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 50
     await testRunner.WhenAsync("I send request for mobile phone by not existed id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 51
     await testRunner.ThenAsync("response show not found error for mobile phone", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
