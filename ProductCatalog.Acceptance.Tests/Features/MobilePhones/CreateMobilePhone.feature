@@ -44,6 +44,14 @@
       | Description3        | desc3                            |
     When I submit the create mobile phone request
     Then the mobile phone is created successfully
+      | Field         | Value            |
+      | StatusCode    | 201              |
+      | HasId         | true             |
+      | IsActive      | true             |
+      | Name          | Test Mobile Phone |
+      | Brand         | Brand            |
+      | PriceAmount   | 799.99           |
+      | PriceCurrency | USD              |
 
   Scenario: Create mobile phone fails with invalid details
     Given I have invalid mobile phone details
@@ -89,3 +97,11 @@
       | Description3        | desc3                            |
     When I submit the create invalid mobile phone request
     Then the mobile phone creation fails with validation errors
+      | Field        | Value                                      |
+      | StatusCode   | 400                                        |
+      | Status       | 400                                        |
+      | Title        | Validation failed                          |
+      | Detail       | One or more validation errors occurred.    |
+      | ErrorMessage | CategoryId does not exist.                 |
+      | ErrorEntity  | MobilePhone                                |
+      | ErrorName    | MobilePhonesCategoryIdValidationRule       |

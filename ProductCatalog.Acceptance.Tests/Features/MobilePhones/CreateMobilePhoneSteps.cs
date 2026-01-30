@@ -42,23 +42,39 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone is created successfully")]
-        public async Task ThenTheMobilePhoneIsCreatedSuccessfully()
+        public async Task ThenTheMobilePhoneIsCreatedSuccessfully(Table table)
         {
+            var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.Created);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             var mobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
             mobilePhone.ShouldNotBeNull();
 
-            mobilePhone.Id.ShouldNotBe(Guid.Empty);
-            mobilePhone.IsActive.ShouldBeTrue();
+            if (TryGetBool(expected, "HasId", out var hasId))
+            {
+                if (hasId)
+                {
+                    mobilePhone.Id.ShouldNotBe(Guid.Empty);
+                }
+                else
+                {
+                    mobilePhone.Id.ShouldBe(Guid.Empty);
+                }
+            }
+
+            if (TryGetBool(expected, "IsActive", out var isActive))
+            {
+                mobilePhone.IsActive.ShouldBe(isActive);
+            }
+
             mobilePhone.CategoryId.ShouldBe(_validRequest.CategoryId);
             mobilePhone.FingerPrint.ShouldBe(_validRequest.FingerPrint);
             mobilePhone.FaceId.ShouldBe(_validRequest.FaceId);
-            mobilePhone.Price.Amount.ShouldBe(_validRequest.Price.Amount);
-            mobilePhone.Price.Currency.ShouldBe(_validRequest.Price.Currency);
-            mobilePhone.CommonDescription.Name.ShouldBe(_validRequest.CommonDescription.Name);
-            mobilePhone.CommonDescription.Brand.ShouldBe(_validRequest.CommonDescription.Brand);
+            mobilePhone.Price.Amount.ShouldBe(ParseDecimal(expected, "PriceAmount", _validRequest.Price.Amount));
+            mobilePhone.Price.Currency.ShouldBe(GetExpectedValue(expected, "PriceCurrency", _validRequest.Price.Currency));
+            mobilePhone.CommonDescription.Name.ShouldBe(GetExpectedValue(expected, "Name", _validRequest.CommonDescription.Name));
+            mobilePhone.CommonDescription.Brand.ShouldBe(GetExpectedValue(expected, "Brand", _validRequest.CommonDescription.Brand));
             mobilePhone.CommonDescription.Description.ShouldBe(_validRequest.CommonDescription.Description);
             mobilePhone.CommonDescription.MainPhoto.ShouldBe(_validRequest.CommonDescription.MainPhoto);
             mobilePhone.CommonDescription.OtherPhotos.ShouldBe(_validRequest.CommonDescription.OtherPhotos);
@@ -109,20 +125,21 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone creation fails with validation errors")]
-        public void ThenTheMobilePhoneCreationFailsWithValidationErrors()
+        public void ThenTheMobilePhoneCreationFailsWithValidationErrors(Table table)
         {
+            var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             _apiProblem.ShouldNotBeNull();
-            _apiProblem!.Status.ShouldBe(400);
-            _apiProblem.Title.ShouldBe("Validation failed");
-            _apiProblem.Detail.ShouldBe("One or more validation errors occurred.");
+            _apiProblem!.Status.ShouldBe(ParseRequiredInt(expected, "Status"));
+            _apiProblem.Title.ShouldBe(GetRequiredValue(expected, "Title"));
+            _apiProblem.Detail.ShouldBe(GetRequiredValue(expected, "Detail"));
             _apiProblem.Errors.Count().ShouldBeGreaterThan(0);
             _apiProblem.Errors.ShouldContain(error =>
-                error.Message == "CategoryId does not exist."
-                && error.Entity == "MobilePhone"
-                && error.Name == "MobilePhonesCategoryIdValidationRule");
+                error.Message == GetRequiredValue(expected, "ErrorMessage")
+                && error.Entity == GetRequiredValue(expected, "ErrorEntity")
+                && error.Name == GetRequiredValue(expected, "ErrorName"));
         }
 
         private static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(Guid categoryId, Table? table)
@@ -243,6 +260,66 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             }
 
             return value;
+        }
+
+        private static Dictionary<string, string> ParseExpectedTable(Table table)
+        {
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var row in table.Rows)
+            {
+                values[row["Field"]] = row["Value"];
+            }
+
+            return values;
+        }
+
+        private static string GetRequiredValue(IReadOnlyDictionary<string, string> values, string key)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing '{key}' value in mobile phone expected result table.");
+            }
+
+            return value;
+        }
+
+        private static string GetExpectedValue(IReadOnlyDictionary<string, string> values, string key, string fallback)
+        {
+            return values.TryGetValue(key, out var value) ? value : fallback;
+        }
+
+        private static HttpStatusCode ParseStatusCode(IReadOnlyDictionary<string, string> values, string key)
+        {
+            var value = GetRequiredValue(values, key);
+            return (HttpStatusCode)int.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        private static int ParseRequiredInt(IReadOnlyDictionary<string, string> values, string key)
+        {
+            var value = GetRequiredValue(values, key);
+            return int.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ParseDecimal(IReadOnlyDictionary<string, string> values, string key, decimal fallback)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                return fallback;
+            }
+
+            return decimal.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        private static bool TryGetBool(IReadOnlyDictionary<string, string> values, string key, out bool result)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                result = false;
+                return false;
+            }
+
+            result = bool.Parse(value);
+            return true;
         }
 
         private static bool ParseBool(IReadOnlyDictionary<string, string> values, string key)
