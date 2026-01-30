@@ -280,7 +280,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 #line 45
     await testRunner.WhenAsync("I submit the create mobile phone request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 46
                 global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
@@ -305,6 +304,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 table2.AddRow(new string[] {
                             "PriceCurrency",
                             "USD"});
+#line 46
     await testRunner.ThenAsync("the mobile phone is created successfully", ((string)(null)), table2, "Then ");
 #line hidden
             }
@@ -322,7 +322,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create mobile phone fails with invalid details", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 48
+#line 56
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -452,13 +452,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 table3.AddRow(new string[] {
                             "Description3",
                             "desc3"});
-#line 49
+#line 57
     await testRunner.GivenAsync("I have invalid mobile phone details", ((string)(null)), table3, "Given ");
 #line hidden
-#line 90
+#line 98
     await testRunner.WhenAsync("I submit the create invalid mobile phone request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 91
                 global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
@@ -483,6 +482,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 table4.AddRow(new string[] {
                             "ErrorName",
                             "MobilePhonesCategoryIdValidationRule"});
+#line 99
     await testRunner.ThenAsync("the mobile phone creation fails with validation errors", ((string)(null)), table4, "Then ");
 #line hidden
             }
