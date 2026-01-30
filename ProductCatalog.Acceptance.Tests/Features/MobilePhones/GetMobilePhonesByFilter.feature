@@ -1,7 +1,4 @@
 ﻿Feature: Get mobile phones by filter
-  In order to view available mobile phones
-  As a client of the catalog API
-  I want to retrieve mobile phones filtered by amount
 
 Scenario: Get mobile phones by filter returns matching list
 	Given an existing list of mobile phones
