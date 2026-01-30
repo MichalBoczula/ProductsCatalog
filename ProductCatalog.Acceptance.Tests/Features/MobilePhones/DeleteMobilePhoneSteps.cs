@@ -31,10 +31,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         };
 
         [Given("an existing mobile phone to delete")]
-        public async Task GivenAnExistingMobilePhoneToDelete()
+        public async Task GivenAnExistingMobilePhoneToDelete(Table table)
         {
             var categoryId = await CreateCategoryAsync("MOBILE-DEL");
-            var values = MergeDefaultValues(null);
+            var values = MergeDefaultValues(table);
             _createRequest = BuildCreateMobilePhoneRequest(categoryId, values);
 
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
