@@ -24,8 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get mobile phones by filter", "  In order to view available mobile phones\r\n  As a client of the catalog API\r\n  I" +
-                " want to retrieve mobile phones filtered by amount", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get mobile phones by filter", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -145,7 +144,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by filter returns matching list", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 3
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -155,13 +154,130 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 7
- await testRunner.GivenAsync("an existing list of mobile phones", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "Brand",
+                            "Brand"});
+                table1.AddRow(new string[] {
+                            "Description",
+                            "Phone created by filter test"});
+                table1.AddRow(new string[] {
+                            "MainPhoto",
+                            "main-photo.jpg"});
+                table1.AddRow(new string[] {
+                            "OtherPhotos",
+                            "photo-1.jpg, photo-2.jpg"});
+                table1.AddRow(new string[] {
+                            "CPU",
+                            "Octa-core"});
+                table1.AddRow(new string[] {
+                            "GPU",
+                            "Adreno"});
+                table1.AddRow(new string[] {
+                            "Ram",
+                            "8GB"});
+                table1.AddRow(new string[] {
+                            "Storage",
+                            "256GB"});
+                table1.AddRow(new string[] {
+                            "DisplayType",
+                            "OLED"});
+                table1.AddRow(new string[] {
+                            "RefreshRateHz",
+                            "120"});
+                table1.AddRow(new string[] {
+                            "ScreenSizeInches",
+                            "6.4"});
+                table1.AddRow(new string[] {
+                            "Width",
+                            "72"});
+                table1.AddRow(new string[] {
+                            "Height",
+                            "152"});
+                table1.AddRow(new string[] {
+                            "BatteryType",
+                            "Li-Ion"});
+                table1.AddRow(new string[] {
+                            "BatteryCapacity",
+                            "4500"});
+                table1.AddRow(new string[] {
+                            "Has5G",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "WiFi",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "NFC",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Bluetooth",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "GPS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "AGPS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Galileo",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "GLONASS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "QZSS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Accelerometer",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Gyroscope",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Proximity",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Compass",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Barometer",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Halla",
+                            "false"});
+                table1.AddRow(new string[] {
+                            "AmbientLight",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Camera",
+                            "camera"});
+                table1.AddRow(new string[] {
+                            "FingerPrint",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "FaceId",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "PriceAmount",
+                            "799.99"});
+                table1.AddRow(new string[] {
+                            "PriceCurrency",
+                            "USD"});
+                table1.AddRow(new string[] {
+                            "Description2",
+                            "desc2"});
+                table1.AddRow(new string[] {
+                            "Description3",
+                            "desc3"});
+#line 4
+ await testRunner.GivenAsync("an existing list of mobile phones", ((string)(null)), table1, "Given ");
 #line hidden
-#line 8
+#line 44
  await testRunner.WhenAsync("I request mobile phones with amount 2", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 9
+#line 45
  await testRunner.ThenAsync("the mobile phone list is returned with the requested amount", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -179,7 +295,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by filter returns an empty list when no mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 11
+#line 47
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -189,13 +305,13 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 12
+#line 48
  await testRunner.GivenAsync("no mobile phones exist in the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 13
+#line 49
  await testRunner.WhenAsync("I request mobile phones with amount 3", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 14
+#line 50
  await testRunner.ThenAsync("an empty mobile phone list is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
