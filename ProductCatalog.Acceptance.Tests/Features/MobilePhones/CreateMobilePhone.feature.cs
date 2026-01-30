@@ -154,53 +154,133 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "Name",
+                            "Test Mobile Phone"});
+                table1.AddRow(new string[] {
+                            "Brand",
+                            "Brand"});
+                table1.AddRow(new string[] {
+                            "Description",
+                            "Phone created by acceptance test"});
+                table1.AddRow(new string[] {
+                            "MainPhoto",
+                            "main-photo.jpg"});
+                table1.AddRow(new string[] {
+                            "OtherPhotos",
+                            "photo-1.jpg, photo-2.jpg"});
+                table1.AddRow(new string[] {
+                            "CPU",
+                            "Octa-core"});
+                table1.AddRow(new string[] {
+                            "GPU",
+                            "Adreno"});
+                table1.AddRow(new string[] {
+                            "Ram",
+                            "8GB"});
+                table1.AddRow(new string[] {
+                            "Storage",
+                            "256GB"});
+                table1.AddRow(new string[] {
+                            "DisplayType",
+                            "OLED"});
+                table1.AddRow(new string[] {
+                            "RefreshRateHz",
+                            "120"});
+                table1.AddRow(new string[] {
+                            "ScreenSizeInches",
+                            "6.4"});
+                table1.AddRow(new string[] {
+                            "Width",
+                            "72"});
+                table1.AddRow(new string[] {
+                            "Height",
+                            "152"});
+                table1.AddRow(new string[] {
+                            "BatteryType",
+                            "Li-Ion"});
+                table1.AddRow(new string[] {
+                            "BatteryCapacity",
+                            "4500"});
+                table1.AddRow(new string[] {
+                            "Has5G",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "WiFi",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "NFC",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Bluetooth",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "GPS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "AGPS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Galileo",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "GLONASS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "QZSS",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Accelerometer",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Gyroscope",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Proximity",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Compass",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Barometer",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Halla",
+                            "false"});
+                table1.AddRow(new string[] {
+                            "AmbientLight",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "Camera",
+                            "camera"});
+                table1.AddRow(new string[] {
+                            "FingerPrint",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "FaceId",
+                            "true"});
+                table1.AddRow(new string[] {
+                            "PriceAmount",
+                            "799.99"});
+                table1.AddRow(new string[] {
+                            "PriceCurrency",
+                            "USD"});
+                table1.AddRow(new string[] {
+                            "Description2",
+                            "desc2"});
+                table1.AddRow(new string[] {
+                            "Description3",
+                            "desc3"});
 #line 4
-    global::Reqnroll.Table table0 = new global::Reqnroll.Table(new string[] { "Field", "Value" });
-    table0.AddRow(new string[] { "Name", "Test Mobile Phone" });
-    table0.AddRow(new string[] { "Brand", "Brand" });
-    table0.AddRow(new string[] { "Description", "Phone created by acceptance test" });
-    table0.AddRow(new string[] { "MainPhoto", "main-photo.jpg" });
-    table0.AddRow(new string[] { "OtherPhotos", "photo-1.jpg, photo-2.jpg" });
-    table0.AddRow(new string[] { "CPU", "Octa-core" });
-    table0.AddRow(new string[] { "GPU", "Adreno" });
-    table0.AddRow(new string[] { "Ram", "8GB" });
-    table0.AddRow(new string[] { "Storage", "256GB" });
-    table0.AddRow(new string[] { "DisplayType", "OLED" });
-    table0.AddRow(new string[] { "RefreshRateHz", "120" });
-    table0.AddRow(new string[] { "ScreenSizeInches", "6.4" });
-    table0.AddRow(new string[] { "Width", "72" });
-    table0.AddRow(new string[] { "Height", "152" });
-    table0.AddRow(new string[] { "BatteryType", "Li-Ion" });
-    table0.AddRow(new string[] { "BatteryCapacity", "4500" });
-    table0.AddRow(new string[] { "Has5G", "true" });
-    table0.AddRow(new string[] { "WiFi", "true" });
-    table0.AddRow(new string[] { "NFC", "true" });
-    table0.AddRow(new string[] { "Bluetooth", "true" });
-    table0.AddRow(new string[] { "GPS", "true" });
-    table0.AddRow(new string[] { "AGPS", "true" });
-    table0.AddRow(new string[] { "Galileo", "true" });
-    table0.AddRow(new string[] { "GLONASS", "true" });
-    table0.AddRow(new string[] { "QZSS", "true" });
-    table0.AddRow(new string[] { "Accelerometer", "true" });
-    table0.AddRow(new string[] { "Gyroscope", "true" });
-    table0.AddRow(new string[] { "Proximity", "true" });
-    table0.AddRow(new string[] { "Compass", "true" });
-    table0.AddRow(new string[] { "Barometer", "true" });
-    table0.AddRow(new string[] { "Halla", "false" });
-    table0.AddRow(new string[] { "AmbientLight", "true" });
-    table0.AddRow(new string[] { "Camera", "camera" });
-    table0.AddRow(new string[] { "FingerPrint", "true" });
-    table0.AddRow(new string[] { "FaceId", "true" });
-    table0.AddRow(new string[] { "PriceAmount", "799.99" });
-    table0.AddRow(new string[] { "PriceCurrency", "USD" });
-    table0.AddRow(new string[] { "Description2", "desc2" });
-    table0.AddRow(new string[] { "Description3", "desc3" });
-    await testRunner.GivenAsync("I have valid mobile phone details", ((string)(null)), table0, "Given ");
+    await testRunner.GivenAsync("I have valid mobile phone details", ((string)(null)), table1, "Given ");
 #line hidden
-#line 5
+#line 45
     await testRunner.WhenAsync("I submit the create mobile phone request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 6
+#line 46
     await testRunner.ThenAsync("the mobile phone is created successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
@@ -218,7 +298,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create mobile phone fails with invalid details", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 8
+#line 48
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -228,53 +308,133 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
-#line 9
-    global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] { "Field", "Value" });
-    table1.AddRow(new string[] { "Name", "Test Mobile Phone" });
-    table1.AddRow(new string[] { "Brand", "Brand" });
-    table1.AddRow(new string[] { "Description", "Phone created by acceptance test" });
-    table1.AddRow(new string[] { "MainPhoto", "main-photo.jpg" });
-    table1.AddRow(new string[] { "OtherPhotos", "photo-1.jpg, photo-2.jpg" });
-    table1.AddRow(new string[] { "CPU", "Octa-core" });
-    table1.AddRow(new string[] { "GPU", "Adreno" });
-    table1.AddRow(new string[] { "Ram", "8GB" });
-    table1.AddRow(new string[] { "Storage", "256GB" });
-    table1.AddRow(new string[] { "DisplayType", "OLED" });
-    table1.AddRow(new string[] { "RefreshRateHz", "120" });
-    table1.AddRow(new string[] { "ScreenSizeInches", "6.4" });
-    table1.AddRow(new string[] { "Width", "72" });
-    table1.AddRow(new string[] { "Height", "152" });
-    table1.AddRow(new string[] { "BatteryType", "Li-Ion" });
-    table1.AddRow(new string[] { "BatteryCapacity", "4500" });
-    table1.AddRow(new string[] { "Has5G", "true" });
-    table1.AddRow(new string[] { "WiFi", "true" });
-    table1.AddRow(new string[] { "NFC", "true" });
-    table1.AddRow(new string[] { "Bluetooth", "true" });
-    table1.AddRow(new string[] { "GPS", "true" });
-    table1.AddRow(new string[] { "AGPS", "true" });
-    table1.AddRow(new string[] { "Galileo", "true" });
-    table1.AddRow(new string[] { "GLONASS", "true" });
-    table1.AddRow(new string[] { "QZSS", "true" });
-    table1.AddRow(new string[] { "Accelerometer", "true" });
-    table1.AddRow(new string[] { "Gyroscope", "true" });
-    table1.AddRow(new string[] { "Proximity", "true" });
-    table1.AddRow(new string[] { "Compass", "true" });
-    table1.AddRow(new string[] { "Barometer", "true" });
-    table1.AddRow(new string[] { "Halla", "false" });
-    table1.AddRow(new string[] { "AmbientLight", "true" });
-    table1.AddRow(new string[] { "Camera", "camera" });
-    table1.AddRow(new string[] { "FingerPrint", "true" });
-    table1.AddRow(new string[] { "FaceId", "true" });
-    table1.AddRow(new string[] { "PriceAmount", "799.99" });
-    table1.AddRow(new string[] { "PriceCurrency", "USD" });
-    table1.AddRow(new string[] { "Description2", "desc2" });
-    table1.AddRow(new string[] { "Description3", "desc3" });
-    await testRunner.GivenAsync("I have invalid mobile phone details", ((string)(null)), table1, "Given ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "Name",
+                            "Test Mobile Phone"});
+                table2.AddRow(new string[] {
+                            "Brand",
+                            "Brand"});
+                table2.AddRow(new string[] {
+                            "Description",
+                            "Phone created by acceptance test"});
+                table2.AddRow(new string[] {
+                            "MainPhoto",
+                            "main-photo.jpg"});
+                table2.AddRow(new string[] {
+                            "OtherPhotos",
+                            "photo-1.jpg, photo-2.jpg"});
+                table2.AddRow(new string[] {
+                            "CPU",
+                            "Octa-core"});
+                table2.AddRow(new string[] {
+                            "GPU",
+                            "Adreno"});
+                table2.AddRow(new string[] {
+                            "Ram",
+                            "8GB"});
+                table2.AddRow(new string[] {
+                            "Storage",
+                            "256GB"});
+                table2.AddRow(new string[] {
+                            "DisplayType",
+                            "OLED"});
+                table2.AddRow(new string[] {
+                            "RefreshRateHz",
+                            "120"});
+                table2.AddRow(new string[] {
+                            "ScreenSizeInches",
+                            "6.4"});
+                table2.AddRow(new string[] {
+                            "Width",
+                            "72"});
+                table2.AddRow(new string[] {
+                            "Height",
+                            "152"});
+                table2.AddRow(new string[] {
+                            "BatteryType",
+                            "Li-Ion"});
+                table2.AddRow(new string[] {
+                            "BatteryCapacity",
+                            "4500"});
+                table2.AddRow(new string[] {
+                            "Has5G",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "WiFi",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "NFC",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Bluetooth",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "GPS",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "AGPS",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Galileo",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "GLONASS",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "QZSS",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Accelerometer",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Gyroscope",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Proximity",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Compass",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Barometer",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Halla",
+                            "false"});
+                table2.AddRow(new string[] {
+                            "AmbientLight",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Camera",
+                            "camera"});
+                table2.AddRow(new string[] {
+                            "FingerPrint",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "FaceId",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "PriceAmount",
+                            "799.99"});
+                table2.AddRow(new string[] {
+                            "PriceCurrency",
+                            "USD"});
+                table2.AddRow(new string[] {
+                            "Description2",
+                            "desc2"});
+                table2.AddRow(new string[] {
+                            "Description3",
+                            "desc3"});
+#line 49
+    await testRunner.GivenAsync("I have invalid mobile phone details", ((string)(null)), table2, "Given ");
 #line hidden
-#line 10
+#line 90
     await testRunner.WhenAsync("I submit the create invalid mobile phone request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 91
     await testRunner.ThenAsync("the mobile phone creation fails with validation errors", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
