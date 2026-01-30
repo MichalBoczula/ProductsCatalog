@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -30,10 +31,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         };
 
         [Given("an existing mobile phone to delete")]
-        public async Task GivenAnExistingMobilePhoneToDelete()
+        public async Task GivenAnExistingMobilePhoneToDelete(Table? table)
         {
             var categoryId = await CreateCategoryAsync("MOBILE-DEL");
-            _createRequest = BuildCreateMobilePhoneRequest(categoryId);
+            var values = MergeDefaultValues(table);
+            _createRequest = BuildCreateMobilePhoneRequest(categoryId, values);
 
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
@@ -102,37 +104,57 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 && error.Name == "MobilePhonesIsNullValidationRule");
         }
 
-        private static CreateMobilePhoneExternalDto BuildCreateMobilePhoneRequest(Guid categoryId)
+        private static CreateMobilePhoneExternalDto BuildCreateMobilePhoneRequest(
+            Guid categoryId,
+            IReadOnlyDictionary<string, string> values)
         {
             return new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
-                    "Delete Mobile Phone",
-                    "Brand",
-                    "Phone created for delete test",
-                    "delete-main.jpg",
-                    new List<string> { "delete-photo-1.jpg", "delete-photo-2.jpg" }),
+                    GetValue(values, "Name"),
+                    GetValue(values, "Brand"),
+                    GetValue(values, "Description"),
+                    GetValue(values, "MainPhoto"),
+                    ParseList(values, "OtherPhotos")),
                 new CreateElectronicDetailsExternalDto(
-                    "Octa-core",
-                    "Adreno",
-                    "8GB",
-                    "256GB",
-                    "OLED",
-                    120,
-                    6.4m,
-                    72,
-                    152,
-                    "Li-Ion",
-                    4500),
-                new CreateConnectivityExternalDto(true, true, true, true),
-                new CreateSatelliteNavigationSystemExternalDto(true, true, true, true, true),
-                new CreateSensorsExternalDto(true, true, true, true, true, false, true),
-                "camera",
-                true,
-                true,
+                    GetValue(values, "CPU"),
+                    GetValue(values, "GPU"),
+                    GetValue(values, "Ram"),
+                    GetValue(values, "Storage"),
+                    GetValue(values, "DisplayType"),
+                    ParseInt(values, "RefreshRateHz"),
+                    ParseDecimal(values, "ScreenSizeInches"),
+                    ParseInt(values, "Width"),
+                    ParseInt(values, "Height"),
+                    GetValue(values, "BatteryType"),
+                    ParseInt(values, "BatteryCapacity")),
+                new CreateConnectivityExternalDto(
+                    ParseBool(values, "Has5G"),
+                    ParseBool(values, "WiFi"),
+                    ParseBool(values, "NFC"),
+                    ParseBool(values, "Bluetooth")),
+                new CreateSatelliteNavigationSystemExternalDto(
+                    ParseBool(values, "GPS"),
+                    ParseBool(values, "AGPS"),
+                    ParseBool(values, "Galileo"),
+                    ParseBool(values, "GLONASS"),
+                    ParseBool(values, "QZSS")),
+                new CreateSensorsExternalDto(
+                    ParseBool(values, "Accelerometer"),
+                    ParseBool(values, "Gyroscope"),
+                    ParseBool(values, "Proximity"),
+                    ParseBool(values, "Compass"),
+                    ParseBool(values, "Barometer"),
+                    ParseBool(values, "Halla"),
+                    ParseBool(values, "AmbientLight")),
+                GetValue(values, "Camera"),
+                ParseBool(values, "FingerPrint"),
+                ParseBool(values, "FaceId"),
                 categoryId,
-                new CreateMoneyExternalDto(699.99m, "USD"),
-                "desc2",
-                "desc3");
+                new CreateMoneyExternalDto(
+                    ParseDecimal(values, "PriceAmount"),
+                    GetValue(values, "PriceCurrency")),
+                GetValue(values, "Description2"),
+                GetValue(values, "Description3"));
         }
 
         private async Task<Guid> CreateCategoryAsync(string prefix)
@@ -152,6 +174,95 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(content, _jsonOptions);
+        }
+
+        private static Dictionary<string, string> MergeDefaultValues(Table? table)
+        {
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Name"] = "Delete Mobile Phone",
+                ["Brand"] = "Brand",
+                ["Description"] = "Phone created for delete test",
+                ["MainPhoto"] = "delete-main.jpg",
+                ["OtherPhotos"] = "delete-photo-1.jpg, delete-photo-2.jpg",
+                ["CPU"] = "Octa-core",
+                ["GPU"] = "Adreno",
+                ["Ram"] = "8GB",
+                ["Storage"] = "256GB",
+                ["DisplayType"] = "OLED",
+                ["RefreshRateHz"] = "120",
+                ["ScreenSizeInches"] = "6.4",
+                ["Width"] = "72",
+                ["Height"] = "152",
+                ["BatteryType"] = "Li-Ion",
+                ["BatteryCapacity"] = "4500",
+                ["Has5G"] = "true",
+                ["WiFi"] = "true",
+                ["NFC"] = "true",
+                ["Bluetooth"] = "true",
+                ["GPS"] = "true",
+                ["AGPS"] = "true",
+                ["Galileo"] = "true",
+                ["GLONASS"] = "true",
+                ["QZSS"] = "true",
+                ["Accelerometer"] = "true",
+                ["Gyroscope"] = "true",
+                ["Proximity"] = "true",
+                ["Compass"] = "true",
+                ["Barometer"] = "true",
+                ["Halla"] = "false",
+                ["AmbientLight"] = "true",
+                ["Camera"] = "camera",
+                ["FingerPrint"] = "true",
+                ["FaceId"] = "true",
+                ["PriceAmount"] = "699.99",
+                ["PriceCurrency"] = "USD",
+                ["Description2"] = "desc2",
+                ["Description3"] = "desc3"
+            };
+
+            if (table == null)
+            {
+                return values;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                values[row["Field"]] = row["Value"];
+            }
+
+            return values;
+        }
+
+        private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing '{key}' value in mobile phone contract table.");
+            }
+
+            return value;
+        }
+
+        private static bool ParseBool(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return bool.Parse(GetValue(values, key));
+        }
+
+        private static int ParseInt(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return int.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ParseDecimal(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return decimal.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static IReadOnlyList<string> ParseList(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return GetValue(values, key)
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
     }
 }
