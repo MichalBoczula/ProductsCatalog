@@ -25,7 +25,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             PropertyNameCaseInsensitive = true
         };
         private readonly List<MobilePhoneDetailsDto> _createdMobilePhones = new();
-        private List<MobilePhoneDetailsDto> _result = new();
+        private List<MobilePhoneDto> _result = new();
         private HttpResponseMessage? _response;
         private Guid _categoryId;
         private int _amount;
@@ -86,7 +86,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            _result = await DeserializeResponse<List<MobilePhoneDetailsDto>>(_response) ?? new List<MobilePhoneDetailsDto>();
+            _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
             _result.Count.ShouldBe(_amount);
         }
 
@@ -96,7 +96,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            _result = await DeserializeResponse<List<MobilePhoneDetailsDto>>(_response) ?? new List<MobilePhoneDetailsDto>();
+            _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
             _result.ShouldBeEmpty();
         }
 
