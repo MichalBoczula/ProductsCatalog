@@ -160,8 +160,32 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 #line 5
     await testRunner.WhenAsync("I submit the delete mobile phone request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "StatusCode",
+                            "200"});
+                table2.AddRow(new string[] {
+                            "HasId",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "IsActive",
+                            "false"});
+                table2.AddRow(new string[] {
+                            "Name",
+                            "Test Mobile Phone"});
+                table2.AddRow(new string[] {
+                            "Brand",
+                            "Brand"});
+                table2.AddRow(new string[] {
+                            "PriceAmount",
+                            "799.99"});
+                table2.AddRow(new string[] {
+                            "PriceCurrency",
+                            "USD"});
 #line 6
-    await testRunner.ThenAsync("the mobile phone is deleted successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the mobile phone is deleted successfully", ((string)(null)), table2, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -194,8 +218,32 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 #line 10
     await testRunner.WhenAsync("I submit the delete mobile phone request for missing mobile phone", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table4.AddRow(new string[] {
+                            "StatusCode",
+                            "400"});
+                table4.AddRow(new string[] {
+                            "Status",
+                            "400"});
+                table4.AddRow(new string[] {
+                            "Title",
+                            "Validation failed"});
+                table4.AddRow(new string[] {
+                            "Detail",
+                            "One or more validation errors occurred."});
+                table4.AddRow(new string[] {
+                            "ErrorMessage",
+                            "Mobile phone cannot be null."});
+                table4.AddRow(new string[] {
+                            "ErrorEntity",
+                            "MobilePhone"});
+                table4.AddRow(new string[] {
+                            "ErrorName",
+                            "MobilePhonesIsNullValidationRule"});
 #line 11
-    await testRunner.ThenAsync("the mobile phone deletion fails with validation errors", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the mobile phone deletion fails with validation errors", ((string)(null)), table4, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

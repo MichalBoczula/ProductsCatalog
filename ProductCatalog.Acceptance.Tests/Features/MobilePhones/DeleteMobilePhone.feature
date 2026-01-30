@@ -44,8 +44,24 @@
       | Description3     | desc3                             |
     When I submit the delete mobile phone request
     Then the mobile phone is deleted successfully
+      | Field         | Value             |
+      | StatusCode    | 200               |
+      | HasId         | true              |
+      | IsActive      | false             |
+      | Name          | Test Mobile Phone |
+      | Brand         | Brand             |
+      | PriceAmount   | 799.99            |
+      | PriceCurrency | USD               |
 
   Scenario: Delete mobile phone fails for missing mobile phone
     Given a mobile phone id that does not exist
     When I submit the delete mobile phone request for missing mobile phone
     Then the mobile phone deletion fails with validation errors
+      | Field        | Value                                   |
+      | StatusCode   | 400                                     |
+      | Status       | 400                                     |
+      | Title        | Validation failed                       |
+      | Detail       | One or more validation errors occurred. |
+      | ErrorMessage | Mobile phone cannot be null.            |
+      | ErrorEntity  | MobilePhone                             |
+      | ErrorName    | MobilePhonesIsNullValidationRule        |
