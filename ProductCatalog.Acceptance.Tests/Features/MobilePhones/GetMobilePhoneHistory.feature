@@ -58,5 +58,5 @@
       | StatusCode | 404                                                                                                                                  |
       | Status     | 404                                                                                                                                  |
       | Title      | Resource not found.                                                                                                                 |
-      | Detail     | Resource List`1 identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery.                |
+      | Detail     | Resource List identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery.                |
       | Instance   | /mobile-phones/{MobilePhoneId}/history                                                                                              |
