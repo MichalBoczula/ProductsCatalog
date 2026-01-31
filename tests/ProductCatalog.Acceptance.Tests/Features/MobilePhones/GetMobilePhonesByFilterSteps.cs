@@ -52,10 +52,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             foreach (var request in requests)
             {
+                AllureJson.AttachObject(
+                    "Request JSON (create for filter)",
+                    request,
+                    _jsonOptions
+                );
+
                 var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request);
                 response.EnsureSuccessStatusCode();
 
-                var created = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
+                var body = await response.Content.ReadAsStringAsync();
+                AllureJson.AttachRawJson($"Response JSON ({(int)response.StatusCode})", body);
+
+                var created = JsonSerializer.Deserialize<MobilePhoneDetailsDto>(body, _jsonOptions);
                 created.ShouldNotBeNull();
                 _createdMobilePhones.Add(created!);
             }
@@ -77,7 +86,15 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         public async Task WhenIRequestMobilePhonesWithAmount(int amount)
         {
             _amount = amount;
+            AllureJson.AttachObject(
+                "Request JSON (get by filter)",
+                new { Amount = amount },
+                _jsonOptions
+            );
             _response = await TestRunHooks.Client.GetAsync($"/mobile-phones?amount={amount}");
+
+            var body = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
         [Then("the mobile phone list is returned with the requested amount")]
