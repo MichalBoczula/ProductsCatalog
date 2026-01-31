@@ -286,24 +286,6 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                 table2.AddRow(new string[] {
                             "Amount",
                             "2"});
-                table2.AddRow(new string[] {
-                            "NamePrefix",
-                            "Filter Phone"});
-                table2.AddRow(new string[] {
-                            "DisplayType",
-                            "OLED"});
-                table2.AddRow(new string[] {
-                            "ScreenSizeInches",
-                            "6.4"});
-                table2.AddRow(new string[] {
-                            "Camera",
-                            "camera"});
-                table2.AddRow(new string[] {
-                            "PriceAmount",
-                            "799.99"});
-                table2.AddRow(new string[] {
-                            "PriceCurrency",
-                            "USD"});
 #line 45
  await testRunner.ThenAsync("the mobile phone list is returned with the requested amount", ((string)(null)), table2, "Then ");
 #line hidden
@@ -322,7 +304,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by filter returns an empty list when no mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 56
+#line 50
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -332,13 +314,13 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 57
+#line 51
  await testRunner.GivenAsync("no mobile phones exist in the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 58
+#line 52
  await testRunner.WhenAsync("I request mobile phones with amount 3", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 59
+#line 53
  await testRunner.ThenAsync("an empty mobile phone list is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
