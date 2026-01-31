@@ -42,7 +42,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the mobile phone history")]
         public async Task WhenIRequestTheMobilePhoneHistory()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get history)",
+                new { MobilePhoneId = _mobilePhoneId, PageNumber, PageSize },
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={PageNumber}&pageSize={PageSize}");
+
+            var body = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
         [Then("the mobile phone history is returned successfully")]
@@ -138,7 +147,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the mobile phone history for the missing id")]
         public async Task WhenIRequestTheMobilePhoneHistoryForTheMissingId()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get history for missing id)",
+                new { MobilePhoneId = _mobilePhoneId, PageNumber, PageSize },
+                _jsonOptions
+            );
+
             _responseFailure = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={PageNumber}&pageSize={PageSize}");
+
+            var body = await _responseFailure.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
         }
 
         [Then("response show not found error for mobile phone history")]
@@ -242,10 +260,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 GetValue(values, "Description2"),
                 GetValue(values, "Description3"));
 
+            AllureJson.AttachObject(
+                "Request JSON (create for get history)",
+                _request,
+                _jsonOptions
+            );
+
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request);
             response.EnsureSuccessStatusCode();
 
-            var createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
+            var createdBody = await response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)response.StatusCode})", createdBody);
+
+            var createdMobilePhone = JsonSerializer.Deserialize<MobilePhoneDetailsDto>(createdBody, _jsonOptions);
             createdMobilePhone.ShouldNotBeNull();
 
             _mobilePhoneId = createdMobilePhone!.Id;
