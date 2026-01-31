@@ -1,7 +1,3 @@
-using System.Globalization;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
@@ -12,6 +8,10 @@ using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using Reqnroll;
 using Shouldly;
+using System.Globalization;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 {
@@ -33,12 +33,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             var categoryId = await CreateCategoryAsync();
             _validRequest = BuildMobilePhoneRequest(categoryId, table);
+
+            AllureJson.AttachObject(
+                "Request JSON (valid)",
+                _validRequest,
+                _jsonOptions
+            );
         }
 
         [When("I submit the create mobile phone request")]
         public async Task WhenISubmitTheCreateMobilePhoneRequest()
         {
             _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _validRequest, _jsonOptions);
+
+            var body = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
         [Then("the mobile phone is created successfully")]
@@ -114,13 +124,23 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         public void GivenIHaveInvalidMobilePhoneDetails(Table table)
         {
             _invalidRequest = BuildMobilePhoneRequest(Guid.NewGuid(), table);
+
+            AllureJson.AttachObject(
+              "Request JSON (invalid)",
+              _invalidRequest,
+              _jsonOptions
+          );
         }
 
         [When("I submit the create invalid mobile phone request")]
         public async Task WhenISubmitTheCreateInvalidMobilePhoneRequest()
         {
             _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _invalidRequest, _jsonOptions);
+
             var json = await _response.Content.ReadAsStringAsync();
+            
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
