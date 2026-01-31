@@ -38,6 +38,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var categoryId = await CreateCategoryAsync("MOBILE-BASE");
             _createRequest = BuildCreateMobilePhoneRequest(categoryId);
 
+            AllureJson.AttachObject(
+                "Request JSON (create for update)",
+                _createRequest,
+                _jsonOptions
+            );
+
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
@@ -46,6 +52,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             var updatedCategoryId = await CreateCategoryAsync("MOBILE-UPD");
             _updateRequest = BuildUpdateMobilePhoneRequest(updatedCategoryId, table);
+
+            AllureJson.AttachObject(
+                "Request JSON (update)",
+                _updateRequest,
+                _jsonOptions
+            );
         }
 
         [When("I submit the update mobile phone request")]
@@ -58,7 +70,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _updateRequest,
                 _jsonOptions);
 
-            _updatedMobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
+            var body = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
+
+            _updatedMobilePhone = JsonSerializer.Deserialize<MobilePhoneDetailsDto>(body, _jsonOptions);
         }
 
         [Then("the mobile phone is updated successfully")]
@@ -115,6 +131,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _missingMobilePhoneId = Guid.NewGuid();
             var categoryId = await CreateCategoryAsync("MOBILE-MISSING");
             _updateRequest = BuildUpdateMobilePhoneRequest(categoryId, table);
+
+            AllureJson.AttachObject(
+                "Request JSON (update missing)",
+                _updateRequest,
+                _jsonOptions
+            );
         }
 
         [When("I submit the update mobile phone request for missing mobile phone")]
@@ -126,6 +148,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions);
 
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
@@ -382,10 +407,5 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             return category!.Id;
         }
 
-        private async Task<T?> DeserializeResponse<T>(HttpResponseMessage response)
-        {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(content, _jsonOptions);
-        }
     }
 }
