@@ -81,13 +81,49 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone list is returned with the requested amount")]
-        public async Task ThenTheMobilePhoneListIsReturnedWithTheRequestedAmount()
+        public async Task ThenTheMobilePhoneListIsReturnedWithTheRequestedAmount(Table table)
         {
+            var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
-            _result.Count.ShouldBe(_amount);
+            var expectedAmount = expected.TryGetValue("Amount", out var amountValue)
+                ? int.Parse(amountValue, CultureInfo.InvariantCulture)
+                : _amount;
+            _result.Count.ShouldBe(expectedAmount);
+
+            if (expected.TryGetValue("NamePrefix", out var namePrefix))
+            {
+                _result.ShouldAllBe(mobilePhone => mobilePhone.Name.StartsWith(namePrefix, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (expected.TryGetValue("DisplayType", out var displayType))
+            {
+                _result.ShouldAllBe(mobilePhone => mobilePhone.DisplayType.Equals(displayType, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (expected.TryGetValue("ScreenSizeInches", out var screenSize))
+            {
+                var expectedScreenSize = decimal.Parse(screenSize, CultureInfo.InvariantCulture);
+                _result.ShouldAllBe(mobilePhone => mobilePhone.ScreenSizeInches == expectedScreenSize);
+            }
+
+            if (expected.TryGetValue("Camera", out var camera))
+            {
+                _result.ShouldAllBe(mobilePhone => mobilePhone.Camera.Equals(camera, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (expected.TryGetValue("PriceAmount", out var priceAmount))
+            {
+                var expectedPriceAmount = decimal.Parse(priceAmount, CultureInfo.InvariantCulture);
+                _result.ShouldAllBe(mobilePhone => mobilePhone.Price.Amount == expectedPriceAmount);
+            }
+
+            if (expected.TryGetValue("PriceCurrency", out var priceCurrency))
+            {
+                _result.ShouldAllBe(mobilePhone => mobilePhone.Price.Currency.Equals(priceCurrency, StringComparison.OrdinalIgnoreCase));
+            }
         }
 
         [Then("an empty mobile phone list is returned")]
@@ -216,6 +252,32 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             if (!values.TryGetValue(key, out var value))
             {
                 throw new InvalidOperationException($"Missing '{key}' value in mobile phone contract table.");
+            }
+
+            return value;
+        }
+
+        private static Dictionary<string, string> ParseExpectedTable(Table table)
+        {
+            var expected = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var row in table.Rows)
+            {
+                expected[row["Field"]] = row["Value"];
+            }
+
+            return expected;
+        }
+
+        private static HttpStatusCode ParseStatusCode(IReadOnlyDictionary<string, string> expected, string key)
+        {
+            return (HttpStatusCode)int.Parse(GetRequiredValue(expected, key), CultureInfo.InvariantCulture);
+        }
+
+        private static string GetRequiredValue(IReadOnlyDictionary<string, string> expected, string key)
+        {
+            if (!expected.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing '{key}' value in expected mobile phone response table.");
             }
 
             return value;
