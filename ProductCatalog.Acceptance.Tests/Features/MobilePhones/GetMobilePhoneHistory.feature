@@ -44,12 +44,19 @@
       | Description3    | desc3                                |
     When I request the mobile phone history
     Then the mobile phone history is returned successfully
-      | Field       | Expected |
-      | Operation   | Inserted |
-      | IsActive    | true     |
-      | ChangedAt   | set      |
+      | Field      | Value    |
+      | StatusCode | 200      |
+      | Operation  | Inserted |
+      | IsActive   | true     |
+      | ChangedAt  | set      |
 
   Scenario: Get mobile phone history fails for missing mobile phone
     Given a missing mobile phone id
     When I request the mobile phone history for the missing id
     Then response show not found error for mobile phone history
+      | Field      | Value                                                                                                                                |
+      | StatusCode | 404                                                                                                                                  |
+      | Status     | 404                                                                                                                                  |
+      | Title      | Resource not found.                                                                                                                 |
+      | Detail     | Resource List`1 identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery.                |
+      | Instance   | /mobile-phones/{MobilePhoneId}/history                                                                                              |

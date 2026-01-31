@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
@@ -49,8 +48,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [Then("the mobile phone history is returned successfully")]
         public async Task ThenTheMobilePhoneHistoryIsReturnedSuccessfully(Table table)
         {
+            var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, HttpStatusCode.OK));
 
             var historyEntries = await DeserializeResponse<List<MobilePhoneHistoryDto>>(_response);
             historyEntries.ShouldNotBeNull();
@@ -60,7 +60,14 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             historyEntry.Id.ShouldNotBe(Guid.Empty);
             historyEntry.MobilePhoneId.ShouldBe(_mobilePhoneId);
             historyEntry.CategoryId.ShouldBe(_categoryId);
-            historyEntry.IsActive.ShouldBeTrue();
+            if (TryGetBool(expected, "IsActive", out var expectedIsActive))
+            {
+                historyEntry.IsActive.ShouldBe(expectedIsActive);
+            }
+            else
+            {
+                historyEntry.IsActive.ShouldBeTrue();
+            }
             historyEntry.FingerPrint.ShouldBe(_request!.FingerPrint);
             historyEntry.FaceId.ShouldBe(_request.FaceId);
             historyEntry.Price.Amount.ShouldBe(_request.Price.Amount);
@@ -96,21 +103,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             historyEntry.Sensors.Barometer.ShouldBe(_request.Sensors.Barometer);
             historyEntry.Sensors.Halla.ShouldBe(_request.Sensors.Halla);
             historyEntry.Sensors.AmbientLight.ShouldBe(_request.Sensors.AmbientLight);
-            historyEntry.Operation.ShouldBe(Operation.Inserted);
-            historyEntry.ChangedAt.ShouldNotBe(default(DateTime));
-
-            var expectations = ToExpectationMap(table);
-            if (expectations.TryGetValue("Operation", out var expectedOperation))
+            if (expected.TryGetValue("Operation", out var expectedOperation))
             {
                 historyEntry.Operation.ShouldBe(Enum.Parse<Operation>(expectedOperation, true));
             }
-
-            if (expectations.TryGetValue("IsActive", out var expectedIsActive))
+            else
             {
-                historyEntry.IsActive.ShouldBe(bool.Parse(expectedIsActive));
+                historyEntry.Operation.ShouldBe(Operation.Inserted);
             }
 
-            if (expectations.TryGetValue("ChangedAt", out var expectedChangedAt))
+            if (expected.TryGetValue("ChangedAt", out var expectedChangedAt))
             {
                 if (string.Equals(expectedChangedAt, "set", StringComparison.OrdinalIgnoreCase))
                 {
@@ -120,6 +122,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 {
                     historyEntry.ChangedAt.ShouldBe(default(DateTime));
                 }
+            }
+            else
+            {
+                historyEntry.ChangedAt.ShouldNotBe(default(DateTime));
             }
         }
 
@@ -136,19 +142,43 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("response show not found error for mobile phone history")]
-        public async Task ThenResponseShowNotFoundErrorForMobilePhoneHistory()
+        public async Task ThenResponseShowNotFoundErrorForMobilePhoneHistory(Table table)
         {
+            var expected = ParseExpectedTable(table);
             _responseFailure.ShouldNotBeNull();
-            _responseFailure!.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+            _responseFailure!.StatusCode.ShouldBe(ParseStatusCode(expected, HttpStatusCode.NotFound));
 
             var problem = await DeserializeResponse<NotFoundProblemDetails>(_responseFailure);
             problem.ShouldNotBeNull();
 
-            problem.Title.ShouldBe("Resource not found.");
-            problem.Status.ShouldBe(StatusCodes.Status404NotFound);
-            problem.Detail.ShouldBe($"Resource {nameof(List<MobilePhoneHistoryDto>)} identify by id {_mobilePhoneId} cannot be found in databese during action {nameof(GetMobilePhoneHistoryQuery)}.");
-            problem.Instance.ShouldBe($"/mobile-phones/{_mobilePhoneId}/history");
-            problem.TraceId.ShouldNotBeNullOrWhiteSpace();
+            if (expected.TryGetValue("Title", out var title))
+            {
+                problem.Title.ShouldBe(title);
+            }
+
+            if (TryGetInt(expected, "Status", out var status))
+            {
+                problem.Status.ShouldBe(status);
+            }
+
+            if (expected.TryGetValue("Detail", out var detail))
+            {
+                problem.Detail.ShouldBe(ReplacePlaceholders(detail));
+            }
+
+            if (expected.TryGetValue("Instance", out var instance))
+            {
+                problem.Instance.ShouldBe(ReplacePlaceholders(instance));
+            }
+
+            if (expected.TryGetValue("TraceId", out var traceId))
+            {
+                problem.TraceId.ShouldBe(ReplacePlaceholders(traceId));
+            }
+            else
+            {
+                problem.TraceId.ShouldNotBeNullOrWhiteSpace();
+            }
         }
 
         private async Task CreateMobilePhoneAsync(Table? table)
@@ -279,16 +309,54 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             return values;
         }
 
-        private static Dictionary<string, string> ToExpectationMap(Table table)
+        private static Dictionary<string, string> ParseExpectedTable(Table table)
         {
-            var expectations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
+            var expected = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var row in table.Rows)
             {
-                expectations[row["Field"]] = row["Expected"];
+                expected[row["Field"]] = row["Value"];
             }
 
-            return expectations;
+            return expected;
+        }
+
+        private static HttpStatusCode ParseStatusCode(IReadOnlyDictionary<string, string> expected, HttpStatusCode defaultStatusCode)
+        {
+            if (!TryGetInt(expected, "StatusCode", out var statusCode))
+            {
+                return defaultStatusCode;
+            }
+
+            return (HttpStatusCode)statusCode;
+        }
+
+        private static bool TryGetBool(IReadOnlyDictionary<string, string> expected, string key, out bool value)
+        {
+            value = default;
+            if (!expected.TryGetValue(key, out var raw))
+            {
+                return false;
+            }
+
+            value = bool.Parse(raw);
+            return true;
+        }
+
+        private static bool TryGetInt(IReadOnlyDictionary<string, string> expected, string key, out int value)
+        {
+            value = default;
+            if (!expected.TryGetValue(key, out var raw))
+            {
+                return false;
+            }
+
+            value = int.Parse(raw, CultureInfo.InvariantCulture);
+            return true;
+        }
+
+        private string ReplacePlaceholders(string value)
+        {
+            return value.Replace("{MobilePhoneId}", _mobilePhoneId.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
