@@ -96,10 +96,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 GetValue(values, "Description2"),
                 GetValue(values, "Description3"));
 
-            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request);
+            AllureJson.AttachObject(
+                "Request JSON (create for get by id)",
+                _request,
+                _jsonOptions
+            );
+
+            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
-            _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
+            var createdBody = await response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)response.StatusCode})", createdBody);
+
+            _createdMobilePhone = JsonSerializer.Deserialize<MobilePhoneDetailsDto>(createdBody, _jsonOptions);
             _createdMobilePhone.ShouldNotBeNull();
 
             _mobilePhoneId = _createdMobilePhone!.Id;
@@ -108,7 +117,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the mobile phone by id")]
         public async Task WhenIRequestTheMobilePhoneById()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get by id)",
+                new { MobilePhoneId = _mobilePhoneId },
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}");
+
+            var body = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
         [Then("the mobile phone details are returned successfully")]
@@ -175,7 +193,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I send request for mobile phone by not existed id")]
         public async Task WhenIRequestTheMobilePhoneByNotExistedId()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get by missing id)",
+                new { MobilePhoneId = _mobilePhoneId },
+                _jsonOptions
+            );
+
             _responseFailure = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}");
+
+            var body = await _responseFailure.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
         }
 
         [Then("response show not found error for mobile phone")]
