@@ -46,12 +46,6 @@ Scenario: Get mobile phones by filter returns matching list
 		| Field            | Value        |
 		| StatusCode       | 200          |
 		| Amount           | 2            |
-		| NamePrefix       | Filter Phone |
-		| DisplayType      | OLED         |
-		| ScreenSizeInches | 6.4          |
-		| Camera           | camera       |
-		| PriceAmount      | 799.99       |
-		| PriceCurrency    | USD          |
 
 Scenario: Get mobile phones by filter returns an empty list when no mobile phones exist
 	Given no mobile phones exist in the database

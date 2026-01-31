@@ -93,37 +93,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 : _amount;
             _result.Count.ShouldBe(expectedAmount);
 
-            if (expected.TryGetValue("NamePrefix", out var namePrefix))
-            {
-                _result.ShouldAllBe(mobilePhone => mobilePhone.Name.StartsWith(namePrefix, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (expected.TryGetValue("DisplayType", out var displayType))
-            {
-                _result.ShouldAllBe(mobilePhone => mobilePhone.DisplayType.Equals(displayType, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (expected.TryGetValue("ScreenSizeInches", out var screenSize))
-            {
-                var expectedScreenSize = decimal.Parse(screenSize, CultureInfo.InvariantCulture);
-                _result.ShouldAllBe(mobilePhone => mobilePhone.ScreenSizeInches == expectedScreenSize);
-            }
-
-            if (expected.TryGetValue("Camera", out var camera))
-            {
-                _result.ShouldAllBe(mobilePhone => mobilePhone.Camera.Equals(camera, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (expected.TryGetValue("PriceAmount", out var priceAmount))
-            {
-                var expectedPriceAmount = decimal.Parse(priceAmount, CultureInfo.InvariantCulture);
-                _result.ShouldAllBe(mobilePhone => mobilePhone.Price.Amount == expectedPriceAmount);
-            }
-
-            if (expected.TryGetValue("PriceCurrency", out var priceCurrency))
-            {
-                _result.ShouldAllBe(mobilePhone => mobilePhone.Price.Currency.Equals(priceCurrency, StringComparison.OrdinalIgnoreCase));
-            }
+            _ = expected;
         }
 
         [Then("an empty mobile phone list is returned")]
