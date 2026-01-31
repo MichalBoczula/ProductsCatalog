@@ -280,8 +280,29 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 #line 45
     await testRunner.WhenAsync("I request the mobile phone by id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "StatusCode",
+                            "200"});
+                table2.AddRow(new string[] {
+                            "IsActive",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Name",
+                            "Test Mobile Phone"});
+                table2.AddRow(new string[] {
+                            "Brand",
+                            "Brand"});
+                table2.AddRow(new string[] {
+                            "PriceAmount",
+                            "799.99"});
+                table2.AddRow(new string[] {
+                            "PriceCurrency",
+                            "USD"});
 #line 46
-    await testRunner.ThenAsync("the mobile phone details are returned successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the mobile phone details are returned successfully", ((string)(null)), table2, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -298,7 +319,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phone by id fails for missing mobile phone", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 48
+#line 55
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -308,14 +329,33 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
-#line 49
+#line 56
     await testRunner.GivenAsync("a mobile phone without specific id doesnt exists", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 50
+#line 57
     await testRunner.WhenAsync("I send request for mobile phone by not existed id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 51
-    await testRunner.ThenAsync("response show not found error for mobile phone", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table3.AddRow(new string[] {
+                            "StatusCode",
+                            "404"});
+                table3.AddRow(new string[] {
+                            "Status",
+                            "404"});
+                table3.AddRow(new string[] {
+                            "Title",
+                            "Resource not found."});
+                table3.AddRow(new string[] {
+                            "Detail",
+                            "Resource MobilePhoneDetailsDto identify by id {MobilePhoneId} cannot be found in " +
+                                "databese during action GetMobilePhoneByIdQuery."});
+                table3.AddRow(new string[] {
+                            "Instance",
+                            "/mobile-phones/{MobilePhoneId}"});
+#line 58
+    await testRunner.ThenAsync("response show not found error for mobile phone", ((string)(null)), table3, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
