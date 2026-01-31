@@ -44,6 +44,12 @@
       | Description3        | desc3                            |
     When I submit the update mobile phone request
     Then the mobile phone is updated successfully
+      | Field         | Value                |
+      | StatusCode    | 200                  |
+      | Name          | Updated Mobile Phone |
+      | Brand         | Brand                |
+      | PriceAmount   | 899.99               |
+      | PriceCurrency | EUR                  |
 
   Scenario: Update mobile phone fails for missing mobile phone
     Given mobile phone identify by id not exists
@@ -89,3 +95,11 @@
       | Description3        | desc3                            |
     When I submit the update mobile phone request for missing mobile phone
     Then the mobile phone update fails with validation errors
+      | Field        | Value                                   |
+      | StatusCode   | 400                                     |
+      | Status       | 400                                     |
+      | Title        | Validation failed                       |
+      | Detail       | One or more validation errors occurred. |
+      | ErrorMessage | Mobile phone cannot be null.            |
+      | ErrorEntity  | MobilePhone                             |
+      | ErrorName    | MobilePhonesIsNullValidationRule        |
