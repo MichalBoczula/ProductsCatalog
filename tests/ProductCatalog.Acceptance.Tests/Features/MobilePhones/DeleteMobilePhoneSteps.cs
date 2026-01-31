@@ -37,6 +37,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var values = MergeDefaultValues(table);
             _createRequest = BuildCreateMobilePhoneRequest(categoryId, values);
 
+            AllureJson.AttachObject(
+                "Request JSON (create for delete)",
+                _createRequest,
+                _jsonOptions
+            );
+
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
@@ -49,8 +55,23 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             _createdMobilePhone.ShouldNotBeNull();
 
+            var deleteRequest = new
+            {
+                MobilePhoneId = _createdMobilePhone!.Id
+            };
+
+            AllureJson.AttachObject(
+                "Request JSON (delete)",
+                deleteRequest,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.DeleteAsync($"/mobile-phones/{_createdMobilePhone!.Id}");
-            _deletedMobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
+            var body = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
+
+            _deletedMobilePhone = JsonSerializer.Deserialize<MobilePhoneDetailsDto>(body, _jsonOptions);
         }
 
         [Then("the mobile phone is deleted successfully")]
@@ -99,8 +120,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I submit the delete mobile phone request for missing mobile phone")]
         public async Task WhenISubmitTheDeleteMobilePhoneRequestForMissingMobilePhone()
         {
+            var deleteRequest = new
+            {
+                MobilePhoneId = _missingMobilePhoneId
+            };
+
+            AllureJson.AttachObject(
+                "Request JSON (delete missing)",
+                deleteRequest,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.DeleteAsync($"/mobile-phones/{_missingMobilePhoneId}");
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
