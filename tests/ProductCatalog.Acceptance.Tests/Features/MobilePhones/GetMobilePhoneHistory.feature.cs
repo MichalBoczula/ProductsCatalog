@@ -17,21 +17,21 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class GetMobilePhoneByIdFeature : object, global::Xunit.IClassFixture<GetMobilePhoneByIdFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class GetMobilePhoneHistoryFeature : object, global::Xunit.IClassFixture<GetMobilePhoneHistoryFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "GetMobilePhoneById", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "GetMobilePhoneHistory", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "GetMobilePhoneById.feature"
+#line 1 "GetMobilePhoneHistory.feature"
 #line hidden
         
-        public GetMobilePhoneByIdFeature(GetMobilePhoneByIdFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GetMobilePhoneHistoryFeature(GetMobilePhoneHistoryFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetMobilePhoneById.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetMobilePhoneHistory.feature.ndjson", 4);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,15 +133,15 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phone by id returns mobile phone")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "GetMobilePhoneById")]
-        [global::Xunit.TraitAttribute("Description", "Get mobile phone by id returns mobile phone")]
-        public async global::System.Threading.Tasks.Task GetMobilePhoneByIdReturnsMobilePhone()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phone history returns history")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "GetMobilePhoneHistory")]
+        [global::Xunit.TraitAttribute("Description", "Get mobile phone history returns history")]
+        public async global::System.Threading.Tasks.Task GetMobilePhoneHistoryReturnsHistory()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phone by id returns mobile phone", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phone history returns history", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 3
@@ -154,172 +154,166 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Name",
                             "Test Mobile Phone"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Brand",
                             "Brand"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Description",
                             "Phone created by acceptance test"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "MainPhoto",
                             "main-photo.jpg"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "OtherPhotos",
                             "photo-1.jpg, photo-2.jpg"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "CPU",
                             "Octa-core"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "GPU",
                             "Adreno"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Ram",
                             "8GB"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Storage",
                             "256GB"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "DisplayType",
                             "OLED"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "RefreshRateHz",
                             "120"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "ScreenSizeInches",
                             "6.4"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Width",
                             "72"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Height",
                             "152"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "BatteryType",
                             "Li-Ion"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "BatteryCapacity",
                             "4500"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Has5G",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "WiFi",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "NFC",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Bluetooth",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "GPS",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "AGPS",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Galileo",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "GLONASS",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "QZSS",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Accelerometer",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Gyroscope",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Proximity",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Compass",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Barometer",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Halla",
                             "false"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "AmbientLight",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Camera",
                             "camera"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "FingerPrint",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "FaceId",
                             "true"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "PriceAmount",
                             "799.99"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "PriceCurrency",
                             "USD"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Description2",
                             "desc2"});
-                table1.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Description3",
                             "desc3"});
 #line 4
-    await testRunner.GivenAsync("an existing mobile phone id", ((string)(null)), table1, "Given ");
+    await testRunner.GivenAsync("an existing mobile phone with history", ((string)(null)), table11, "Given ");
 #line hidden
 #line 45
-    await testRunner.WhenAsync("I request the mobile phone by id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I request the mobile phone history", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table2.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table2.AddRow(new string[] {
+                table12.AddRow(new string[] {
+                            "Operation",
+                            "Inserted"});
+                table12.AddRow(new string[] {
                             "IsActive",
                             "true"});
-                table2.AddRow(new string[] {
-                            "Name",
-                            "Test Mobile Phone"});
-                table2.AddRow(new string[] {
-                            "Brand",
-                            "Brand"});
-                table2.AddRow(new string[] {
-                            "PriceAmount",
-                            "799.99"});
-                table2.AddRow(new string[] {
-                            "PriceCurrency",
-                            "USD"});
+                table12.AddRow(new string[] {
+                            "ChangedAt",
+                            "set"});
 #line 46
-    await testRunner.ThenAsync("the mobile phone details are returned successfully", ((string)(null)), table2, "Then ");
+    await testRunner.ThenAsync("the mobile phone history is returned successfully", ((string)(null)), table12, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phone by id fails for missing mobile phone")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "GetMobilePhoneById")]
-        [global::Xunit.TraitAttribute("Description", "Get mobile phone by id fails for missing mobile phone")]
-        public async global::System.Threading.Tasks.Task GetMobilePhoneByIdFailsForMissingMobilePhone()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phone history fails for missing mobile phone")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "GetMobilePhoneHistory")]
+        [global::Xunit.TraitAttribute("Description", "Get mobile phone history fails for missing mobile phone")]
+        public async global::System.Threading.Tasks.Task GetMobilePhoneHistoryFailsForMissingMobilePhone()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phone by id fails for missing mobile phone", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phone history fails for missing mobile phone", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 55
+#line 53
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -329,33 +323,33 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
-#line 56
-    await testRunner.GivenAsync("a mobile phone without specific id doesnt exists", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 54
+    await testRunner.GivenAsync("a missing mobile phone id", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 57
-    await testRunner.WhenAsync("I send request for mobile phone by not existed id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 55
+    await testRunner.WhenAsync("I request the mobile phone history for the missing id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table3.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "StatusCode",
                             "404"});
-                table3.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Status",
                             "404"});
-                table3.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Title",
                             "Resource not found."});
-                table3.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Detail",
-                            "Resource MobilePhoneDetailsDto identify by id {MobilePhoneId} cannot be found in " +
-                                "databese during action GetMobilePhoneByIdQuery."});
-                table3.AddRow(new string[] {
+                            "Resource List identify by id {MobilePhoneId} cannot be found in databese during a" +
+                                "ction GetMobilePhoneHistoryQuery."});
+                table13.AddRow(new string[] {
                             "Instance",
-                            "/mobile-phones/{MobilePhoneId}"});
-#line 58
-    await testRunner.ThenAsync("response show not found error for mobile phone", ((string)(null)), table3, "Then ");
+                            "/mobile-phones/{MobilePhoneId}/history"});
+#line 56
+    await testRunner.ThenAsync("response show not found error for mobile phone history", ((string)(null)), table13, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -368,12 +362,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await GetMobilePhoneByIdFeature.FeatureSetupAsync();
+                await GetMobilePhoneHistoryFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await GetMobilePhoneByIdFeature.FeatureTearDownAsync();
+                await GetMobilePhoneHistoryFeature.FeatureTearDownAsync();
             }
         }
     }

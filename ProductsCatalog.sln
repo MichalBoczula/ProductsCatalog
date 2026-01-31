@@ -19,11 +19,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductsCatalog.Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalog.Domain.UnitTests", "tests\ProductCatalog.Domain.UnitTests\ProductCatalog.Domain.UnitTests.csproj", "{FD4F9FE4-EA2E-469B-8D41-853E0EEB7D6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalog.Acceptance.Tests", "ProductCatalog.Acceptance.Tests\ProductCatalog.Acceptance.Tests.csproj", "{07438FD3-7969-41F3-97ED-D0D282E46CDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalog.Acceptance.Tests", "tests\ProductCatalog.Acceptance.Tests\ProductCatalog.Acceptance.Tests.csproj", "{07438FD3-7969-41F3-97ED-D0D282E46CDF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2F198A24-E739-4522-9E76-CAB728004420}"
 	ProjectSection(SolutionItems) = preProject
 		AngularClient.nswag = AngularClient.nswag
+		Directory.Build.props = Directory.Build.props
 		NetClient.nswag = NetClient.nswag
 	EndProjectSection
 EndProject

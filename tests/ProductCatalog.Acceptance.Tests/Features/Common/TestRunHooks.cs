@@ -11,6 +11,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
         [BeforeTestRun]
         public static async Task BeforeTestRun()
         {
+            EnsureAllureResultsDirectory();
             Factory = new ApplicationFactory();
             await Factory.InitializeAsync();
             Client = Factory.CreateClient();
@@ -21,6 +22,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
         {
             Client.Dispose();
             await Factory.DisposeAsync();
+        }
+
+        private static void EnsureAllureResultsDirectory()
+        {
+            var dir = Path.Combine(Directory.GetCurrentDirectory(), "artifacts", "allure-results", "acceptance");
+            Directory.CreateDirectory(dir);
         }
     }
 }

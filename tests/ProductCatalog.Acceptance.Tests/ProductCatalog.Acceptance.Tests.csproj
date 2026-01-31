@@ -35,16 +35,24 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\src\ProductCatalog.Api\ProductCatalog.Api\ProductCatalog.Api.csproj" />
-    <ProjectReference Include="..\src\ProductCatalog.Application\ProductCatalog.Application.csproj" />
-    <ProjectReference Include="..\src\ProductCatalog.Domain\ProductCatalog.Domain.csproj" />
-    <ProjectReference Include="..\src\ProductCatalog.Infrastructure\ProductCatalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\ProductCatalog.Api\ProductCatalog.Api\ProductCatalog.Api.csproj" />
+    <ProjectReference Include="..\..\src\ProductCatalog.Application\ProductCatalog.Application.csproj" />
+    <ProjectReference Include="..\..\src\ProductCatalog.Domain\ProductCatalog.Domain.csproj" />
+    <ProjectReference Include="..\..\src\ProductCatalog.Infrastructure\ProductCatalog.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <AllureArtifactsDir>$(MSBuildProjectDirectory)\..\..\artifacts\allure-results\acceptance</AllureArtifactsDir>
+  </PropertyGroup>
+
+  <Target Name="PrepareAllureResultsDir" BeforeTargets="VSTest">
+    <MakeDir Directories="$(AllureArtifactsDir)" />
+  </Target>
 
 </Project>
