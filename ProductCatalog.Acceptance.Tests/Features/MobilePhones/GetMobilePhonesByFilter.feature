@@ -43,6 +43,15 @@ Scenario: Get mobile phones by filter returns matching list
 		| Description3     | desc3                                 |
 	When I request mobile phones with amount 2
 	Then the mobile phone list is returned with the requested amount
+		| Field            | Value        |
+		| StatusCode       | 200          |
+		| Amount           | 2            |
+		| NamePrefix       | Filter Phone |
+		| DisplayType      | OLED         |
+		| ScreenSizeInches | 6.4          |
+		| Camera           | camera       |
+		| PriceAmount      | 799.99       |
+		| PriceCurrency    | USD          |
 
 Scenario: Get mobile phones by filter returns an empty list when no mobile phones exist
 	Given no mobile phones exist in the database
