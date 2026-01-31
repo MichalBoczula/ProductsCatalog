@@ -112,22 +112,28 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone details are returned successfully")]
-        public async Task ThenTheMobilePhoneDetailsAreReturnedSuccessfully()
+        public async Task ThenTheMobilePhoneDetailsAreReturnedSuccessfully(Table table)
         {
+            var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             var mobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
             mobilePhone.ShouldNotBeNull();
 
             mobilePhone.Id.ShouldBe(_mobilePhoneId);
             mobilePhone.CategoryId.ShouldBe(_categoryId);
-            mobilePhone.IsActive.ShouldBeTrue();
+            if (TryGetBool(expected, "IsActive", out var isActive))
+            {
+                mobilePhone.IsActive.ShouldBe(isActive);
+            }
+
             mobilePhone.FaceId.ShouldBe(_request!.FaceId);
             mobilePhone.FingerPrint.ShouldBe(_request.FingerPrint);
-            mobilePhone.Price.Amount.ShouldBe(_request.Price.Amount);
-            mobilePhone.Price.Currency.ShouldBe(_request.Price.Currency);
-            mobilePhone.CommonDescription.Name.ShouldBe(_request.CommonDescription.Name);
+            mobilePhone.Price.Amount.ShouldBe(ParseDecimal(expected, "PriceAmount", _request.Price.Amount));
+            mobilePhone.Price.Currency.ShouldBe(GetExpectedValue(expected, "PriceCurrency", _request.Price.Currency));
+            mobilePhone.CommonDescription.Name.ShouldBe(GetExpectedValue(expected, "Name", _request.CommonDescription.Name));
+            mobilePhone.CommonDescription.Brand.ShouldBe(GetExpectedValue(expected, "Brand", _request.CommonDescription.Brand));
             mobilePhone.CommonDescription.Description.ShouldBe(_request.CommonDescription.Description);
             mobilePhone.CommonDescription.MainPhoto.ShouldBe(_request.CommonDescription.MainPhoto);
             mobilePhone.CommonDescription.OtherPhotos.ShouldBe(_request.CommonDescription.OtherPhotos);
@@ -173,19 +179,43 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("response show not found error for mobile phone")]
-        public async Task ThenResponseShowNotFoundErrorForMobilePhone()
+        public async Task ThenResponseShowNotFoundErrorForMobilePhone(Table table)
         {
+            var expected = ParseExpectedTable(table);
             _responseFailure.ShouldNotBeNull();
-            _responseFailure!.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+            _responseFailure!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             var problem = await DeserializeResponse<NotFoundProblemDetails>(_responseFailure);
             problem.ShouldNotBeNull();
 
-            problem.Title.ShouldBe("Resource not found.");
-            problem.Status.ShouldBe(StatusCodes.Status404NotFound);
-            problem.Detail.ShouldBe($"Resource {nameof(MobilePhoneDetailsDto)} identify by id {_mobilePhoneId} cannot be found in databese during action {nameof(GetMobilePhoneByIdQuery)}.");
-            problem.Instance.ShouldBe($"/mobile-phones/{_mobilePhoneId}");
-            problem.TraceId.ShouldNotBeNullOrWhiteSpace();
+            if (expected.TryGetValue("Title", out var title))
+            {
+                problem.Title.ShouldBe(title);
+            }
+
+            if (TryGetInt(expected, "Status", out var status))
+            {
+                problem.Status.ShouldBe(status);
+            }
+
+            if (expected.TryGetValue("Detail", out var detail))
+            {
+                problem.Detail.ShouldBe(ReplacePlaceholders(detail));
+            }
+
+            if (expected.TryGetValue("Instance", out var instance))
+            {
+                problem.Instance.ShouldBe(ReplacePlaceholders(instance));
+            }
+
+            if (expected.TryGetValue("TraceId", out var traceId))
+            {
+                problem.TraceId.ShouldBe(ReplacePlaceholders(traceId));
+            }
+            else
+            {
+                problem.TraceId.ShouldNotBeNullOrWhiteSpace();
+            }
         }
 
         private async Task<T?> DeserializeResponse<T>(HttpResponseMessage response)
@@ -245,6 +275,81 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             }
 
             return values;
+        }
+
+        private static Dictionary<string, string> ParseExpectedTable(Table table)
+        {
+            var expected = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var row in table.Rows)
+            {
+                expected[row["Field"]] = row["Value"];
+            }
+
+            return expected;
+        }
+
+        private static HttpStatusCode ParseStatusCode(IReadOnlyDictionary<string, string> expected, string key)
+        {
+            return (HttpStatusCode)ParseRequiredInt(expected, key);
+        }
+
+        private static int ParseRequiredInt(IReadOnlyDictionary<string, string> expected, string key)
+        {
+            return int.Parse(GetRequiredValue(expected, key), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ParseDecimal(IReadOnlyDictionary<string, string> expected, string key, decimal fallback)
+        {
+            if (!expected.TryGetValue(key, out var value))
+            {
+                return fallback;
+            }
+
+            return decimal.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        private static string GetRequiredValue(IReadOnlyDictionary<string, string> expected, string key)
+        {
+            if (!expected.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing '{key}' value in expected mobile phone response table.");
+            }
+
+            return value;
+        }
+
+        private static string GetExpectedValue(IReadOnlyDictionary<string, string> expected, string key, string fallback)
+        {
+            return expected.TryGetValue(key, out var value) ? value : fallback;
+        }
+
+        private static bool TryGetBool(IReadOnlyDictionary<string, string> expected, string key, out bool value)
+        {
+            value = default;
+            if (!expected.TryGetValue(key, out var raw))
+            {
+                return false;
+            }
+
+            value = bool.Parse(raw);
+            return true;
+        }
+
+        private static bool TryGetInt(IReadOnlyDictionary<string, string> expected, string key, out int value)
+        {
+            value = default;
+            if (!expected.TryGetValue(key, out var raw))
+            {
+                return false;
+            }
+
+            value = int.Parse(raw, CultureInfo.InvariantCulture);
+            return true;
+        }
+
+        private string ReplacePlaceholders(string value)
+        {
+            return value.Replace("{MobilePhoneId}", _mobilePhoneId.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
