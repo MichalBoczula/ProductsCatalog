@@ -343,7 +343,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                             "Resource not found."});
                 table3.AddRow(new string[] {
                             "Detail",
-                            "Resource List`1 identify by id {MobilePhoneId} cannot be found in databese during" +
+                            "Resource List identify by id {MobilePhoneId} cannot be found in databese during" +
                                 " action GetMobilePhoneHistoryQuery."});
                 table3.AddRow(new string[] {
                             "Instance",
