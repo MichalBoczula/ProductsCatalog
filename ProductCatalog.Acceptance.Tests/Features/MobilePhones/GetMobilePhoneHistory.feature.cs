@@ -282,7 +282,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 #line hidden
                 global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
                             "Field",
-                            "Expected"});
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "StatusCode",
+                            "200"});
                 table2.AddRow(new string[] {
                             "Operation",
                             "Inserted"});
@@ -310,7 +313,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phone history fails for missing mobile phone", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 52
+#line 53
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -320,14 +323,33 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
-#line 53
+#line 54
     await testRunner.GivenAsync("a missing mobile phone id", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 54
+#line 55
     await testRunner.WhenAsync("I request the mobile phone history for the missing id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 55
-    await testRunner.ThenAsync("response show not found error for mobile phone history", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table3.AddRow(new string[] {
+                            "StatusCode",
+                            "404"});
+                table3.AddRow(new string[] {
+                            "Status",
+                            "404"});
+                table3.AddRow(new string[] {
+                            "Title",
+                            "Resource not found."});
+                table3.AddRow(new string[] {
+                            "Detail",
+                            "Resource List`1 identify by id {MobilePhoneId} cannot be found in databese during" +
+                                " action GetMobilePhoneHistoryQuery."});
+                table3.AddRow(new string[] {
+                            "Instance",
+                            "/mobile-phones/{MobilePhoneId}/history"});
+#line 56
+    await testRunner.ThenAsync("response show not found error for mobile phone history", ((string)(null)), table3, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
