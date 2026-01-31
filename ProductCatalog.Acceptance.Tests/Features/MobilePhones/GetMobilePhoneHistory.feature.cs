@@ -343,8 +343,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                             "Resource not found."});
                 table3.AddRow(new string[] {
                             "Detail",
-                            "Resource List identify by id {MobilePhoneId} cannot be found in databese during" +
-                                " action GetMobilePhoneHistoryQuery."});
+                            "Resource List identify by id {MobilePhoneId} cannot be found in databese during a" +
+                                "ction GetMobilePhoneHistoryQuery."});
                 table3.AddRow(new string[] {
                             "Instance",
                             "/mobile-phones/{MobilePhoneId}/history"});
