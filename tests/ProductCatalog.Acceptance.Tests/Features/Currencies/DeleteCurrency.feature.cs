@@ -154,41 +154,41 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table5.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "Code",
                             "DEL"});
-                table5.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "Description",
                             "Delete Currency"});
 #line 4
-    await testRunner.GivenAsync("an existing currency to delete", ((string)(null)), table5, "Given ");
+    await testRunner.GivenAsync("an existing currency to delete", ((string)(null)), table21, "Given ");
 #line hidden
 #line 8
     await testRunner.WhenAsync("I submit the delete currency request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table6.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table6.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "HasId",
                             "true"});
-                table6.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "IsActive",
                             "false"});
-                table6.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "Code",
                             "DEL"});
-                table6.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "Description",
                             "Delete Currency"});
 #line 9
-    await testRunner.ThenAsync("the currency is deleted successfully", ((string)(null)), table6, "Then ");
+    await testRunner.ThenAsync("the currency is deleted successfully", ((string)(null)), table22, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -221,29 +221,29 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
 #line 19
     await testRunner.WhenAsync("I submit the delete currency request for non existing currency", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table7.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "Status",
                             "400"});
-                table7.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "Title",
                             "Validation failed"});
-                table7.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "Detail",
                             "One or more validation errors occurred."});
-                table7.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "ErrorMessage",
                             "Currency cannot be null."});
-                table7.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "ErrorEntity",
                             "Currency"});
-                table7.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "ErrorName",
                             "CurrencyIsNullValidationRule"});
 #line 20
-    await testRunner.ThenAsync("the currency deletion fails with API error", ((string)(null)), table7, "Then ");
+    await testRunner.ThenAsync("the currency deletion fails with API error", ((string)(null)), table23, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

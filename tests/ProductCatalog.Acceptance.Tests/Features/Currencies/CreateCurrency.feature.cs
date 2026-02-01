@@ -154,41 +154,41 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table1.AddRow(new string[] {
+                table17.AddRow(new string[] {
                             "Code",
                             "JPY"});
-                table1.AddRow(new string[] {
+                table17.AddRow(new string[] {
                             "Description",
                             "Japanese Yen"});
 #line 4
-    await testRunner.GivenAsync("I have valid currency details", ((string)(null)), table1, "Given ");
+    await testRunner.GivenAsync("I have valid currency details", ((string)(null)), table17, "Given ");
 #line hidden
 #line 8
     await testRunner.WhenAsync("I submit the create currency request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table2.AddRow(new string[] {
+                table18.AddRow(new string[] {
                             "StatusCode",
                             "201"});
-                table2.AddRow(new string[] {
+                table18.AddRow(new string[] {
                             "HasId",
                             "true"});
-                table2.AddRow(new string[] {
+                table18.AddRow(new string[] {
                             "IsActive",
                             "true"});
-                table2.AddRow(new string[] {
+                table18.AddRow(new string[] {
                             "Code",
                             "JPY"});
-                table2.AddRow(new string[] {
+                table18.AddRow(new string[] {
                             "Description",
                             "Japanese Yen"});
 #line 9
-    await testRunner.ThenAsync("the currency is created successfully", ((string)(null)), table2, "Then ");
+    await testRunner.ThenAsync("the currency is created successfully", ((string)(null)), table18, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -215,53 +215,53 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table19 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table3.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "Code",
                             ""});
-                table3.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "Description",
                             ""});
 #line 18
-    await testRunner.GivenAsync("I have invalid currency details", ((string)(null)), table3, "Given ");
+    await testRunner.GivenAsync("I have invalid currency details", ((string)(null)), table19, "Given ");
 #line hidden
 #line 22
     await testRunner.WhenAsync("I submit the create invalid currency request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "StatusCode",
                             "400"});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "Title",
                             "Validation failed"});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "Detail",
                             "One or more validation errors occurred."});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "ErrorMessage1",
                             "Code cannot be null or whitespace."});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "ErrorEntity1",
                             "Currency"});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "ErrorName1",
                             "CurrenciesCodeValidationRule"});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "ErrorMessage2",
                             "Description cannot be null or whitespace."});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "ErrorEntity2",
                             "Currency"});
-                table4.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "ErrorName2",
                             "CurrenciesDescriptionValidationRule"});
 #line 23
-    await testRunner.ThenAsync("the currency creation fails with API error", ((string)(null)), table4, "Then ");
+    await testRunner.ThenAsync("the currency creation fails with API error", ((string)(null)), table20, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

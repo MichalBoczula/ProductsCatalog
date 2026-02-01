@@ -154,38 +154,38 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table9 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table1.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "Code",
                             "BOOKS"});
-                table1.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "Name",
                             "Books category"});
 #line 4
-    await testRunner.GivenAsync("an existing category id", ((string)(null)), table1, "Given ");
+    await testRunner.GivenAsync("an existing category id", ((string)(null)), table9, "Given ");
 #line hidden
 #line 8
     await testRunner.WhenAsync("I request the category by id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table2.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table2.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "IsActive",
                             "true"});
-                table2.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Code",
                             "BOOKS"});
-                table2.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "Name",
                             "Books category"});
 #line 9
-    await testRunner.ThenAsync("the category details are returned successfully", ((string)(null)), table2, "Then ");
+    await testRunner.ThenAsync("the category details are returned successfully", ((string)(null)), table10, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -218,24 +218,24 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
 #line 18
     await testRunner.WhenAsync("I send request for category by not existed id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table3.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "StatusCode",
                             "404"});
-                table3.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Title",
                             "Resource not found."});
-                table3.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Detail",
                             "Resource CategoryDto identify by id {CategoryId} cannot be found in databese duri" +
                                 "ng action GetCategoryByIdQuery."});
-                table3.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "Instance",
                             "/categories/{CategoryId}"});
 #line 19
-    await testRunner.ThenAsync("response show not found error", ((string)(null)), table3, "Then ");
+    await testRunner.ThenAsync("response show not found error", ((string)(null)), table11, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

@@ -154,53 +154,53 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table1.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "Code",
                             "UPDATE-CATEGORY"});
-                table1.AddRow(new string[] {
+                table12.AddRow(new string[] {
                             "Name",
                             "Update Category"});
 #line 4
-    await testRunner.GivenAsync("an existing category which will be updated", ((string)(null)), table1, "Given ");
+    await testRunner.GivenAsync("an existing category which will be updated", ((string)(null)), table12, "Given ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table2.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Code",
                             "UPDATED-CATEGORY"});
-                table2.AddRow(new string[] {
+                table13.AddRow(new string[] {
                             "Name",
                             "Updated Category"});
 #line 8
-    await testRunner.AndAsync("I have updated category details", ((string)(null)), table2, "And ");
+    await testRunner.AndAsync("I have updated category details", ((string)(null)), table13, "And ");
 #line hidden
 #line 12
     await testRunner.WhenAsync("I submit the request to category update category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table3.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table3.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "HasId",
                             "true"});
-                table3.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "IsActive",
                             "true"});
-                table3.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "Code",
                             "UPDATED-CATEGORY"});
-                table3.AddRow(new string[] {
+                table14.AddRow(new string[] {
                             "Name",
                             "Updated Category"});
 #line 13
- await testRunner.ThenAsync("response return succesfully updated category", ((string)(null)), table3, "Then ");
+ await testRunner.ThenAsync("response return succesfully updated category", ((string)(null)), table14, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -230,44 +230,44 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
 #line 22
  await testRunner.GivenAsync("Category does not exist in the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table4.AddRow(new string[] {
+                table15.AddRow(new string[] {
                             "Code",
                             "MISSING"});
-                table4.AddRow(new string[] {
+                table15.AddRow(new string[] {
                             "Name",
                             "Missing category"});
 #line 23
-    await testRunner.AndAsync("I have updated category details", ((string)(null)), table4, "And ");
+    await testRunner.AndAsync("I have updated category details", ((string)(null)), table15, "And ");
 #line hidden
 #line 27
  await testRunner.WhenAsync("I send a request to update the category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table5.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "Status",
                             "400"});
-                table5.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "Title",
                             "Validation failed"});
-                table5.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "Detail",
                             "One or more validation errors occurred."});
-                table5.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "ErrorMessage",
                             "Category cannot be null."});
-                table5.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "ErrorEntity",
                             "Category"});
-                table5.AddRow(new string[] {
+                table16.AddRow(new string[] {
                             "ErrorName",
                             "CategoryIsNullValidationRule"});
 #line 28
- await testRunner.ThenAsync("response returns an error indicating category not found", ((string)(null)), table5, "Then ");
+ await testRunner.ThenAsync("response returns an error indicating category not found", ((string)(null)), table16, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
