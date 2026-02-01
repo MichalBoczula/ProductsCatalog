@@ -154,14 +154,41 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "Code",
+                            "HOME"});
+                table1.AddRow(new string[] {
+                            "Name",
+                            "Home goods"});
 #line 4
-    await testRunner.GivenAsync("I have valid category details", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have valid category details", ((string)(null)), table1, "Given ");
 #line hidden
 #line 5
     await testRunner.WhenAsync("I submit the create category request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "StatusCode",
+                            "201"});
+                table2.AddRow(new string[] {
+                            "HasId",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "IsActive",
+                            "true"});
+                table2.AddRow(new string[] {
+                            "Code",
+                            "HOME"});
+                table2.AddRow(new string[] {
+                            "Name",
+                            "Home goods"});
 #line 6
-    await testRunner.ThenAsync("the category is created successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the category is created successfully", ((string)(null)), table2, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -188,14 +215,53 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table3.AddRow(new string[] {
+                            "Code",
+                            ""});
+                table3.AddRow(new string[] {
+                            "Name",
+                            ""});
 #line 9
-    await testRunner.GivenAsync("I have invalid category details", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("I have invalid category details", ((string)(null)), table3, "Given ");
 #line hidden
 #line 10
     await testRunner.WhenAsync("I submit the create invalid category request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table4.AddRow(new string[] {
+                            "StatusCode",
+                            "400"});
+                table4.AddRow(new string[] {
+                            "Title",
+                            "Validation failed"});
+                table4.AddRow(new string[] {
+                            "Detail",
+                            "One or more validation errors occurred."});
+                table4.AddRow(new string[] {
+                            "ErrorMessage1",
+                            "Code cannot be null or whitespace."});
+                table4.AddRow(new string[] {
+                            "ErrorEntity1",
+                            "Category"});
+                table4.AddRow(new string[] {
+                            "ErrorName1",
+                            "CategoriesCodeValidationRule"});
+                table4.AddRow(new string[] {
+                            "ErrorMessage2",
+                            "Name cannot be null or whitespace."});
+                table4.AddRow(new string[] {
+                            "ErrorEntity2",
+                            "Category"});
+                table4.AddRow(new string[] {
+                            "ErrorName2",
+                            "CategoriesNameValidationRule"});
 #line 11
-    await testRunner.ThenAsync("the category creation fails with API error", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the category creation fails with API error", ((string)(null)), table4, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
