@@ -157,18 +157,17 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
 #line 4
     await testRunner.WhenAsync("I request the list of categories", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 5
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table1.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table1.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Code",
                             "MOBILE"});
 #line 5
-    await testRunner.ThenAsync("the category list is returned", ((string)(null)), table1, "Then ");
+    await testRunner.ThenAsync("the category list is returned", ((string)(null)), table4, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
