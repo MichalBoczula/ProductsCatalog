@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "GetMobilePhoneHistory", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get mobile phone history", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phone history returns history")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "GetMobilePhoneHistory")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get mobile phone history")]
         [global::Xunit.TraitAttribute("Description", "Get mobile phone history returns history")]
         public async global::System.Threading.Tasks.Task GetMobilePhoneHistoryReturnsHistory()
         {
@@ -154,156 +154,156 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Name",
                             "Test Mobile Phone"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Brand",
                             "Brand"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Description",
                             "Phone created by acceptance test"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "MainPhoto",
                             "main-photo.jpg"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "OtherPhotos",
                             "photo-1.jpg, photo-2.jpg"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "CPU",
                             "Octa-core"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "GPU",
                             "Adreno"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Ram",
                             "8GB"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Storage",
                             "256GB"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "DisplayType",
                             "OLED"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "RefreshRateHz",
                             "120"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "ScreenSizeInches",
                             "6.4"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Width",
                             "72"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Height",
                             "152"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "BatteryType",
                             "Li-Ion"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "BatteryCapacity",
                             "4500"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Has5G",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "WiFi",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "NFC",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Bluetooth",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "GPS",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "AGPS",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Galileo",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "GLONASS",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "QZSS",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Accelerometer",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Gyroscope",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Proximity",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Compass",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Barometer",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Halla",
                             "false"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "AmbientLight",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Camera",
                             "camera"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "FingerPrint",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "FaceId",
                             "true"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "PriceAmount",
                             "799.99"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "PriceCurrency",
                             "USD"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Description2",
                             "desc2"});
-                table11.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "Description3",
                             "desc3"});
 #line 4
-    await testRunner.GivenAsync("an existing mobile phone with history", ((string)(null)), table11, "Given ");
+    await testRunner.GivenAsync("an existing mobile phone with history", ((string)(null)), table4, "Given ");
 #line hidden
 #line 45
     await testRunner.WhenAsync("I request the mobile phone history", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table12.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table12.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "Operation",
                             "Inserted"});
-                table12.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "IsActive",
                             "true"});
-                table12.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             "ChangedAt",
                             "set"});
 #line 46
-    await testRunner.ThenAsync("the mobile phone history is returned successfully", ((string)(null)), table12, "Then ");
+    await testRunner.ThenAsync("the mobile phone history is returned successfully", ((string)(null)), table5, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phone history fails for missing mobile phone")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "GetMobilePhoneHistory")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get mobile phone history")]
         [global::Xunit.TraitAttribute("Description", "Get mobile phone history fails for missing mobile phone")]
         public async global::System.Threading.Tasks.Task GetMobilePhoneHistoryFailsForMissingMobilePhone()
         {
@@ -329,27 +329,27 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 #line 55
     await testRunner.WhenAsync("I request the mobile phone history for the missing id", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table13.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "StatusCode",
                             "404"});
-                table13.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Status",
                             "404"});
-                table13.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Title",
                             "Resource not found."});
-                table13.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Detail",
                             "Resource List identify by id {MobilePhoneId} cannot be found in databese during a" +
                                 "ction GetMobilePhoneHistoryQuery."});
-                table13.AddRow(new string[] {
+                table6.AddRow(new string[] {
                             "Instance",
                             "/mobile-phones/{MobilePhoneId}/history"});
 #line 56
-    await testRunner.ThenAsync("response show not found error for mobile phone history", ((string)(null)), table13, "Then ");
+    await testRunner.ThenAsync("response show not found error for mobile phone history", ((string)(null)), table6, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

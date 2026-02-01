@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "DeleteCategory", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "Delete category", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Delete category returns ok response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DeleteCategory")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Delete category")]
         [global::Xunit.TraitAttribute("Description", "Delete category returns ok response")]
         public async global::System.Threading.Tasks.Task DeleteCategoryReturnsOkResponse()
         {
@@ -168,7 +168,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Delete category fails for missing category")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DeleteCategory")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Delete category")]
         [global::Xunit.TraitAttribute("Description", "Delete category fails for missing category")]
         public async global::System.Threading.Tasks.Task DeleteCategoryFailsForMissingCategory()
         {

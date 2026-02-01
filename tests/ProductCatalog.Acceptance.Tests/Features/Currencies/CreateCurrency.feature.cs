@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Currencies", "CreateCurrency", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Currencies", "Create currency", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Create currency returns created response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "CreateCurrency")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Create currency")]
         [global::Xunit.TraitAttribute("Description", "Create currency returns created response")]
         public async global::System.Threading.Tasks.Task CreateCurrencyReturnsCreatedResponse()
         {
@@ -168,7 +168,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Create currency fails with invalid details")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "CreateCurrency")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Create currency")]
         [global::Xunit.TraitAttribute("Description", "Create currency fails with invalid details")]
         public async global::System.Threading.Tasks.Task CreateCurrencyFailsWithInvalidDetails()
         {

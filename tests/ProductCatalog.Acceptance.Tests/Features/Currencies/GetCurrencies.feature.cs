@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Currencies", "GetCurrencies", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Currencies", "Get currencies", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Get currencies returns list")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "GetCurrencies")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get currencies")]
         [global::Xunit.TraitAttribute("Description", "Get currencies returns list")]
         public async global::System.Threading.Tasks.Task GetCurrenciesReturnsList()
         {

@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Currencies", "DeleteCurrency", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Currencies", "Delete currency", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Delete currency returns ok response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DeleteCurrency")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Delete currency")]
         [global::Xunit.TraitAttribute("Description", "Delete currency returns ok response")]
         public async global::System.Threading.Tasks.Task DeleteCurrencyReturnsOkResponse()
         {
@@ -168,7 +168,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Delete currency fails for missing currency")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "DeleteCurrency")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Delete currency")]
         [global::Xunit.TraitAttribute("Description", "Delete currency fails for missing currency")]
         public async global::System.Threading.Tasks.Task DeleteCurrencyFailsForMissingCurrency()
         {

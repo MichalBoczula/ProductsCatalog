@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "UpdateCategory", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "Update category", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Update category returns ok response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "UpdateCategory")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Update category")]
         [global::Xunit.TraitAttribute("Description", "Update category returns ok response")]
         public async global::System.Threading.Tasks.Task UpdateCategoryReturnsOkResponse()
         {
@@ -168,7 +168,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Update category fails for missing category")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "UpdateCategory")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Update category")]
         [global::Xunit.TraitAttribute("Description", "Update category fails for missing category")]
         public async global::System.Threading.Tasks.Task UpdateCategoryFailsForMissingCategory()
         {

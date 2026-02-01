@@ -24,7 +24,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "GetCategoryById", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "Get category by id", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Get category by id returns category")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "GetCategoryById")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get category by id")]
         [global::Xunit.TraitAttribute("Description", "Get category by id returns category")]
         public async global::System.Threading.Tasks.Task GetCategoryByIdReturnsCategory()
         {
@@ -168,7 +168,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Get category by id fails for missing category")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "GetCategoryById")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get category by id")]
         [global::Xunit.TraitAttribute("Description", "Get category by id fails for missing category")]
         public async global::System.Threading.Tasks.Task GetCategoryByIdFailsForMissingCategory()
         {
