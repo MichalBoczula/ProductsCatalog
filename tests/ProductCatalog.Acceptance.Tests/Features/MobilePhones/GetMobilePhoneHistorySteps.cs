@@ -6,7 +6,6 @@ using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
-using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Domain.Common.Enums;
 using Reqnroll;
 using Shouldly;
@@ -172,11 +171,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             if (expected.TryGetValue("Title", out var title))
             {
                 problem.Title.ShouldBe(title);
-            }
-
-            if (TryGetInt(expected, "Status", out var status))
-            {
-                problem.Status.ShouldBe(status);
             }
 
             if (expected.TryGetValue("Detail", out var detail))

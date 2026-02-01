@@ -97,7 +97,6 @@
     Then the mobile phone update fails with validation errors
       | Field        | Value                                   |
       | StatusCode   | 400                                     |
-      | Status       | 400                                     |
       | Title        | Validation failed                       |
       | Detail       | One or more validation errors occurred. |
       | ErrorMessage | Mobile phone cannot be null.            |

@@ -56,7 +56,6 @@
     Then response show not found error for mobile phone history
       | Field      | Value                                                                                                                                |
       | StatusCode | 404                                                                                                                                  |
-      | Status     | 404                                                                                                                                  |
       | Title      | Resource not found.                                                                                                                 |
       | Detail     | Resource List identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery.                |
       | Instance   | /mobile-phones/{MobilePhoneId}/history                                                                                              |

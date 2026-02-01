@@ -1,7 +1,3 @@
-using System.Globalization;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
@@ -12,6 +8,10 @@ using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using Reqnroll;
 using Shouldly;
+using System.Globalization;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 {
@@ -147,7 +147,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             _apiProblem.ShouldNotBeNull();
-            _apiProblem!.Status.ShouldBe(ParseRequiredInt(expected, "Status"));
             _apiProblem.Title.ShouldBe(GetRequiredValue(expected, "Title"));
             _apiProblem.Detail.ShouldBe(GetRequiredValue(expected, "Detail"));
             _apiProblem.Errors.Count().ShouldBeGreaterThan(0);

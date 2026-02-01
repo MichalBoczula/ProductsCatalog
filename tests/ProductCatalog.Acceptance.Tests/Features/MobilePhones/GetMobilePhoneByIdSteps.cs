@@ -7,14 +7,12 @@ using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
-using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
 using Reqnroll;
 using Shouldly;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using System.Globalization;
-using System.Collections.Generic;
 
 namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 {

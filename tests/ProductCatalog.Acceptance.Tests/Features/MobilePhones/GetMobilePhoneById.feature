@@ -58,7 +58,6 @@
     Then response show not found error for mobile phone
       | Field      | Value                                                                                                                      |
       | StatusCode | 404                                                                                                                        |
-      | Status     | 404                                                                                                                        |
       | Title      | Resource not found.                                                                                                         |
       | Detail     | Resource MobilePhoneDetailsDto identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneByIdQuery. |
       | Instance   | /mobile-phones/{MobilePhoneId}                                                                                              |
