@@ -15,7 +15,7 @@
       | Name       | Delete Category |
 
   Scenario: Delete category fails for missing category
-    Given a category id that does not exist
+    Given a category with id that does not exist
     When I submit the delete category request for non existing category
     Then the category deletion fails with API error
       | Field        | Value                                   |

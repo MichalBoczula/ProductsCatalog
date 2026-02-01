@@ -83,7 +83,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             }
         }
 
-        [Given("a category id that does not exist")]
+        [Given("a category with id that does not exist")]
         public void GivenACategoryIdThatDoesNotExist()
         {
             _missingCategoryId = Guid.NewGuid();

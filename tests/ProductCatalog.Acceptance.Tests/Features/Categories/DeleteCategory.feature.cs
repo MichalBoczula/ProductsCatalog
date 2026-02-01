@@ -216,7 +216,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             {
                 await this.ScenarioStartAsync();
 #line 18
-    await testRunner.GivenAsync("a category id that does not exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("a category with id that does not exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
 #line 19
     await testRunner.WhenAsync("I submit the delete category request for non existing category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
