@@ -154,41 +154,41 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table5.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Code",
                             "DELETE-CATEGORY"});
-                table5.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Name",
                             "Delete Category"});
 #line 4
-    await testRunner.GivenAsync("an existing category to delete", ((string)(null)), table5, "Given ");
+    await testRunner.GivenAsync("an existing category to delete", ((string)(null)), table1, "Given ");
 #line hidden
-#line 7
+#line 8
     await testRunner.WhenAsync("I submit the delete category request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table6.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table6.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "HasId",
                             "true"});
-                table6.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "IsActive",
                             "false"});
-                table6.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "Code",
                             "DELETE-CATEGORY"});
-                table6.AddRow(new string[] {
+                table2.AddRow(new string[] {
                             "Name",
                             "Delete Category"});
-#line 8
-    await testRunner.ThenAsync("the category is deleted successfully", ((string)(null)), table6, "Then ");
+#line 9
+    await testRunner.ThenAsync("the category is deleted successfully", ((string)(null)), table2, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -205,7 +205,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Delete category fails for missing category", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 8
+#line 17
   this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -215,35 +215,35 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
-#line 15
+#line 18
     await testRunner.GivenAsync("a category id that does not exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 16
+#line 19
     await testRunner.WhenAsync("I submit the delete category request for non existing category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table7.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Status",
                             "400"});
-                table7.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Title",
                             "Validation failed"});
-                table7.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "Detail",
                             "One or more validation errors occurred."});
-                table7.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "ErrorMessage",
                             "Category cannot be null."});
-                table7.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "ErrorEntity",
                             "Category"});
-                table7.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "ErrorName",
                             "CategoryIsNullValidationRule"});
-#line 17
-    await testRunner.ThenAsync("the category deletion fails with API error", ((string)(null)), table7, "Then ");
+#line 20
+    await testRunner.ThenAsync("the category deletion fails with API error", ((string)(null)), table3, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
