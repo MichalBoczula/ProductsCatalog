@@ -1,4 +1,4 @@
-﻿Feature: UpdateCategory
+﻿Feature: Update category
 
   Scenario: Update category returns ok response
     Given an existing category which will be updated

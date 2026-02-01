@@ -1,4 +1,4 @@
-﻿Feature: GetCategoryById
+﻿Feature: Get category by id
 
   Scenario: Get category by id returns category
     Given an existing category id

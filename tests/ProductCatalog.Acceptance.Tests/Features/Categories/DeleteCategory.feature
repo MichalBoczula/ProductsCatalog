@@ -1,4 +1,4 @@
-﻿Feature: DeleteCategory
+﻿Feature: Delete category
 
   Scenario: Delete category returns ok response
     Given an existing category to delete

@@ -1,4 +1,4 @@
-﻿Feature: GetMobilePhoneHistory
+﻿Feature: Get mobile phone history
 
   Scenario: Get mobile phone history returns history
     Given an existing mobile phone with history

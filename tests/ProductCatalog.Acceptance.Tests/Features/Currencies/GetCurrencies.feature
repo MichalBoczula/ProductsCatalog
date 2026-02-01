@@ -1,4 +1,4 @@
-﻿Feature: GetCurrencies
+﻿Feature: Get currencies
 
   Scenario: Get currencies returns list
     When I request the list of currencies

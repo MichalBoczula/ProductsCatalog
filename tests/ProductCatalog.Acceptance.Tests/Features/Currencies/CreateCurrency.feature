@@ -1,4 +1,4 @@
-﻿Feature: CreateCurrency
+﻿Feature: Create currency
 
   Scenario: Create currency returns created response
     Given I have valid currency details

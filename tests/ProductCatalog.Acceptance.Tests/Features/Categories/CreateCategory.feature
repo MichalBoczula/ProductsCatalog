@@ -1,4 +1,4 @@
-﻿Feature: CreateCategory
+﻿Feature: Create category
 
   Scenario: Create category returns created response
     Given I have valid category details

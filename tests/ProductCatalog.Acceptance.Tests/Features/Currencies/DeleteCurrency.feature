@@ -1,4 +1,4 @@
-﻿Feature: DeleteCurrency
+﻿Feature: Delete currency
 
   Scenario: Delete currency returns ok response
     Given an existing currency to delete

@@ -1,4 +1,4 @@
-﻿Feature: GetMobilePhoneById
+﻿Feature: Get mobile phone by id
 
   Scenario: Get mobile phone by id returns mobile phone
     Given an existing mobile phone id
