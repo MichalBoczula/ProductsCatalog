@@ -154,14 +154,41 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table5.AddRow(new string[] {
+                            "Code",
+                            "DELETE-CATEGORY"});
+                table5.AddRow(new string[] {
+                            "Name",
+                            "Delete Category"});
 #line 4
-    await testRunner.GivenAsync("an existing category to delete", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("an existing category to delete", ((string)(null)), table5, "Given ");
 #line hidden
-#line 5
+#line 7
     await testRunner.WhenAsync("I submit the delete category request", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 6
-    await testRunner.ThenAsync("the category is deleted successfully", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table6.AddRow(new string[] {
+                            "StatusCode",
+                            "200"});
+                table6.AddRow(new string[] {
+                            "HasId",
+                            "true"});
+                table6.AddRow(new string[] {
+                            "IsActive",
+                            "false"});
+                table6.AddRow(new string[] {
+                            "Code",
+                            "DELETE-CATEGORY"});
+                table6.AddRow(new string[] {
+                            "Name",
+                            "Delete Category"});
+#line 8
+    await testRunner.ThenAsync("the category is deleted successfully", ((string)(null)), table6, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -188,14 +215,35 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             else
             {
                 await this.ScenarioStartAsync();
-#line 9
- await testRunner.GivenAsync("existing list of categories", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 15
+    await testRunner.GivenAsync("a category id that does not exist", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 16
     await testRunner.WhenAsync("I submit the delete category request for non existing category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 11
-    await testRunner.ThenAsync("the category deletion fails with API error", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table7.AddRow(new string[] {
+                            "Status",
+                            "400"});
+                table7.AddRow(new string[] {
+                            "Title",
+                            "Validation failed"});
+                table7.AddRow(new string[] {
+                            "Detail",
+                            "One or more validation errors occurred."});
+                table7.AddRow(new string[] {
+                            "ErrorMessage",
+                            "Category cannot be null."});
+                table7.AddRow(new string[] {
+                            "ErrorEntity",
+                            "Category"});
+                table7.AddRow(new string[] {
+                            "ErrorName",
+                            "CategoryIsNullValidationRule"});
+#line 17
+    await testRunner.ThenAsync("the category deletion fails with API error", ((string)(null)), table7, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
