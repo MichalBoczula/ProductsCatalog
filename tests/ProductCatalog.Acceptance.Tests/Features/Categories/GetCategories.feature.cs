@@ -17,21 +17,21 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class GetdCategoriesFeature : object, global::Xunit.IClassFixture<GetdCategoriesFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class GetCategoriesFeature : object, global::Xunit.IClassFixture<GetCategoriesFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "Getd categories", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Categories", "Get categories", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "GetCategories.feature"
 #line hidden
         
-        public GetdCategoriesFeature(GetdCategoriesFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GetCategoriesFeature(GetCategoriesFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -134,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         }
         
         [global::Xunit.SkippableFactAttribute(DisplayName="Get categories returns list")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Getd categories")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get categories")]
         [global::Xunit.TraitAttribute("Description", "Get categories returns list")]
         public async global::System.Threading.Tasks.Task GetCategoriesReturnsList()
         {
@@ -158,7 +158,17 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
     await testRunner.WhenAsync("I request the list of categories", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 5
-    await testRunner.ThenAsync("the category list is returned", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "StatusCode",
+                            "200"});
+                table1.AddRow(new string[] {
+                            "Code",
+                            "MOBILE"});
+#line 5
+    await testRunner.ThenAsync("the category list is returned", ((string)(null)), table1, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -171,12 +181,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await GetdCategoriesFeature.FeatureSetupAsync();
+                await GetCategoriesFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await GetdCategoriesFeature.FeatureTearDownAsync();
+                await GetCategoriesFeature.FeatureTearDownAsync();
             }
         }
     }
