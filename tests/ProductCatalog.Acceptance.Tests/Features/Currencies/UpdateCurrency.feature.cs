@@ -145,7 +145,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 3
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -154,35 +154,71 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table1.AddRow(new string[] {
+                            "Code",
+                            "UPDATE-CURRENCY"});
+                table1.AddRow(new string[] {
+                            "Description",
+                            "Update Currency"});
 #line 4
- await testRunner.GivenAsync("an existing currency which will be updated", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+    await testRunner.GivenAsync("an existing currency which will be updated", ((string)(null)), table1, "Given ");
 #line hidden
-#line 5
- await testRunner.AndAsync("I have updated currency details", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table2.AddRow(new string[] {
+                            "Code",
+                            "UPDATED-CURRENCY"});
+                table2.AddRow(new string[] {
+                            "Description",
+                            "Updated Currency"});
+#line 8
+    await testRunner.AndAsync("I have updated currency details", ((string)(null)), table2, "And ");
 #line hidden
-#line 6
+#line 12
     await testRunner.WhenAsync("I submit the request to update currency", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 7
- await testRunner.ThenAsync("response return succesfully updated currency", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table3.AddRow(new string[] {
+                            "StatusCode",
+                            "200"});
+                table3.AddRow(new string[] {
+                            "HasId",
+                            "true"});
+                table3.AddRow(new string[] {
+                            "IsActive",
+                            "true"});
+                table3.AddRow(new string[] {
+                            "Code",
+                            "UPDATED-CURRENCY"});
+                table3.AddRow(new string[] {
+                            "Description",
+                            "Updated Currency"});
+#line 13
+    await testRunner.ThenAsync("response return succesfully updated currency", ((string)(null)), table3, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Update currency fails for missing category")]
+        [global::Xunit.SkippableFactAttribute(DisplayName="Update currency fails for missing currency")]
         [global::Xunit.TraitAttribute("FeatureTitle", "Update currency")]
-        [global::Xunit.TraitAttribute("Description", "Update currency fails for missing category")]
-        public async global::System.Threading.Tasks.Task UpdateCurrencyFailsForMissingCategory()
+        [global::Xunit.TraitAttribute("Description", "Update currency fails for missing currency")]
+        public async global::System.Threading.Tasks.Task UpdateCurrencyFailsForMissingCurrency()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Update currency fails for missing category", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Update currency fails for missing currency", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 9
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line 21
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -191,17 +227,47 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-#line 10
- await testRunner.GivenAsync("currency does not exist in the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 22
+    await testRunner.GivenAsync("currency does not exist in the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 11
-    await testRunner.AndAsync("I have updated currency details", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table4.AddRow(new string[] {
+                            "Code",
+                            "MISSING"});
+                table4.AddRow(new string[] {
+                            "Description",
+                            "Missing Currency"});
+#line 23
+    await testRunner.AndAsync("I have updated currency details", ((string)(null)), table4, "And ");
 #line hidden
-#line 12
- await testRunner.WhenAsync("I send a request to update the currency", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 27
+    await testRunner.WhenAsync("I send a request to update the currency", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 13
- await testRunner.ThenAsync("response returns an error indicating currency not found", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table5.AddRow(new string[] {
+                            "Status",
+                            "400"});
+                table5.AddRow(new string[] {
+                            "Title",
+                            "Validation failed"});
+                table5.AddRow(new string[] {
+                            "Detail",
+                            "One or more validation errors occurred."});
+                table5.AddRow(new string[] {
+                            "ErrorMessage",
+                            "Currency cannot be null."});
+                table5.AddRow(new string[] {
+                            "ErrorEntity",
+                            "Currency"});
+                table5.AddRow(new string[] {
+                            "ErrorName",
+                            "CurrencyIsNullValidationRule"});
+#line 28
+    await testRunner.ThenAsync("response returns an error indicating currency not found", ((string)(null)), table5, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
