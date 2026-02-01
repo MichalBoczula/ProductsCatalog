@@ -83,7 +83,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                 if (hasId)
                 {
                     _successResult.Id.ShouldNotBe(Guid.Empty);
-                }
+        }
                 else
                 {
                     _successResult.Id.ShouldBe(Guid.Empty);
@@ -221,7 +221,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         private static bool TryGetBool(IReadOnlyDictionary<string, string> values, string key, out bool result)
         {
             if (!values.TryGetValue(key, out var value))
-            {
+        {
                 result = false;
                 return false;
             }
