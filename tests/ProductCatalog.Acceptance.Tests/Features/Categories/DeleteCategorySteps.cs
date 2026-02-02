@@ -37,6 +37,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
                  Encoding.UTF8,
                  MediaTypeNames.Application.Json);
 
+            AllureJson.AttachObject(
+                "Request JSON (create for delete)",
+                _categoryToCreate,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.PostAsync("/categories", content);
             _response.EnsureSuccessStatusCode();
             var json = await _response.Content.ReadAsStringAsync();
@@ -49,8 +55,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         {
             _createdCategory.ShouldNotBeNull();
 
+            var deleteRequest = new
+            {
+                CategoryId = _createdCategory!.Id
+            };
+
+            AllureJson.AttachObject(
+                "Request JSON (delete)",
+                deleteRequest,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.DeleteAsync($"/categories/{_createdCategory!.Id}");
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _deleteResult = JsonSerializer.Deserialize<CategoryDto>(json, _jsonOptions);
         }
 
@@ -92,8 +112,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         [When("I submit the delete category request for non existing category")]
         public async Task WhenISubmitTheDeleteCategoryRequestForNonExistingCategory()
         {
+            var deleteRequest = new
+            {
+                CategoryId = _missingCategoryId
+            };
+
+            AllureJson.AttachObject(
+                "Request JSON (delete missing)",
+                deleteRequest,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.DeleteAsync($"/categories/{_missingCategoryId}");
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
