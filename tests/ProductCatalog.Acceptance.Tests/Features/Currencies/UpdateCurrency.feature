@@ -3,11 +3,11 @@
   Scenario: Update currency returns ok response
     Given an existing currency which will be updated
       | Field       | Value           |
-      | Code        | UPDATE-CURRENCY |
-      | Description | Update Currency |
+      | Code        | UPD             |
+      | Description | Currency        |
     And I have updated currency details
       | Field       | Value            |
-      | Code        | UPDATED-CURRENCY |
+      | Code        | UPD              |
       | Description | Updated Currency |
     When I submit the request to update currency
     Then response return succesfully updated currency
@@ -15,7 +15,7 @@
       | StatusCode  | 200              |
       | HasId       | true             |
       | IsActive    | true             |
-      | Code        | UPDATED-CURRENCY |
+      | Code        | UPD              |
       | Description | Updated Currency |
 
   Scenario: Update currency fails for missing currency

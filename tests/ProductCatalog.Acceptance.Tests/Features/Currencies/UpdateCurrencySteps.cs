@@ -32,7 +32,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         [Given("an existing currency which will be updated")]
         public async Task GivenAnExistingCurrencyWhichWillBeUpdated(Table table)
         {
-            _currencyToCreate = BuildCreateRequest(table, "UPDATE-CURRENCY", "Update Currency");
+            _currencyToCreate = BuildCreateRequest(table, "UPD", "Currency");
 
             var content = new StringContent(
                 JsonSerializer.Serialize(_currencyToCreate, _jsonOptions),
@@ -49,7 +49,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         [Given("I have updated currency details")]
         public void GivenIHaveUpdatedCurrencyDetails(Table table)
         {
-            _updatePayload = BuildUpdateRequest(table, "UPDATED-CURRENCY", "Updated Currency");
+            _updatePayload = BuildUpdateRequest(table, "UPD", "Updated Currency");
         }
 
         [When("I submit the request to update currency")]

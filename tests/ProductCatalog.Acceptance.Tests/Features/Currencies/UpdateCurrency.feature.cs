@@ -159,10 +159,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                             "Value"});
                 table1.AddRow(new string[] {
                             "Code",
-                            "UPDATE-CURRENCY"});
+                            "UPD"});
                 table1.AddRow(new string[] {
                             "Description",
-                            "Update Currency"});
+                            "Currency"});
 #line 4
     await testRunner.GivenAsync("an existing currency which will be updated", ((string)(null)), table1, "Given ");
 #line hidden
@@ -171,7 +171,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                             "Value"});
                 table2.AddRow(new string[] {
                             "Code",
-                            "UPDATED-CURRENCY"});
+                            "UPD"});
                 table2.AddRow(new string[] {
                             "Description",
                             "Updated Currency"});
@@ -195,7 +195,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                             "true"});
                 table3.AddRow(new string[] {
                             "Code",
-                            "UPDATED-CURRENCY"});
+                            "UPD"});
                 table3.AddRow(new string[] {
                             "Description",
                             "Updated Currency"});
