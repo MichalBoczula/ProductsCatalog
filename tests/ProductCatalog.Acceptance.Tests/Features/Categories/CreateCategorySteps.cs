@@ -30,6 +30,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         public void GivenIHaveValidCategoryDetails(Table? table)
         {
             _categoryCorrect = BuildCategoryRequest(table, "HOME", "Home goods");
+
+            AllureJson.AttachObject(
+                "Request JSON (valid)",
+                _categoryCorrect,
+                _jsonOptions
+            );
         }
 
         [When("I submit the create category request")]
@@ -42,6 +48,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             _response = await TestRunHooks.Client.PostAsync("/categories", content);
             var json = await _response.Content.ReadAsStringAsync();
             _successResult = JsonSerializer.Deserialize<CategoryDto>(json, _jsonOptions);
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
         }
 
         [Then("the category is created successfully")]
@@ -76,6 +84,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         public void GivenIHaveInvalidCategoryDetails(Table? table)
         {
             _categoryIncorrect = BuildCategoryRequest(table, string.Empty, string.Empty);
+
+            AllureJson.AttachObject(
+                "Request JSON (invalid)",
+                _categoryIncorrect,
+                _jsonOptions
+            );
         }
 
         [When("I submit the create invalid category request")]
@@ -88,6 +102,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             _response = await TestRunHooks.Client.PostAsync("/categories", content);
             var json = await _response.Content.ReadAsStringAsync();
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
         }
 
         [Then("the category creation fails with API error")]
