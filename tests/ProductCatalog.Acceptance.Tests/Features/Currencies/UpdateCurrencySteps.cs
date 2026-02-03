@@ -32,7 +32,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         [Given("an existing currency which will be updated")]
         public async Task GivenAnExistingCurrencyWhichWillBeUpdated(Table table)
         {
-            _currencyToCreate = BuildCreateRequest(table, "UPD", "Currency");
+            _currencyToCreate = BuildCreateRequest(table);
 
             var content = new StringContent(
                 JsonSerializer.Serialize(_currencyToCreate, _jsonOptions),
@@ -49,7 +49,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         [Given("I have updated currency details")]
         public void GivenIHaveUpdatedCurrencyDetails(Table table)
         {
-            _updatePayload = BuildUpdateRequest(table, "UPD", "Updated Currency");
+            _updatePayload = BuildUpdateRequest(table);
         }
 
         [When("I submit the request to update currency")]
@@ -83,7 +83,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                 if (hasId)
                 {
                     _successResult.Id.ShouldNotBe(Guid.Empty);
-        }
+                }
                 else
                 {
                     _successResult.Id.ShouldBe(Guid.Empty);
@@ -130,38 +130,25 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                 && e.Name == GetRequiredValue(expected, "ErrorName"));
         }
 
-        private static CreateCurrencyExternalDto BuildCreateRequest(Table? table, string defaultCode, string defaultDescription)
+        private static CreateCurrencyExternalDto BuildCreateRequest(Table table)
         {
-            var values = MergeDefaultValues(table, defaultCode, defaultDescription);
+            var values = ParseContractTable(table);
             return new CreateCurrencyExternalDto(
                 GetValue(values, "Code"),
                 GetValue(values, "Description"));
         }
 
-        private static UpdateCurrencyExternalDto BuildUpdateRequest(Table? table, string defaultCode, string defaultDescription)
+        private static UpdateCurrencyExternalDto BuildUpdateRequest(Table table)
         {
-            var values = MergeDefaultValues(table, defaultCode, defaultDescription);
+            var values = ParseContractTable(table);
             return new UpdateCurrencyExternalDto(
                 GetValue(values, "Code"),
                 GetValue(values, "Description"));
         }
 
-        private static Dictionary<string, string> MergeDefaultValues(
-            Table? table,
-            string defaultCode,
-            string defaultDescription)
+        private static Dictionary<string, string> ParseContractTable(Table table)
         {
-            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["Code"] = defaultCode,
-                ["Description"] = defaultDescription
-            };
-
-            if (table is null)
-            {
-                return values;
-            }
-
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             foreach (var row in table.Rows)
             {
                 values[row["Field"]] = row["Value"];
@@ -221,7 +208,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         private static bool TryGetBool(IReadOnlyDictionary<string, string> values, string key, out bool result)
         {
             if (!values.TryGetValue(key, out var value))
-        {
+            {
                 result = false;
                 return false;
             }
