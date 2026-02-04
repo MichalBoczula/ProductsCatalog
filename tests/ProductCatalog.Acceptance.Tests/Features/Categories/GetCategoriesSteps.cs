@@ -22,8 +22,14 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         [When("I request the list of categories")]
         public async Task WhenIRequestTheListOfCategories()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get categories)",
+                new { Endpoint = "/categories" },
+                _jsonOptions
+            );
             _response = await TestRunHooks.Client.GetAsync("/categories");
             var json = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
             _categories = JsonSerializer.Deserialize<IReadOnlyList<CategoryDto>>(json, _jsonOptions);
         }
 
