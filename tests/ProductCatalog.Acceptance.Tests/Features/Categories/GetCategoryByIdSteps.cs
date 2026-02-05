@@ -32,10 +32,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
             var request = new CreateCategoryExternalDto(
                 GetValue(values, "Code"),
                 GetValue(values, "Name"));
+
+            AllureJson.AttachObject(
+                "Request JSON (create for get by id)",
+                request,
+                _jsonOptions
+            );
             var response = await TestRunHooks.Client.PostAsJsonAsync("/categories", request);
             response.EnsureSuccessStatusCode();
 
-            _createdCategory = await response.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
+            var createdBody = await response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)response.StatusCode})", createdBody);
+
+            _createdCategory = JsonSerializer.Deserialize<CategoryDto>(createdBody, _jsonOptions);
             _createdCategory.ShouldNotBeNull();
 
             _categoryId = _createdCategory!.Id;
@@ -44,7 +53,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         [When("I request the category by id")]
         public async Task WhenIRequestTheCategoryById()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get by id)",
+                new { CategoryId = _categoryId },
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.GetAsync($"/categories/{_categoryId}");
+
+            var body = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
         [Then("the category details are returned successfully")]
@@ -75,7 +93,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         [When("I send request for category by not existed id")]
         public async Task WhenIRequestTheCategoryByNotExistedId()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get by missing id)",
+                new { CategoryId = _categoryId },
+                _jsonOptions
+            );
+
             _responseFailure = await TestRunHooks.Client.GetAsync($"/categories/{_categoryId}");
+
+            var body = await _responseFailure.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
         }
 
         [Then("response show not found error")]
