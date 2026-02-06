@@ -39,6 +39,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
                 Encoding.UTF8,
                 MediaTypeNames.Application.Json);
 
+            AllureJson.AttachObject(
+                "Request JSON (create for update)",
+                _categoryToCreate,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.PostAsync("/categories", content);
             _response.EnsureSuccessStatusCode();
             var json = await _response.Content.ReadAsStringAsync();
@@ -50,6 +56,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
         public void GivenIHaveUpdatedCategoryDetails(Table table)
         {
             _updatePayload = BuildUpdateRequest(table, "UPDATED-CATEGORY", "Updated Category");
+
+            AllureJson.AttachObject(
+                "Request JSON (update)",
+                _updatePayload,
+                _jsonOptions
+            );
         }
 
         [When("I submit the request to category update category")]
@@ -64,6 +76,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
 
             _response = await TestRunHooks.Client.PutAsync($"/categories/{_createdCategory!.Id}", content);
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _successResult = JsonSerializer.Deserialize<CategoryDto>(json, _jsonOptions);
         }
 
@@ -112,6 +127,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Categories
 
             _response = await TestRunHooks.Client.PutAsync($"/categories/{_missingCategoryId}", content);
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
