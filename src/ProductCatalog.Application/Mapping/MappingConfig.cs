@@ -231,6 +231,11 @@ namespace ProductCatalog.Application.Mapping
                 .NewConfig()
                 .Map(dest => dest.Price.Amount, src => src.PriceAmount)
                 .Map(dest => dest.Price.Currency, src => src.PriceCurrency);
+
+            TypeAdapterConfig<MobilePhoneReadModel, TopMobilePhoneDto>
+                .NewConfig()
+                .Map(dest => dest.Price.Amount, src => src.PriceAmount)
+                .Map(dest => dest.Price.Currency, src => src.PriceCurrency);
         }
 
         private static void CreateMappingForHistory()

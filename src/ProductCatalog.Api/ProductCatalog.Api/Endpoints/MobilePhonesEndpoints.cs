@@ -8,6 +8,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhon
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -49,6 +50,17 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of mobile phones limited by the provided amount.")
             .WithName("GetMobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+
+            group.MapGet("/top", async ([FromQuery] int amount, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetTopMobilePhonesQuery(amount));
+                return Results.Ok(result);
+            })
+            .WithSummary("Get top mobile phones")
+            .WithDescription("Returns a list of top mobile phones limited by the provided amount.")
+            .WithName("GetTopMobilePhones")
+            .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapGet("/{id:guid}/history", async (
