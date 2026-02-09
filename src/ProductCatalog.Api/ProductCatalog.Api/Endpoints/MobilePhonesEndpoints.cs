@@ -76,6 +76,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of top mobile phones.")
             .WithName("GetTopMobilePhones")
             .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }
 
