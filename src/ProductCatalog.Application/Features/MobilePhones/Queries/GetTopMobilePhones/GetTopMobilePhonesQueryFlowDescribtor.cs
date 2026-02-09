@@ -13,10 +13,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobileP
         [FlowStep(1)]
         public virtual Task<IReadOnlyList<MobilePhoneReadModel>> GetTopMobilePhones(
             IMobilePhonesQueriesRepository mobilePhonesQueriesRepository,
-            int amount,
             CancellationToken cancellationToken)
         {
-            return mobilePhonesQueriesRepository.GetPhones(amount, cancellationToken);
+            return mobilePhonesQueriesRepository.GetTop(cancellationToken);
         }
 
         [FlowStep(2)]
@@ -32,7 +31,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobileP
 
         [FlowStep(3)]
         public virtual IReadOnlyList<TopMobilePhoneDto> MapTopMobilePhonesToDto(IReadOnlyList<MobilePhoneReadModel> mobilePhones)
-    {
+        {
             return mobilePhones.Adapt<List<TopMobilePhoneDto>>().AsReadOnly();
         }
     }
