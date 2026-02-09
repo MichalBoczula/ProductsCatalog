@@ -18,6 +18,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhon
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
 using ProductCatalog.Application.Features.Products.Queries.GetProductById;
 using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
@@ -50,6 +51,7 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<GetMobilePhoneByIdQuery> getMobilePhoneByIdFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhoneHistoryQuery> getMobilePhoneHistoryFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhonesQuery> getMobilePhonesFlowDescriber,
+                [FromServices] IFlowDescriber<GetTopMobilePhonesQuery> getTopMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCurrenciesQuery> getCurrenciesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoriesQuery> getCategoriesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoryByIdQuery> getCategoryByIdFlowDescriber,
@@ -73,6 +75,7 @@ namespace ProductCatalog.Api.Endpoints
                     getMobilePhoneByIdFlowDescriber.DescribeFlow(default!),
                     getMobilePhoneHistoryFlowDescriber.DescribeFlow(default!),
                     getMobilePhonesFlowDescriber.DescribeFlow(default!),
+                    getTopMobilePhonesFlowDescriber.DescribeFlow(default!),
                     getCurrenciesFlowDescriber.DescribeFlow(default!),
                     getCategoriesFlowDescriber.DescribeFlow(default!),
                     getCategoryByIdFlowDescriber.DescribeFlow(default!),
