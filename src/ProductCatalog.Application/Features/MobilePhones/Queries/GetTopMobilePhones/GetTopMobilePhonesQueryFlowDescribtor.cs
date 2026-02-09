@@ -32,7 +32,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobileP
 
         [FlowStep(3)]
         public virtual IReadOnlyList<TopMobilePhoneDto> MapTopMobilePhonesToDto(IReadOnlyList<MobilePhoneReadModel> mobilePhones)
-        {
+    {
             return mobilePhones.Adapt<List<TopMobilePhoneDto>>().AsReadOnly();
         }
     }

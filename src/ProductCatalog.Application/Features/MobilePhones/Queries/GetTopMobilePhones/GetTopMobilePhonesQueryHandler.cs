@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones

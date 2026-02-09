@@ -5,7 +5,6 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Infrastructure.Common;
-using System;
 using System.Data;
 
 namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
@@ -176,6 +175,28 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                         PageSize = size
                     },
                     cancellationToken: ct));
+
+            return result.ToList().AsReadOnly();
+        }
+
+        public async Task<IReadOnlyList<MobilePhoneReadModel>> GetTop(CancellationToken ct)
+        {
+            var sql = $@"
+                SELECT TOP 3
+                       Id,
+                       Name,
+                       Brand,
+                       MainPhoto,
+                       PriceAmount,
+                       PriceCurrency,
+                FROM {SqlTableNames.MobilePhones}
+                WHERE IsActive = 1;
+                ";
+
+            using var connection = CreateConnection();
+
+            var result = await connection.QueryAsync<MobilePhoneReadModel>(
+                new CommandDefinition(sql, cancellationToken: ct));
 
             return result.ToList().AsReadOnly();
         }
