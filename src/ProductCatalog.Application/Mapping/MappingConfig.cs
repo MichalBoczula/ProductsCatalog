@@ -234,6 +234,13 @@ namespace ProductCatalog.Application.Mapping
 
             TypeAdapterConfig<MobilePhoneReadModel, TopMobilePhoneDto>
                 .NewConfig()
+                .Map(dest => dest.CommonDescription, src => new TopMobilePhonesCommonDescriptionDto
+                {
+                    Name = src.Name,
+                    Brand = src.Brand,
+                    Description = src.Description,
+                    MainPhoto = src.MainPhoto
+                })
                 .Map(dest => dest.Price.Amount, src => src.PriceAmount)
                 .Map(dest => dest.Price.Currency, src => src.PriceCurrency);
         }

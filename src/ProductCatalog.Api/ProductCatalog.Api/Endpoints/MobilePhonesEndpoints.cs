@@ -52,17 +52,6 @@ namespace ProductCatalog.Api.Endpoints
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
-            group.MapGet("/top", async ([FromQuery] int amount, IMediator mediator) =>
-            {
-                var result = await mediator.Send(new GetTopMobilePhonesQuery(amount));
-                return Results.Ok(result);
-            })
-            .WithSummary("Get top mobile phones")
-            .WithDescription("Returns a list of top mobile phones limited by the provided amount.")
-            .WithName("GetTopMobilePhones")
-            .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
-
             group.MapGet("/{id:guid}/history", async (
                 Guid id,
                 [FromQuery] int pageNumber,
@@ -83,11 +72,12 @@ namespace ProductCatalog.Api.Endpoints
                 var result = await mediator.Send(new GetTopMobilePhonesQuery());
                 return Results.Ok(result);
             })
-           .WithSummary("Get top mobile phones")
-           .WithDescription("Returns a list of top mobile phones.")
-           .WithName("GetTopMobilePhones")
-           .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
-           .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .WithSummary("Get top mobile phones")
+            .WithDescription("Returns a list of top mobile phones.")
+            .WithName("GetTopMobilePhones")
+            .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }
 
         private static void MapMobilePhonesCommands(IEndpointRouteBuilder group)

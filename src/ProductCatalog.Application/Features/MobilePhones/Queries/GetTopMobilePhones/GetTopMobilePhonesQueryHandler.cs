@@ -13,7 +13,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobileP
         public async Task<IReadOnlyList<TopMobilePhoneDto>> Handle(GetTopMobilePhonesQuery request, CancellationToken cancellationToken)
         {
             var mobilePhones = await _getTopMobilePhonesQueryFlowDescribtor
-                .GetTopMobilePhones(_mobilePhonesQueriesRepository, request.amount, cancellationToken);
+                .GetTopMobilePhones(_mobilePhonesQueriesRepository, cancellationToken);
 
             var existingMobilePhones = _getTopMobilePhonesQueryFlowDescribtor
                 .EnsureTopMobilePhonesFound(mobilePhones);

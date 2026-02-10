@@ -19,21 +19,11 @@ public sealed class GetTopMobilePhonesQueryHandlerTests
     [Fact]
     public async Task Handle_ShouldInvokeFlowStepsInOrder()
     {
-        var amount = 2;
-        var query = new GetTopMobilePhonesQuery(amount);
+        var query = new GetTopMobilePhonesQuery();
 
         var readModels = new List<MobilePhoneReadModel>
         {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Top Model",
-                DisplayType = "OLED",
-                ScreenSizeInches = 6.1m,
-                Camera = "12 MP",
-                PriceAmount = 599.99m,
-                PriceCurrency = "USD"
-            }
+            BuildReadModel()
         }.AsReadOnly();
 
         var expectedDtos = readModels.Adapt<List<TopMobilePhoneDto>>().AsReadOnly();
@@ -44,7 +34,7 @@ public sealed class GetTopMobilePhonesQueryHandlerTests
 
         flowDescriberMock
             .InSequence(sequence)
-            .Setup(flow => flow.GetTopMobilePhones(repoMock.Object, amount, It.IsAny<CancellationToken>()))
+            .Setup(flow => flow.GetTopMobilePhones(repoMock.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(readModels);
 
         flowDescriberMock
@@ -63,5 +53,54 @@ public sealed class GetTopMobilePhonesQueryHandlerTests
 
         result.ShouldBe(expectedDtos);
         flowDescriberMock.VerifyAll();
+    }
+
+    private static MobilePhoneReadModel BuildReadModel()
+    {
+        return new MobilePhoneReadModel
+        {
+            Id = Guid.NewGuid(),
+            Name = "Top Model",
+            Brand = "Brand Z",
+            Description = "Top tier device",
+            MainPhoto = "main-photo",
+            OtherPhotos = "[]",
+            CPU = "CPU",
+            GPU = "GPU",
+            Ram = "12GB",
+            Storage = "256GB",
+            DisplayType = "OLED",
+            RefreshRateHz = 120,
+            ScreenSizeInches = 6.1m,
+            Width = 70,
+            Height = 150,
+            BatteryType = "Li-Ion",
+            BatteryCapacity = 5000,
+            GPS = true,
+            AGPS = false,
+            Galileo = true,
+            GLONASS = false,
+            QZSS = true,
+            Accelerometer = true,
+            Gyroscope = false,
+            Proximity = true,
+            Compass = false,
+            Barometer = true,
+            Halla = false,
+            AmbientLight = true,
+            Has5G = true,
+            WiFi = true,
+            NFC = true,
+            Bluetooth = true,
+            Camera = "12 MP",
+            FingerPrint = true,
+            FaceId = false,
+            CategoryId = Guid.NewGuid(),
+            PriceAmount = 599.99m,
+            PriceCurrency = "USD",
+            Description2 = "description 2",
+            Description3 = "description 3",
+            IsActive = true
+        };
     }
 }
