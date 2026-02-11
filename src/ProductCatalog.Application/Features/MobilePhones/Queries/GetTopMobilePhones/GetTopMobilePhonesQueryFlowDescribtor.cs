@@ -21,7 +21,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobileP
         [FlowStep(2)]
         public virtual IReadOnlyList<MobilePhoneReadModel> EnsureTopMobilePhonesFound(IReadOnlyList<MobilePhoneReadModel> mobilePhones)
         {
-            if (mobilePhones is null)
+            if (mobilePhones is null || mobilePhones.Count == 0)
             {
                 throw new ResourceNotFoundException(nameof(GetTopMobilePhonesQuery), Guid.Empty, nameof(List<TopMobilePhoneDto>));
             }
