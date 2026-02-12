@@ -11,27 +11,27 @@
 #region Designer generated code
 #pragma warning disable
 using Reqnroll;
-namespace ProductCatalog.Acceptance.Tests.Features.Currencies
+namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 {
     
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class UpdateCurrencyFeature : object, global::Xunit.IClassFixture<UpdateCurrencyFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class GetTopMobilePhonesFeature : object, global::Xunit.IClassFixture<GetTopMobilePhonesFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Currencies", "Update currency", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get top mobile phones", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "UpdateCurrency.feature"
+#line 1 "GetTopMobilePhones.feature"
 #line hidden
         
-        public UpdateCurrencyFeature(UpdateCurrencyFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GetTopMobilePhonesFeature(GetTopMobilePhonesFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Currencies/UpdateCurrency.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetTopMobilePhones.feature.ndjson", 4);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,19 +133,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Update currency returns ok response")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Update currency")]
-        [global::Xunit.TraitAttribute("Description", "Update currency returns ok response")]
-        public async global::System.Threading.Tasks.Task UpdateCurrencyReturnsOkResponse()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get top mobile phones returns records when mobile phones exist")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get top mobile phones")]
+        [global::Xunit.TraitAttribute("Description", "Get top mobile phones returns records when mobile phones exist")]
+        public async global::System.Threading.Tasks.Task GetTopMobilePhonesReturnsRecordsWhenMobilePhonesExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Update currency returns ok response", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get top mobile phones returns records when mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 3
-  this.ScenarioInitialize(scenarioInfo, ruleInfo);
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -154,71 +154,32 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
-                            "Field",
-                            "Value"});
-                table25.AddRow(new string[] {
-                            "Code",
-                            "UPD"});
-                table25.AddRow(new string[] {
-                            "Description",
-                            "Currency"});
 #line 4
-    await testRunner.GivenAsync("an existing currency which will be updated", ((string)(null)), table25, "Given ");
+ await testRunner.GivenAsync("an existing set of mobile phones for top list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
-                            "Field",
-                            "Value"});
-                table26.AddRow(new string[] {
-                            "Code",
-                            "UPD"});
-                table26.AddRow(new string[] {
-                            "Description",
-                            "Updated Currency"});
-#line 8
-    await testRunner.AndAsync("I have updated currency details", ((string)(null)), table26, "And ");
+#line 5
+ await testRunner.WhenAsync("I request the top mobile phones list", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 12
-    await testRunner.WhenAsync("I submit the request to update currency", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
-                            "Field",
-                            "Value"});
-                table27.AddRow(new string[] {
-                            "StatusCode",
-                            "200"});
-                table27.AddRow(new string[] {
-                            "HasId",
-                            "true"});
-                table27.AddRow(new string[] {
-                            "IsActive",
-                            "true"});
-                table27.AddRow(new string[] {
-                            "Code",
-                            "UPD"});
-                table27.AddRow(new string[] {
-                            "Description",
-                            "Updated Currency"});
-#line 13
-    await testRunner.ThenAsync("response return succesfully updated currency", ((string)(null)), table27, "Then ");
+#line 6
+ await testRunner.ThenAsync("the top mobile phones response is successful and contains records", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Update currency fails for missing currency")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Update currency")]
-        [global::Xunit.TraitAttribute("Description", "Update currency fails for missing currency")]
-        public async global::System.Threading.Tasks.Task UpdateCurrencyFailsForMissingCurrency()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get top mobile phones returns not found when no mobile phones exist")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get top mobile phones")]
+        [global::Xunit.TraitAttribute("Description", "Get top mobile phones returns not found when no mobile phones exist")]
+        public async global::System.Threading.Tasks.Task GetTopMobilePhonesReturnsNotFoundWhenNoMobilePhonesExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Update currency fails for missing currency", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get top mobile phones returns not found when no mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 21
-  this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line 8
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -227,47 +188,14 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             else
             {
                 await this.ScenarioStartAsync();
-#line 22
-    await testRunner.GivenAsync("currency does not exist in the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 9
+ await testRunner.GivenAsync("mobile phones table is empty for top list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
-                            "Field",
-                            "Value"});
-                table28.AddRow(new string[] {
-                            "Code",
-                            "MISSING"});
-                table28.AddRow(new string[] {
-                            "Description",
-                            "Missing Currency"});
-#line 23
-    await testRunner.AndAsync("I have updated currency details", ((string)(null)), table28, "And ");
+#line 10
+ await testRunner.WhenAsync("I request the top mobile phones list", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 27
-    await testRunner.WhenAsync("I send a request to update the currency", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
-                            "Field",
-                            "Value"});
-                table29.AddRow(new string[] {
-                            "Status",
-                            "400"});
-                table29.AddRow(new string[] {
-                            "Title",
-                            "Validation failed"});
-                table29.AddRow(new string[] {
-                            "Detail",
-                            "One or more validation errors occurred."});
-                table29.AddRow(new string[] {
-                            "ErrorMessage",
-                            "Currency cannot be null."});
-                table29.AddRow(new string[] {
-                            "ErrorEntity",
-                            "Currency"});
-                table29.AddRow(new string[] {
-                            "ErrorName",
-                            "CurrencyIsNullValidationRule"});
-#line 28
-    await testRunner.ThenAsync("response returns an error indicating currency not found", ((string)(null)), table29, "Then ");
+#line 11
+ await testRunner.ThenAsync("the top mobile phones response is not found", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -280,12 +208,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await UpdateCurrencyFeature.FeatureSetupAsync();
+                await GetTopMobilePhonesFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await UpdateCurrencyFeature.FeatureTearDownAsync();
+                await GetTopMobilePhonesFeature.FeatureTearDownAsync();
             }
         }
     }
