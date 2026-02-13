@@ -30,6 +30,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         public void GivenIHaveValidCurrencyDetails(Table? table)
         {
             _currencyCorrect = BuildCurrencyRequest(table, "JPY", "Japanese Yen");
+
+            AllureJson.AttachObject(
+                "Request JSON (valid)",
+                _currencyCorrect,
+                _jsonOptions
+            );
         }
 
         [When("I submit the create currency request")]
@@ -41,6 +47,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                  MediaTypeNames.Application.Json);
             _response = await TestRunHooks.Client.PostAsync("/currencies", content);
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _successResult = JsonSerializer.Deserialize<CurrencyDto>(json, _jsonOptions);
         }
 
@@ -76,6 +85,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         public void GivenIHaveInvalidCurrencyDetails(Table? table)
         {
             _currencyIncorrect = BuildCurrencyRequest(table, string.Empty, string.Empty);
+
+            AllureJson.AttachObject(
+                "Request JSON (invalid)",
+                _currencyIncorrect,
+                _jsonOptions
+            );
         }
 
         [When("I submit the create invalid currency request")]
@@ -87,6 +102,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
                   MediaTypeNames.Application.Json);
             _response = await TestRunHooks.Client.PostAsync("/currencies", content);
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
