@@ -32,6 +32,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         {
             _currencyToCreate = BuildCurrencyRequest(table, "DEL", "Delete Currency");
 
+            AllureJson.AttachObject(
+                "Request JSON (create for delete)",
+                _currencyToCreate,
+                _jsonOptions
+            );
+
             var content = new StringContent(
                  JsonSerializer.Serialize(_currencyToCreate, _jsonOptions),
                  Encoding.UTF8,
@@ -40,6 +46,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
             _response = await TestRunHooks.Client.PostAsync("/currencies", content);
             _response.EnsureSuccessStatusCode();
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _createdCurrency = JsonSerializer.Deserialize<CurrencyDto>(json, _jsonOptions);
             _createdCurrency.ShouldNotBeNull();
         }
@@ -49,8 +58,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         {
             _createdCurrency.ShouldNotBeNull();
 
+            var deleteRequest = new
+            {
+                CurrencyId = _createdCurrency!.Id
+            };
+
+            AllureJson.AttachObject(
+                "Request JSON (delete)",
+                deleteRequest,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.DeleteAsync($"/currencies/{_createdCurrency!.Id}");
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _deleteResult = JsonSerializer.Deserialize<CurrencyDto>(json, _jsonOptions);
         }
 
@@ -92,8 +115,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         [When("I submit the delete currency request for non existing currency")]
         public async Task WhenISubmitTheDeleteCurrencyRequestForNonExistingCurrency()
         {
+            var deleteRequest = new
+            {
+                CurrencyId = _missingCurrencyId
+            };
+
+            AllureJson.AttachObject(
+                "Request JSON (delete missing)",
+                deleteRequest,
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.DeleteAsync($"/currencies/{_missingCurrencyId}");
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
