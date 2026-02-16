@@ -5,6 +5,7 @@ using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using Reqnroll;
