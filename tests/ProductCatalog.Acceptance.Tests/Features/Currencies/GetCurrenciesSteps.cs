@@ -22,8 +22,17 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         [When("I request the list of currencies")]
         public async Task WhenIRequestTheListOfCurrencies()
         {
+            AllureJson.AttachObject(
+                "Request JSON (get currencies)",
+                new { Path = "/currencies" },
+                _jsonOptions
+            );
+
             _response = await TestRunHooks.Client.GetAsync("/currencies");
+
             var json = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _currencies = JsonSerializer.Deserialize<IReadOnlyList<CurrencyDto>>(json, _jsonOptions);
         }
 
