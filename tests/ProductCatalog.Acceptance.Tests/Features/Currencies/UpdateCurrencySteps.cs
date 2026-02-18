@@ -34,6 +34,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         {
             _currencyToCreate = BuildCreateRequest(table);
 
+            AllureJson.AttachObject(
+                "Request JSON (create for update)",
+                _currencyToCreate,
+                _jsonOptions
+            );
+
             var content = new StringContent(
                 JsonSerializer.Serialize(_currencyToCreate, _jsonOptions),
                 Encoding.UTF8,
@@ -50,6 +56,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
         public void GivenIHaveUpdatedCurrencyDetails(Table table)
         {
             _updatePayload = BuildUpdateRequest(table);
+
+            AllureJson.AttachObject(
+                "Request JSON (update)",
+                _updatePayload,
+                _jsonOptions
+            );
         }
 
         [When("I submit the request to update currency")]
@@ -64,6 +76,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
 
             _response = await TestRunHooks.Client.PutAsync($"/currencies/{_createdCurrency!.Id}", content);
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _successResult = JsonSerializer.Deserialize<CurrencyDto>(json, _jsonOptions);
         }
 
@@ -112,6 +127,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Currencies
 
             _response = await TestRunHooks.Client.PutAsync($"/currencies/{_missingCurrencyId}", content);
             var json = await _response.Content.ReadAsStringAsync();
+
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);
+
             _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(json, _jsonOptions);
         }
 
