@@ -73,7 +73,6 @@ namespace ProductCatalog.Api
 
             app.UseAuthorization();
 
-            app.MapProductsEndpoints();
             app.MapCategoriesEndpoints();
             app.MapCurrenciesEndpoints();
             app.MapDocumentationsEndpoints();

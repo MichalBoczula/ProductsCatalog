@@ -5,7 +5,6 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones;
-using ProductCatalog.Domain.Validation.Concrete.Rules.Products.MoneyRule;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
@@ -23,9 +22,6 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
             _rules.Add(new MobilePhonesStringValidationRule());
             _rules.Add(new MobilePhonesCategoryIdValidationRule(categoriesQueriesRepository));
             _rules.Add(new MobilePhonesIsNullValidationRule());
-
-            _moneyRules.Add(new MoneyCurrencyValidationRule(currenciesQueriesRepository));
-            _moneyRules.Add(new MoneyAmountValidationRule());
         }
 
         public async Task<ValidationResult> Validate(MobilePhone entity)

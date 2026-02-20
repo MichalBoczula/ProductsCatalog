@@ -6,9 +6,6 @@ using ProductCatalog.Application.Common.FlowDescriptors.Common;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
-using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
-using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
 using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
@@ -19,8 +16,6 @@ using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneByI
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
-using ProductCatalog.Application.Features.Products.Queries.GetProductById;
-using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
@@ -36,9 +31,6 @@ namespace ProductCatalog.Api.Endpoints
             var group = app.MapGroup("/documentation").WithTags("Documentation");
 
             group.MapGet("/flow", (
-                [FromServices] IFlowDescriber<CreateProductCommand> createProductFlowDescriber,
-                [FromServices] IFlowDescriber<UpdateProductCommand> updateProductFlowDescriber,
-                [FromServices] IFlowDescriber<RemoveProductCommand> removeProductFlowDescriber,
                 [FromServices] IFlowDescriber<CreateCurrencyCommand> createCurrencyFlowDescriber,
                 [FromServices] IFlowDescriber<UpdateCurrencyCommand> updateCurrencyFlowDescriber,
                 [FromServices] IFlowDescriber<DeleteCurrencyCommand> deleteCurrencyFlowDescriber,
@@ -54,15 +46,10 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<GetTopMobilePhonesQuery> getTopMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCurrenciesQuery> getCurrenciesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoriesQuery> getCategoriesFlowDescriber,
-                [FromServices] IFlowDescriber<GetCategoryByIdQuery> getCategoryByIdFlowDescriber,
-                [FromServices] IFlowDescriber<GetProductByIdQuery> getProductByIdFlowDescriber,
-                [FromServices] IFlowDescriber<GetProductsByCategoryIdQuery> getProductsByCategoryIdFlowDescriber) =>
+                [FromServices] IFlowDescriber<GetCategoryByIdQuery> getCategoryByIdFlowDescriber) =>
             {
                 var descriptions = new List<FlowDescription>
                 {
-                    createProductFlowDescriber.DescribeFlow(default!),
-                    updateProductFlowDescriber.DescribeFlow(default!),
-                    removeProductFlowDescriber.DescribeFlow(default!),
                     createCurrencyFlowDescriber.DescribeFlow(default!),
                     updateCurrencyFlowDescriber.DescribeFlow(default!),
                     deleteCurrencyFlowDescriber.DescribeFlow(default!),
@@ -79,8 +66,6 @@ namespace ProductCatalog.Api.Endpoints
                     getCurrenciesFlowDescriber.DescribeFlow(default!),
                     getCategoriesFlowDescriber.DescribeFlow(default!),
                     getCategoryByIdFlowDescriber.DescribeFlow(default!),
-                    getProductByIdFlowDescriber.DescribeFlow(default!),
-                    getProductsByCategoryIdFlowDescriber.DescribeFlow(default!)
                 };
 
                 return Results.Ok(descriptions);

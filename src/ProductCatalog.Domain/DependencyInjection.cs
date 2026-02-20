@@ -14,12 +14,10 @@ namespace ProductCatalog.Domain
         public static IServiceCollection AddDomain(
             this IServiceCollection services)
         {
-            services.AddScoped<IValidationPolicy<Product>, ProductsValidationPolicy>();
             services.AddScoped<IValidationPolicy<Category>, CategoriesValidationPolicy>();
             services.AddScoped<IValidationPolicy<Currency>, CurrenciesValidationPolicy>();
             services.AddScoped<IValidationPolicy<MobilePhone>, MobilePhonesValidationPolicy>();
             services.AddScoped<IValidationPolicy<ElectronicDetails>, ElectronicDetailsValidationPolicy>();
-            services.AddScoped<IValidationPolicyDescriptorProvider, ProductsValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, CategoriesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, CurrenciesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, MobilePhonesValidationPolicy>();

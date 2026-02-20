@@ -18,11 +18,6 @@ using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneByI
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
-using ProductCatalog.Application.Features.Products.Commands.CreateProduct;
-using ProductCatalog.Application.Features.Products.Commands.RemoveProduct;
-using ProductCatalog.Application.Features.Products.Commands.UpdateProduct;
-using ProductCatalog.Application.Features.Products.Queries.GetProductById;
-using ProductCatalog.Application.Features.Products.Queries.GetProductsByCategoryId;
 using ProductCatalog.Application.Mapping;
 
 namespace ProductCatalog.Application
@@ -35,15 +30,6 @@ namespace ProductCatalog.Application
             MappingConfig.RegisterMappings();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-
-            services.AddScoped<CreateProductCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<CreateProductCommand>, CreateProductCommandFlowDescribtor>();
-
-            services.AddScoped<UpdateProductCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<UpdateProductCommand>, UpdateProductCommandFlowDescribtor>();
-
-            services.AddScoped<RemoveProductCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<RemoveProductCommand>, RemoveProductCommandFlowDescribtor>();
 
             services.AddScoped<CreateCurrencyCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<CreateCurrencyCommand>, CreateCurrencyCommandFlowDescribtor>();
@@ -92,12 +78,6 @@ namespace ProductCatalog.Application
 
             services.AddScoped<GetCategoryByIdQueryFlowDescribtor>();
             services.AddScoped<IFlowDescriber<GetCategoryByIdQuery>, GetCategoryByIdQueryFlowDescribtor>();
-
-            services.AddScoped<GetProductByIdQueryFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<GetProductByIdQuery>, GetProductByIdQueryFlowDescribtor>();
-
-            services.AddScoped<GetProductsByCategoryIdQueryFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<GetProductsByCategoryIdQuery>, GetProductsByCategoryIdQueryFlowDescribtor>();
 
             return services;
         }
