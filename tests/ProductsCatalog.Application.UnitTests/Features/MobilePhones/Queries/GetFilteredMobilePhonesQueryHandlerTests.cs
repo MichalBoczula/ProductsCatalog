@@ -24,12 +24,7 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
 
         var readModels = new List<MobilePhoneReadModel>
         {
-            new()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Model X",
-                Brand = "Brand Y"
-            }
+            BuildReadModel()
         }.AsReadOnly();
 
         var expectedDtos = new List<MobilePhoneDto>
@@ -38,7 +33,15 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
             {
                 Id = readModels[0].Id,
                 Name = readModels[0].Name,
-                Brand = readModels[0].Brand
+                Brand = readModels[0].Brand,
+                DisplayType = readModels[0].DisplayType,
+                ScreenSizeInches = readModels[0].ScreenSizeInches,
+                Camera = readModels[0].Camera,
+                Price = new()
+                {
+                    Amount = readModels[0].PriceAmount,
+                    Currency = readModels[0].PriceCurrency
+                }
             }
         };
 
@@ -62,5 +65,54 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
 
         result.ShouldBe(expectedDtos);
         flowDescriberMock.VerifyAll();
+    }
+
+    private static MobilePhoneReadModel BuildReadModel()
+    {
+        return new MobilePhoneReadModel
+        {
+            Id = Guid.NewGuid(),
+            Name = "Model X",
+            Brand = "Brand Y",
+            Description = "Flagship device",
+            MainPhoto = "main-photo",
+            OtherPhotos = "[]",
+            CPU = "CPU",
+            GPU = "GPU",
+            Ram = "12GB",
+            Storage = "256GB",
+            DisplayType = "AMOLED",
+            RefreshRateHz = 120,
+            ScreenSizeInches = 6.8m,
+            Width = 70,
+            Height = 150,
+            BatteryType = "Li-Ion",
+            BatteryCapacity = 5000,
+            GPS = true,
+            AGPS = false,
+            Galileo = true,
+            GLONASS = false,
+            QZSS = true,
+            Accelerometer = true,
+            Gyroscope = false,
+            Proximity = true,
+            Compass = false,
+            Barometer = true,
+            Halla = false,
+            AmbientLight = true,
+            Has5G = true,
+            WiFi = true,
+            NFC = true,
+            Bluetooth = true,
+            Camera = "12 MP",
+            FingerPrint = true,
+            FaceId = false,
+            CategoryId = Guid.NewGuid(),
+            PriceAmount = 799.99m,
+            PriceCurrency = "USD",
+            Description2 = "description 2",
+            Description3 = "description 3",
+            IsActive = true
+        };
     }
 }
