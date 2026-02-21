@@ -18,10 +18,12 @@ namespace ProductCatalog.Domain
             services.AddScoped<IValidationPolicy<Currency>, CurrenciesValidationPolicy>();
             services.AddScoped<IValidationPolicy<MobilePhone>, MobilePhonesValidationPolicy>();
             services.AddScoped<IValidationPolicy<ElectronicDetails>, ElectronicDetailsValidationPolicy>();
+            services.AddScoped<IValidationPolicy<int>, AmountValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, CategoriesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, CurrenciesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, MobilePhonesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, ElectronicDetailsValidationPolicy>();
+            services.AddScoped<IValidationPolicyDescriptorProvider, AmountValidationPolicy>();
             return services;
         }
     }
