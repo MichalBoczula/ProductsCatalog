@@ -15,6 +15,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhon
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
 using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
@@ -43,6 +44,7 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<GetMobilePhoneByIdQuery> getMobilePhoneByIdFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhoneHistoryQuery> getMobilePhoneHistoryFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhonesQuery> getMobilePhonesFlowDescriber,
+                [FromServices] IFlowDescriber<GetFilteredMobilePhonesQuery> getFilteredMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetTopMobilePhonesQuery> getTopMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCurrenciesQuery> getCurrenciesFlowDescriber,
                 [FromServices] IFlowDescriber<GetCategoriesQuery> getCategoriesFlowDescriber,
@@ -62,6 +64,7 @@ namespace ProductCatalog.Api.Endpoints
                     getMobilePhoneByIdFlowDescriber.DescribeFlow(default!),
                     getMobilePhoneHistoryFlowDescriber.DescribeFlow(default!),
                     getMobilePhonesFlowDescriber.DescribeFlow(default!),
+                    getFilteredMobilePhonesFlowDescriber.DescribeFlow(default!),
                     getTopMobilePhonesFlowDescriber.DescribeFlow(default!),
                     getCurrenciesFlowDescriber.DescribeFlow(default!),
                     getCategoriesFlowDescriber.DescribeFlow(default!),
