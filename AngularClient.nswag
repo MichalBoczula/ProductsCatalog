@@ -1,9 +1,8 @@
 {
-  "runtime": "Net100",
+  "runtime": "Net80",
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "json": "http://localhost:5237/swagger/v1/swagger.json",
       "url": "http://redocly.github.io/redoc/openapi.yaml",
       "output": null,
       "newLineBehavior": "Auto"
@@ -15,13 +14,13 @@
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 4.3,
-      "template": "Angular",
+      "template": "Fetch",
       "promiseType": "Promise",
       "httpClass": "HttpClient",
       "withCredentials": false,
       "useSingletonProvider": false,
-      "injectionTokenType": "InjectionToken",
-      "rxJsVersion": 7.0,
+      "injectionTokenType": "OpaqueToken",
+      "rxJsVersion": 6.0,
       "dateTimeType": "Date",
       "nullValue": "Undefined",
       "generateClientClasses": true,
@@ -69,7 +68,7 @@
       "templateDirectory": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "AngularClient.ts",
+      "output": null,
       "newLineBehavior": "Auto"
     },
     "openApiToCSharpClient": {
@@ -77,7 +76,7 @@
       "configurationClass": null,
       "generateClientClasses": true,
       "suppressClientClassesOutput": false,
-      "generateClientInterfaces": true,
+      "generateClientInterfaces": false,
       "suppressClientInterfacesOutput": false,
       "clientBaseInterface": null,
       "injectHttpClient": true,
@@ -122,7 +121,7 @@
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
       "responseClass": "SwaggerResponse",
-      "namespace": "ProductsCatalog.Client",
+      "namespace": "MyNamespace",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTimeOffset",
       "jsonConverters": null,
@@ -162,7 +161,7 @@
       "templateDirectory": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "NetClient.cs",
+      "output": null,
       "newLineBehavior": "Auto"
     }
   }
