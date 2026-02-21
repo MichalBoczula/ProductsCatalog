@@ -1,0 +1,3 @@
+1. Addvalidationfor amount must be positive num
+2. Add validation for filter price must be positive, and minimal less than max, brand must be in enum
+3. Test unit and containers

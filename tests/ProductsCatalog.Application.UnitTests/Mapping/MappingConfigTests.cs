@@ -22,7 +22,6 @@ using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
 using Shouldly;
-using Xunit;
 
 namespace ProductsCatalog.Application.UnitTests.Mapping
 {

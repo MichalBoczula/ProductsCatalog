@@ -2,7 +2,7 @@
 
 namespace ProductCatalog.Application.Common.Dtos.MobilePhones
 {
-    public sealed record class MobilePhoneDto
+    public sealed record MobilePhoneDto
     {
         public Guid Id { get; init; }
         public string Name { get; init; }

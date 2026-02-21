@@ -4,8 +4,11 @@ using Microsoft.Extensions.Configuration;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
+using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Infrastructure.Common;
+using ProductCatalog.Infrastructure.Extensions.Methods;
 using System.Data;
+using System.Text;
 
 namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
 {
@@ -98,11 +101,6 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 new CommandDefinition(sql, new { Amount = amount }, cancellationToken: ct));
 
             return result.ToList().AsReadOnly();
-        }
-
-        public Task<IReadOnlyList<MobilePhoneReadModel>> GetByFilter(CancellationToken ct)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IReadOnlyList<MobilePhonesHistory>> GetHistoryOfChanges(Guid mobilePhoneId, int pageNumber, int pageSize, CancellationToken ct)
@@ -199,6 +197,33 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 new CommandDefinition(sql, cancellationToken: ct));
 
             return result.ToList().AsReadOnly();
+        }
+
+        public async Task<IReadOnlyList<MobilePhoneReadModel>> GetFilteredPhones(
+             MobilePhoneFilterDto mobilePhoneFilter,
+             CancellationToken ct)
+        {
+            var query = new StringBuilder($@"
+                SELECT
+                    Id,
+                    Name,
+                    Camera,
+                    DisplayType,
+                    ScreenSizeInches,
+                    PriceCurrency,
+                    IsActive
+                FROM {SqlTableNames.MobilePhones}
+                WHERE IsActive = 1
+            ");
+
+            var @params = MobilePhoneFilterDtoExtensions.FilterQueryBuilder(mobilePhoneFilter, query);
+
+            using var connection = CreateConnection();
+
+            var result = await connection.QueryAsync<MobilePhoneReadModel>(
+                new CommandDefinition(query.ToString(), @params, cancellationToken: ct));
+
+            return result.AsList().AsReadOnly();
         }
     }
 }
