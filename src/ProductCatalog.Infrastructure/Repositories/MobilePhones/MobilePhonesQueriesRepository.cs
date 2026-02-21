@@ -85,6 +85,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 SELECT TOP (@Amount)
                        Id,
                        Name,
+                       Brand,
                        Camera,
                        DisplayType,
                        ScreenSizeInches,
@@ -207,6 +208,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 SELECT
                     Id,
                     Name,
+                    Brand,
                     Camera,
                     DisplayType,
                     ScreenSizeInches,

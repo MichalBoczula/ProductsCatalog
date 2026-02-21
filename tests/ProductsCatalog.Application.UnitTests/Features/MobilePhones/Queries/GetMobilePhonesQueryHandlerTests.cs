@@ -3,9 +3,9 @@ using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
+using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using Shouldly;
-using System.Linq;
 using System.Text.Json;
 
 namespace ProductsCatalog.Application.UnitTests.Features.MobilePhones.Queries;
@@ -120,14 +120,21 @@ public class GetMobilePhonesQueryHandlerTests
         }.AsReadOnly();
 
         var query = new GetMobilePhonesQuery(amount);
+        var validationResult = new ValidationResult();
 
         var queriesRepositoryMock = new Mock<IMobilePhonesQueriesRepository>(MockBehavior.Strict);
         queriesRepositoryMock
             .Setup(repo => repo.GetPhones(amount, It.IsAny<CancellationToken>()))
             .ReturnsAsync(mobilePhones);
 
+        var queriesValidationPolicyMock = new Mock<IValidationPolicy<int>>(MockBehavior.Strict);
+        queriesValidationPolicyMock
+            .Setup(repo => repo.Validate(It.IsAny<int>()))
+            .ReturnsAsync(validationResult);
+
         var handler = new GetMobilePhonesQueryHandler(
             queriesRepositoryMock.Object,
+            queriesValidationPolicyMock.Object,
             new GetMobilePhonesQueryFlowDescribtor());
 
         // Act
@@ -152,14 +159,22 @@ public class GetMobilePhonesQueryHandlerTests
         // Arrange
         var amount = 5;
         var query = new GetMobilePhonesQuery(amount);
+        var validationResult = new ValidationResult();
 
         var queriesRepositoryMock = new Mock<IMobilePhonesQueriesRepository>(MockBehavior.Strict);
         queriesRepositoryMock
             .Setup(repo => repo.GetPhones(amount, It.IsAny<CancellationToken>()))
             .ReturnsAsync((IReadOnlyList<MobilePhoneReadModel>?)null);
 
+        var queriesValidationPolicyMock = new Mock<IValidationPolicy<int>>(MockBehavior.Strict);
+        queriesValidationPolicyMock
+            .Setup(repo => repo.Validate(It.IsAny<int>()))
+            .ReturnsAsync(validationResult);
+
+
         var handler = new GetMobilePhonesQueryHandler(
             queriesRepositoryMock.Object,
+            queriesValidationPolicyMock.Object,
             new GetMobilePhonesQueryFlowDescribtor());
 
         // Act & Assert

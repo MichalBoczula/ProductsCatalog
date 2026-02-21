@@ -6,6 +6,7 @@ namespace ProductCatalog.Application.Common.Dtos.MobilePhones
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
+        public string Brand { get; init; }
         public required string DisplayType { get; init; }
         public required decimal ScreenSizeInches { get; init; }
         public required string Camera { get; init; }
