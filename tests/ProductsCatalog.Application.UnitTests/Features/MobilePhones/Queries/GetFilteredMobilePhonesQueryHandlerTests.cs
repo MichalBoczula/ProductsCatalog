@@ -4,6 +4,8 @@ using ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMobile
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Common.Filters;
+using ProductCatalog.Domain.Validation.Abstract;
+using ProductCatalog.Domain.Validation.Common;
 using Shouldly;
 
 namespace ProductsCatalog.Application.UnitTests.Features.MobilePhones.Queries;
@@ -21,6 +23,7 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
         };
 
         var query = new GetFilteredMobilePhonesQuery(filter);
+        var validationResult = new ValidationResult();
 
         var readModels = new List<MobilePhoneReadModel>
         {
@@ -46,8 +49,18 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
         };
 
         var repoMock = new Mock<IMobilePhonesQueriesRepository>(MockBehavior.Strict);
+        var validationPolicyMock = new Mock<IValidationPolicy<MobilePhoneFilterDto>>(MockBehavior.Strict);
         var flowDescriberMock = new Mock<GetFilteredMobilePhonesQueryFlowDescribtor>(MockBehavior.Strict);
         var sequence = new MockSequence();
+
+        flowDescriberMock
+            .InSequence(sequence)
+            .Setup(flow => flow.ValidateFilter(filter, validationPolicyMock.Object))
+            .ReturnsAsync(validationResult);
+
+        flowDescriberMock
+            .InSequence(sequence)
+            .Setup(flow => flow.ThrowValidationExceptionIfFilterInvalid(validationResult));
 
         flowDescriberMock
             .InSequence(sequence)
@@ -59,12 +72,32 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
             .Setup(flow => flow.MapMobilePhonesToDto(readModels))
             .Returns(expectedDtos);
 
-        var handler = new GetFilteredMobilePhonesQueryHandler(repoMock.Object, flowDescriberMock.Object);
+        var handler = new GetFilteredMobilePhonesQueryHandler(repoMock.Object, validationPolicyMock.Object, flowDescriberMock.Object);
 
         var result = await handler.Handle(query, CancellationToken.None);
 
         result.ShouldBe(expectedDtos);
         flowDescriberMock.VerifyAll();
+    }
+
+    [Fact]
+    public async Task Handle_WhenFilterValidationFails_ShouldThrowValidationException()
+    {
+        var filter = new MobilePhoneFilterDto { MinimalPrice = -1 };
+        var query = new GetFilteredMobilePhonesQuery(filter);
+
+        var validationPolicyMock = new Mock<IValidationPolicy<MobilePhoneFilterDto>>();
+        var flowDescriber = new GetFilteredMobilePhonesQueryFlowDescribtor();
+        var handler = new GetFilteredMobilePhonesQueryHandler(Mock.Of<IMobilePhonesQueriesRepository>(), validationPolicyMock.Object, flowDescriber);
+
+        var invalidResult = new ValidationResult();
+        invalidResult.AddValidationError(new ValidationError { Name = "error", Message = "error", Entity = "entity" });
+
+        validationPolicyMock
+            .Setup(policy => policy.Validate(filter))
+            .ReturnsAsync(invalidResult);
+
+        await Should.ThrowAsync<ValidationException>(() => handler.Handle(query, CancellationToken.None));
     }
 
     private static MobilePhoneReadModel BuildReadModel()
