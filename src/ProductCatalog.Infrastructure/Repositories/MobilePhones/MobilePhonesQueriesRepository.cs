@@ -187,7 +187,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        Brand,
                        MainPhoto,
                        PriceAmount,
-                       PriceCurrency,
+                       PriceCurrency
                 FROM {SqlTableNames.MobilePhones}
                 WHERE IsActive = 1;
                 ";
