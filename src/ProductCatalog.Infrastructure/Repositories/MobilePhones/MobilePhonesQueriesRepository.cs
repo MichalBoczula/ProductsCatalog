@@ -201,7 +201,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
         }
 
         public async Task<IReadOnlyList<MobilePhoneReadModel>> GetFilteredPhones(
-             MobilePhoneFilterDto mobilePhoneFilter,
+             MobilePhoneReadFilterDto mobilePhoneFilter,
              CancellationToken ct)
         {
             var query = new StringBuilder($@"

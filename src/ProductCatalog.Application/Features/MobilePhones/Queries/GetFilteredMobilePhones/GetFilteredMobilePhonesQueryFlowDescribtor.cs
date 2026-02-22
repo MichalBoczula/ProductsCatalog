@@ -1,9 +1,11 @@
 ﻿using Mapster;
+using System;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
@@ -28,15 +30,30 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMo
         }
 
         [FlowStep(3)]
+        public virtual MobilePhoneReadFilterDto CastBrandToString(MobilePhoneFilterDto mobilePhoneFilter)
+        {
+            var brand = mobilePhoneFilter.Brand is null
+                ? null
+                : Enum.GetName(typeof(MobilePhonesBrand), mobilePhoneFilter.Brand.Value);
+
+            return new MobilePhoneReadFilterDto
+            {
+                BrandName = brand,
+                MinimalPrice = mobilePhoneFilter.MinimalPrice,
+                MaximalPrice = mobilePhoneFilter.MaximalPrice
+            };
+        }
+
+        [FlowStep(4)]
         public virtual Task<IReadOnlyList<MobilePhoneReadModel>> GetFilteredMobilePhones(
             IMobilePhonesQueriesRepository mobilePhonesQueriesRepository,
-            MobilePhoneFilterDto mobilePhoneFilter,
+            MobilePhoneReadFilterDto mobilePhoneFilter,
             CancellationToken cancellationToken)
         {
             return mobilePhonesQueriesRepository.GetFilteredPhones(mobilePhoneFilter, cancellationToken);
         }
 
-        [FlowStep(4)]
+        [FlowStep(5)]
         public virtual IList<MobilePhoneDto> MapMobilePhonesToDto(IReadOnlyList<MobilePhoneReadModel> mobilePhones)
         {
             return mobilePhones.Adapt<IList<MobilePhoneDto>>();

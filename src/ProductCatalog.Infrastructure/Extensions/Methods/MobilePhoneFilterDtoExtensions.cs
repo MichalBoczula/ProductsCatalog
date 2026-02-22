@@ -6,7 +6,7 @@ namespace ProductCatalog.Infrastructure.Extensions.Methods
 {
     internal static class MobilePhoneFilterDtoExtensions
     {
-        internal static DynamicParameters FilterQueryBuilder(this MobilePhoneFilterDto mobilePhoneFilter, StringBuilder sb)
+        internal static DynamicParameters FilterQueryBuilder(this MobilePhoneReadFilterDto mobilePhoneFilter, StringBuilder sb)
         {
             var @params = new DynamicParameters();
 
@@ -22,10 +22,10 @@ namespace ProductCatalog.Infrastructure.Extensions.Methods
                 @params.Add("MaximalPrice", mobilePhoneFilter.MaximalPrice);
             }
 
-            if (!string.IsNullOrWhiteSpace(mobilePhoneFilter.Brand))
+            if (!string.IsNullOrWhiteSpace(mobilePhoneFilter.BrandName))
             {
-                sb.Append(" AND Brand = @Brand");
-                @params.Add("Brand", mobilePhoneFilter.Brand);
+                sb.Append(" AND Brand = @BrandName");
+                @params.Add("BrandName", mobilePhoneFilter.BrandName);
             }
 
             return @params;
