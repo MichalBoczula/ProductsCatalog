@@ -4,6 +4,7 @@ using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
+using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Concrete.Policies;
 
@@ -19,11 +20,13 @@ namespace ProductCatalog.Domain
             services.AddScoped<IValidationPolicy<MobilePhone>, MobilePhonesValidationPolicy>();
             services.AddScoped<IValidationPolicy<ElectronicDetails>, ElectronicDetailsValidationPolicy>();
             services.AddScoped<IValidationPolicy<int>, AmountValidationPolicy>();
+            services.AddScoped<IValidationPolicy<MobilePhoneFilterDto>, MobilePhoneFilterValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, CategoriesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, CurrenciesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, MobilePhonesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, ElectronicDetailsValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, AmountValidationPolicy>();
+            services.AddScoped<IValidationPolicyDescriptorProvider, MobilePhoneFilterValidationPolicy>();
             return services;
         }
     }
