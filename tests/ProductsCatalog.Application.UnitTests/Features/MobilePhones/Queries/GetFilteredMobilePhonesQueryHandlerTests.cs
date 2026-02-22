@@ -3,6 +3,7 @@ using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMobilePhones;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
@@ -17,13 +18,19 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
     {
         var filter = new MobilePhoneFilterDto
         {
-            Brand = "Brand Y",
+            Brand = MobilePhonesBrand.Samsung,
             MinimalPrice = 200,
             MaximalPrice = 1200
         };
 
         var query = new GetFilteredMobilePhonesQuery(filter);
         var validationResult = new ValidationResult();
+        var brandNameFilter = new MobilePhoneReadFilterDto
+        {
+            BrandName = "Samsung",
+            MinimalPrice = 200,
+            MaximalPrice = 1200
+        };
 
         var readModels = new List<MobilePhoneReadModel>
         {
@@ -64,7 +71,12 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
 
         flowDescriberMock
             .InSequence(sequence)
-            .Setup(flow => flow.GetFilteredMobilePhones(repoMock.Object, filter, It.IsAny<CancellationToken>()))
+            .Setup(flow => flow.CastBrandToString(filter))
+            .Returns(brandNameFilter);
+
+        flowDescriberMock
+            .InSequence(sequence)
+            .Setup(flow => flow.GetFilteredMobilePhones(repoMock.Object, brandNameFilter, It.IsAny<CancellationToken>()))
             .ReturnsAsync(readModels);
 
         flowDescriberMock

@@ -18,9 +18,11 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMo
                 .ValidateFilter(request.filter, _mobilePhoneFilterValidationPolicy);
 
             _getFilteredMobilePhonesQueryFlowDescribtor.ThrowValidationExceptionIfFilterInvalid(validationResult);
+            var brandNameFilter = _getFilteredMobilePhonesQueryFlowDescribtor
+                .CastBrandToString(request.filter);
 
             var phones = await _getFilteredMobilePhonesQueryFlowDescribtor
-                .GetFilteredMobilePhones(_mobilePhonesQueriesRepository, request.filter, cancellationToken);
+                .GetFilteredMobilePhones(_mobilePhonesQueriesRepository, brandNameFilter, cancellationToken);
 
             return _getFilteredMobilePhonesQueryFlowDescribtor.MapMobilePhonesToDto(phones);
         }

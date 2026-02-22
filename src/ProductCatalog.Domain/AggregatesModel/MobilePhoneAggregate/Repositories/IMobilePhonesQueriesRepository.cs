@@ -10,6 +10,6 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositorie
         Task<IReadOnlyList<MobilePhoneReadModel>> GetPhones(int amount, CancellationToken ct);
         Task<IReadOnlyList<MobilePhonesHistory>> GetHistoryOfChanges(Guid mobilePhoneId, int pageNumber, int pageSize, CancellationToken ct);
         Task<IReadOnlyList<MobilePhoneReadModel>> GetTop(CancellationToken ct);
-        Task<IReadOnlyList<MobilePhoneReadModel>> GetFilteredPhones(MobilePhoneFilterDto mobilePhoneFilter, CancellationToken ct);
+        Task<IReadOnlyList<MobilePhoneReadModel>> GetFilteredPhones(MobilePhoneReadFilterDto mobilePhoneFilter, CancellationToken ct);
     }
 }
