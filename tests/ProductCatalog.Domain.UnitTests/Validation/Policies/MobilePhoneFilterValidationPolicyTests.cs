@@ -10,7 +10,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         public async Task Validate_WhenFilterPricesAreNegative_ShouldReturnErrors()
         {
             var policy = new MobilePhoneFilterValidationPolicy();
-            var filter = new MobilePhoneFilterDto { MinimalPrice = -1m, MaximalPrice = -10m };
+            var filter = new MobilePhoneFilterDto { MinimalPrice = -10m, MaximalPrice = -1m };
 
             var result = await policy.Validate(filter);
 
@@ -29,6 +29,19 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             result.GetValidatonErrors().Count.ShouldBe(0);
         }
 
+
+        [Fact]
+        public async Task Validate_WhenMinimalPriceIsNotLowerThanMaximalPrice_ShouldReturnError()
+        {
+            var policy = new MobilePhoneFilterValidationPolicy();
+            var filter = new MobilePhoneFilterDto { MinimalPrice = 10m, MaximalPrice = 10m };
+
+            var result = await policy.Validate(filter);
+
+            result.GetValidatonErrors().Count.ShouldBe(1);
+            result.GetValidatonErrors().ShouldContain(error => error.Name == "MobilePhoneFilterPriceRangeValidationRule");
+        }
+
         [Fact]
         public void Describe_ShouldReturnDescriptionForAllRules()
         {
@@ -36,9 +49,10 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
 
             var result = policy.Describe();
 
-            result.Rules.Count.ShouldBe(1);
+            result.Rules.Count.ShouldBe(2);
             result.PolicyName.ShouldBe("MobilePhoneFilterValidationPolicy");
             result.Rules.ShouldContain(rule => rule.RuleName == "MobilePhoneFilterPricesValidationRule");
+            result.Rules.ShouldContain(rule => rule.RuleName == "MobilePhoneFilterPriceRangeValidationRule");
         }
     }
 }
