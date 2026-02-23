@@ -28,6 +28,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
         private readonly List<MobilePhoneDetailsDto> _createdMobilePhones = new();
         private HttpResponseMessage? _response;
+        private ApiProblemDetails? _apiProblem;
         private Guid _categoryId;
 
         [Given("an existing set of mobile phones for top list")]
@@ -79,6 +80,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
+        [When("I request the top mobile phones list with amount {int}")]
+        public async Task WhenIRequestTheTopMobilePhonesListWithAmount(int amount)
+        {
+            AllureJson.AttachObject(
+                "Request JSON (get top with amount)",
+                new { Endpoint = "/mobile-phones/top", Amount = amount },
+                _jsonOptions);
+
+            _response = await TestRunHooks.Client.GetAsync($"/mobile-phones/top?amount={amount}");
+
+            var body = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
+
+            _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(body, _jsonOptions);
+        }
+
         [Then("the top mobile phones response is successful and contains records")]
         public async Task ThenTheTopMobilePhonesResponseIsSuccessfulAndContainsRecords()
         {
@@ -93,6 +110,24 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             {
                 result.Any(item => item.Id == created.Id).ShouldBeTrue();
             }
+        }
+
+        [Then("the top mobile phones response fails with validation errors")]
+        public void ThenTheTopMobilePhonesResponseFailsWithValidationErrors(Table table)
+        {
+            var expected = ParseExpectedTable(table);
+
+            _response.ShouldNotBeNull();
+            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
+
+            _apiProblem.ShouldNotBeNull();
+            _apiProblem.Title.ShouldBe(GetRequiredValue(expected, "Title"));
+            _apiProblem.Detail.ShouldBe(GetRequiredValue(expected, "Detail"));
+            _apiProblem.Errors.Count().ShouldBeGreaterThan(0);
+            _apiProblem.Errors.ShouldContain(error =>
+                error.Message == GetRequiredValue(expected, "ErrorMessage")
+                && error.Entity == GetRequiredValue(expected, "ErrorEntity")
+                && error.Name == GetRequiredValue(expected, "ErrorName"));
         }
 
         [Then("the top mobile phones response is not found")]
@@ -271,6 +306,42 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             return GetValue(values, key)
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        }
+
+        private static Dictionary<string, string> ParseExpectedTable(Table table)
+        {
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var row in table.Rows)
+            {
+                values[row["Field"]] = row["Value"];
+            }
+
+            return values;
+        }
+
+        private static HttpStatusCode ParseStatusCode(
+            IReadOnlyDictionary<string, string> values,
+            string key)
+        {
+            if (!values.TryGetValue(key, out var raw))
+            {
+                throw new InvalidOperationException($"Missing expected '{key}' value in table.");
+            }
+
+            return (HttpStatusCode)int.Parse(raw, CultureInfo.InvariantCulture);
+        }
+
+        private static string GetRequiredValue(
+            IReadOnlyDictionary<string, string> values,
+            string key)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing expected '{key}' value in table.");
+            }
+
+            return value;
         }
 
         private async Task<T?> DeserializeResponse<T>(HttpResponseMessage response)

@@ -49,3 +49,14 @@ Scenario: Get top mobile phones returns not found when no mobile phones exist
 	Given mobile phones table is empty for top list
 	When I request the top mobile phones list
 	Then the top mobile phones response is not found
+
+Scenario: Get top mobile phones returns validation error when amount is incorrect
+	When I request the top mobile phones list with amount 0
+	Then the top mobile phones response fails with validation errors
+		| Field        | Value                                    |
+		| StatusCode   | 400                                      |
+		| Title        | Bad Request                              |
+		| Detail       | One or more validation errors occurred.  |
+		| ErrorMessage | Amount must be greater than zero.        |
+		| ErrorEntity  | Amount                                   |
+		| ErrorName    | AmountGreaterThanZeroValidationRule      |
