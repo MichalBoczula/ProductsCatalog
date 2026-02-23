@@ -10,6 +10,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhon
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using Reqnroll;
 using Shouldly;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -30,14 +31,18 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         private Guid _categoryId;
 
         [Given("an existing set of mobile phones for top list")]
-        public async Task GivenAnExistingSetOfMobilePhonesForTopList()
+        public async Task GivenAnExistingSetOfMobilePhonesForTopList(Table table)
         {
             await ClearMobilePhones();
             await EnsureCategoryExists();
 
-            foreach (var name in new[] { "Top Phone 1", "Top Phone 2", "Top Phone 3" })
+            var values = MergeDefaultValues(table);
+            var baseName = GetValue(values, "Name");
+
+            for (var i = 1; i <= 3; i++)
             {
-                var request = BuildMobilePhoneRequest(name);
+                values["Name"] = $"{baseName} {i}";
+                var request = BuildMobilePhoneRequest(values);
 
                 AllureJson.AttachObject("Request JSON (create for top)", request, _jsonOptions);
 
@@ -128,37 +133,144 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             await context.SaveChangesAsync();
         }
 
-        private CreateMobilePhoneExternalDto BuildMobilePhoneRequest(string name)
+        private CreateMobilePhoneExternalDto BuildMobilePhoneRequest(IReadOnlyDictionary<string, string> values)
         {
             return new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
-                    name,
-                    "Brand",
-                    "Phone created by top endpoint acceptance test",
-                    "main-photo.jpg",
-                    new List<string> { "photo-1.jpg", "photo-2.jpg" }),
+                    GetValue(values, "Name"),
+                    GetValue(values, "Brand"),
+                    GetValue(values, "Description"),
+                    GetValue(values, "MainPhoto"),
+                    ParseList(values, "OtherPhotos")),
                 new CreateElectronicDetailsExternalDto(
-                    "Octa-core",
-                    "Adreno",
-                    "8GB",
-                    "256GB",
-                    "OLED",
-                    120,
-                    6.4m,
-                    72,
-                    152,
-                    "Li-Ion",
-                    4500),
-                new CreateConnectivityExternalDto(true, true, true, true),
-                new CreateSatelliteNavigationSystemExternalDto(true, true, true, true, true),
-                new CreateSensorsExternalDto(true, true, true, true, true, false, true),
-                "camera",
-                true,
-                true,
+                    GetValue(values, "CPU"),
+                    GetValue(values, "GPU"),
+                    GetValue(values, "Ram"),
+                    GetValue(values, "Storage"),
+                    GetValue(values, "DisplayType"),
+                    ParseInt(values, "RefreshRateHz"),
+                    ParseDecimal(values, "ScreenSizeInches"),
+                    ParseInt(values, "Width"),
+                    ParseInt(values, "Height"),
+                    GetValue(values, "BatteryType"),
+                    ParseInt(values, "BatteryCapacity")),
+                new CreateConnectivityExternalDto(
+                    ParseBool(values, "Has5G"),
+                    ParseBool(values, "WiFi"),
+                    ParseBool(values, "NFC"),
+                    ParseBool(values, "Bluetooth")),
+                new CreateSatelliteNavigationSystemExternalDto(
+                    ParseBool(values, "GPS"),
+                    ParseBool(values, "AGPS"),
+                    ParseBool(values, "Galileo"),
+                    ParseBool(values, "GLONASS"),
+                    ParseBool(values, "QZSS")),
+                new CreateSensorsExternalDto(
+                    ParseBool(values, "Accelerometer"),
+                    ParseBool(values, "Gyroscope"),
+                    ParseBool(values, "Proximity"),
+                    ParseBool(values, "Compass"),
+                    ParseBool(values, "Barometer"),
+                    ParseBool(values, "Halla"),
+                    ParseBool(values, "AmbientLight")),
+                GetValue(values, "Camera"),
+                ParseBool(values, "FingerPrint"),
+                ParseBool(values, "FaceId"),
                 _categoryId,
-                new CreateMoneyExternalDto(799.99m, "USD"),
-                "desc2",
-                "desc3");
+                new CreateMoneyExternalDto(
+                    ParseDecimal(values, "PriceAmount"),
+                    GetValue(values, "PriceCurrency")),
+                GetValue(values, "Description2"),
+                GetValue(values, "Description3"));
+        }
+
+        private static Dictionary<string, string> MergeDefaultValues(Table? table)
+        {
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Name"] = "Top Phone",
+                ["Brand"] = "Brand",
+                ["Description"] = "Phone created by top endpoint acceptance test",
+                ["MainPhoto"] = "main-photo.jpg",
+                ["OtherPhotos"] = "photo-1.jpg, photo-2.jpg",
+                ["CPU"] = "Octa-core",
+                ["GPU"] = "Adreno",
+                ["Ram"] = "8GB",
+                ["Storage"] = "256GB",
+                ["DisplayType"] = "OLED",
+                ["RefreshRateHz"] = "120",
+                ["ScreenSizeInches"] = "6.4",
+                ["Width"] = "72",
+                ["Height"] = "152",
+                ["BatteryType"] = "Li-Ion",
+                ["BatteryCapacity"] = "4500",
+                ["Has5G"] = "true",
+                ["WiFi"] = "true",
+                ["NFC"] = "true",
+                ["Bluetooth"] = "true",
+                ["GPS"] = "true",
+                ["AGPS"] = "true",
+                ["Galileo"] = "true",
+                ["GLONASS"] = "true",
+                ["QZSS"] = "true",
+                ["Accelerometer"] = "true",
+                ["Gyroscope"] = "true",
+                ["Proximity"] = "true",
+                ["Compass"] = "true",
+                ["Barometer"] = "true",
+                ["Halla"] = "false",
+                ["AmbientLight"] = "true",
+                ["Camera"] = "camera",
+                ["FingerPrint"] = "true",
+                ["FaceId"] = "true",
+                ["PriceAmount"] = "799.99",
+                ["PriceCurrency"] = "USD",
+                ["Description2"] = "desc2",
+                ["Description3"] = "desc3"
+            };
+
+            if (table is null)
+            {
+                return values;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                values[row["Field"]] = row["Value"];
+            }
+
+            return values;
+        }
+
+        private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
+        {
+            if (!values.TryGetValue(key, out var value))
+            {
+                throw new InvalidOperationException($"Missing '{key}' value in top mobile phone contract table.");
+            }
+
+            return value;
+        }
+
+        private static bool ParseBool(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return bool.Parse(GetValue(values, key));
+        }
+
+        private static int ParseInt(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return int.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ParseDecimal(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return decimal.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
+        }
+
+        private static IReadOnlyList<string> ParseList(IReadOnlyDictionary<string, string> values, string key)
+        {
+            return GetValue(values, key)
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
         private async Task<T?> DeserializeResponse<T>(HttpResponseMessage response)
