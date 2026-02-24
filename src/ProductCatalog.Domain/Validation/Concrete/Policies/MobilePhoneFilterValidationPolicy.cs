@@ -13,6 +13,7 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
         {
             _rules.Add(new MobilePhoneFilterPricesValidationRule());
             _rules.Add(new MobilePhoneFilterPriceRangeValidationRule());
+            _rules.Add(new MobilePhoneFilterBrandValidationRule());
         }
 
         public async Task<ValidationResult> Validate(MobilePhoneFilterDto mobilePhoneFilter)
