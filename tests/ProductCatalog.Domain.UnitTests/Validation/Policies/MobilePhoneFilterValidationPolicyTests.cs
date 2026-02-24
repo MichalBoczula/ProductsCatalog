@@ -42,6 +42,19 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
             result.GetValidatonErrors().ShouldContain(error => error.Name == "MobilePhoneFilterPriceRangeValidationRule");
         }
 
+
+        [Fact]
+        public async Task Validate_WhenBrandIsNotInEnum_ShouldReturnError()
+        {
+            var policy = new MobilePhoneFilterValidationPolicy();
+            var filter = new MobilePhoneFilterDto { Brand = (ProductCatalog.Domain.Common.Enums.MobilePhonesBrand)100, MinimalPrice = 0m, MaximalPrice = 10m };
+
+            var result = await policy.Validate(filter);
+
+            result.GetValidatonErrors().Count.ShouldBe(1);
+            result.GetValidatonErrors().ShouldContain(error => error.Name == "MobilePhoneFilterBrandValidationRule");
+        }
+
         [Fact]
         public void Describe_ShouldReturnDescriptionForAllRules()
         {
@@ -49,10 +62,11 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
 
             var result = policy.Describe();
 
-            result.Rules.Count.ShouldBe(2);
+            result.Rules.Count.ShouldBe(3);
             result.PolicyName.ShouldBe("MobilePhoneFilterValidationPolicy");
             result.Rules.ShouldContain(rule => rule.RuleName == "MobilePhoneFilterPricesValidationRule");
             result.Rules.ShouldContain(rule => rule.RuleName == "MobilePhoneFilterPriceRangeValidationRule");
+            result.Rules.ShouldContain(rule => rule.RuleName == "MobilePhoneFilterBrandValidationRule");
         }
     }
 }
