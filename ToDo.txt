@@ -1,2 +1,2 @@
-1. Add validation for filter brand must be in enum
-2. Test containers for filter and add contracts in gherkin for top endpoint
+1. Test containers for filter
+2. Generate new NSwag client
