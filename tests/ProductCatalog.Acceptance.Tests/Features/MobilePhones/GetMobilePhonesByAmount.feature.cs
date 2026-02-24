@@ -17,21 +17,21 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class GetMobilePhonesByFilterFeature : object, global::Xunit.IClassFixture<GetMobilePhonesByFilterFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class GetMobilePhonesByAmountFeature : object, global::Xunit.IClassFixture<GetMobilePhonesByAmountFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get mobile phones by filter", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get mobile phones by amount", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "GetMobilePhonesByFilter.feature"
+#line 1 "GetMobilePhonesByAmount.feature"
 #line hidden
         
-        public GetMobilePhonesByFilterFeature(GetMobilePhonesByFilterFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GetMobilePhonesByAmountFeature(GetMobilePhonesByAmountFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetMobilePhonesByFilter.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetMobilePhonesByAmount.feature.ndjson", 4);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,15 +133,15 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phones by filter returns matching list")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Get mobile phones by filter")]
-        [global::Xunit.TraitAttribute("Description", "Get mobile phones by filter returns matching list")]
-        public async global::System.Threading.Tasks.Task GetMobilePhonesByFilterReturnsMatchingList()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phones by amount returns matching list")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get mobile phones by amount")]
+        [global::Xunit.TraitAttribute("Description", "Get mobile phones by amount returns matching list")]
+        public async global::System.Threading.Tasks.Task GetMobilePhonesByAmountReturnsMatchingList()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by filter returns matching list", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by amount returns matching list", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 3
@@ -293,15 +293,15 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phones by filter returns an empty list when no mobile phones exist")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Get mobile phones by filter")]
-        [global::Xunit.TraitAttribute("Description", "Get mobile phones by filter returns an empty list when no mobile phones exist")]
-        public async global::System.Threading.Tasks.Task GetMobilePhonesByFilterReturnsAnEmptyListWhenNoMobilePhonesExist()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phones by amount returns an empty list when no mobile phones exist")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get mobile phones by amount")]
+        [global::Xunit.TraitAttribute("Description", "Get mobile phones by amount returns an empty list when no mobile phones exist")]
+        public async global::System.Threading.Tasks.Task GetMobilePhonesByAmountReturnsAnEmptyListWhenNoMobilePhonesExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by filter returns an empty list when no mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by amount returns an empty list when no mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 50
@@ -334,12 +334,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await GetMobilePhonesByFilterFeature.FeatureSetupAsync();
+                await GetMobilePhonesByAmountFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await GetMobilePhonesByFilterFeature.FeatureTearDownAsync();
+                await GetMobilePhonesByAmountFeature.FeatureTearDownAsync();
             }
         }
     }

@@ -1,6 +1,6 @@
-﻿Feature: Get mobile phones by filter
+﻿Feature: Get mobile phones by amount
 
-Scenario: Get mobile phones by filter returns matching list
+Scenario: Get mobile phones by amount returns matching list
 	Given an existing list of mobile phones
 		| Field            | Value                                 |
 		| Brand            | Brand                                 |
@@ -47,7 +47,7 @@ Scenario: Get mobile phones by filter returns matching list
 		| StatusCode       | 200          |
 		| Amount           | 2            |
 
-Scenario: Get mobile phones by filter returns an empty list when no mobile phones exist
+Scenario: Get mobile phones by amount returns an empty list when no mobile phones exist
 	Given no mobile phones exist in the database
 	When I request mobile phones with amount 3
 	Then an empty mobile phone list is returned

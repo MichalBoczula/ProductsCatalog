@@ -17,7 +17,7 @@ using System.Globalization;
 namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 {
     [Binding]
-    public class GetMobilePhonesByFilterSteps
+    public class GetMobilePhonesByAmountSteps
     {
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
