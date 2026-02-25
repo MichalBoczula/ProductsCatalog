@@ -1,4 +1,5 @@
 using ProductCatalog.Acceptance.Tests.Features.Common;
+using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
@@ -26,6 +27,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
         private HttpResponseMessage? _response;
         private List<MobilePhoneDto> _result = new();
+        private ApiProblemDetails? _apiProblem;
         private Guid _categoryId;
 
         [Given("existing mobile phones for filtering by brand")]
@@ -65,6 +67,25 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
+        [When("I filter mobile phones with invalid brand")]
+        public async Task WhenIFilterMobilePhonesWithInvalidBrand(Table table)
+        {
+            var values = ParseExpected(table);
+            var payload = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["Brand"] = int.Parse(values["Brand"], CultureInfo.InvariantCulture)
+            };
+
+            AllureJson.AttachObject("Request JSON (filter mobile phones invalid)", payload, _jsonOptions);
+
+            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones/filter", payload, _jsonOptions);
+
+            var body = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
+
+            _apiProblem = JsonSerializer.Deserialize<ApiProblemDetails>(body, _jsonOptions);
+        }
+
         [Then("only mobile phones matching brand are returned")]
         public async Task ThenOnlyMobilePhonesMatchingBrandAreReturned(Table table)
         {
@@ -76,6 +97,24 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
             _result.Count.ShouldBe(int.Parse(expected["Amount"], CultureInfo.InvariantCulture));
             _result.ShouldAllBe(m => m.Brand.Equals(expected["Brand"], StringComparison.OrdinalIgnoreCase));
+        }
+
+        [Then("filtering mobile phones fails with API error")]
+        public void ThenFilteringMobilePhonesFailsWithApiError(Table table)
+        {
+            var expected = ParseExpected(table);
+
+            _response.ShouldNotBeNull();
+            _response!.StatusCode.ShouldBe((HttpStatusCode)int.Parse(expected["StatusCode"], CultureInfo.InvariantCulture));
+
+            _apiProblem.ShouldNotBeNull();
+            _apiProblem!.Status.ShouldBe((int)_response.StatusCode);
+            _apiProblem.Title.ShouldBe(expected["Title"]);
+            _apiProblem.Detail.ShouldBe(expected["Detail"]);
+            _apiProblem.Errors.ShouldContain(error =>
+                error.Message == expected["ErrorMessage"]
+                && error.Entity == expected["ErrorEntity"]
+                && error.Name == expected["ErrorName"]);
         }
 
         private CreateMobilePhoneExternalDto BuildRequest(string name, string brand, decimal priceAmount)
