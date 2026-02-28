@@ -5,6 +5,6 @@
         Apple,
         Motorola,
         Samsung,
-        Xiomi
+        Xiaomi
     }
 }
