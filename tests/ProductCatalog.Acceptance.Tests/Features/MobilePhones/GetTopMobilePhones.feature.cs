@@ -105,7 +105,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetTopMobilePhones.feature.ndjson", 5);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetTopMobilePhones.feature.ndjson", 4);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -154,128 +154,128 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table48 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Name",
                             "Top Phone"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Brand",
                             "Brand"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Description",
                             "Phone created by top endpoint acceptance test"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "MainPhoto",
                             "main-photo.jpg"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "OtherPhotos",
                             "photo-1.jpg, photo-2.jpg"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "CPU",
                             "Octa-core"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "GPU",
                             "Adreno"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Ram",
                             "8GB"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Storage",
                             "256GB"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "DisplayType",
                             "OLED"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "RefreshRateHz",
                             "120"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "ScreenSizeInches",
                             "6.4"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Width",
                             "72"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Height",
                             "152"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "BatteryType",
                             "Li-Ion"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "BatteryCapacity",
                             "4500"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Has5G",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "WiFi",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "NFC",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Bluetooth",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "GPS",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "AGPS",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Galileo",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "GLONASS",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "QZSS",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Accelerometer",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Gyroscope",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Proximity",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Compass",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Barometer",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Halla",
                             "false"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "AmbientLight",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Camera",
                             "camera"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "FingerPrint",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "FaceId",
                             "true"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "PriceAmount",
                             "799.99"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "PriceCurrency",
                             "USD"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Description2",
                             "desc2"});
-                table48.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "Description3",
                             "desc3"});
 #line 4
- await testRunner.GivenAsync("an existing set of mobile phones for top list", ((string)(null)), table48, "Given ");
+ await testRunner.GivenAsync("an existing set of mobile phones for top list", ((string)(null)), table1, "Given ");
 #line hidden
 #line 45
  await testRunner.WhenAsync("I request the top mobile phones list", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
@@ -316,58 +316,6 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
 #line 51
  await testRunner.ThenAsync("the top mobile phones response is not found", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get top mobile phones returns validation error when amount is incorrect")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Get top mobile phones")]
-        [global::Xunit.TraitAttribute("Description", "Get top mobile phones returns validation error when amount is incorrect")]
-        public async global::System.Threading.Tasks.Task GetTopMobilePhonesReturnsValidationErrorWhenAmountIsIncorrect()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get top mobile phones returns validation error when amount is incorrect", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 53
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 54
- await testRunner.WhenAsync("I request the top mobile phones list with amount 0", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-                global::Reqnroll.Table table49 = new global::Reqnroll.Table(new string[] {
-                            "Field",
-                            "Value"});
-                table49.AddRow(new string[] {
-                            "StatusCode",
-                            "400"});
-                table49.AddRow(new string[] {
-                            "Title",
-                            "Bad Request"});
-                table49.AddRow(new string[] {
-                            "Detail",
-                            "One or more validation errors occurred."});
-                table49.AddRow(new string[] {
-                            "ErrorMessage",
-                            "Amount must be greater than zero."});
-                table49.AddRow(new string[] {
-                            "ErrorEntity",
-                            "Amount"});
-                table49.AddRow(new string[] {
-                            "ErrorName",
-                            "AmountGreaterThanZeroValidationRule"});
-#line 55
- await testRunner.ThenAsync("the top mobile phones response fails with validation errors", ((string)(null)), table49, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
