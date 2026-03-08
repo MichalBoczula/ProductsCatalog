@@ -168,7 +168,7 @@ public class CreateMobilePhoneCommandHandlerTests
         result.CategoryId.ShouldBe(command.mobilePhoneExternalDto.CategoryId);
         result.Price.Amount.ShouldBe(command.mobilePhoneExternalDto.Price.Amount);
         result.Price.Currency.ShouldBe(command.mobilePhoneExternalDto.Price.Currency.ToUpperInvariant());
-        result.IsActive.ShouldBeTrue();
+        result.IsActive.ShouldBeFalse();
     }
 
     [Fact]

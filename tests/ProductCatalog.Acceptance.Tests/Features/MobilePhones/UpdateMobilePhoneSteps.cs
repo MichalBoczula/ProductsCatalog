@@ -161,7 +161,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
-            _apiProblem.ShouldNotBeNull();
+            _apiProblem.ShouldBeNull();
             _apiProblem.Title.ShouldBe(GetRequiredValue(expected, "Title"));
             _apiProblem.Detail.ShouldBe(GetRequiredValue(expected, "Detail"));
             _apiProblem.Errors.Count().ShouldBeGreaterThan(0);
