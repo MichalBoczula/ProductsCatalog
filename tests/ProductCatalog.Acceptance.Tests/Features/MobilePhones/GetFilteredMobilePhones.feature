@@ -5,15 +5,15 @@ Scenario: Filter mobile phones by brand returns matching records
 		| Name             | Brand    | PriceAmount |
 		| Apple One        | Apple    | 999.99      |
 		| Samsung One      | Samsung  | 899.99      |
-		| Apple Two        | Apple    | 1099.99     |
+		| Apple Two        | Xiaomi    | 1099.99     |
 	When I filter mobile phones by brand
 		| Field | Value |
-		| Brand | Apple |
+		| Brand | Xiaomi |
 	Then only mobile phones matching brand are returned
 		| Field      | Value |
 		| StatusCode | 200   |
-		| Amount     | 2     |
-		| Brand      | Apple |
+		| Amount     | 1     |
+		| Brand      | Xiaomi |
 
 Scenario: Filter mobile phones fails when brand is outside enum values
 	Given existing mobile phones for filtering by brand
