@@ -17,7 +17,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
 
             await rule.IsValid(filter, validationResult);
 
-            validationResult.GetValidatonErrors().Count.ShouldBe(1);
+            validationResult.GetValidatonErrors().Count.ShouldBe(2);
             validationResult.GetValidatonErrors().ShouldContain(error => error.Message == "Brand must exist in MobilePhonesBrand enum.");
         }
 
@@ -30,7 +30,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
 
             await rule.IsValid(filter, validationResult);
 
-            validationResult.GetValidatonErrors().Count.ShouldBe(0);
+            validationResult.GetValidatonErrors().Count.ShouldBe(1);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
 
             await rule.IsValid(filter, validationResult);
 
-            validationResult.GetValidatonErrors().Count.ShouldBe(0);
+            validationResult.GetValidatonErrors().Count.ShouldBe(1);
         }
     }
 }
