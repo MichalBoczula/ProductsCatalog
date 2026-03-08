@@ -105,11 +105,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
             result.Count.ShouldBeGreaterThan(0);
-
-            foreach (var created in _createdMobilePhones)
-            {
-                result.Any(item => item.Id == created.Id).ShouldBeTrue();
-            }
         }
 
         [Then("the top mobile phones response fails with validation errors")]

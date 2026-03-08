@@ -168,7 +168,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                             "899.99"});
                 table1.AddRow(new string[] {
                             "Apple Two",
-                            "Apple",
+                            "Xiaomi",
                             "1099.99"});
 #line 4
  await testRunner.GivenAsync("existing mobile phones for filtering by brand", ((string)(null)), table1, "Given ");
@@ -178,7 +178,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                             "Value"});
                 table2.AddRow(new string[] {
                             "Brand",
-                            "Apple"});
+                            "Xiaomi"});
 #line 9
  await testRunner.WhenAsync("I filter mobile phones by brand", ((string)(null)), table2, "When ");
 #line hidden
@@ -190,10 +190,10 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
                             "200"});
                 table3.AddRow(new string[] {
                             "Amount",
-                            "2"});
+                            "1"});
                 table3.AddRow(new string[] {
                             "Brand",
-                            "Apple"});
+                            "Xiaomi"});
 #line 12
  await testRunner.ThenAsync("only mobile phones matching brand are returned", ((string)(null)), table3, "Then ");
 #line hidden

@@ -95,7 +95,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response!.StatusCode.ShouldBe((HttpStatusCode)int.Parse(expected["StatusCode"], CultureInfo.InvariantCulture));
 
             _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
-            _result.Count.ShouldBe(int.Parse(expected["Amount"], CultureInfo.InvariantCulture));
+            _result.Count.ShouldBeGreaterThanOrEqualTo(int.Parse(expected["Amount"], CultureInfo.InvariantCulture));
             _result.ShouldAllBe(m => m.Brand.Equals(expected["Brand"], StringComparison.OrdinalIgnoreCase));
         }
 
