@@ -154,48 +154,48 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table37 = new global::Reqnroll.Table(new string[] {
                             "Name",
                             "Brand",
                             "PriceAmount"});
-                table1.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "Apple One",
                             "Apple",
                             "999.99"});
-                table1.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "Samsung One",
                             "Samsung",
                             "899.99"});
-                table1.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "Apple Two",
                             "Xiaomi",
                             "1099.99"});
 #line 4
- await testRunner.GivenAsync("existing mobile phones for filtering by brand", ((string)(null)), table1, "Given ");
+ await testRunner.GivenAsync("existing mobile phones for filtering by brand", ((string)(null)), table37, "Given ");
 #line hidden
-                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table38 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table2.AddRow(new string[] {
+                table38.AddRow(new string[] {
                             "Brand",
                             "Xiaomi"});
 #line 9
- await testRunner.WhenAsync("I filter mobile phones by brand", ((string)(null)), table2, "When ");
+ await testRunner.WhenAsync("I filter mobile phones by brand", ((string)(null)), table38, "When ");
 #line hidden
-                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table39 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table3.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "StatusCode",
                             "200"});
-                table3.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "Amount",
                             "1"});
-                table3.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "Brand",
                             "Xiaomi"});
 #line 12
- await testRunner.ThenAsync("only mobile phones matching brand are returned", ((string)(null)), table3, "Then ");
+ await testRunner.ThenAsync("only mobile phones matching brand are returned", ((string)(null)), table39, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -222,53 +222,53 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table40 = new global::Reqnroll.Table(new string[] {
                             "Name",
                             "Brand",
                             "PriceAmount"});
-                table4.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "Apple One",
                             "Apple",
                             "999.99"});
-                table4.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "Samsung One",
                             "Samsung",
                             "899.99"});
 #line 19
- await testRunner.GivenAsync("existing mobile phones for filtering by brand", ((string)(null)), table4, "Given ");
+ await testRunner.GivenAsync("existing mobile phones for filtering by brand", ((string)(null)), table40, "Given ");
 #line hidden
-                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table41 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table5.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "Brand",
                             "999"});
 #line 23
- await testRunner.WhenAsync("I filter mobile phones with invalid brand", ((string)(null)), table5, "When ");
+ await testRunner.WhenAsync("I filter mobile phones with invalid brand", ((string)(null)), table41, "When ");
 #line hidden
-                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table42 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table6.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "StatusCode",
                             "400"});
-                table6.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "Title",
                             "Validation failed"});
-                table6.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "Detail",
                             "One or more validation errors occurred."});
-                table6.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "ErrorMessage",
                             "Brand must exist in MobilePhonesBrand enum."});
-                table6.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "ErrorEntity",
                             "MobilePhoneFilterDto"});
-                table6.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "ErrorName",
                             "MobilePhoneFilterBrandValidationRule"});
 #line 26
- await testRunner.ThenAsync("filtering mobile phones fails with API error", ((string)(null)), table6, "Then ");
+ await testRunner.ThenAsync("filtering mobile phones fails with API error", ((string)(null)), table42, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
