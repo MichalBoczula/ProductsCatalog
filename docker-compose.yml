@@ -1,0 +1,6 @@
+services:
+  productcatalog.api:
+    image: ${DOCKER_REGISTRY-}productcatalogapi
+    build:
+      context: .
+      dockerfile: src/ProductCatalog.Api/Dockerfile
