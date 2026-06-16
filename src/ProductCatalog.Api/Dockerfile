@@ -12,18 +12,14 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-
-# FIX: Added "src/" prefix so CI/CD can locate these folders from the root repository directory
-COPY ["src/ProductCatalog.Api/ProductCatalog.Api/ProductCatalog.Api.csproj", "ProductCatalog.Api/ProductCatalog.Api/"]
-COPY ["src/ProductCatalog.Application/ProductCatalog.Application.csproj", "ProductCatalog.Application/"]
-COPY ["src/ProductCatalog.Domain/ProductCatalog.Domain.csproj", "ProductCatalog.Domain/"]
-COPY ["src/ProductCatalog.Infrastructure/ProductCatalog.Infrastructure.csproj", "ProductCatalog.Infrastructure/"]
-
-RUN dotnet restore "./ProductCatalog.Api/ProductCatalog.Api/ProductCatalog.Api.csproj"
+COPY ["Directory.Build.props", "."]
+COPY ["src/ProductCatalog.Api/ProductCatalog.Api.csproj", "src/ProductCatalog.Api/"]
+COPY ["src/ProductCatalog.Application/ProductCatalog.Application.csproj", "src/ProductCatalog.Application/"]
+COPY ["src/ProductCatalog.Domain/ProductCatalog.Domain.csproj", "src/ProductCatalog.Domain/"]
+COPY ["src/ProductCatalog.Infrastructure/ProductCatalog.Infrastructure.csproj", "src/ProductCatalog.Infrastructure/"]
+RUN dotnet restore "./src/ProductCatalog.Api/ProductCatalog.Api.csproj"
 COPY . .
-
-# FIX: Adjusted WORKDIR to point to where the API source code actually landed
-WORKDIR "/src/src/ProductCatalog.Api/ProductCatalog.Api"
+WORKDIR "/src/src/ProductCatalog.Api"
 RUN dotnet build "./ProductCatalog.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
