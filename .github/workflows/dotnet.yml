@@ -20,10 +20,10 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ProductsCatalog.sln
 
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ProductsCatalog.sln --configuration Release --no-restore
 
   domain-unit-tests:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ProductsCatalog.sln
 
       - name: Run domain unit tests
         continue-on-error: true
@@ -129,7 +129,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ProductsCatalog.sln
 
       - name: Run application unit tests
         continue-on-error: true
@@ -219,7 +219,7 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ProductsCatalog.sln
 
       - name: Run acceptance tests
         continue-on-error: true
