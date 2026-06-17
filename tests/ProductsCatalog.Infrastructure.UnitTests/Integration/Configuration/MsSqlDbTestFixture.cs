@@ -1,28 +1,22 @@
-using DotNet.Testcontainers.Builders;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using DotNet.Testcontainers.Builders;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using ProductCatalog.Api;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using Testcontainers.MsSql;
 
-namespace ProductCatalog.Acceptance.Tests
+namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Configuration
 {
-    public class ApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
+    public sealed class MsSqlDbTestFixture : IAsyncLifetime
     {
         private const string Database = "IntegrationTestDb";
         private const string Username = "sa";
         private const string Password = "yourStrong(!)Password";
         private const ushort MsSqlPort = 1433;
-
         private readonly MsSqlContainer _msSqlContainer;
         private string _connectionString = string.Empty;
+        public string ConnectionString => _connectionString;
 
-        public ApplicationFactory()
+        public MsSqlDbTestFixture()
         {
             _msSqlContainer = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
                 .WithPortBinding(MsSqlPort, true)
@@ -33,30 +27,6 @@ namespace ProductCatalog.Acceptance.Tests
                 .WithWaitStrategy(Wait.ForUnixContainer()
                         .UntilExternalTcpPortIsAvailable(MsSqlPort))
                 .Build();
-        }
-
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.ConfigureAppConfiguration((_, config) =>
-            {
-                var overrides = new Dictionary<string, string?>
-                {
-                    ["ConnectionStrings:ProductCatalogDb"] = _connectionString
-                };
-                config.AddInMemoryCollection(overrides);
-            });
-
-            builder.ConfigureServices(services =>
-            {
-                services.RemoveAll<DbContextOptions<ProductsContext>>();
-                services.RemoveAll<ProductsContext>();
-
-                services.AddDbContext<ProductsContext>(options =>
-                    options.UseSqlServer(_connectionString, sql =>
-                    {
-                        sql.MigrationsHistoryTable("__EFMigrationsHistory");
-                    }));
-            });
         }
 
         public async Task InitializeAsync()
@@ -70,16 +40,21 @@ namespace ProductCatalog.Acceptance.Tests
                 $"Server={host},{port};User Id={Username};Password={Password};" +
                 $"TrustServerCertificate=True;Encrypt=False;Connection Timeout=5;";
 
-            await WaitUntilSqlIsReady(baseCs); 
+            await WaitUntilSqlIsReady(baseCs);
 
             _connectionString = baseCs + $"Database={Database};";
 
-            using var scope = Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<ProductsContext>();
+            optionsBuilder.UseSqlServer(_connectionString, sql =>
+            {
+                sql.MigrationsHistoryTable("__EFMigrationsHistory");
+            });
+
+            using var dbContext = new ProductsContext(optionsBuilder.Options);
             await dbContext.Database.MigrateAsync();
         }
 
-        public new async Task DisposeAsync()
+        public async Task DisposeAsync()
         {
             await _msSqlContainer.DisposeAsync();
         }

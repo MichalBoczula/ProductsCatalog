@@ -13,7 +13,7 @@ services:
 
   # 2. Your .NET Core API Service
   productcatalogapi:
-    image: productcatalogapi:latest
+    image: productcatalogapi:latest66
     container_name: product-catalog-api
     ports:
       - "5000:8080"

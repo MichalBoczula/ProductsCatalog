@@ -7,7 +7,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.HealthCheckTests
     [Binding]
     public class HealthCheckSteps
     {
-        private HttpResponseMessage _httpResponseMessage;
+        private HttpResponseMessage? _httpResponseMessage;
 
         [When("I request the health endpoint")]
         public async Task WhenIRequestTheHealthEndpoint()
@@ -18,7 +18,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.HealthCheckTests
         [Then("the response status code should be {int}")]
         public void ThenTheResponseStatusCodeShouldBe(int p0)
         {
-            _httpResponseMessage.StatusCode.ShouldBe((System.Net.HttpStatusCode)p0);
+            _httpResponseMessage!.StatusCode.ShouldBe((System.Net.HttpStatusCode)p0);
         }
     }
 }

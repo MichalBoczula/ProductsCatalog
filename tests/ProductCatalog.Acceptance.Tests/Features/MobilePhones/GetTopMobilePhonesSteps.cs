@@ -28,7 +28,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
         private readonly List<MobilePhoneDetailsDto> _createdMobilePhones = new();
         private HttpResponseMessage? _response;
-        private ApiProblemDetails? _apiProblem;
         private Guid _categoryId;
 
         [Given("an existing set of mobile phones for top list")]
