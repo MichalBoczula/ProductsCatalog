@@ -20,8 +20,6 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
 using System.Text.Json;
@@ -247,12 +245,6 @@ namespace ProductCatalog.Application.Mapping
 
         private static void CreateMappingForHistory()
         {
-            TypeAdapterConfig<Product, ProductsHistory>
-                .NewConfig()
-                .Map(dest => dest.ProductId, src => src.Id)
-                .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
-                .Ignore(dest => dest.Id);
-
             TypeAdapterConfig<Category, CategoriesHistory>
                 .NewConfig()
                 .Map(dest => dest.CategoryId, src => src.Id)

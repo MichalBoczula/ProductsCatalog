@@ -4,12 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using ProductCatalog.Infrastructure.Repositories.Categories;
 using ProductCatalog.Infrastructure.Repositories.Currencies;
 using ProductCatalog.Infrastructure.Repositories.MobilePhones;
-using ProductCatalog.Infrastructure.Repositories.Products;
 
 namespace ProductCatalog.Infrastructure
 {
@@ -26,9 +24,6 @@ namespace ProductCatalog.Infrastructure
                 {
                     sql.MigrationsHistoryTable("__EFMigrationsHistory");
                 }));
-
-            services.AddScoped<IProductsCommandsRepository, ProductsCommandsRepository>();
-            services.AddScoped<IProductsQueriesRepository, ProductsQueriesRepository>();
 
             services.AddScoped<ICategoriesCommandsRepository, CategoriesCommandsRepository>();
             services.AddScoped<ICategoriesQueriesRepository, CategoriesQueriesRepository>();

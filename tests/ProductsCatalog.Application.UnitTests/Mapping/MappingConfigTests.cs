@@ -17,8 +17,6 @@ using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate;
-using ProductCatalog.Domain.AggregatesModel.ProductAggregate.History;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.ReadModels;
 using Shouldly;
@@ -270,23 +268,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         }
 
         [Fact]
-        public void Product_ShouldMapTo_ProductDtoWithPrice()
-        {
-            var categoryId = Guid.NewGuid();
-            var product = new Product("Laptop", "Powerful", new Money(1500, "usd"), categoryId);
-
-            var dto = product.Adapt<ProductDto>();
-
-            dto.Id.ShouldBe(product.Id);
-            dto.Name.ShouldBe(product.Name);
-            dto.Description.ShouldBe(product.Description);
-            dto.Price.Amount.ShouldBe(product.Price.Amount);
-            dto.Price.Currency.ShouldBe(product.Price.Currency);
-            dto.CategoryId.ShouldBe(categoryId);
-            dto.IsActive.ShouldBe(product.IsActive);
-        }
-
-        [Fact]
         public void ProductReadModel_ShouldMapTo_ProductDtoWithPrice()
         {
             var priceAmount = 23.5m;
@@ -431,29 +412,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Code.ShouldBe(readModel.Code);
             dto.Description.ShouldBe(readModel.Description);
             dto.IsActive.ShouldBeTrue();
-        }
-
-        [Fact]
-        public void Product_ShouldMapTo_ProductsHistory()
-        {
-            var categoryId = Guid.NewGuid();
-            var product = new Product("Console", "Next gen", new Money(499.99m, "usd"), categoryId);
-            var operation = Operation.Updated;
-
-            var history = product.BuildAdapter()
-                .AddParameters("operation", operation)
-                .AdaptToType<ProductsHistory>();
-
-            history.Id.ShouldNotBe(Guid.Empty);
-            history.ProductId.ShouldBe(product.Id);
-            history.Name.ShouldBe(product.Name);
-            history.Description.ShouldBe(product.Description);
-            history.PriceAmount.ShouldBe(product.Price.Amount);
-            history.PriceCurrency.ShouldBe(product.Price.Currency);
-            history.CategoryId.ShouldBe(categoryId);
-            history.IsActive.ShouldBe(product.IsActive);
-            history.ChangedAt.ShouldBe(product.ChangedAt);
-            history.Operation.ShouldBe(operation);
         }
 
         [Fact]
