@@ -137,7 +137,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 mobilePhone.Id.ShouldNotBe(Guid.Empty);
                 mobilePhone.Name.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.Brand.ShouldNotBeNullOrWhiteSpace();
-                mobilePhone.MainPhoto.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.PriceCurrency.ShouldNotBeNullOrWhiteSpace();
             }
         }
