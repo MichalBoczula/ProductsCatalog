@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
@@ -212,6 +212,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                     Camera,
                     DisplayType,
                     ScreenSizeInches,
+                    PriceAmount,
                     PriceCurrency,
                     IsActive
                 FROM {SqlTableNames.MobilePhones}
