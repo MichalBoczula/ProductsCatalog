@@ -1,11 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using ProductCatalog.Infrastructure.Repositories.MobilePhones;
 using ProductsCatalog.Infrastructure.UnitTests.Integration.Configuration;
 using Shouldly;
+using System.Text.Json;
 
 namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
 {
@@ -163,6 +166,83 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             result.Price.Amount.ShouldBe(650m);
         }
 
+        [Fact]
+        public async Task AddWithHistory_ShouldPersistBothRecordsWithMatchingData()
+        {
+            // Arrange
+            using var context = CreateContext();
+            var repository = new MobilePhonesCommandsRepository(context);
+
+            var mobilePhone = CreateMobilePhone("History Add Phone", "History add description", 1234.56m);
+            var history = CreateTestHistory(mobilePhone, Operation.Inserted);
+
+            // Act
+            repository.Add(mobilePhone);
+            repository.WriteHistory(history);
+            await repository.SaveChanges(CancellationToken.None);
+
+            // Assert
+            using var assertContext = CreateContext();
+            var mobilePhoneResult = await assertContext.MobilePhones.FirstOrDefaultAsync(x => x.Id == mobilePhone.Id);
+            var historyResult = await assertContext.MobilePhonesHistories.FirstOrDefaultAsync(x => x.MobilePhoneId == mobilePhone.Id);
+
+            mobilePhoneResult.ShouldNotBeNull();
+            historyResult.ShouldNotBeNull();
+            historyResult.Id.ShouldNotBe(Guid.Empty);
+            AssertHistoryMatchesMobilePhone(historyResult, mobilePhoneResult, Operation.Inserted);
+        }
+
+        [Fact]
+        public async Task UpdateWithHistory_ShouldPersistTwoHistoryRecordsAndNewestRecordShouldMatchUpdatedMobilePhone()
+        {
+            // Arrange
+            Guid mobilePhoneId;
+            using (var setupContext = CreateContext())
+            {
+                var setupRepository = new MobilePhonesCommandsRepository(setupContext);
+                var initialMobilePhone = CreateMobilePhone("Initial History Phone", "Initial history description", 700m);
+                setupRepository.Add(initialMobilePhone);
+                setupRepository.WriteHistory(CreateTestHistory(initialMobilePhone, Operation.Inserted));
+                await setupRepository.SaveChanges(CancellationToken.None);
+                mobilePhoneId = initialMobilePhone.Id;
+            }
+
+            // Act
+            using var context = CreateContext();
+            var repository = new MobilePhonesCommandsRepository(context);
+            var mobilePhoneToUpdate = await repository.GetById(mobilePhoneId, CancellationToken.None);
+
+            mobilePhoneToUpdate.ShouldNotBeNull();
+
+            var newInfo = CreateMobilePhone(
+                "Updated History Phone",
+                "Updated history description",
+                850m,
+                camera: "200 MP",
+                fingerPrint: false,
+                faceId: true);
+            mobilePhoneToUpdate.AssigneNewMobilePhoneInformation(newInfo);
+
+            repository.Update(mobilePhoneToUpdate);
+            repository.WriteHistory(CreateTestHistory(mobilePhoneToUpdate, Operation.Updated));
+            await repository.SaveChanges(CancellationToken.None);
+
+            // Assert
+            using var assertContext = CreateContext();
+            var mobilePhoneResult = await assertContext.MobilePhones.FirstOrDefaultAsync(x => x.Id == mobilePhoneId);
+            var historyResults = await assertContext.MobilePhonesHistories
+                .Where(x => x.MobilePhoneId == mobilePhoneId)
+                .OrderByDescending(x => x.ChangedAt)
+                .ThenByDescending(x => x.Id)
+                .ToListAsync();
+
+            mobilePhoneResult.ShouldNotBeNull();
+            historyResults.Count.ShouldBe(2);
+
+            var newestHistoryResult = historyResults.First();
+            AssertHistoryMatchesMobilePhone(newestHistoryResult, mobilePhoneResult, Operation.Updated);
+        }
+
         private static MobilePhone CreateMobilePhone(
             string name,
             string description,
@@ -184,6 +264,108 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 new Money(price, "usd"),
                 "Second description",
                 "Third description");
+        }
+
+        private static MobilePhonesHistory CreateTestHistory(MobilePhone mobilePhone, Operation operation)
+        {
+            return new MobilePhonesHistory
+            {
+                MobilePhoneId = mobilePhone.Id,
+                Name = mobilePhone.CommonDescription.Name,
+                Brand = mobilePhone.CommonDescription.Brand,
+                Description = mobilePhone.CommonDescription.Description,
+                MainPhoto = mobilePhone.CommonDescription.MainPhoto,
+                OtherPhotos = JsonSerializer.Serialize(mobilePhone.CommonDescription.OtherPhotos),
+                CPU = mobilePhone.ElectronicDetails.CPU,
+                GPU = mobilePhone.ElectronicDetails.GPU,
+                Ram = mobilePhone.ElectronicDetails.Ram,
+                Storage = mobilePhone.ElectronicDetails.Storage,
+                DisplayType = mobilePhone.ElectronicDetails.DisplayType,
+                RefreshRateHz = mobilePhone.ElectronicDetails.RefreshRateHz,
+                ScreenSizeInches = mobilePhone.ElectronicDetails.ScreenSizeInches,
+                Width = mobilePhone.ElectronicDetails.Width,
+                Height = mobilePhone.ElectronicDetails.Height,
+                BatteryType = mobilePhone.ElectronicDetails.BatteryType,
+                BatteryCapacity = mobilePhone.ElectronicDetails.BatteryCapacity,
+                GPS = mobilePhone.SatelliteNavigationSystems.GPS,
+                AGPS = mobilePhone.SatelliteNavigationSystems.AGPS,
+                Galileo = mobilePhone.SatelliteNavigationSystems.Galileo,
+                GLONASS = mobilePhone.SatelliteNavigationSystems.GLONASS,
+                QZSS = mobilePhone.SatelliteNavigationSystems.QZSS,
+                Accelerometer = mobilePhone.Sensors.Accelerometer,
+                Gyroscope = mobilePhone.Sensors.Gyroscope,
+                Proximity = mobilePhone.Sensors.Proximity,
+                Compass = mobilePhone.Sensors.Compass,
+                Barometer = mobilePhone.Sensors.Barometer,
+                Halla = mobilePhone.Sensors.Halla,
+                AmbientLight = mobilePhone.Sensors.AmbientLight,
+                Has5G = mobilePhone.Connectivity.Has5G,
+                WiFi = mobilePhone.Connectivity.WiFi,
+                NFC = mobilePhone.Connectivity.NFC,
+                Bluetooth = mobilePhone.Connectivity.Bluetooth,
+                Camera = mobilePhone.Camera,
+                FingerPrint = mobilePhone.FingerPrint,
+                FaceId = mobilePhone.FaceId,
+                CategoryId = mobilePhone.CategoryId,
+                PriceAmount = mobilePhone.Price.Amount,
+                PriceCurrency = mobilePhone.Price.Currency,
+                Description2 = mobilePhone.Description2,
+                Description3 = mobilePhone.Description3,
+                IsActive = mobilePhone.IsActive,
+                ChangedAt = mobilePhone.ChangedAt,
+                Operation = operation
+            };
+        }
+
+        private static void AssertHistoryMatchesMobilePhone(
+            MobilePhonesHistory history,
+            MobilePhone mobilePhone,
+            Operation operation)
+        {
+            history.MobilePhoneId.ShouldBe(mobilePhone.Id);
+            history.Name.ShouldBe(mobilePhone.CommonDescription.Name);
+            history.Brand.ShouldBe(mobilePhone.CommonDescription.Brand);
+            history.Description.ShouldBe(mobilePhone.CommonDescription.Description);
+            history.MainPhoto.ShouldBe(mobilePhone.CommonDescription.MainPhoto);
+            history.OtherPhotos.ShouldBe(JsonSerializer.Serialize(mobilePhone.CommonDescription.OtherPhotos));
+            history.CPU.ShouldBe(mobilePhone.ElectronicDetails.CPU);
+            history.GPU.ShouldBe(mobilePhone.ElectronicDetails.GPU);
+            history.Ram.ShouldBe(mobilePhone.ElectronicDetails.Ram);
+            history.Storage.ShouldBe(mobilePhone.ElectronicDetails.Storage);
+            history.DisplayType.ShouldBe(mobilePhone.ElectronicDetails.DisplayType);
+            history.RefreshRateHz.ShouldBe(mobilePhone.ElectronicDetails.RefreshRateHz);
+            history.ScreenSizeInches.ShouldBe(mobilePhone.ElectronicDetails.ScreenSizeInches);
+            history.Width.ShouldBe(mobilePhone.ElectronicDetails.Width);
+            history.Height.ShouldBe(mobilePhone.ElectronicDetails.Height);
+            history.BatteryType.ShouldBe(mobilePhone.ElectronicDetails.BatteryType);
+            history.BatteryCapacity.ShouldBe(mobilePhone.ElectronicDetails.BatteryCapacity);
+            history.GPS.ShouldBe(mobilePhone.SatelliteNavigationSystems.GPS);
+            history.AGPS.ShouldBe(mobilePhone.SatelliteNavigationSystems.AGPS);
+            history.Galileo.ShouldBe(mobilePhone.SatelliteNavigationSystems.Galileo);
+            history.GLONASS.ShouldBe(mobilePhone.SatelliteNavigationSystems.GLONASS);
+            history.QZSS.ShouldBe(mobilePhone.SatelliteNavigationSystems.QZSS);
+            history.Accelerometer.ShouldBe(mobilePhone.Sensors.Accelerometer);
+            history.Gyroscope.ShouldBe(mobilePhone.Sensors.Gyroscope);
+            history.Proximity.ShouldBe(mobilePhone.Sensors.Proximity);
+            history.Compass.ShouldBe(mobilePhone.Sensors.Compass);
+            history.Barometer.ShouldBe(mobilePhone.Sensors.Barometer);
+            history.Halla.ShouldBe(mobilePhone.Sensors.Halla);
+            history.AmbientLight.ShouldBe(mobilePhone.Sensors.AmbientLight);
+            history.Has5G.ShouldBe(mobilePhone.Connectivity.Has5G);
+            history.WiFi.ShouldBe(mobilePhone.Connectivity.WiFi);
+            history.NFC.ShouldBe(mobilePhone.Connectivity.NFC);
+            history.Bluetooth.ShouldBe(mobilePhone.Connectivity.Bluetooth);
+            history.Camera.ShouldBe(mobilePhone.Camera);
+            history.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
+            history.FaceId.ShouldBe(mobilePhone.FaceId);
+            history.CategoryId.ShouldBe(mobilePhone.CategoryId);
+            history.PriceAmount.ShouldBe(mobilePhone.Price.Amount);
+            history.PriceCurrency.ShouldBe(mobilePhone.Price.Currency);
+            history.Description2.ShouldBe(mobilePhone.Description2);
+            history.Description3.ShouldBe(mobilePhone.Description3);
+            history.IsActive.ShouldBe(mobilePhone.IsActive);
+            history.ChangedAt.ShouldBe(mobilePhone.ChangedAt);
+            history.Operation.ShouldBe(operation);
         }
     }
 }
