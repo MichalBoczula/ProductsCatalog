@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using ProductCatalog.Infrastructure.Repositories.Currencies;
+﻿using ProductCatalog.Infrastructure.Repositories.Currencies;
 using ProductsCatalog.Infrastructure.UnitTests.Integration.Configuration;
 using Shouldly;
 
@@ -18,13 +17,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
         public async Task GetCurrencies_ShouldReturnAllSeededCurrenciesWithValidReadModels()
         {
             // Arrange
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string?>
-                {
-                    ["ConnectionStrings:ProductCatalogDb"] = _fixture.ConnectionString
-                })
-                .Build();
-
+            var configuration = new CustomTestConfiguration(_fixture.ConnectionString);
             var repository = new CurrenciesQueriesRepository(configuration);
 
             // Act
