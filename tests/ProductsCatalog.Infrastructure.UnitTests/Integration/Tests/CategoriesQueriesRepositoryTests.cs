@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Primitives;
-using ProductCatalog.Infrastructure.Repositories.Categories;
+﻿using ProductCatalog.Infrastructure.Repositories.Categories;
 using ProductsCatalog.Infrastructure.UnitTests.Integration.Configuration;
 using Shouldly;
 
@@ -53,54 +51,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 category.Code.ShouldNotBeNullOrWhiteSpace();
                 category.Name.ShouldNotBeNullOrWhiteSpace();
             }
-        }
-
-        private sealed class CustomTestConfiguration : IConfiguration
-        {
-            private readonly string _connectionString;
-
-            public CustomTestConfiguration(string connectionString)
-            {
-                _connectionString = connectionString;
-            }
-
-            public string? this[string key]
-            {
-                get => _connectionString;
-                set { }
-            }
-
-            public IConfigurationSection GetSection(string key)
-            {
-                return new CustomTestConfigurationSection(_connectionString);
-            }
-
-            public IEnumerable<IConfigurationSection> GetChildren() => throw new NotImplementedException();
-            public IChangeToken GetReloadToken() => throw new NotImplementedException();
-        }
-
-        private sealed class CustomTestConfigurationSection : IConfigurationSection
-        {
-            public string? Value { get => _connectionString; set { } }
-            public string Key => "ProductCatalogDb";
-            public string Path => "ConnectionStrings:ProductCatalogDb";
-
-            private readonly string _connectionString;
-
-            public CustomTestConfigurationSection(string connectionString)
-            {
-                _connectionString = connectionString;
-            }
-
-            public string? this[string key]
-            {
-                get => _connectionString;
-                set { }
-            }
-
-            public IConfigurationSection GetSection(string key) => this;
-            public IEnumerable<IConfigurationSection> GetChildren() => Array.Empty<IConfigurationSection>();
-            public IChangeToken GetReloadToken() => throw new NotImplementedException();
         }
     }
 }
