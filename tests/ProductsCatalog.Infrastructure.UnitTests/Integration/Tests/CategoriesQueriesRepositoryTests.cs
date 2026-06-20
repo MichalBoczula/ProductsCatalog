@@ -70,8 +70,36 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 set { }
             }
 
-            public IConfigurationSection GetSection(string key) => throw new NotImplementedException();
+            public IConfigurationSection GetSection(string key)
+            {
+                return new CustomTestConfigurationSection(_connectionString);
+            }
+
             public IEnumerable<IConfigurationSection> GetChildren() => throw new NotImplementedException();
+            public IChangeToken GetReloadToken() => throw new NotImplementedException();
+        }
+
+        private sealed class CustomTestConfigurationSection : IConfigurationSection
+        {
+            public string? Value { get => _connectionString; set { } }
+            public string Key => "ProductCatalogDb";
+            public string Path => "ConnectionStrings:ProductCatalogDb";
+
+            private readonly string _connectionString;
+
+            public CustomTestConfigurationSection(string connectionString)
+            {
+                _connectionString = connectionString;
+            }
+
+            public string? this[string key]
+            {
+                get => _connectionString;
+                set { }
+            }
+
+            public IConfigurationSection GetSection(string key) => this;
+            public IEnumerable<IConfigurationSection> GetChildren() => Array.Empty<IConfigurationSection>();
             public IChangeToken GetReloadToken() => throw new NotImplementedException();
         }
     }
