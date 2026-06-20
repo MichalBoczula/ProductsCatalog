@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Infrastructure.Repositories.MobilePhones;
@@ -258,12 +257,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
 
         private MobilePhonesQueriesRepository CreateRepository()
         {
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(new Dictionary<string, string?>
-                {
-                    ["ConnectionStrings:ProductCatalogDb"] = _fixture.ConnectionString
-                })
-                .Build();
+            var configuration = new CustomTestConfiguration(_fixture.ConnectionString);
 
             return new MobilePhonesQueriesRepository(configuration);
         }
