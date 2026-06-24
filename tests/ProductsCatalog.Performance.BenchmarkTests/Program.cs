@@ -1,12 +1,16 @@
-﻿namespace ProductsCatalog.Performance.BenchmarkTests
+﻿using BenchmarkDotNet.Running;
+using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
+
+namespace ProductsCatalog.Performance.BenchmarkTests
 {
     internal class Program
     {
         private static void Main(string[] args)
         {
-
-            //BenchmarkRunner.Run<TestHere>();
+            // ==========================================
+            // 1. Mobile Phones / Products Domain
+            // ==========================================
+            BenchmarkRunner.Run<MobilePhonesValidationPolicyBenchmarks>();
         }
     }
 }
-
