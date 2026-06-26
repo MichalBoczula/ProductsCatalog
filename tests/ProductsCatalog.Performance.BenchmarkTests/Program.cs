@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
 
 namespace ProductsCatalog.Performance.BenchmarkTests
@@ -11,6 +12,11 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // 1. Mobile Phones / Products Domain
             // ==========================================
             BenchmarkRunner.Run<MobilePhonesValidationPolicyBenchmarks>();
+
+            // ==========================================
+            // 2. Currencies Domain
+            // ==========================================
+            BenchmarkRunner.Run<CurrenciesValidationPolicyBenchmarks>();
         }
     }
 }
