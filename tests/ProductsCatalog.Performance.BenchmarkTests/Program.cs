@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
@@ -15,12 +16,16 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<MobilePhonesValidationPolicyBenchmarks>();
 
             // ==========================================
-            // 2. Categories Domain
+            // 2. Amount Validation Policy / Domain
+            // ==========================================
+            BenchmarkRunner.Run<AmountValidationPolicyBenchmarks>();
+            
+            // 3. Categories Domain
             // ==========================================
             BenchmarkRunner.Run<CategoriesValidationPolicyBenchmarks>();
             
             // ==========================================
-            // 2. Currencies Domain
+            // 4. Currencies Domain
             // ==========================================
             BenchmarkRunner.Run<CurrenciesValidationPolicyBenchmarks>();
         }
