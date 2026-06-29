@@ -10,7 +10,7 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Infrastructure.
 
         public static MobilePhone Create(Guid id)
         {
-            var commonDescription = new CommonDescription(
+            var commonDescription = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.CommonDescription(
                 name: "Benchmark Phone",
                 brand: "TestBrand",
                 description: "Description for performance testing.",
