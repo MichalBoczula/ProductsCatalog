@@ -17,7 +17,7 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Infrastructure.
                 mainPhoto: "https://store.com/photos/main.jpg",
                 otherPhotos: new List<string> { "https://store.com/photos/side.jpg" });
 
-            var electronicDetails = new ElectronicDetails(
+            var electronicDetails = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails(
                 cPU: "Octa-Core",
                 gPU: "HighPerformance GPU",
                 ram: "12 GB",

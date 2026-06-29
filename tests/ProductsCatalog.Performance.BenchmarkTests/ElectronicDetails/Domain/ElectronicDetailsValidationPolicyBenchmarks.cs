@@ -14,23 +14,23 @@ namespace ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain
     {
         private IServiceProvider _serviceProvider = null!;
         private IServiceScope _serviceScope = null!;
-        private IValidationPolicy<ElectronicDetails> _policy = null!;
+        private IValidationPolicy<ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails> _policy = null!;
 
-        private ElectronicDetails _validEntity;
-        private ElectronicDetails _invalidSingleEntity;
-        private ElectronicDetails _allInvalidEntity;
+        private ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails _validEntity;
+        private ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails _invalidSingleEntity;
+        private ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails _allInvalidEntity;
 
         [GlobalSetup]
         public void Setup()
         {
             var services = new ServiceCollection();
 
-            services.AddScoped<IValidationPolicy<ElectronicDetails>, ElectronicDetailsValidationPolicy>();
+            services.AddScoped<IValidationPolicy<ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails>, ElectronicDetailsValidationPolicy>();
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScope = _serviceProvider.CreateScope();
 
-            _policy = _serviceScope.ServiceProvider.GetRequiredService<IValidationPolicy<ElectronicDetails>>();
+            _policy = _serviceScope.ServiceProvider.GetRequiredService<IValidationPolicy<ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails>>();
 
             _validEntity = ElectronicDetailsValidationDataFactory.CreateValid();
             _invalidSingleEntity = ElectronicDetailsValidationDataFactory.CreateInvalidSingle();

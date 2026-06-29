@@ -7,9 +7,9 @@ namespace ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain
         private const int Seed = 15;
         private static readonly Random Random = new(Seed);
 
-        public static ElectronicDetails CreateValid()
+        public static ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails CreateValid()
         {
-            return new ElectronicDetails(
+            return new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails(
                 cPU: $"A{Random.Next(15, 18)} Pro",
                 gPU: "Apple GPU 6-core",
                 ram: "8 GB",
@@ -23,11 +23,11 @@ namespace ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain
                 batteryCapacity: 3274);
         }
 
-        public static ElectronicDetails CreateInvalidSingle()
+        public static ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails CreateInvalidSingle()
         {
             var valid = CreateValid();
 
-            return new ElectronicDetails(
+            return new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails(
                 cPU: string.Empty,
                 gPU: valid.GPU,
                 ram: valid.Ram,
@@ -41,9 +41,9 @@ namespace ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain
                 batteryCapacity: valid.BatteryCapacity);
         }
 
-        public static ElectronicDetails CreateAllInvalid()
+        public static ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails CreateAllInvalid()
         {
-            return new ElectronicDetails(
+            return new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails(
                 cPU: string.Empty,
                 gPU: string.Empty,
                 ram: string.Empty,
