@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
 using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
 using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Domain;
@@ -15,7 +16,7 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // 1. Mobile Phones / Products Domain
             // ==========================================
             BenchmarkRunner.Run<MobilePhonesValidationPolicyBenchmarks>();
-
+          
             // ==========================================
             // 2. Common Description Domain
             // ==========================================
@@ -35,6 +36,11 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // 5. Currencies Domain
             // ==========================================
             BenchmarkRunner.Run<CurrenciesValidationPolicyBenchmarks>();
+          
+            // ==========================================
+            // 6. Electronic Details / Domain
+            // ==========================================
+            BenchmarkRunner.Run<ElectronicDetailsValidationPolicyBenchmarks>();
         }
     }
 }
