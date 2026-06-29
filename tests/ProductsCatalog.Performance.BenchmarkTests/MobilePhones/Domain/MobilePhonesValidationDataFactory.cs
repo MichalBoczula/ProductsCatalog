@@ -1,6 +1,7 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 
 namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
 {
@@ -11,7 +12,7 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
 
         public static MobilePhone CreateValid()
         {
-            var commonDescription = new CommonDescription(
+            var commonDescription = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.CommonDescription(
                 name: "iPhone 15 Pro",
                 brand: "Apple",
                 description: "Flagowy smartfon z procesorem A17 Pro i tytanową obudową.",
@@ -71,7 +72,7 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
 
         public static MobilePhone CreateAllInvalid()
         {
-            var invalidDescription = new CommonDescription("", "", "", "", new List<string>());
+            var invalidDescription = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.CommonDescription("", "", "", "", new List<string>());
             var invalidElectronic = new ElectronicDetails("", "", "", "", "", -1, -5.0m, -10, -10, "", -500);
             var invalidPrice = new Money(-1500.00m, "PLN");
 
