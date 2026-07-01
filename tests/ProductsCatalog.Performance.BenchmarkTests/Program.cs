@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
+using ProductCatalog.Performance.BenchmarkTests.MobilePhoneFilter.Domain;
 using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
 using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
 using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
@@ -41,6 +42,12 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // 6. Electronic Details / Domain
             // ==========================================
             BenchmarkRunner.Run<ElectronicDetailsValidationPolicyBenchmarks>();
+          
+            // ==========================================
+            // 1. Mobile Phones Filter / Domain
+            // ==========================================
+            BenchmarkRunner.Run<MobilePhoneFilterValidationPolicyBenchmarks>();
+
         }
     }
 }
