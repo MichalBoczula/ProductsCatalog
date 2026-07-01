@@ -10,14 +10,14 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Infrastructure.
 
         public static MobilePhone Create(Guid id)
         {
-            var commonDescription = new CommonDescription(
+            var commonDescription = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.CommonDescription(
                 name: "Benchmark Phone",
                 brand: "TestBrand",
                 description: "Description for performance testing.",
                 mainPhoto: "https://store.com/photos/main.jpg",
                 otherPhotos: new List<string> { "https://store.com/photos/side.jpg" });
 
-            var electronicDetails = new ElectronicDetails(
+            var electronicDetails = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails(
                 cPU: "Octa-Core",
                 gPU: "HighPerformance GPU",
                 ram: "12 GB",

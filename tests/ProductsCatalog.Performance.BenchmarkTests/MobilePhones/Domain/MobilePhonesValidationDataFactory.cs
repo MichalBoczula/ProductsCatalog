@@ -1,6 +1,7 @@
 ﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 
 namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
 {
@@ -11,14 +12,14 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
 
         public static MobilePhone CreateValid()
         {
-            var commonDescription = new CommonDescription(
+            var commonDescription = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.CommonDescription(
                 name: "iPhone 15 Pro",
                 brand: "Apple",
                 description: "Flagowy smartfon z procesorem A17 Pro i tytanową obudową.",
                 mainPhoto: "https://store.com/photos/iphone15pro_main.jpg",
                 otherPhotos: new List<string> { "https://store.com/photos/iphone15pro_side.jpg" });
 
-            var electronicDetails = new ElectronicDetails(
+            var electronicDetails = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails(
                 cPU: "A17 Pro",
                 gPU: "Apple GPU 6-core",
                 ram: "8 GB",
@@ -71,8 +72,8 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
 
         public static MobilePhone CreateAllInvalid()
         {
-            var invalidDescription = new CommonDescription("", "", "", "", new List<string>());
-            var invalidElectronic = new ElectronicDetails("", "", "", "", "", -1, -5.0m, -10, -10, "", -500);
+            var invalidDescription = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.CommonDescription("", "", "", "", new List<string>());
+            var invalidElectronic = new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails("", "", "", "", "", -1, -5.0m, -10, -10, "", -500);
             var invalidPrice = new Money(-1500.00m, "PLN");
 
             return new MobilePhone(

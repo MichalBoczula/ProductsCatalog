@@ -54,8 +54,8 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
         public static MobilePhone CreateDomainPhone(Guid id)
         {
             var phone = new MobilePhone(
-                commonDescription: new CommonDescription("iPhone 15", "Apple", "Flagship phone", "main.jpg", ["side1.jpg"]),
-                electronicDetails: new ElectronicDetails("A16", "GPU", "6GB", "128GB", "OLED", 60, 6.1m, 1179, 2556, "Li-Ion", 3349),
+                commonDescription: new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.CommonDescription("iPhone 15", "Apple", "Flagship phone", "main.jpg", ["side1.jpg"]),
+                electronicDetails: new ProductCatalog.Domain.AggregatesModel.Common.ValueObjects.ElectronicDetails("A16", "GPU", "6GB", "128GB", "OLED", 60, 6.1m, 1179, 2556, "Li-Ion", 3349),
                 connectivity: new Connectivity(true, true, true, true),
                 satelliteNavigationSystems: default,
                 sensors: new Sensors(true, true, true, true, false, false, true),
