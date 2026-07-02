@@ -5,6 +5,7 @@ using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
 using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
+using ProductCatalog.Performance.BenchmarkTests.Currencies.Infrastructure;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
 
 namespace ProductsCatalog.Performance.BenchmarkTests
@@ -37,6 +38,7 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // 5. Currencies Domain
             // ==========================================
             BenchmarkRunner.Run<CurrenciesValidationPolicyBenchmarks>();
+            BenchmarkRunner.Run<CurrenciesRepositoryBenchmarks>();
           
             // ==========================================
             // 6. Electronic Details / Domain
