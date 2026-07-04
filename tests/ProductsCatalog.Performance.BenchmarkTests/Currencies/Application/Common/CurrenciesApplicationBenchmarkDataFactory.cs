@@ -1,4 +1,6 @@
-﻿using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
+﻿using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
+using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
+using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.ReadModels;
 
 namespace ProductsCatalog.Performance.BenchmarkTests.Currencies.Application.Common
@@ -36,6 +38,24 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Currencies.Application.Comm
                     IsActive = true
                 }
             };
+        }
+
+        public static CreateCurrencyCommand CreateCreateCommand()
+        {
+            var externalDto = new CreateCurrencyExternalDto(
+                Code: "CHF",
+                Description: "Swiss Franc"
+            );
+
+            return new CreateCurrencyCommand(externalDto);
+        }
+
+        public static Currency CreateDomainCurrency()
+        {
+            return new Currency(
+                code: "CHF",
+                description: "Swiss Franc"
+            );
         }
     }
 }

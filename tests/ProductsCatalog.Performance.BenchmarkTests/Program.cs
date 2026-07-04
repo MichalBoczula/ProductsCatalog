@@ -57,6 +57,8 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // 8. Currencies Application Queries Flow
             // ==========================================
             BenchmarkRunner.Run<CurrenciesQueryApplicationBenchmarks>();
+
+            BenchmarkRunner.Run<CurrenciesCommandApplicationBenchmarks>();
         }
     }
 }
