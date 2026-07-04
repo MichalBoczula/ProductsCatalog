@@ -1,4 +1,5 @@
 ﻿using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
+using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
 using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.ReadModels;
@@ -56,6 +57,11 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Currencies.Application.Comm
                 code: "CHF",
                 description: "Swiss Franc"
             );
+        }
+
+        public static DeleteCurrencyCommand CreateDeleteCommand(Guid id)
+        {
+            return new DeleteCurrencyCommand(id);
         }
     }
 }
