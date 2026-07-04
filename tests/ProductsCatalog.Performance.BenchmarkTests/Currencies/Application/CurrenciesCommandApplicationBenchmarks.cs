@@ -3,7 +3,8 @@ using BenchmarkDotNet.Order;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
-using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency; 
+using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
+using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.Validation.Abstract;
@@ -18,11 +19,14 @@ namespace ProductCatalog.Performance.BenchmarkTests.Currencies.Application
     public class CurrenciesCommandApplicationBenchmarks
     {
         private IServiceProvider _serviceProvider = null!;
+        private IServiceScope _serviceScope = null!;
 
         private CreateCurrencyCommandHandler _createHandler = null!;
-        private DeleteCurrencyCommandHandler _deleteHandler = null!; 
+        private UpdateCurrencyCommandHandler _updateHandler = null!;
+        private DeleteCurrencyCommandHandler _deleteHandler = null!;
 
         private CreateCurrencyCommand _createCommand = null!;
+        private UpdateCurrencyCommand _updateCommand = null!;
         private DeleteCurrencyCommand _deleteCommand = null!;
 
         [GlobalSetup]
@@ -46,21 +50,25 @@ namespace ProductCatalog.Performance.BenchmarkTests.Currencies.Application
                 .Returns(Task.CompletedTask);
 
             services.AddSingleton<CreateCurrencyCommandFlowDescribtor>();
+            services.AddSingleton<UpdateCurrencyCommandFlowDescribtor>();
             services.AddSingleton<DeleteCurrencyCommandFlowDescribtor>();
 
             services.AddSingleton(commandsRepoMock.Object);
             services.AddSingleton(validationPolicyMock.Object);
             services.AddScoped<CreateCurrencyCommandHandler>();
+            services.AddScoped<UpdateCurrencyCommandHandler>();
             services.AddScoped<DeleteCurrencyCommandHandler>();
 
             _serviceProvider = services.BuildServiceProvider();
-            var scope = _serviceProvider.CreateScope();
+            _serviceScope = _serviceProvider.CreateScope();
 
-            _createHandler = scope.ServiceProvider.GetRequiredService<CreateCurrencyCommandHandler>();
-            _deleteHandler = scope.ServiceProvider.GetRequiredService<DeleteCurrencyCommandHandler>();
+            _createHandler = _serviceScope.ServiceProvider.GetRequiredService<CreateCurrencyCommandHandler>();
+            _updateHandler = _serviceScope.ServiceProvider.GetRequiredService<UpdateCurrencyCommandHandler>();
+            _deleteHandler = _serviceScope.ServiceProvider.GetRequiredService<DeleteCurrencyCommandHandler>();
 
             var targetCurrencyId = Guid.NewGuid();
             _createCommand = CurrenciesApplicationBenchmarkDataFactory.CreateCreateCommand();
+            _updateCommand = CurrenciesApplicationBenchmarkDataFactory.CreateUpdateCommand(targetCurrencyId);
             _deleteCommand = CurrenciesApplicationBenchmarkDataFactory.CreateDeleteCommand(targetCurrencyId);
         }
 
@@ -68,6 +76,12 @@ namespace ProductCatalog.Performance.BenchmarkTests.Currencies.Application
         public async Task CreateCurrency_Flow()
         {
             await _createHandler.Handle(_createCommand, CancellationToken.None);
+        }
+
+        [Benchmark]
+        public async Task UpdateCurrency_Flow()
+        {
+            await _updateHandler.Handle(_updateCommand, CancellationToken.None);
         }
 
         [Benchmark]
@@ -79,6 +93,7 @@ namespace ProductCatalog.Performance.BenchmarkTests.Currencies.Application
         [GlobalCleanup]
         public void Cleanup()
         {
+            _serviceScope?.Dispose();
             if (_serviceProvider is IDisposable disposable)
             {
                 disposable.Dispose();

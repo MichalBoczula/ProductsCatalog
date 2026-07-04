@@ -1,5 +1,6 @@
 ﻿using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
 using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
+using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.ReadModels;
@@ -62,6 +63,16 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Currencies.Application.Comm
         public static DeleteCurrencyCommand CreateDeleteCommand(Guid id)
         {
             return new DeleteCurrencyCommand(id);
+        }
+
+        public static UpdateCurrencyCommand CreateUpdateCommand(Guid id)
+        {
+            var externalDto = new UpdateCurrencyExternalDto(
+                Code: "EUR",
+                Description: "Euro Updated"
+            );
+
+            return new UpdateCurrencyCommand(id, externalDto);
         }
     }
 }
