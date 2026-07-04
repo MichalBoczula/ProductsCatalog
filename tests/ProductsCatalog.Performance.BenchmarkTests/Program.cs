@@ -1,13 +1,14 @@
 ﻿using BenchmarkDotNet.Running;
-using ProductCatalog.Performance.BenchmarkTests.MobilePhoneFilter.Domain;
-using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
-using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
 using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Infrastructure;
+using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Infrastructure;
+using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
+using ProductCatalog.Performance.BenchmarkTests.MobilePhoneFilter.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
+using ProductsCatalog.Performance.BenchmarkTests.Currencies.Application;
 
 namespace ProductsCatalog.Performance.BenchmarkTests
 {
@@ -48,10 +49,14 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<ElectronicDetailsValidationPolicyBenchmarks>();
           
             // ==========================================
-            // 1. Mobile Phones Filter / Domain
+            // 7. Mobile Phones Filter / Domain
             // ==========================================
             BenchmarkRunner.Run<MobilePhoneFilterValidationPolicyBenchmarks>();
 
+            // ==========================================
+            // 8. Currencies Application Queries Flow
+            // ==========================================
+            BenchmarkRunner.Run<CurrenciesQueryApplicationBenchmarks>();
         }
     }
 }
