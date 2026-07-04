@@ -3,6 +3,7 @@ using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Infrastructure;
 using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
+using ProductCatalog.Performance.BenchmarkTests.Currencies.Application;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Infrastructure;
 using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
@@ -57,7 +58,6 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // 8. Currencies Application Queries Flow
             // ==========================================
             BenchmarkRunner.Run<CurrenciesQueryApplicationBenchmarks>();
-
             BenchmarkRunner.Run<CurrenciesCommandApplicationBenchmarks>();
         }
     }
