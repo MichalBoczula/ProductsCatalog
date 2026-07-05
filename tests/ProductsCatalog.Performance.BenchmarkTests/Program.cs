@@ -2,6 +2,7 @@
 using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Infrastructure;
+using ProductsCatalog.Performance.BenchmarkTests.Categories.Application;
 using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Application;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
@@ -37,6 +38,7 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // ==========================================
             BenchmarkRunner.Run<CategoriesValidationPolicyBenchmarks>();
             BenchmarkRunner.Run<CategoriesRepositoryBenchmarks>();
+            BenchmarkRunner.Run<CategoriesQueryApplicationBenchmarks>();
             
             // ==========================================
             // 5. Currencies Domain
