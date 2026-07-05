@@ -1,13 +1,21 @@
 ﻿using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
 using ProductCatalog.Domain.ReadModels;
 
 namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application.Common
 {
     internal static class CategoriesApplicationBenchmarkDataFactory
     {
+        private static readonly Guid CategoryId = Guid.Parse("442dcb59-7d28-450a-b5ac-f8a1b74edfa4");
+
         public static GetCategoriesQuery CreateQuery()
         {
             return new GetCategoriesQuery();
+        }
+
+        public static GetCategoryByIdQuery CreateGetCategoryByIdQuery()
+        {
+            return new GetCategoryByIdQuery(CategoryId);
         }
 
         public static IReadOnlyList<CategoryReadModel> CreateReadModels()
@@ -16,7 +24,7 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application.Comm
             {
                 new()
                 {
-                    Id = Guid.Parse("442dcb59-7d28-450a-b5ac-f8a1b74edfa4"),
+                    Id = CategoryId,
                     Code = "MOBILE",
                     Name = "Mobile phones",
                     IsActive = true
@@ -35,6 +43,17 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application.Comm
                     Name = "Accessories",
                     IsActive = true
                 }
+            };
+        }
+
+        public static CategoryReadModel CreateReadModel(Guid id)
+        {
+            return new CategoryReadModel
+            {
+                Id = id,
+                Code = "MOBILE",
+                Name = "Mobile phones",
+                IsActive = true
             };
         }
     }

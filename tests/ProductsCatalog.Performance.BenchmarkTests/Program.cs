@@ -39,6 +39,7 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<CategoriesValidationPolicyBenchmarks>();
             BenchmarkRunner.Run<CategoriesRepositoryBenchmarks>();
             BenchmarkRunner.Run<CategoriesQueryApplicationBenchmarks>();
+            BenchmarkRunner.Run<GetCategoryByIdQueryApplicationBenchmarks>();
             
             // ==========================================
             // 5. Currencies Domain
