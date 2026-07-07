@@ -62,6 +62,8 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             // ==========================================
             BenchmarkRunner.Run<CurrenciesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<CurrenciesCommandApplicationBenchmarks>();
+
+            BenchmarkRunner.Run<CategoriesCommandApplicationBenchmarks>();
         }
     }
 }

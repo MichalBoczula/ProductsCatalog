@@ -1,5 +1,7 @@
-﻿using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
+﻿using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
+using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.ReadModels;
 
 namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application.Common
@@ -55,6 +57,24 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application.Comm
                 Name = "Mobile phones",
                 IsActive = true
             };
+        }
+
+        public static CreateCategoryCommand CreateCreateCommand()
+        {
+            var externalDto = new CreateCategoryExternalDto(
+                Code: "MOBILE",
+                Name: "Mobile Phones"
+            );
+
+            return new CreateCategoryCommand(externalDto);
+        }
+
+        public static Category CreateDomainCategory()
+        {
+            return new Category(
+                code: "MOBILE",
+                name: "Mobile Phones"
+            );
         }
     }
 }
