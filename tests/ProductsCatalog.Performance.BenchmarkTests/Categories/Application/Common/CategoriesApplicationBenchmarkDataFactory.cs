@@ -1,4 +1,5 @@
 ﻿using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
 using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
@@ -86,6 +87,11 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application.Comm
             );
 
             return new UpdateCategoryCommand(id, externalDto);
+        }
+
+        public static DeleteCategoryCommand CreateDeleteCommand(Guid id)
+        {
+            return new DeleteCategoryCommand(id);
         }
     }
 }

@@ -2,7 +2,6 @@
 using ProductCatalog.Performance.BenchmarkTests.AmountValidationPolicy.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Categories.Infrastructure;
-using ProductsCatalog.Performance.BenchmarkTests.Categories.Application;
 using ProductCatalog.Performance.BenchmarkTests.CommonDescription.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Application;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
@@ -10,65 +9,56 @@ using ProductCatalog.Performance.BenchmarkTests.Currencies.Infrastructure;
 using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhoneFilter.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
+using ProductsCatalog.Performance.BenchmarkTests.Categories.Application;
 using ProductsCatalog.Performance.BenchmarkTests.Currencies.Application;
 
-namespace ProductsCatalog.Performance.BenchmarkTests
+namespace ProductCatalog.Performance.BenchmarkTests
 {
     internal class Program
     {
         private static void Main(string[] args)
         {
-            // ==========================================
-            // 1. Mobile Phones / Products Domain
-            // ==========================================
+            // ===================================================
+            // 1. DOMAIN: MOBILE PHONES / PRODUCTS
+            // ===================================================
             BenchmarkRunner.Run<MobilePhonesValidationPolicyBenchmarks>();
-          
-            // ==========================================
-            // 2. Common Description Domain
-            // ==========================================
             BenchmarkRunner.Run<CommonDescriptionValidationPolicyBenchmarks>();
-            
-            // ==========================================
-            // 3. Amount Validation Policy / Domain
-            // ==========================================
+            BenchmarkRunner.Run<ElectronicDetailsValidationPolicyBenchmarks>();
+            BenchmarkRunner.Run<MobilePhoneFilterValidationPolicyBenchmarks>();
             BenchmarkRunner.Run<AmountValidationPolicyBenchmarks>();
-            
-            // ==========================================
-            // 4. Categories Domain
-            // ==========================================
+
+            // ===================================================
+            // 2. DOMAIN: CATEGORIES
+            // ===================================================
+            // -- Domain --
             BenchmarkRunner.Run<CategoriesValidationPolicyBenchmarks>();
+
+            // -- Infrastructure --
             BenchmarkRunner.Run<CategoriesRepositoryBenchmarks>();
+
+            // -- Application (Queries) --
             BenchmarkRunner.Run<CategoriesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetCategoryByIdQueryApplicationBenchmarks>();
-            
-            // ==========================================
-            // 5. Currencies Domain
-            // ==========================================
-            BenchmarkRunner.Run<CurrenciesValidationPolicyBenchmarks>();
-            BenchmarkRunner.Run<CurrenciesRepositoryBenchmarks>();
-          
-            // ==========================================
-            // 6. Electronic Details / Domain
-            // ==========================================
-            BenchmarkRunner.Run<ElectronicDetailsValidationPolicyBenchmarks>();
-          
-            // ==========================================
-            // 7. Mobile Phones Filter / Domain
-            // ==========================================
-            BenchmarkRunner.Run<MobilePhoneFilterValidationPolicyBenchmarks>();
 
-            // ==========================================
-            // 8. Currencies Application Queries Flow
-            // ==========================================
-            BenchmarkRunner.Run<CurrenciesQueryApplicationBenchmarks>();
-            BenchmarkRunner.Run<CurrenciesCommandApplicationBenchmarks>();
-
+            // -- Application (Commands) --
             BenchmarkRunner.Run<CategoriesCreateCommandApplicationBenchmarks>();
+            BenchmarkRunner.Run<CategoriesUpdateCommandApplicationBenchmarks>();
+            BenchmarkRunner.Run<CategoriesDeleteCommandApplicationBenchmarks>();
 
             // ===================================================
-            // KROK 2: Categories - Aktualizacja (Update Flow)
+            // 3. DOMAIN: CURRENCIES
             // ===================================================
-            BenchmarkRunner.Run<CategoriesUpdateCommandApplicationBenchmarks>();
+            // -- Domain --
+            BenchmarkRunner.Run<CurrenciesValidationPolicyBenchmarks>();
+
+            // -- Infrastructure --
+            BenchmarkRunner.Run<CurrenciesRepositoryBenchmarks>();
+
+            // -- Application (Queries) --
+            BenchmarkRunner.Run<CurrenciesQueryApplicationBenchmarks>();
+
+            // -- Application (Commands) --
+            BenchmarkRunner.Run<CurrenciesCommandApplicationBenchmarks>();
         }
     }
 }

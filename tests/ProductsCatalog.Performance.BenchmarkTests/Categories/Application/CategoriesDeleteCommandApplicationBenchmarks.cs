@@ -2,7 +2,7 @@
 using BenchmarkDotNet.Order;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
+using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 using ProductCatalog.Domain.Validation.Abstract;
@@ -14,13 +14,13 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [RankColumn]
-    public class CategoriesUpdateCommandApplicationBenchmarks
+    public class CategoriesDeleteCommandApplicationBenchmarks
     {
         private IServiceProvider _serviceProvider = null!;
         private IServiceScope _serviceScope = null!;
 
-        private UpdateCategoryCommandHandler _updateHandler = null!;
-        private UpdateCategoryCommand _updateCommand = null!;
+        private DeleteCategoryCommandHandler _deleteHandler = null!;
+        private DeleteCategoryCommand _deleteCommand = null!;
 
         [GlobalSetup]
         public void Setup()
@@ -42,24 +42,24 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application
                 .Setup(x => x.SaveChanges(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
-            services.AddSingleton<UpdateCategoryCommandFlowDescribtor>();
+            services.AddSingleton<DeleteCategoryCommandFlowDescribtor>();
             services.AddSingleton(commandsRepoMock.Object);
             services.AddSingleton(validationPolicyMock.Object);
-            services.AddScoped<UpdateCategoryCommandHandler>();
+            services.AddScoped<DeleteCategoryCommandHandler>();
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScope = _serviceProvider.CreateScope();
 
-            _updateHandler = _serviceScope.ServiceProvider.GetRequiredService<UpdateCategoryCommandHandler>();
+            _deleteHandler = _serviceScope.ServiceProvider.GetRequiredService<DeleteCategoryCommandHandler>();
 
             var targetCategoryId = Guid.NewGuid();
-            _updateCommand = CategoriesApplicationBenchmarkDataFactory.CreateUpdateCommand(targetCategoryId);
+            _deleteCommand = CategoriesApplicationBenchmarkDataFactory.CreateDeleteCommand(targetCategoryId);
         }
 
         [Benchmark(Baseline = true)]
-        public async Task UpdateCategory_Flow()
+        public async Task DeleteCategory_Flow()
         {
-            await _updateHandler.Handle(_updateCommand, CancellationToken.None);
+            await _deleteHandler.Handle(_deleteCommand, CancellationToken.None);
         }
 
         [GlobalCleanup]
