@@ -63,7 +63,12 @@ namespace ProductsCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<CurrenciesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<CurrenciesCommandApplicationBenchmarks>();
 
-            BenchmarkRunner.Run<CategoriesCommandApplicationBenchmarks>();
+            BenchmarkRunner.Run<CategoriesCreateCommandApplicationBenchmarks>();
+
+            // ===================================================
+            // KROK 2: Categories - Aktualizacja (Update Flow)
+            // ===================================================
+            BenchmarkRunner.Run<CategoriesUpdateCommandApplicationBenchmarks>();
         }
     }
 }

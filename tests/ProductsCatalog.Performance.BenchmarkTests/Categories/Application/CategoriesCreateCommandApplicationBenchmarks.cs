@@ -14,7 +14,7 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [RankColumn]
-    public class CategoriesCommandApplicationBenchmarks
+    public class CategoriesCreateCommandApplicationBenchmarks
     {
         private IServiceProvider _serviceProvider = null!;
         private IServiceScope _serviceScope = null!;

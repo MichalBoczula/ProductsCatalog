@@ -1,4 +1,5 @@
 ﻿using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
+using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
 using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
@@ -75,6 +76,16 @@ namespace ProductsCatalog.Performance.BenchmarkTests.Categories.Application.Comm
                 code: "MOBILE",
                 name: "Mobile Phones"
             );
+        }
+
+        public static UpdateCategoryCommand CreateUpdateCommand(Guid id)
+        {
+            var externalDto = new UpdateCategoryExternalDto(
+                Code: "MOBILE_UPDATED",
+                Name: "Mobile Phones Premium"
+            );
+
+            return new UpdateCategoryCommand(id, externalDto);
         }
     }
 }
