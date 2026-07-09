@@ -60,6 +60,7 @@ namespace ProductCatalog.Performance.BenchmarkTests
             // -- Application (Commands) --
             BenchmarkRunner.Run<CurrenciesCreateCommandApplicationBenchmarks>();
             BenchmarkRunner.Run<CurrenciesUpdateCommandApplicationBenchmarks>();
+            BenchmarkRunner.Run<CurrenciesDeleteCommandApplicationBenchmarks>();
 
             // Combined currency command flow benchmark (create/update/delete).
             BenchmarkRunner.Run<CurrenciesCommandApplicationBenchmarks>();
