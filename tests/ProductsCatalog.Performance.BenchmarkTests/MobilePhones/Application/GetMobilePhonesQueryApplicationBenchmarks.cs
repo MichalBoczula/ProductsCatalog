@@ -6,7 +6,6 @@ using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Validation.Abstract;
-using ProductCatalog.Domain.Validation.Concrete.Policies;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Common;
 
 namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application
@@ -33,7 +32,7 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application
                 .ReturnsAsync(() => MobilePhonesApplicationBenchmarkDataFactory.CreateReadModels());
 
             services.AddSingleton<GetMobilePhonesQueryFlowDescribtor>();
-            services.AddSingleton<IValidationPolicy<int>, AmountValidationPolicy>();
+            services.AddSingleton<IValidationPolicy<int>, global::ProductCatalog.Domain.Validation.Concrete.Policies.AmountValidationPolicy>();
             services.AddSingleton(mobilePhonesRepoMock.Object);
             services.AddScoped<GetMobilePhonesQueryHandler>();
 
