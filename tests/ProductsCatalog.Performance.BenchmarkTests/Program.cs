@@ -8,6 +8,7 @@ using ProductCatalog.Performance.BenchmarkTests.Currencies.Domain;
 using ProductCatalog.Performance.BenchmarkTests.Currencies.Infrastructure;
 using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhoneFilter.Domain;
+using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
 using ProductsCatalog.Performance.BenchmarkTests.Categories.Application;
 using ProductsCatalog.Performance.BenchmarkTests.Currencies.Application;
@@ -26,6 +27,9 @@ namespace ProductCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<ElectronicDetailsValidationPolicyBenchmarks>();
             BenchmarkRunner.Run<MobilePhoneFilterValidationPolicyBenchmarks>();
             BenchmarkRunner.Run<AmountValidationPolicyBenchmarks>();
+
+            // -- Application (Queries) --
+            BenchmarkRunner.Run<GetTopMobilePhonesQueryApplicationBenchmarks>();
 
             // ===================================================
             // 2. DOMAIN: CATEGORIES
