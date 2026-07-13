@@ -3,6 +3,7 @@ using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
@@ -20,9 +21,24 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
         public static readonly Guid MobileCategoryId = Guid.Parse("587480bb-c126-4f9b-b531-b0244daa4ba4");
 
 
+        public static GetMobilePhonesQuery CreateQuery()
+        {
+            return new GetMobilePhonesQuery(3);
+        }
+
         public static GetTopMobilePhonesQuery CreateTopQuery()
         {
             return new GetTopMobilePhonesQuery();
+        }
+
+        public static IReadOnlyList<MobilePhoneReadModel> CreateReadModels()
+        {
+            return new List<MobilePhoneReadModel>
+            {
+                CreateReadModel(Guid.Parse("26400545-81c4-4e50-95c7-c723006a83dd")),
+                CreateReadModel(Guid.Parse("deae902e-9732-4f95-8b8d-764994685195")),
+                CreateReadModel(Guid.Parse("1fa43da3-86b1-4e35-bc3c-551c2d19a920"))
+            };
         }
 
         public static IReadOnlyList<MobilePhoneReadModel> CreateTopReadModels()

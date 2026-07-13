@@ -29,6 +29,7 @@ namespace ProductCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<AmountValidationPolicyBenchmarks>();
 
             // -- Application (Queries) --
+            BenchmarkRunner.Run<GetMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetTopMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetMobilePhoneHistoryQueryApplicationBenchmarks>();
 
