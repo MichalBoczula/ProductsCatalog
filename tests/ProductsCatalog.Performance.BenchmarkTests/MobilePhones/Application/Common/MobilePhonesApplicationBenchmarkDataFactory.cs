@@ -2,14 +2,17 @@
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Common.Filters;
+using System.Text.Json;
 
 namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Common
 {
@@ -45,6 +48,26 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 CreateReadModel(Guid.Parse("26400545-81c4-4e50-95c7-c723006a83dd")),
                 CreateReadModel(Guid.Parse("deae902e-9732-4f95-8b8d-764994685195")),
                 CreateReadModel(Guid.Parse("1fa43da3-86b1-4e35-bc3c-551c2d19a920"))
+            };
+        }
+
+        public static GetMobilePhoneHistoryQuery CreateHistoryQuery()
+        {
+            return new GetMobilePhoneHistoryQuery(
+                Guid.Parse("26400545-81c4-4e50-95c7-c723006a83dd"),
+                pageNumber: 1,
+                pageSize: 10);
+        }
+
+        public static IReadOnlyList<MobilePhonesHistory> CreateHistoryReadModels()
+        {
+            var mobilePhoneId = Guid.Parse("26400545-81c4-4e50-95c7-c723006a83dd");
+
+            return new List<MobilePhonesHistory>
+            {
+                CreateHistoryReadModel(mobilePhoneId, Operation.Inserted, new DateTime(2024, 1, 10, 8, 30, 0, DateTimeKind.Utc)),
+                CreateHistoryReadModel(mobilePhoneId, Operation.Updated, new DateTime(2024, 2, 15, 12, 0, 0, DateTimeKind.Utc)),
+                CreateHistoryReadModel(mobilePhoneId, Operation.Deleted, new DateTime(2024, 3, 20, 16, 45, 0, DateTimeKind.Utc))
             };
         }
 
@@ -163,6 +186,57 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 Brand = MobilePhonesBrand.Apple,
                 MinimalPrice = 500,
                 MaximalPrice = 1500
+            };
+        }
+
+        private static MobilePhonesHistory CreateHistoryReadModel(Guid mobilePhoneId, Operation operation, DateTime changedAt)
+        {
+            return new MobilePhonesHistory
+            {
+                MobilePhoneId = mobilePhoneId,
+                Name = "iPhone 15 Pro",
+                Brand = "Apple",
+                Description = "Flagowy smartfon z procesorem A17 Pro.",
+                MainPhoto = "main.jpg",
+                OtherPhotos = JsonSerializer.Serialize<IReadOnlyList<string>>(["side1.jpg", "side2.jpg"]),
+                CPU = "A17 Pro",
+                GPU = "Apple GPU 6-core",
+                Ram = "8 GB",
+                Storage = "128 GB",
+                DisplayType = "OLED",
+                RefreshRateHz = 120,
+                ScreenSizeInches = 6.1m,
+                Width = 1179,
+                Height = 2556,
+                BatteryType = "Li-Ion",
+                BatteryCapacity = 3274,
+                GPS = true,
+                AGPS = true,
+                Galileo = true,
+                GLONASS = true,
+                QZSS = false,
+                Accelerometer = true,
+                Gyroscope = true,
+                Proximity = true,
+                Compass = true,
+                Barometer = true,
+                Halla = false,
+                AmbientLight = true,
+                Has5G = true,
+                WiFi = true,
+                NFC = true,
+                Bluetooth = true,
+                Camera = "48 MP",
+                FingerPrint = false,
+                FaceId = true,
+                CategoryId = MobileCategoryId,
+                PriceAmount = 999.99m,
+                PriceCurrency = "USD",
+                Description2 = "Dodatkowy opis produktu",
+                Description3 = "Warunki gwarancji",
+                IsActive = true,
+                ChangedAt = changedAt,
+                Operation = operation
             };
         }
     }
