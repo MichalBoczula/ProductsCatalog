@@ -2,6 +2,7 @@
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
@@ -24,6 +25,11 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
         public static GetMobilePhonesQuery CreateQuery()
         {
             return new GetMobilePhonesQuery(3);
+        }
+
+        public static GetMobilePhoneByIdQuery CreateByIdQuery(Guid id)
+        {
+            return new GetMobilePhoneByIdQuery(id);
         }
 
         public static GetTopMobilePhonesQuery CreateTopQuery()
