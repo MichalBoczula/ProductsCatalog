@@ -30,6 +30,7 @@ namespace ProductCatalog.Performance.BenchmarkTests
 
             // -- Application (Queries) --
             BenchmarkRunner.Run<GetMobilePhonesQueryApplicationBenchmarks>();
+            BenchmarkRunner.Run<GetFilteredMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetMobilePhoneByIdQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetTopMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetMobilePhoneHistoryQueryApplicationBenchmarks>();
