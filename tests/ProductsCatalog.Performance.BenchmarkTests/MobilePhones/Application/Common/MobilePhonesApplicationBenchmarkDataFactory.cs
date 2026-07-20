@@ -106,6 +106,11 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
             );
         }
 
+        public static UpdateMobilePhoneCommand CreateUpdateCommand(Guid id)
+        {
+            return new UpdateMobilePhoneCommand(id, UpdateExternalDto());
+        }
+
         public static UpdateMobilePhoneExternalDto UpdateExternalDto()
         {
             return new UpdateMobilePhoneExternalDto(

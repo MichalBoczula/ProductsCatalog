@@ -36,6 +36,7 @@ namespace ProductCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<GetMobilePhoneHistoryQueryApplicationBenchmarks>();
 
             // -- Application (Commands) --
+            BenchmarkRunner.Run<UpdateMobilePhoneCommandApplicationBenchmarks>();
             BenchmarkRunner.Run<CreateMobilePhoneCommandApplicationBenchmarks>();
 
             // ===================================================
