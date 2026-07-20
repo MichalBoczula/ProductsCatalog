@@ -37,6 +37,7 @@ namespace ProductCatalog.Performance.BenchmarkTests
 
             // -- Application (Commands) --
             BenchmarkRunner.Run<UpdateMobilePhoneCommandApplicationBenchmarks>();
+            BenchmarkRunner.Run<CreateMobilePhoneCommandApplicationBenchmarks>();
 
             // ===================================================
             // 2. DOMAIN: CATEGORIES

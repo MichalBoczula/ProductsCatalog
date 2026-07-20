@@ -83,6 +83,11 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
             };
         }
 
+        public static CreateMobilePhoneCommand CreateCreateCommand()
+        {
+            return new CreateMobilePhoneCommand(CreateExternalDto());
+        }
+
         public static CreateMobilePhoneExternalDto CreateExternalDto()
         {
             return new CreateMobilePhoneExternalDto(
