@@ -35,6 +35,9 @@ namespace ProductCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<GetTopMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetMobilePhoneHistoryQueryApplicationBenchmarks>();
 
+            // -- Application (Commands) --
+            BenchmarkRunner.Run<DeleteMobilePhoneCommandApplicationBenchmarks>();
+
             // ===================================================
             // 2. DOMAIN: CATEGORIES
             // ===================================================
