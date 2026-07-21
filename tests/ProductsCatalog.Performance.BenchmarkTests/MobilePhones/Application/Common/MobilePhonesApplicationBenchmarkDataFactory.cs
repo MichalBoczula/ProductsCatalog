@@ -1,6 +1,7 @@
 ﻿using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
+using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
@@ -61,6 +62,11 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 CreateReadModel(Guid.Parse("deae902e-9732-4f95-8b8d-764994685195")),
                 CreateReadModel(Guid.Parse("1fa43da3-86b1-4e35-bc3c-551c2d19a920"))
             };
+        }
+
+        public static DeleteMobilePhoneCommand CreateDeleteCommand(Guid id)
+        {
+            return new DeleteMobilePhoneCommand(id);
         }
 
         public static GetMobilePhoneHistoryQuery CreateHistoryQuery()
