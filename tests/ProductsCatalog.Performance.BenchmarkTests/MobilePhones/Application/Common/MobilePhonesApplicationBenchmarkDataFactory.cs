@@ -89,6 +89,11 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
             };
         }
 
+        public static CreateMobilePhoneCommand CreateCreateCommand()
+        {
+            return new CreateMobilePhoneCommand(CreateExternalDto());
+        }
+
         public static CreateMobilePhoneExternalDto CreateExternalDto()
         {
             return new CreateMobilePhoneExternalDto(
@@ -105,6 +110,11 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 Description2: "Text line 2",
                 Description3: "Text line 3"
             );
+        }
+
+        public static UpdateMobilePhoneCommand CreateUpdateCommand(Guid id)
+        {
+            return new UpdateMobilePhoneCommand(id, UpdateExternalDto());
         }
 
         public static UpdateMobilePhoneExternalDto UpdateExternalDto()
