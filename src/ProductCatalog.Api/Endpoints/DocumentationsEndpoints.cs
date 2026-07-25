@@ -29,7 +29,7 @@ namespace ProductCatalog.Api.Endpoints
     {
         public static IEndpointRouteBuilder MapDocumentationsEndpoints(this IEndpointRouteBuilder app)
         {
-            var group = app.MapGroup("/documentation").WithTags("Documentation");
+            var group = app.MapGroup("/products-documentation").WithTags("Documentation");
 
             group.MapGet("/flow", (
                 [FromServices] IFlowDescriber<CreateCurrencyCommand> createCurrencyFlowDescriber,
