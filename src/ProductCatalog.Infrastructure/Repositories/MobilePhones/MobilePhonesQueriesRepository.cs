@@ -79,6 +79,31 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
             return result;
         }
 
+        public async Task<IReadOnlyList<MobilePhoneReadModel>> GetByIds(IReadOnlyCollection<Guid> ids, CancellationToken ct)
+        {
+            var sql = $@"
+                SELECT Id,
+                       Name,
+                       Brand,
+                       Camera,
+                       DisplayType,
+                       ScreenSizeInches,
+                       PriceAmount,
+                       PriceCurrency,
+                       IsActive
+                FROM {SqlTableNames.MobilePhones}
+                WHERE Id IN @Ids
+                  AND IsActive = 1;
+                ";
+
+            using var connection = CreateConnection();
+
+            var result = await connection.QueryAsync<MobilePhoneReadModel>(
+                new CommandDefinition(sql, new { Ids = ids }, cancellationToken: ct));
+
+            return result.ToList().AsReadOnly();
+        }
+
         public async Task<IReadOnlyList<MobilePhoneReadModel>> GetPhones(int amount, CancellationToken ct)
         {
             var sql = $@"

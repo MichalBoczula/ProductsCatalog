@@ -7,6 +7,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhon
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneByIds;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
@@ -28,6 +29,21 @@ namespace ProductCatalog.Api.Endpoints
 
         private static void MapMobilePhonesQueries(IEndpointRouteBuilder group)
         {
+            group.MapPost("/by-ids", async (List<Guid> ids, IMediator mediator) =>
+            {
+                var result = await mediator.Send(new GetMobilePhoneByIdsQuery(ids));
+
+                return result.Count == 0
+                    ? Results.NotFound()
+                    : Results.Ok(result);
+            })
+            .WithSummary("Get mobile phones by Ids")
+            .WithDescription("Returns the mobile phones matching the provided Ids; 404 when none exist.")
+            .WithName("GetMobilePhonesByIds")
+            .Produces<IReadOnlyList<MobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+
             group.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
                 var result = await mediator.Send(new GetMobilePhoneByIdQuery(id));

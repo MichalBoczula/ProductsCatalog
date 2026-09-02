@@ -13,6 +13,7 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhon
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneById;
+using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneByIds;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMobilePhones;
@@ -42,6 +43,7 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<UpdateMobilePhoneCommand> updateMobilePhoneFlowDescriber,
                 [FromServices] IFlowDescriber<DeleteMobilePhoneCommand> deleteMobilePhoneFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhoneByIdQuery> getMobilePhoneByIdFlowDescriber,
+                [FromServices] IFlowDescriber<GetMobilePhoneByIdsQuery> getMobilePhoneByIdsFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhoneHistoryQuery> getMobilePhoneHistoryFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhonesQuery> getMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetFilteredMobilePhonesQuery> getFilteredMobilePhonesFlowDescriber,
@@ -62,6 +64,7 @@ namespace ProductCatalog.Api.Endpoints
                     updateMobilePhoneFlowDescriber.DescribeFlow(default!),
                     deleteMobilePhoneFlowDescriber.DescribeFlow(default!),
                     getMobilePhoneByIdFlowDescriber.DescribeFlow(default!),
+                    getMobilePhoneByIdsFlowDescriber.DescribeFlow(default!),
                     getMobilePhoneHistoryFlowDescriber.DescribeFlow(default!),
                     getMobilePhonesFlowDescriber.DescribeFlow(default!),
                     getFilteredMobilePhonesFlowDescriber.DescribeFlow(default!),
