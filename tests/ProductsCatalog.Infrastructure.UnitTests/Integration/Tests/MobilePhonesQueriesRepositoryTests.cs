@@ -9,6 +9,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
     public class MobilePhonesQueriesRepositoryTests : IClassFixture<MsSqlDbTestFixture>
     {
         private static readonly Guid AppleIphone16Id = Guid.Parse("5b8b2f19-4f6b-4aa7-8a49-1d5f1fd3a7d2");
+        private static readonly Guid XiaomiPocoF7Id = Guid.Parse("0f62c3e1-8e3e-4b1f-9d74-3d6e2ff2c6d2");
         private static readonly Guid AppleIphone16HistoryId = Guid.Parse("4ee1f28f-4cfe-4a38-9d13-122f5c2c1f12");
         private static readonly Guid MobileCategoryId = Guid.Parse("587480bb-c126-4f9b-b531-b0244daa4ba4");
 
@@ -72,6 +73,41 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             result.PriceAmount.ShouldBe(0.00m);
             result.PriceCurrency.ShouldBe("PLN");
             result.IsActive.ShouldBeTrue();
+        }
+
+        [Fact]
+        public async Task GetByIds_ShouldReturnRequestedActiveSeededMobilePhonesWithValidReadModels()
+        {
+            // Arrange
+            var repository = CreateRepository();
+            var mobilePhoneIds = new[] { AppleIphone16Id, XiaomiPocoF7Id };
+
+            // Act
+            var result = await repository.GetByIds(mobilePhoneIds, CancellationToken.None);
+
+            // Assert
+            result.Count.ShouldBe(2);
+            result.Select(mobilePhone => mobilePhone.Id).ShouldBe(mobilePhoneIds, ignoreOrder: true);
+
+            var appleIphone = result.Single(mobilePhone => mobilePhone.Id == AppleIphone16Id);
+            appleIphone.Name.ShouldBe("Apple iPhone 16 128GB White");
+            appleIphone.Brand.ShouldBe("Apple");
+            appleIphone.Camera.ShouldBe("48 MP (f/1.6) rear + 12 MP ultrawide, 12 MP front");
+            appleIphone.DisplayType.ShouldBe("OLED");
+            appleIphone.ScreenSizeInches.ShouldBe(6.10m);
+            appleIphone.PriceAmount.ShouldBe(0.00m);
+            appleIphone.PriceCurrency.ShouldBe("PLN");
+            appleIphone.IsActive.ShouldBeTrue();
+
+            var xiaomiPoco = result.Single(mobilePhone => mobilePhone.Id == XiaomiPocoF7Id);
+            xiaomiPoco.Name.ShouldBe("Xiaomi POCO F7 12/512GB Black");
+            xiaomiPoco.Brand.ShouldBe("Xiaomi");
+            xiaomiPoco.Camera.ShouldBe("50 MP (Sony LYT-600, OIS) + 8 MP ultrawide, 20 MP front");
+            xiaomiPoco.DisplayType.ShouldBe("AMOLED");
+            xiaomiPoco.ScreenSizeInches.ShouldBe(6.83m);
+            xiaomiPoco.PriceAmount.ShouldBe(2499.00m);
+            xiaomiPoco.PriceCurrency.ShouldBe("PLN");
+            xiaomiPoco.IsActive.ShouldBeTrue();
         }
 
         [Fact]
