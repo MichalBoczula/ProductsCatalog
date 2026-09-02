@@ -79,6 +79,12 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Infrastructure
         }
 
         [Benchmark]
+        public async Task<IReadOnlyList<MobilePhoneReadModel>> Dapper_GetByIds()
+        {
+            return await _queriesRepository.GetByIds(_existingIds, CancellationToken.None);
+        }
+
+        [Benchmark]
         public async Task<IReadOnlyList<MobilePhoneReadModel>> Dapper_GetPhonesTopAmount()
         {
             return await _queriesRepository.GetPhones(10, CancellationToken.None);
