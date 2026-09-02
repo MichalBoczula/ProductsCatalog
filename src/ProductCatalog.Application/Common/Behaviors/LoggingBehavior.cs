@@ -116,7 +116,7 @@ namespace ProductCatalog.Application.Common.Behaviors
 
         private static string FormatResourceNotFoundException(ResourceNotFoundException exception)
         {
-            return $"Resource not found. Action='{exception.ActionName}', ResourceType='{exception.ResourceType}', ResourceId='{exception.ResourceId}'.";
+            return $"Resource not found. Action='{exception.ActionName}', ResourceType='{exception.ResourceType}', ResourceIds='{string.Join(", ", exception.ResourceIds)}'.";
         }
     }
 }
