@@ -10,6 +10,7 @@ using ProductCatalog.Performance.BenchmarkTests.ElectronicDetails.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhoneFilter.Domain;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application;
 using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain;
+using ProductCatalog.Performance.BenchmarkTests.MobilePhones.Infrastructure;
 using ProductsCatalog.Performance.BenchmarkTests.Categories.Application;
 using ProductsCatalog.Performance.BenchmarkTests.Currencies.Application;
 
@@ -28,10 +29,14 @@ namespace ProductCatalog.Performance.BenchmarkTests
             BenchmarkRunner.Run<MobilePhoneFilterValidationPolicyBenchmarks>();
             BenchmarkRunner.Run<AmountValidationPolicyBenchmarks>();
 
+            // -- Infrastructure --
+            BenchmarkRunner.Run<MobilePhonesRepositoryBenchmarks>();
+
             // -- Application (Queries) --
             BenchmarkRunner.Run<GetMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetFilteredMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetMobilePhoneByIdQueryApplicationBenchmarks>();
+            BenchmarkRunner.Run<GetMobilePhoneByIdsQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetTopMobilePhonesQueryApplicationBenchmarks>();
             BenchmarkRunner.Run<GetMobilePhoneHistoryQueryApplicationBenchmarks>();
 
