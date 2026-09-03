@@ -17,21 +17,21 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "3.0.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class GetTopMobilePhonesFeature : object, global::Xunit.IClassFixture<GetTopMobilePhonesFeature.FixtureData>, global::Xunit.IAsyncLifetime
+    public partial class GetMobilePhonesByIdsNotFoundFeature : object, global::Xunit.IClassFixture<GetMobilePhonesByIdsNotFoundFeature.FixtureData>, global::Xunit.IAsyncLifetime
     {
         
         private global::Reqnroll.ITestRunner testRunner;
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get top mobile phones", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/MobilePhones", "Get mobile phones by ids not found", null, global::Reqnroll.ProgrammingLanguage.CSharp, featureTags, InitializeCucumberMessages());
         
         private global::Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "GetTopMobilePhones.feature"
+#line 1 "GetMobilePhonesByIdsNotFound.feature"
 #line hidden
         
-        public GetTopMobilePhonesFeature(GetTopMobilePhonesFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GetMobilePhonesByIdsNotFoundFeature(GetMobilePhonesByIdsNotFoundFeature.FixtureData fixtureData, global::Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
         }
@@ -105,7 +105,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetTopMobilePhones.feature.ndjson", 4);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/MobilePhones/GetMobilePhonesByIdsNotFound.feature.ndjson", 3);
         }
         
         async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
@@ -133,19 +133,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             await this.TestTearDownAsync();
         }
         
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get top mobile phones returns records when mobile phones exist")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Get top mobile phones")]
-        [global::Xunit.TraitAttribute("Description", "Get top mobile phones returns records when mobile phones exist")]
-        public async global::System.Threading.Tasks.Task GetTopMobilePhonesReturnsRecordsWhenMobilePhonesExist()
+        [global::Xunit.SkippableFactAttribute(DisplayName="Get mobile phones by ids fails when one requested mobile phone does not exist")]
+        [global::Xunit.TraitAttribute("FeatureTitle", "Get mobile phones by ids not found")]
+        [global::Xunit.TraitAttribute("Description", "Get mobile phones by ids fails when one requested mobile phone does not exist")]
+        public async global::System.Threading.Tasks.Task GetMobilePhonesByIdsFailsWhenOneRequestedMobilePhoneDoesNotExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get top mobile phones returns records when mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get mobile phones by ids fails when one requested mobile phone does not exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 3
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
+  this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
             {
@@ -154,168 +154,159 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             else
             {
                 await this.ScenarioStartAsync();
-                global::Reqnroll.Table table58 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table55 = new global::Reqnroll.Table(new string[] {
                             "Field",
                             "Value"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Name",
-                            "Top Phone"});
-                table58.AddRow(new string[] {
+                            "Test Mobile Phone"});
+                table55.AddRow(new string[] {
                             "Brand",
                             "Brand"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Description",
-                            "Phone created by top endpoint acceptance test"});
-                table58.AddRow(new string[] {
+                            "Phone created by acceptance test"});
+                table55.AddRow(new string[] {
                             "MainPhoto",
                             "main-photo.jpg"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "OtherPhotos",
                             "photo-1.jpg, photo-2.jpg"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "CPU",
                             "Octa-core"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "GPU",
                             "Adreno"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Ram",
                             "8GB"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Storage",
                             "256GB"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "DisplayType",
                             "OLED"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "RefreshRateHz",
                             "120"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "ScreenSizeInches",
                             "6.4"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Width",
                             "72"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Height",
                             "152"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "BatteryType",
                             "Li-Ion"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "BatteryCapacity",
                             "4500"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Has5G",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "WiFi",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "NFC",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Bluetooth",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "GPS",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "AGPS",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Galileo",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "GLONASS",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "QZSS",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Accelerometer",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Gyroscope",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Proximity",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Compass",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Barometer",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Halla",
                             "false"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "AmbientLight",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Camera",
                             "camera"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "FingerPrint",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "FaceId",
                             "true"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "PriceAmount",
                             "799.99"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "PriceCurrency",
                             "USD"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Description2",
                             "desc2"});
-                table58.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "Description3",
                             "desc3"});
 #line 4
- await testRunner.GivenAsync("an existing set of mobile phones for top list", ((string)(null)), table58, "Given ");
+    await testRunner.GivenAsync("an existing mobile phone and a missing mobile phone id", ((string)(null)), table55, "Given ");
 #line hidden
+                global::Reqnroll.Table table56 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table56.AddRow(new string[] {
+                            "ExistingMobilePhoneId",
+                            "{MobilePhoneId}"});
+                table56.AddRow(new string[] {
+                            "MissingMobilePhoneId",
+                            "{MissingMobilePhoneId}"});
 #line 45
- await testRunner.WhenAsync("I request the top mobile phones list", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.WhenAsync("I request the mobile phones by ids", ((string)(null)), table56, "When ");
 #line hidden
-#line 46
- await testRunner.ThenAsync("the top mobile phones response is successful and contains records", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Xunit.SkippableFactAttribute(DisplayName="Get top mobile phones returns not found when no mobile phones exist")]
-        [global::Xunit.TraitAttribute("FeatureTitle", "Get top mobile phones")]
-        [global::Xunit.TraitAttribute("Description", "Get top mobile phones returns not found when no mobile phones exist")]
-        public async global::System.Threading.Tasks.Task GetTopMobilePhonesReturnsNotFoundWhenNoMobilePhonesExist()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Get top mobile phones returns not found when no mobile phones exist", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 48
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
+                global::Reqnroll.Table table57 = new global::Reqnroll.Table(new string[] {
+                            "Field",
+                            "Value"});
+                table57.AddRow(new string[] {
+                            "StatusCode",
+                            "404"});
+                table57.AddRow(new string[] {
+                            "Title",
+                            "Resource not found."});
+                table57.AddRow(new string[] {
+                            "Detail",
+                            "Resource MobilePhoneDto identify by id {MissingMobilePhoneId} cannot be found in " +
+                                "databese during action GetMobilePhoneByIdsQuery."});
+                table57.AddRow(new string[] {
+                            "Instance",
+                            "/mobile-phones/by-ids"});
 #line 49
- await testRunner.GivenAsync("mobile phones table is empty for top list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 50
- await testRunner.WhenAsync("I request the top mobile phones list", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 51
- await testRunner.ThenAsync("the top mobile phones response is not found", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the get mobile phones by ids response is not found", ((string)(null)), table57, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -328,12 +319,12 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.InitializeAsync()
             {
-                await GetTopMobilePhonesFeature.FeatureSetupAsync();
+                await GetMobilePhonesByIdsNotFoundFeature.FeatureSetupAsync();
             }
             
             async global::System.Threading.Tasks.Task global::Xunit.IAsyncLifetime.DisposeAsync()
             {
-                await GetTopMobilePhonesFeature.FeatureTearDownAsync();
+                await GetMobilePhonesByIdsNotFoundFeature.FeatureTearDownAsync();
             }
         }
     }
