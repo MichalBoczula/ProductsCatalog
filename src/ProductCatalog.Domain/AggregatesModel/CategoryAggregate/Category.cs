@@ -4,8 +4,8 @@ namespace ProductCatalog.Domain.AggregatesModel.CategoryAggregate
 {
     public sealed class Category : AggregateRoot
     {
-        public string Code { get; private set; }
-        public string Name { get; private set; }
+        public string Code { get; private set; } = null!;
+        public string Name { get; private set; } = null!;
 
         private Category() { }
 

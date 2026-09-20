@@ -11,13 +11,13 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         public Connectivity Connectivity { get; private set; }
         public SatelliteNavigationSystem SatelliteNavigationSystems { get; private set; }
         public Sensors Sensors { get; private set; }
-        public string Camera { get; private set; }
+        public string Camera { get; private set; } = null!;
         public bool FingerPrint { get; private set; }
         public bool FaceId { get; private set; }
         public Guid CategoryId { get; private set; }
         public Money Price { get; private set; }
-        public string Description2 { get; private set; }
-        public string Description3 { get; private set; }
+        public string Description2 { get; private set; } = null!;
+        public string Description3 { get; private set; } = null!;
 
         private MobilePhone() { }
 

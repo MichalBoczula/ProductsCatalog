@@ -4,8 +4,8 @@ namespace ProductCatalog.Domain.AggregatesModel.CurrencyAggregate
 {
     public sealed class Currency : AggregateRoot
     {
-        public string Code { get; private set; }
-        public string Description { get; private set; }
+        public string Code { get; private set; } = null!;
+        public string Description { get; private set; } = null!;
 
         private Currency() { }
 
