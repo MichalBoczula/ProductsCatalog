@@ -34,7 +34,7 @@ jobs:
           ASPNETCORE_URLS=http://127.0.0.1:5050 \
           ConnectionStrings__ProductCatalogDb='Server=127.0.0.1;Database=ProductsDb;User Id=sa;Password=NotUsed123!;TrustServerCertificate=True' \
           Database__ApplyMigrations=false \
-          dotnet run --project ./src/ProductCatalog.Api/ProductCatalog.Api.csproj --configuration Release --no-build &
+          dotnet run --project ./src/ProductCatalog.Api/ProductCatalog.Api.csproj --configuration Release --no-build --no-launch-profile &
           api_pid=$!
           trap 'kill $api_pid 2>/dev/null || true' EXIT
 
