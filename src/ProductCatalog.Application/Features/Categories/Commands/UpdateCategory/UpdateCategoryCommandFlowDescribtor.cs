@@ -39,7 +39,7 @@ namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
         [FlowStep(4)]
         public async Task<Category> LoadExistingCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            return await categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
+            return (await categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken))!;
         }
 
         [FlowStep(5)]

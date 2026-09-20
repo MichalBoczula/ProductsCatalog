@@ -69,7 +69,7 @@ namespace ProductCatalog.Api
 
             if (builder.Configuration.GetValue<bool>("Database:ApplyMigrations"))
             {
-                app.ApplyMigrations();
+                app.Services.ApplyMigrations();
             }
 
             app.Run();
