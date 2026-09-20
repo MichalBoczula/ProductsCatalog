@@ -12,7 +12,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.HealthCheckTests
         [When("I request the health endpoint")]
         public async Task WhenIRequestTheHealthEndpoint()
         {
-            _httpResponseMessage = await TestRunHooks.Client.GetAsync("/health");
+            _httpResponseMessage = await TestRunHooks.Client.GetAsync("/health/live");
         }
 
         [Then("the response status code should be {int}")]
