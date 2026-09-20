@@ -6,10 +6,10 @@ using ProductCatalog.Domain.Validation.Abstract;
 
 namespace ProductCatalog.Application.Features.Categories.Commands.UpdateCategory
 {
-    internal sealed class UpdateCategoryCommandHandler
-        (ICategoriesCommandsRepository _categoriesCommandsRepository,
-         IValidationPolicy<Category> _validationPolicy,
-         UpdateCategoryCommandFlowDescribtor _updateCategoryCommandFlowDescribtor) 
+    internal sealed class UpdateCategoryCommandHandler(
+        ICategoriesCommandsRepository _categoriesCommandsRepository,
+        IValidationPolicy<Category> _validationPolicy,
+        UpdateCategoryCommandFlowDescribtor _updateCategoryCommandFlowDescribtor)
         : IRequestHandler<UpdateCategoryCommand, CategoryDto>
     {
         public async Task<CategoryDto> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
