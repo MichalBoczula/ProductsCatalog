@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
@@ -23,7 +24,17 @@ namespace ProductCatalog.Infrastructure
                 options.UseSqlServer(cs, sql =>
                 {
                     sql.MigrationsHistoryTable("__EFMigrationsHistory");
+                    sql.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null);
                 }));
+
+            services.AddHealthChecks()
+                .AddCheck<SqlServerHealthCheck>(
+                    "sql-server",
+                    failureStatus: HealthStatus.Unhealthy,
+                    tags: ["ready"]);
 
             services.AddScoped<ICategoriesCommandsRepository, CategoriesCommandsRepository>();
             services.AddScoped<ICategoriesQueriesRepository, CategoriesQueriesRepository>();
