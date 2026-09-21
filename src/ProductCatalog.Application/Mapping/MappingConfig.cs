@@ -1,4 +1,4 @@
-﻿using Mapster;
+using Mapster;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.Currencies;
@@ -28,14 +28,27 @@ namespace ProductCatalog.Application.Mapping
 {
     public static class MappingConfig
     {
+        private static readonly object RegistrationLock = new();
+        private static bool _mappingsRegistered;
+
         public static void RegisterMappings()
         {
-            CreateMappingForCommon();
-            CreateMappingForMobilePhone();
-            CreateMappingForCategories();
-            CreateMappingForReadModels();
-            CreateMappingForCurrencies();
-            CreateMappingForHistory();
+            lock (RegistrationLock)
+            {
+                if (_mappingsRegistered)
+                {
+                    return;
+                }
+
+                CreateMappingForCommon();
+                CreateMappingForMobilePhone();
+                CreateMappingForCategories();
+                CreateMappingForReadModels();
+                CreateMappingForCurrencies();
+                CreateMappingForHistory();
+
+                _mappingsRegistered = true;
+            }
         }
 
         private static void CreateMappingForReadModels()
