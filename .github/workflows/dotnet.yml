@@ -7,6 +7,21 @@ on:
     branches: [ "master" ]
 
 jobs:
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
   build:
     runs-on: ubuntu-latest
 
@@ -65,7 +80,6 @@ jobs:
         run: dotnet restore ProductsCatalog.sln
 
       - name: Run domain unit tests
-        continue-on-error: true
         run: >
           dotnet test ./tests/ProductCatalog.Domain.UnitTests/ProductCatalog.Domain.UnitTests.csproj
           --configuration Release
@@ -155,7 +169,6 @@ jobs:
         run: dotnet restore ProductsCatalog.sln
 
       - name: Run application unit tests
-        continue-on-error: true
         run: >
           dotnet test ./tests/ProductsCatalog.Application.UnitTests/ProductsCatalog.Application.UnitTests.csproj
           --configuration Release
@@ -245,7 +258,6 @@ jobs:
         run: dotnet restore ProductsCatalog.sln
 
       - name: Run infrastructure unit tests
-        continue-on-error: true
         run: >
           dotnet test ./tests/ProductsCatalog.Infrastructure.UnitTests/ProductsCatalog.Infrastructure.UnitTests.csproj
           --configuration Release
@@ -335,7 +347,6 @@ jobs:
         run: dotnet restore ProductsCatalog.sln
 
       - name: Run acceptance tests
-        continue-on-error: true
         run: >
           dotnet test ./tests/ProductCatalog.Acceptance.Tests/ProductCatalog.Acceptance.Tests.csproj
           --configuration Release
