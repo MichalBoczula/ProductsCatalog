@@ -14,9 +14,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency
     internal sealed class DeleteCurrencyCommandFlowDescribtor : FlowDescriberBase<DeleteCurrencyCommand>
     {
         [FlowStep(1)]
-        public Task<Currency> LoadCurrency(Guid currencyId, ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
+        public async Task<Currency> LoadCurrency(Guid currencyId, ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
         {
-            return currencyCommandsRepository.GetCurrencyById(currencyId, cancellationToken);
+            return (await currencyCommandsRepository.GetCurrencyById(currencyId, cancellationToken))!;
         }
 
         [FlowStep(2)]

@@ -115,7 +115,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
 
             currencyResult.ShouldNotBeNull();
             historyResult.ShouldNotBeNull();
-            historyResult.Id.ShouldNotBe(Guid.Empty); 
+            historyResult.Id.ShouldNotBe(Guid.Empty);
             historyResult.CurrencyId.ShouldBe(currencyResult.Id);
             historyResult.Code.ShouldBe(currencyResult.Code);
             historyResult.Description.ShouldBe(currencyResult.Description);

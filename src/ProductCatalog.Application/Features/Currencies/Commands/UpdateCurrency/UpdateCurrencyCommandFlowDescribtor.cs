@@ -37,9 +37,9 @@ namespace ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency
         }
 
         [FlowStep(4)]
-        public Task<Currency> LoadExistingCurrency(Guid currencyId, ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
+        public async Task<Currency> LoadExistingCurrency(Guid currencyId, ICurrenciesCommandsRepository currencyCommandsRepository, CancellationToken cancellationToken)
         {
-            return currencyCommandsRepository.GetCurrencyById(currencyId, cancellationToken);
+            return (await currencyCommandsRepository.GetCurrencyById(currencyId, cancellationToken))!;
         }
 
         [FlowStep(5)]

@@ -2,7 +2,7 @@
 
 namespace ProductCatalog.Infrastructure.Common
 {
-    internal static class  ConnectionStringExtensions
+    internal static class ConnectionStringExtensions
     {
         internal static string Initialize(this IConfiguration configuration)
         {

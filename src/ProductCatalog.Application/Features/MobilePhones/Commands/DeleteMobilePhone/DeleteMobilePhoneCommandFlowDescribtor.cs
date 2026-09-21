@@ -14,9 +14,9 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobile
     internal sealed class DeleteMobilePhoneCommandFlowDescribtor : FlowDescriberBase<DeleteMobilePhoneCommand>
     {
         [FlowStep(1)]
-        public Task<MobilePhone> LoadMobilePhone(Guid mobilePhoneId, IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, CancellationToken cancellationToken)
+        public async Task<MobilePhone> LoadMobilePhone(Guid mobilePhoneId, IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, CancellationToken cancellationToken)
         {
-            return mobilePhonesCommandsRepository.GetById(mobilePhoneId, cancellationToken);
+            return (await mobilePhonesCommandsRepository.GetById(mobilePhoneId, cancellationToken))!;
         }
 
         [FlowStep(2)]

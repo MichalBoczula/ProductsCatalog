@@ -23,7 +23,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
         [FlowStep(2)]
         public Task<ValidationResult> ValidateIncomingMobilePhone(MobilePhone mobilePhone, IValidationPolicy<MobilePhone> validationPolicy)
         {
-            return validationPolicy.Validate(mobilePhone);
+            return validationPolicy.Validate(mobilePhone!);
         }
 
         [FlowStep(3)]
@@ -44,7 +44,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
         [FlowStep(5)]
         public Task<ValidationResult> ValidateExistingMobilePhone(MobilePhone? mobilePhone, IValidationPolicy<MobilePhone> validationPolicy)
         {
-            return validationPolicy.Validate(mobilePhone);
+            return validationPolicy.Validate(mobilePhone!);
         }
 
         [FlowStep(6)]

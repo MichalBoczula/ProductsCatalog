@@ -25,6 +25,29 @@ jobs:
       - name: Build solution
         run: dotnet build ProductsCatalog.sln --configuration Release --no-restore
 
+      - name: Verify formatting
+        run: dotnet format ProductsCatalog.sln --verify-no-changes --no-restore
+
+      - name: Validate OpenAPI document
+        shell: bash
+        run: |
+          ASPNETCORE_URLS=http://127.0.0.1:5050 \
+          ConnectionStrings__ProductCatalogDb='Server=127.0.0.1;Database=ProductsDb;User Id=sa;Password=NotUsed123!;TrustServerCertificate=True' \
+          Database__ApplyMigrations=false \
+          dotnet run --project ./src/ProductCatalog.Api/ProductCatalog.Api.csproj --configuration Release --no-build --no-launch-profile &
+          api_pid=$!
+          trap 'kill $api_pid 2>/dev/null || true' EXIT
+
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:5050/swagger/v1/swagger.json --output openapi.json; then
+              break
+            fi
+            sleep 1
+          done
+
+          test -s openapi.json
+          jq -e '.openapi and .info.title and .paths' openapi.json > /dev/null
+
   domain-unit-tests:
     runs-on: ubuntu-latest
     needs: build
@@ -406,6 +429,74 @@ jobs:
           context: .
           file: ./src/ProductCatalog.Api/Dockerfile
           push: false
+          load: true
+          tags: productcatalogapi:latest
+
+      - name: Scan container image
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: productcatalogapi:latest
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+  coverage:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore ProductsCatalog.sln
+
+      - name: Run Domain and Application tests with coverage
+        run: |
+          dotnet test ./tests/ProductCatalog.Domain.UnitTests/ProductCatalog.Domain.UnitTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage" --results-directory ./TestResults/Coverage/Domain
+          dotnet test ./tests/ProductsCatalog.Application.UnitTests/ProductsCatalog.Application.UnitTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage" --results-directory ./TestResults/Coverage/Application
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.4.7
+
+      - name: Create and enforce coverage report
+        run: >
+          reportgenerator
+          -reports:"./TestResults/Coverage/**/coverage.cobertura.xml"
+          -targetdir:"./TestResults/CoverageReport"
+          -reporttypes:"Html;TextSummary"
+          -minimumCoverageThresholds:"lineCoverage=70"
+
+      - name: Publish coverage summary
+        if: always()
+        run: cat ./TestResults/CoverageReport/Summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ./TestResults/CoverageReport
+
+  secret-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan repository for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   push-docker-image:
     runs-on: ubuntu-latest

@@ -16,7 +16,7 @@ namespace ProductCatalog.Application.Features.Categories.Commands.DeleteCategory
         [FlowStep(1)]
         public async Task<Category> LoadCategory(Guid categoryId, ICategoriesCommandsRepository categoriesCommandsRepository, CancellationToken cancellationToken)
         {
-            return await categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken);
+            return (await categoriesCommandsRepository.GetCategoryById(categoryId, cancellationToken))!;
         }
 
         [FlowStep(2)]

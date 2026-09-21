@@ -5,6 +5,7 @@ using ProductCatalog.Domain;
 using ProductCatalog.Infrastructure;
 using ProductCatalog.Infrastructure.Extensions;
 using Serilog;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace ProductCatalog.Api
 {
@@ -34,12 +35,11 @@ namespace ProductCatalog.Api
             builder.Services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssembly(typeof(Application.DependencyInjection).Assembly));
 
-            builder.Services.AddHealthChecks();
+            builder.Services.AddHealthChecks()
+                .AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy(), ["live"]);
 
             builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
-
-            builder.Services.AddOpenApiDocument();
 
             var app = builder.Build();
 
@@ -49,11 +49,6 @@ namespace ProductCatalog.Api
 
             app.UseSwagger();
             app.UseSwaggerUI();
-            app.UseReDoc(options =>
-            {
-                options.Path = "/redoc";
-            });
-
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
@@ -63,9 +58,19 @@ namespace ProductCatalog.Api
             app.MapDocumentationsEndpoints();
             app.MapMobilePhonesEndpoints();
 
-            app.MapHealthChecks("/health");
+            app.MapHealthChecks("/health/live", new HealthCheckOptions
+            {
+                Predicate = registration => registration.Tags.Contains("live")
+            });
+            app.MapHealthChecks("/health/ready", new HealthCheckOptions
+            {
+                Predicate = registration => registration.Tags.Contains("ready")
+            });
 
-            app.ApplyMigrations();
+            if (builder.Configuration.GetValue<bool>("Database:ApplyMigrations"))
+            {
+                app.Services.ApplyMigrations();
+            }
 
             app.Run();
         }

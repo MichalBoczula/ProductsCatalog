@@ -70,7 +70,7 @@ namespace ProductCatalog.Acceptance.Tests
                 $"Server={host},{port};User Id={Username};Password={Password};" +
                 $"TrustServerCertificate=True;Encrypt=False;Connection Timeout=5;";
 
-            await WaitUntilSqlIsReady(baseCs); 
+            await WaitUntilSqlIsReady(baseCs);
 
             _connectionString = baseCs + $"Database={Database};";
 
