@@ -90,18 +90,15 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             result.Count.ShouldBeGreaterThan(0);
         }
 
-        [Then("the top mobile phones response is not found")]
-        public async Task ThenTheTopMobilePhonesResponseIsNotFound()
+        [Then("the top mobile phones response is successful and empty")]
+        public async Task ThenTheTopMobilePhonesResponseIsSuccessfulAndEmpty()
         {
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            var problem = await DeserializeResponse<NotFoundProblemDetails>(_response);
-            problem.ShouldNotBeNull();
-            problem.Status.ShouldBe((int)HttpStatusCode.NotFound);
-            problem.Title.ShouldBe("Resource not found.");
-            problem.Instance.ShouldBe("/mobile-phones/top");
-            problem.TraceId.ShouldNotBeNullOrWhiteSpace();
+            var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
+            result.ShouldNotBeNull();
+            result.ShouldBeEmpty();
         }
 
         private async Task EnsureCategoryExists()
