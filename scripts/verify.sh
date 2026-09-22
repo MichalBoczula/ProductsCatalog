@@ -39,7 +39,11 @@ verify_coverage application ProductCatalog.Application
 
 dotnet test tests/ProductsCatalog.Infrastructure.UnitTests/ProductsCatalog.Infrastructure.UnitTests.csproj \
   --configuration Release --no-restore --logger 'trx;LogFileName=infrastructure.trx' \
-  --results-directory "$results_dir/infrastructure"
+  --results-directory "$results_dir/infrastructure" --collect:'XPlat Code Coverage'
+"$results_dir/tools/reportgenerator" -reports:"$results_dir/infrastructure/**/coverage.cobertura.xml" \
+  -targetdir:"$results_dir/infrastructure-coverage" '-reporttypes:Html;TextSummary' \
+  -assemblyfilters:'+ProductCatalog.Infrastructure'
+test -s "$results_dir/infrastructure-coverage/Summary.txt"
 dotnet test tests/ProductCatalog.Acceptance.Tests/ProductCatalog.Acceptance.Tests.csproj \
   --configuration Release --no-restore --logger 'trx;LogFileName=acceptance.trx' \
   --results-directory "$results_dir/acceptance"

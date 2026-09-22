@@ -392,6 +392,7 @@ jobs:
           --verbosity normal
           --logger "trx;LogFileName=infrastructure-unit-tests.trx"
           --results-directory ./TestResults/Infrastructure
+          --collect:"XPlat Code Coverage"
 
       - name: Add infrastructure unit tests summary
         if: always()
@@ -439,6 +440,36 @@ jobs:
 
             Add-Content $env:GITHUB_STEP_SUMMARY "| $testName | $errorMessage |"
           }
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.4.7
+
+      - name: Create Infrastructure coverage report
+        run: |
+          reportgenerator \
+            -reports:"./TestResults/Infrastructure/**/coverage.cobertura.xml" \
+            -targetdir:"./TestResults/CoverageReport/Infrastructure" \
+            -reporttypes:"Html;TextSummary" \
+            -assemblyfilters:"+ProductCatalog.Infrastructure"
+          test -s ./TestResults/CoverageReport/Infrastructure/Summary.txt
+
+      - name: Publish Infrastructure coverage summary
+        if: always()
+        run: |
+          echo "## Infrastructure coverage (informational, no threshold)" >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f ./TestResults/CoverageReport/Infrastructure/Summary.txt ]]; then
+            cat ./TestResults/CoverageReport/Infrastructure/Summary.txt >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Infrastructure coverage report unavailable." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload Infrastructure coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: infrastructure-coverage-report
+          path: ./TestResults/CoverageReport/Infrastructure
+          if-no-files-found: warn
 
       - name: Upload infrastructure test results
         if: always()
