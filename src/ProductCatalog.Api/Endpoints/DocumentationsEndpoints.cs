@@ -32,7 +32,7 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<GetMobilePhoneHistoryQuery> getMobilePhoneHistoryFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhonesQuery> getMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetFilteredMobilePhonesQuery> getFilteredMobilePhonesFlowDescriber,
-                [FromServices] IFlowDescriber<GetTopMobilePhonesQuery> getTopMobilePhonesFlowDescriber
+                [FromServices] IFlowDescriber<GetTopMobilePhonesQuery> getTopMobilePhonesFlowDescriber) =>
             {
                 var descriptions = new List<FlowDescription>
                 {
