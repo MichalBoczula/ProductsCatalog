@@ -1,4 +1,5 @@
 using ProductCatalog.Api.Configuration;
+using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Api.Endpoints;
 using ProductCatalog.Application;
 using ProductCatalog.Domain;
@@ -40,10 +41,17 @@ namespace ProductCatalog.Api
 
             builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
+            builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadRequest = true);
 
             var app = builder.Build();
 
             app.UseExceptionHandler(_ => { });
+            app.UseStatusCodePages(status => ApiProblemResponse.WriteEmptyStatusAsync(status.HttpContext));
+            app.Use(async (context, next) =>
+            {
+                RequiredJsonProperties.EnableInspection(context);
+                await next(context);
+            });
 
             app.UseSerilogRequestLogging();
 

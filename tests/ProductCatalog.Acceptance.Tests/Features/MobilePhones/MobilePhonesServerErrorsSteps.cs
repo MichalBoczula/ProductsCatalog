@@ -74,6 +74,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             problem.GetProperty("title").GetString().ShouldBe(expected["Title"]);
             problem.GetProperty("detail").GetString().ShouldBe(expected["Detail"]);
             problem.GetProperty("traceId").GetString().ShouldNotBeNullOrWhiteSpace();
+            problem.GetProperty("code").GetString().ShouldBe("internal_error");
             body.ShouldNotContain(FailingMobilePhonesRepository.SensitiveDetail);
             body.ShouldNotContain(nameof(InvalidOperationException));
             body.ShouldNotContain(nameof(FailingMobilePhonesRepository));

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging.Abstractions;
 using ProductCatalog.Api.Configuration;
 using ProductCatalog.Domain.Validation.Common;
 using Shouldly;
@@ -28,7 +29,7 @@ namespace ProductCatalog.Acceptance.Tests.Configuration
             context.Response.Body = new MemoryStream();
 
             var exception = new ValidationException(validationResult);
-            var exceptionHandler = new ExceptionHandler();
+            var exceptionHandler = new ExceptionHandler(NullLogger<ExceptionHandler>.Instance);
 
             var handled = await exceptionHandler.TryHandleAsync(
                 context,
@@ -37,6 +38,7 @@ namespace ProductCatalog.Acceptance.Tests.Configuration
 
             handled.ShouldBeTrue();
             context.Response.StatusCode.ShouldBe((int)HttpStatusCode.BadRequest);
+            context.Response.ContentType.ShouldBe("application/problem+json");
             context.Response.Body.Position = 0;
             using var document = await JsonDocument.ParseAsync(context.Response.Body);
             var problem = document.RootElement;
@@ -46,6 +48,8 @@ namespace ProductCatalog.Acceptance.Tests.Configuration
             problem.GetProperty("detail").GetString().ShouldBe("One or more validation errors occurred.");
             problem.GetProperty("instance").GetString().ShouldBe("/mobile-phones");
             problem.GetProperty("traceId").GetString().ShouldBe(context.TraceIdentifier);
+            problem.GetProperty("code").GetString().ShouldBe("validation_failed");
+            problem.GetProperty("missingProperties").GetArrayLength().ShouldBe(0);
 
             var errors = problem.GetProperty("errors");
             errors.GetArrayLength().ShouldBe(1);

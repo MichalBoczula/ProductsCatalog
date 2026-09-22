@@ -53,7 +53,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Describe all request flows")
             .WithDescription("Returns the ordered steps executed when handling every documented request.")
             .Produces<IReadOnlyCollection<FlowDescription>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapGet("/validation-policies", ([FromServices] IEnumerable<IValidationPolicyDescriptorProvider> validationPolicyProviders) =>
                 Results.Ok(validationPolicyProviders
@@ -64,7 +64,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithSummary("Describe all validation policies")
             .WithDescription("Returns validation policies with their rules and possible validation errors.")
             .Produces<IReadOnlyCollection<ValidationPolicyDescriptor>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             return group;
         }

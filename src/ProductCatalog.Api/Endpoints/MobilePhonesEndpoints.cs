@@ -40,9 +40,9 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns the mobile phones matching the provided Ids.")
             .WithName("GetMobilePhonesByIds")
             .Produces<IReadOnlyList<MobilePhoneDto>>(StatusCodes.Status200OK)
-            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
@@ -56,8 +56,8 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns the mobile phone details when the Id exists; 404 otherwise.")
             .WithName("GetMobilePhoneById")
             .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
-            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapGet("", async ([FromQuery] int amount, IMediator mediator) =>
             {
@@ -68,8 +68,8 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of mobile phones limited by the provided amount.")
             .WithName("GetMobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
-            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapGet("/{id:guid}/history", async (
                 Guid id,
@@ -84,9 +84,9 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns the change history for a mobile phone.")
             .WithName("GetMobilePhoneHistory")
             .Produces<List<MobilePhoneHistoryDto>>(StatusCodes.Status200OK)
-            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapGet("/top", async (IMediator mediator) =>
             {
@@ -97,7 +97,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of top mobile phones.")
             .WithName("GetTopMobilePhones")
             .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapPost("/filter", async (IMediator mediator, MobilePhoneFilterDto mobilePhoneFilterDto) =>
             {
@@ -108,8 +108,8 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of filtered mobile phones.")
             .WithName("GetFiltered MobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
-            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
         }
 
         private static void MapMobilePhonesCommands(IEndpointRouteBuilder group)
@@ -123,8 +123,8 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Creates a new mobile phone and returns the created resource.")
             .WithName("CreateMobilePhone")
             .Produces<MobilePhoneDetailsDto>(StatusCodes.Status201Created)
-            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapPut("/{id:guid}", async (Guid id, UpdateMobilePhoneExternalDto mobilePhone, IMediator mediator) =>
             {
@@ -135,8 +135,8 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Updates an existing mobile phone and returns the updated resource.")
             .WithName("UpdateMobilePhone")
             .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
-            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
             {
@@ -147,8 +147,8 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Soft deletes a mobile phone and returns the deactivated resource.")
             .WithName("DeleteMobilePhone")
             .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
-            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
         }
     }
 }
