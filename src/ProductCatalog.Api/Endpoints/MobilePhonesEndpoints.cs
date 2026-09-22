@@ -12,6 +12,7 @@ using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHis
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
 using ProductCatalog.Domain.Common.Filters;
+using ProductCatalog.Domain.Common.Pagination;
 
 namespace ProductCatalog.Api.Endpoints
 {
@@ -33,14 +34,13 @@ namespace ProductCatalog.Api.Endpoints
             {
                 var result = await mediator.Send(new GetMobilePhoneByIdsQuery(ids));
 
-                return result.Count == 0
-                    ? Results.NotFound()
-                    : Results.Ok(result);
+                return Results.Ok(result);
             })
             .WithSummary("Get mobile phones by Ids")
-            .WithDescription("Returns the mobile phones matching the provided Ids; 404 when none exist.")
+            .WithDescription("Returns the mobile phones matching the provided Ids.")
             .WithName("GetMobilePhonesByIds")
             .Produces<IReadOnlyList<MobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
@@ -76,13 +76,15 @@ namespace ProductCatalog.Api.Endpoints
                 [FromQuery] int pageSize,
                 IMediator mediator) =>
             {
-                var result = await mediator.Send(new GetMobilePhoneHistoryQuery(id, pageNumber, pageSize));
+                var result = await mediator.Send(new GetMobilePhoneHistoryQuery(id, new PaginationParameters(pageNumber, pageSize)));
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phone history")
             .WithDescription("Returns the change history for a mobile phone.")
             .WithName("GetMobilePhoneHistory")
             .Produces<List<MobilePhoneHistoryDto>>(StatusCodes.Status200OK)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapGet("/top", async (IMediator mediator) =>
@@ -94,7 +96,6 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of top mobile phones.")
             .WithName("GetTopMobilePhones")
             .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
-            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapPost("/filter", async (IMediator mediator, MobilePhoneFilterDto mobilePhoneFilterDto) =>
@@ -107,7 +108,6 @@ namespace ProductCatalog.Api.Endpoints
             .WithName("GetFiltered MobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<NotFoundProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
         }
 

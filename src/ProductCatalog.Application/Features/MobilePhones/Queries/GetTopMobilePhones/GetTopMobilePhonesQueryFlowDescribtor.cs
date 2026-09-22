@@ -4,7 +4,6 @@ using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
-using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones
 {
@@ -21,12 +20,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobileP
         [FlowStep(2)]
         public virtual IReadOnlyList<MobilePhoneReadModel> EnsureTopMobilePhonesFound(IReadOnlyList<MobilePhoneReadModel> mobilePhones)
         {
-            if (mobilePhones is null || mobilePhones.Count == 0)
-            {
-                throw new ResourceNotFoundException(nameof(GetTopMobilePhonesQuery), Guid.Empty, nameof(List<TopMobilePhoneDto>));
-            }
-
-            return mobilePhones;
+            return mobilePhones ?? [];
         }
 
         [FlowStep(3)]

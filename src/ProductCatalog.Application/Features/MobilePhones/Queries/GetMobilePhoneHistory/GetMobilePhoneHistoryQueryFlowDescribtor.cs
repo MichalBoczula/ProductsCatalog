@@ -3,7 +3,10 @@ using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
+using ProductCatalog.Domain.Common.Pagination;
+using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory
@@ -11,33 +14,37 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
     internal sealed class GetMobilePhoneHistoryQueryFlowDescribtor : FlowDescriberBase<GetMobilePhoneHistoryQuery>
     {
         [FlowStep(1)]
-        public Task<IReadOnlyList<MobilePhonesHistory>> LoadHistory(
-            IMobilePhonesQueriesRepository mobilePhonesQueriesRepository,
-            Guid mobilePhoneId,
-            int pageNumber,
-            int pageSize,
-            CancellationToken cancellationToken)
-        {
-            return mobilePhonesQueriesRepository.GetHistoryOfChanges(mobilePhoneId, pageNumber, pageSize, cancellationToken);
-        }
+        public Task<ValidationResult> ValidatePagination(PaginationParameters pagination, IValidationPolicy<PaginationParameters> validationPolicy)
+            => validationPolicy.Validate(pagination);
 
         [FlowStep(2)]
-        public IReadOnlyList<MobilePhonesHistory> EnsureHistoryFound(
-            IReadOnlyList<MobilePhonesHistory> historyEntries,
-            Guid mobilePhoneId)
+        public void ThrowValidationExceptionIfPaginationInvalid(ValidationResult validationResult)
         {
-            if (historyEntries is null || historyEntries.Count == 0)
+            if (!validationResult.IsValid)
             {
-                throw new ResourceNotFoundException(nameof(GetMobilePhoneHistoryQuery), mobilePhoneId, nameof(List<MobilePhoneHistoryDto>));
+                throw new ValidationException(validationResult);
             }
-
-            return historyEntries;
         }
 
         [FlowStep(3)]
-        public IReadOnlyList<MobilePhoneHistoryDto> MapHistoryToDto(IReadOnlyList<MobilePhonesHistory> historyEntries)
+        public Task<MobilePhoneReadModel?> GetMobilePhone(IMobilePhonesQueriesRepository repository, Guid mobilePhoneId, CancellationToken cancellationToken)
+            => repository.GetById(mobilePhoneId, cancellationToken);
+
+        [FlowStep(4)]
+        public void EnsureMobilePhoneFound(MobilePhoneReadModel? mobilePhone, Guid mobilePhoneId)
         {
-            return historyEntries.Adapt<List<MobilePhoneHistoryDto>>().AsReadOnly();
+            if (mobilePhone is null)
+            {
+                throw new ResourceNotFoundException(nameof(GetMobilePhoneHistoryQuery), mobilePhoneId, nameof(MobilePhoneHistoryDto));
+            }
         }
+
+        [FlowStep(5)]
+        public Task<IReadOnlyList<MobilePhonesHistory>> LoadHistory(IMobilePhonesQueriesRepository repository, Guid mobilePhoneId, int pageNumber, int pageSize, CancellationToken cancellationToken)
+            => repository.GetHistoryOfChanges(mobilePhoneId, pageNumber, pageSize, cancellationToken);
+
+        [FlowStep(6)]
+        public IReadOnlyList<MobilePhoneHistoryDto> MapHistoryToDto(IReadOnlyList<MobilePhonesHistory> historyEntries)
+            => historyEntries.Adapt<List<MobilePhoneHistoryDto>>().AsReadOnly();
     }
 }
