@@ -82,7 +82,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             result.Camera.ShouldBe("48 MP");
             result.FingerPrint.ShouldBeTrue();
             result.FaceId.ShouldBeFalse();
-            result.CategoryId.ShouldBe(mobilePhone.CategoryId);
             result.Price.Amount.ShouldBe(999.99m);
             result.Price.Currency.ShouldBe("USD");
             result.Description2.ShouldBe("Second description");
@@ -260,7 +259,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 camera,
                 fingerPrint,
                 faceId,
-                Guid.NewGuid(),
                 new Money(price, "usd"),
                 "Second description",
                 "Third description");
@@ -306,7 +304,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 Camera = mobilePhone.Camera,
                 FingerPrint = mobilePhone.FingerPrint,
                 FaceId = mobilePhone.FaceId,
-                CategoryId = mobilePhone.CategoryId,
                 PriceAmount = mobilePhone.Price.Amount,
                 PriceCurrency = mobilePhone.Price.Currency,
                 Description2 = mobilePhone.Description2,
@@ -358,7 +355,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             history.Camera.ShouldBe(mobilePhone.Camera);
             history.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
             history.FaceId.ShouldBe(mobilePhone.FaceId);
-            history.CategoryId.ShouldBe(mobilePhone.CategoryId);
             history.PriceAmount.ShouldBe(mobilePhone.Price.Amount);
             history.PriceCurrency.ShouldBe(mobilePhone.Price.Currency);
             history.Description2.ShouldBe(mobilePhone.Description2);

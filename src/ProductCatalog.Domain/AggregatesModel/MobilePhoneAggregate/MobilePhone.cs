@@ -14,7 +14,6 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
         public string Camera { get; private set; } = null!;
         public bool FingerPrint { get; private set; }
         public bool FaceId { get; private set; }
-        public Guid CategoryId { get; private set; }
         public Money Price { get; private set; }
         public string Description2 { get; private set; } = null!;
         public string Description3 { get; private set; } = null!;
@@ -30,7 +29,6 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             string camera,
             bool fingerPrint,
             bool faceId,
-            Guid categoryId,
             Money price,
             string description2,
             string description3)
@@ -43,7 +41,6 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             Camera = camera;
             FingerPrint = fingerPrint;
             FaceId = faceId;
-            CategoryId = categoryId;
             Price = price;
             Description2 = description2;
             Description3 = description3;
@@ -59,7 +56,6 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             Camera = incoming.Camera;
             FingerPrint = incoming.FingerPrint;
             FaceId = incoming.FaceId;
-            CategoryId = incoming.CategoryId;
             Price = incoming.Price;
             Description2 = incoming.Description2;
             Description3 = incoming.Description3;

@@ -15,7 +15,6 @@ namespace ProductCatalog.Application.Common.Dtos.MobilePhones
         public required bool FaceId { get; init; }
         public required string Description2 { get; init; }
         public required string Description3 { get; init; }
-        public required Guid CategoryId { get; init; }
         public required Guid Id { get; init; }
         public required bool IsActive { get; init; }
     }

@@ -53,7 +53,6 @@ public class UpdateMobilePhoneCommandHandlerTests
                 "64 MP",
                 true,
                 true,
-                Guid.NewGuid(),
                 new UpdateMoneyExternalDto(999.99m, "eur"),
                 "desc2",
                 "desc3"));
@@ -83,7 +82,6 @@ public class UpdateMobilePhoneCommandHandlerTests
             "12 MP",
             false,
             false,
-            Guid.NewGuid(),
             new Money(199.99m, "usd"),
             "desc2",
             "desc3");
@@ -164,7 +162,6 @@ public class UpdateMobilePhoneCommandHandlerTests
                 phone.Camera == command.MobilePhone.Camera &&
                 phone.FingerPrint == command.MobilePhone.FingerPrint &&
                 phone.FaceId == command.MobilePhone.FaceId &&
-                phone.CategoryId == command.MobilePhone.CategoryId &&
                 phone.Price.Amount == command.MobilePhone.Price.Amount &&
                 phone.Price.Currency == command.MobilePhone.Price.Currency.ToUpperInvariant())),
             Times.Once);
@@ -208,7 +205,6 @@ public class UpdateMobilePhoneCommandHandlerTests
         result.Camera.ShouldBe(command.MobilePhone.Camera);
         result.FingerPrint.ShouldBe(command.MobilePhone.FingerPrint);
         result.FaceId.ShouldBe(command.MobilePhone.FaceId);
-        result.CategoryId.ShouldBe(command.MobilePhone.CategoryId);
         result.Price.Amount.ShouldBe(command.MobilePhone.Price.Amount);
         result.Price.Currency.ShouldBe(command.MobilePhone.Price.Currency.ToUpperInvariant());
         result.IsActive.ShouldBeTrue();
@@ -246,7 +242,6 @@ public class UpdateMobilePhoneCommandHandlerTests
                 "64 MP",
                 true,
                 true,
-                Guid.NewGuid(),
                 new UpdateMoneyExternalDto(999.99m, "eur"),
                 "desc2",
                 "desc3"));

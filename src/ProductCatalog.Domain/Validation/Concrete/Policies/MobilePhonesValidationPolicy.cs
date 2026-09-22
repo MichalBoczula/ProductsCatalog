@@ -1,6 +1,4 @@
-﻿using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
-using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
+﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
@@ -14,13 +12,10 @@ namespace ProductCatalog.Domain.Validation.Concrete.Policies
         private readonly List<IValidationRule<MobilePhone>> _rules = [];
         private readonly List<IValidationRule<Money>> _moneyRules = [];
 
-        public MobilePhonesValidationPolicy(
-            ICategoriesQueriesRepository categoriesQueriesRepository,
-            ICurrenciesQueriesRepository currenciesQueriesRepository)
+        public MobilePhonesValidationPolicy()
         {
             _rules.Add(new MobilePhonesCommonDescriptionValidationRule());
             _rules.Add(new MobilePhonesStringValidationRule());
-            _rules.Add(new MobilePhonesCategoryIdValidationRule(categoriesQueriesRepository));
             _rules.Add(new MobilePhonesIsNullValidationRule());
         }
 

@@ -22,7 +22,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
 {
     internal static class MobilePhonesApplicationBenchmarkDataFactory
     {
-        public static readonly Guid MobileCategoryId = Guid.Parse("587480bb-c126-4f9b-b531-b0244daa4ba4");
 
 
         public static GetMobilePhonesQuery CreateQuery()
@@ -111,7 +110,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 Camera: "48MP",
                 FingerPrint: false,
                 FaceId: true,
-                CategoryId: MobileCategoryId,
                 Price: new CreateMoneyExternalDto(799.00m, "USD"),
                 Description2: "Text line 2",
                 Description3: "Text line 3"
@@ -134,7 +132,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 Camera: "48MP, f/1.6",
                 FingerPrint: false,
                 FaceId: true,
-                CategoryId: MobileCategoryId,
                 Price: new UpdateMoneyExternalDto(849.00m, "USD"),
                 Description2: "Updated line 2",
                 Description3: "Updated line 3"
@@ -152,7 +149,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 camera: "48MP",
                 fingerPrint: false,
                 faceId: true,
-                categoryId: MobileCategoryId,
                 price: new Money(799.00m, "USD"),
                 description2: "Text 2",
                 description3: "Text 3"
@@ -204,7 +200,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 Camera = "48 MP",
                 FingerPrint = false,
                 FaceId = true,
-                CategoryId = MobileCategoryId,
                 PriceAmount = 999.99m,
                 PriceCurrency = "USD",
                 Description2 = "Dodatkowy opis produktu",
@@ -263,7 +258,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Application.Com
                 Camera = "48 MP",
                 FingerPrint = false,
                 FaceId = true,
-                CategoryId = MobileCategoryId,
                 PriceAmount = 999.99m,
                 PriceCurrency = "USD",
                 Description2 = "Dodatkowy opis produktu",

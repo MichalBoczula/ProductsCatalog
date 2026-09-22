@@ -21,7 +21,6 @@ public class GetMobilePhonesQueryHandlerTests
     public async Task Handle_ShouldInvokeRepositoryAndMapMobilePhones()
     {
         // Arrange
-        var categoryId = Guid.NewGuid();
         var amount = 2;
         var otherPhotos = new List<string> { "photo1", "photo2" };
         var otherPhotosJson = JsonSerializer.Serialize<IReadOnlyList<string>>(otherPhotos);
@@ -65,7 +64,6 @@ public class GetMobilePhonesQueryHandlerTests
                 Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
-                CategoryId = categoryId,
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
                 Description2 = "description 2",
@@ -110,7 +108,6 @@ public class GetMobilePhonesQueryHandlerTests
                 Camera = "8 MP",
                 FingerPrint = false,
                 FaceId = true,
-                CategoryId = categoryId,
                 PriceAmount = 499.99m,
                 PriceCurrency = "USD",
                 Description2 = "description 2",

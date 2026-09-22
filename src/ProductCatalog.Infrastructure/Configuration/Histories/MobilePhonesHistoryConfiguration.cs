@@ -48,7 +48,6 @@ namespace ProductCatalog.Infrastructure.Configuration.Histories
             builder.Property(x => x.Camera).HasMaxLength(200).IsRequired();
             builder.Property(x => x.FingerPrint).IsRequired();
             builder.Property(x => x.FaceId).IsRequired();
-            builder.Property(x => x.CategoryId).IsRequired();
             builder.Property(x => x.PriceAmount).HasPrecision(18, 2).IsRequired();
             builder.Property(x => x.PriceCurrency).HasMaxLength(3).IsRequired();
             builder.Property(x => x.IsActive).IsRequired();

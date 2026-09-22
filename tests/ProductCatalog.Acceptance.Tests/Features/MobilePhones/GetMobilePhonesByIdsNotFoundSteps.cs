@@ -1,9 +1,7 @@
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using Reqnroll;
@@ -31,15 +29,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [Given("an existing mobile phone and a missing mobile phone id")]
         public async Task GivenAnExistingMobilePhoneAndAMissingMobilePhoneId(Table table)
         {
-            var categoryRequest = new CreateCategoryExternalDto($"MOBILE-{Guid.NewGuid():N}", "Mobile category");
-            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest, _jsonOptions);
-            categoryResponse.EnsureSuccessStatusCode();
-
-            var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
-            category.ShouldNotBeNull();
 
             var values = table.Rows.ToDictionary(row => row["Field"], row => row["Value"], StringComparer.OrdinalIgnoreCase);
-            var request = BuildMobilePhoneRequest(category.Id, values);
+            var request = BuildMobilePhoneRequest(values);
             AllureJson.AttachObject("Request JSON (create phone for get by ids not found)", request, _jsonOptions);
 
             var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
@@ -90,7 +82,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         private static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(
-            Guid categoryId,
             IReadOnlyDictionary<string, string> values)
         {
             return new CreateMobilePhoneExternalDto(
@@ -113,8 +104,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                     ParseBool(values, "Proximity"), ParseBool(values, "Compass"),
                     ParseBool(values, "Barometer"), ParseBool(values, "Halla"),
                     ParseBool(values, "AmbientLight")),
-                GetValue(values, "Camera"), ParseBool(values, "FingerPrint"), ParseBool(values, "FaceId"), categoryId,
-                new CreateMoneyExternalDto(ParseDecimal(values, "PriceAmount"), GetValue(values, "PriceCurrency")),
+                GetValue(values, "Camera"), ParseBool(values, "FingerPrint"), ParseBool(values, "FaceId"), new CreateMoneyExternalDto(ParseDecimal(values, "PriceAmount"), GetValue(values, "PriceCurrency")),
                 GetValue(values, "Description2"), GetValue(values, "Description3"));
         }
 

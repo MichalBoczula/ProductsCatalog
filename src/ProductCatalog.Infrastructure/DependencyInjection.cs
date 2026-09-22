@@ -2,12 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
-using ProductCatalog.Infrastructure.Repositories.Categories;
-using ProductCatalog.Infrastructure.Repositories.Currencies;
 using ProductCatalog.Infrastructure.Repositories.MobilePhones;
 
 namespace ProductCatalog.Infrastructure
@@ -36,11 +32,7 @@ namespace ProductCatalog.Infrastructure
                     failureStatus: HealthStatus.Unhealthy,
                     tags: ["ready"]);
 
-            services.AddScoped<ICategoriesCommandsRepository, CategoriesCommandsRepository>();
-            services.AddScoped<ICategoriesQueriesRepository, CategoriesQueriesRepository>();
 
-            services.AddScoped<ICurrenciesQueriesRepository, CurrenciesQueriesRepository>();
-            services.AddScoped<ICurrenciesCommandsRepository, CurrenciesCommandsRepository>();
 
             services.AddScoped<IMobilePhonesCommandsRepository, MobilePhonesCommandsRepository>();
             services.AddScoped<IMobilePhonesQueriesRepository, MobilePhonesQueriesRepository>();

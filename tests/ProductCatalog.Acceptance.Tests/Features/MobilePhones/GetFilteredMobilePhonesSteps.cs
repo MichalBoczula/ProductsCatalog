@@ -1,9 +1,7 @@
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Domain.Common.Filters;
@@ -28,18 +26,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         private HttpResponseMessage? _response;
         private List<MobilePhoneDto> _result = new();
         private ApiProblemDetails? _apiProblem;
-        private Guid _categoryId;
 
         [Given("existing mobile phones for filtering by brand")]
         public async Task GivenExistingMobilePhonesForFilteringByBrand(Table table)
         {
-            var categoryRequest = new CreateCategoryExternalDto($"FILTER-{Guid.NewGuid():N}", "Filter category");
-            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest);
-            categoryResponse.EnsureSuccessStatusCode();
-
-            var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
-            category.ShouldNotBeNull();
-            _categoryId = category!.Id;
 
             foreach (var row in table.Rows)
             {
@@ -158,7 +148,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 "camera",
                 true,
                 true,
-                _categoryId,
                 new CreateMoneyExternalDto(priceAmount, "USD"),
                 "desc2",
                 "desc3");

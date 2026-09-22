@@ -1,21 +1,11 @@
 using Mapster;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
-using ProductCatalog.Application.Common.Dtos.Currencies;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Application.Common.Dtos.Products;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
-using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
 using ProductCatalog.Application.Features.Common;
-using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
-using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
@@ -42,9 +32,7 @@ namespace ProductCatalog.Application.Mapping
 
                 CreateMappingForCommon();
                 CreateMappingForMobilePhone();
-                CreateMappingForCategories();
                 CreateMappingForReadModels();
-                CreateMappingForCurrencies();
                 CreateMappingForHistory();
 
                 _mappingsRegistered = true;
@@ -122,41 +110,11 @@ namespace ProductCatalog.Application.Mapping
                         Amount = src.PriceAmount,
                         Currency = src.PriceCurrency
                     });
-
-            TypeAdapterConfig<CategoryReadModel, CategoryDto>
-                .NewConfig();
-
-            TypeAdapterConfig<CurrencyReadModel, CurrencyDto>
-                .NewConfig();
         }
 
-        private static void CreateMappingForCategories()
-        {
-            TypeAdapterConfig<CreateCategoryExternalDto, Category>
-                .NewConfig()
-                .MapToConstructor(true);
 
-            TypeAdapterConfig<UpdateCategoryExternalDto, Category>
-                .NewConfig()
-                .MapToConstructor(true);
 
-            TypeAdapterConfig<Category, CategoryDto>
-                .NewConfig();
-        }
 
-        private static void CreateMappingForCurrencies()
-        {
-            TypeAdapterConfig<CreateCurrencyExternalDto, Currency>
-                .NewConfig()
-                .MapToConstructor(true);
-
-            TypeAdapterConfig<UpdateCurrencyExternalDto, Currency>
-                .NewConfig()
-                .MapToConstructor(true);
-
-            TypeAdapterConfig<Currency, CurrencyDto>
-                .NewConfig();
-        }
 
         private static void CreateMappingForCommon()
         {
@@ -258,17 +216,6 @@ namespace ProductCatalog.Application.Mapping
 
         private static void CreateMappingForHistory()
         {
-            TypeAdapterConfig<Category, CategoriesHistory>
-                .NewConfig()
-                .Map(dest => dest.CategoryId, src => src.Id)
-                .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
-                .Ignore(dest => dest.Id);
-
-            TypeAdapterConfig<Currency, CurrenciesHistory>
-                .NewConfig()
-                .Map(dest => dest.CurrencyId, src => src.Id)
-                .Map(dest => dest.Operation, src => (Operation)MapContext.Current!.Parameters["operation"])
-                .Ignore(dest => dest.Id);
 
             TypeAdapterConfig<MobilePhone, MobilePhonesHistory>
                 .NewConfig()
@@ -308,7 +255,6 @@ namespace ProductCatalog.Application.Mapping
                 .Map(dest => dest.Camera, src => src.Camera)
                 .Map(dest => dest.FingerPrint, src => src.FingerPrint)
                 .Map(dest => dest.FaceId, src => src.FaceId)
-                .Map(dest => dest.CategoryId, src => src.CategoryId)
                 .Map(dest => dest.PriceAmount, src => src.Price.Amount)
                 .Map(dest => dest.PriceCurrency, src => src.Price.Currency)
                 .Map(dest => dest.Description2, src => src.Description2)

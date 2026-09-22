@@ -21,7 +21,6 @@ public class GetMobilePhoneByIdQueryHandlerTests
     {
         // Arrange
         var mobilePhoneId = Guid.NewGuid();
-        var categoryId = Guid.NewGuid();
         var otherPhotos = new List<string> { "photo1", "photo2" };
         var query = new GetMobilePhoneByIdQuery(mobilePhoneId);
 
@@ -63,7 +62,6 @@ public class GetMobilePhoneByIdQueryHandlerTests
             Camera = "12 MP",
             FingerPrint = true,
             FaceId = false,
-            CategoryId = categoryId,
             PriceAmount = 799.99m,
             PriceCurrency = "USD",
             Description2 = "description 2",
@@ -97,7 +95,6 @@ public class GetMobilePhoneByIdQueryHandlerTests
         result.ElectronicDetails.CPU.ShouldBe(mobilePhoneReadModel.CPU);
         result.Connectivity.Has5G.ShouldBe(mobilePhoneReadModel.Has5G);
         result.Camera.ShouldBe(mobilePhoneReadModel.Camera);
-        result.CategoryId.ShouldBe(mobilePhoneReadModel.CategoryId);
         result.Price.Amount.ShouldBe(mobilePhoneReadModel.PriceAmount);
         result.Price.Currency.ShouldBe(mobilePhoneReadModel.PriceCurrency);
     }

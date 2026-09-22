@@ -3,12 +3,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
-using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
-using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
-using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
-using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
-using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
-using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
@@ -18,9 +12,6 @@ using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHis
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetFilteredMobilePhones;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetTopMobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
-using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
-using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
@@ -33,12 +24,6 @@ namespace ProductCatalog.Api.Endpoints
             var group = app.MapGroup("/products-documentation").WithTags("Documentation");
 
             group.MapGet("/flow", (
-                [FromServices] IFlowDescriber<CreateCurrencyCommand> createCurrencyFlowDescriber,
-                [FromServices] IFlowDescriber<UpdateCurrencyCommand> updateCurrencyFlowDescriber,
-                [FromServices] IFlowDescriber<DeleteCurrencyCommand> deleteCurrencyFlowDescriber,
-                [FromServices] IFlowDescriber<CreateCategoryCommand> createCategoryFlowDescriber,
-                [FromServices] IFlowDescriber<UpdateCategoryCommand> updateCategoryFlowDescriber,
-                [FromServices] IFlowDescriber<DeleteCategoryCommand> deleteCategoryFlowDescriber,
                 [FromServices] IFlowDescriber<CreateMobilePhoneCommand> createMobilePhoneFlowDescriber,
                 [FromServices] IFlowDescriber<UpdateMobilePhoneCommand> updateMobilePhoneFlowDescriber,
                 [FromServices] IFlowDescriber<DeleteMobilePhoneCommand> deleteMobilePhoneFlowDescriber,
@@ -47,19 +32,10 @@ namespace ProductCatalog.Api.Endpoints
                 [FromServices] IFlowDescriber<GetMobilePhoneHistoryQuery> getMobilePhoneHistoryFlowDescriber,
                 [FromServices] IFlowDescriber<GetMobilePhonesQuery> getMobilePhonesFlowDescriber,
                 [FromServices] IFlowDescriber<GetFilteredMobilePhonesQuery> getFilteredMobilePhonesFlowDescriber,
-                [FromServices] IFlowDescriber<GetTopMobilePhonesQuery> getTopMobilePhonesFlowDescriber,
-                [FromServices] IFlowDescriber<GetCurrenciesQuery> getCurrenciesFlowDescriber,
-                [FromServices] IFlowDescriber<GetCategoriesQuery> getCategoriesFlowDescriber,
-                [FromServices] IFlowDescriber<GetCategoryByIdQuery> getCategoryByIdFlowDescriber) =>
+                [FromServices] IFlowDescriber<GetTopMobilePhonesQuery> getTopMobilePhonesFlowDescriber
             {
                 var descriptions = new List<FlowDescription>
                 {
-                    createCurrencyFlowDescriber.DescribeFlow(default!),
-                    updateCurrencyFlowDescriber.DescribeFlow(default!),
-                    deleteCurrencyFlowDescriber.DescribeFlow(default!),
-                    createCategoryFlowDescriber.DescribeFlow(default!),
-                    updateCategoryFlowDescriber.DescribeFlow(default!),
-                    deleteCategoryFlowDescriber.DescribeFlow(default!),
                     createMobilePhoneFlowDescriber.DescribeFlow(default!),
                     updateMobilePhoneFlowDescriber.DescribeFlow(default!),
                     deleteMobilePhoneFlowDescriber.DescribeFlow(default!),
@@ -69,9 +45,6 @@ namespace ProductCatalog.Api.Endpoints
                     getMobilePhonesFlowDescriber.DescribeFlow(default!),
                     getFilteredMobilePhonesFlowDescriber.DescribeFlow(default!),
                     getTopMobilePhonesFlowDescriber.DescribeFlow(default!),
-                    getCurrenciesFlowDescriber.DescribeFlow(default!),
-                    getCategoriesFlowDescriber.DescribeFlow(default!),
-                    getCategoryByIdFlowDescriber.DescribeFlow(default!),
                 };
 
                 return Results.Ok(descriptions);

@@ -128,7 +128,6 @@ public class GetMobilePhoneByIdsQueryHandlerTests
             Camera = "48 MP",
             FingerPrint = true,
             FaceId = true,
-            CategoryId = Guid.NewGuid(),
             PriceAmount = price,
             PriceCurrency = "USD",
             Description2 = "Secondary description",

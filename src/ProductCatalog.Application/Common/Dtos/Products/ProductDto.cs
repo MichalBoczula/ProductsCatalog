@@ -9,6 +9,5 @@ namespace ProductCatalog.Application.Common.Dtos.Products
         public required string Description { get; init; }
         public required MoneyDto Price { get; init; }
         public required bool IsActive { get; init; }
-        public required Guid CategoryId { get; init; }
     }
 }

@@ -49,7 +49,6 @@ public class CreateMobilePhoneCommandHandlerTests
                 "48 MP",
                 true,
                 false,
-                Guid.NewGuid(),
                 new CreateMoneyExternalDto(250.5m, "usd"),
                 "desc2",
                 "desc3"));
@@ -120,7 +119,6 @@ public class CreateMobilePhoneCommandHandlerTests
                 phone.Camera == command.mobilePhoneExternalDto.Camera &&
                 phone.FingerPrint == command.mobilePhoneExternalDto.FingerPrint &&
                 phone.FaceId == command.mobilePhoneExternalDto.FaceId &&
-                phone.CategoryId == command.mobilePhoneExternalDto.CategoryId &&
                 phone.Price.Amount == command.mobilePhoneExternalDto.Price.Amount &&
                 phone.Price.Currency == command.mobilePhoneExternalDto.Price.Currency.ToUpperInvariant())),
             Times.Once);
@@ -165,7 +163,6 @@ public class CreateMobilePhoneCommandHandlerTests
         result.Camera.ShouldBe(command.mobilePhoneExternalDto.Camera);
         result.FingerPrint.ShouldBe(command.mobilePhoneExternalDto.FingerPrint);
         result.FaceId.ShouldBe(command.mobilePhoneExternalDto.FaceId);
-        result.CategoryId.ShouldBe(command.mobilePhoneExternalDto.CategoryId);
         result.Price.Amount.ShouldBe(command.mobilePhoneExternalDto.Price.Amount);
         result.Price.Currency.ShouldBe(command.mobilePhoneExternalDto.Price.Currency.ToUpperInvariant());
         result.IsActive.ShouldBeTrue();
@@ -201,7 +198,6 @@ public class CreateMobilePhoneCommandHandlerTests
                 "48 MP",
                 true,
                 false,
-                Guid.NewGuid(),
                 new CreateMoneyExternalDto(250.5m, "usd"),
                 "desc2",
                 "desc3"));

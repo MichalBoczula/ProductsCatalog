@@ -13,7 +13,6 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobile
         [property: JsonRequired] string Camera,
         [property: JsonRequired] bool FingerPrint,
         [property: JsonRequired] bool FaceId,
-        [property: JsonRequired] Guid CategoryId,
         [property: JsonRequired] CreateMoneyExternalDto Price,
         [property: JsonRequired] string Description2,
         [property: JsonRequired] string Description3

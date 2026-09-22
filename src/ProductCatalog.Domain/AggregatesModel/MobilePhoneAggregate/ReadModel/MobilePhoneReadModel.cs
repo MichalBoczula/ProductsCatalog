@@ -38,7 +38,6 @@
         public required string Camera { get; init; }
         public required bool FingerPrint { get; init; }
         public required bool FaceId { get; init; }
-        public required Guid CategoryId { get; init; }
         public required decimal PriceAmount { get; init; }
         public required string PriceCurrency { get; init; }
         public required string Description2 { get; init; }

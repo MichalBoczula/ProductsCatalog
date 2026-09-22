@@ -6,7 +6,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Infrastructure.
 {
     internal static class MobilePhonesInfrastructureDataFactory
     {
-        public static readonly Guid MobileCategoryId = Guid.Parse("587480bb-c126-4f9b-b531-b0244daa4ba4");
 
         public static MobilePhone Create(Guid id)
         {
@@ -43,7 +42,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Infrastructure.
                 camera: "108 MP",
                 fingerPrint: true,
                 faceId: true,
-                categoryId: MobileCategoryId,
                 price: price,
                 description2: "Secondary text block",
                 description3: "Tertiary text block");

@@ -69,7 +69,6 @@ public sealed class TopMobilePhoneMappingTests
             Camera = "50 MP",
             FingerPrint = true,
             FaceId = false,
-            CategoryId = Guid.NewGuid(),
             PriceAmount = 899.99m,
             PriceCurrency = "USD",
             Description2 = "description 2",

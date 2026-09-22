@@ -11,7 +11,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
         private static readonly Guid AppleIphone16Id = Guid.Parse("5b8b2f19-4f6b-4aa7-8a49-1d5f1fd3a7d2");
         private static readonly Guid XiaomiPocoF7Id = Guid.Parse("0f62c3e1-8e3e-4b1f-9d74-3d6e2ff2c6d2");
         private static readonly Guid AppleIphone16HistoryId = Guid.Parse("4ee1f28f-4cfe-4a38-9d13-122f5c2c1f12");
-        private static readonly Guid MobileCategoryId = Guid.Parse("587480bb-c126-4f9b-b531-b0244daa4ba4");
 
         private readonly MsSqlDbTestFixture _fixture;
 
@@ -69,7 +68,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             result.Camera.ShouldBe("48 MP (f/1.6) rear + 12 MP ultrawide, 12 MP front");
             result.FingerPrint.ShouldBeFalse();
             result.FaceId.ShouldBeTrue();
-            result.CategoryId.ShouldBe(MobileCategoryId);
             result.PriceAmount.ShouldBe(0.00m);
             result.PriceCurrency.ShouldBe("PLN");
             result.IsActive.ShouldBeTrue();
@@ -169,7 +167,6 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             history.BatteryType.ShouldBe("Li-Ion");
             history.BatteryCapacity.ShouldBe(3000);
             history.Camera.ShouldBe("48 MP (f/1.6) rear + 12 MP ultrawide, 12 MP front");
-            history.CategoryId.ShouldBe(MobileCategoryId);
             history.PriceAmount.ShouldBe(0.00m);
             history.PriceCurrency.ShouldBe("PLN");
             history.IsActive.ShouldBeTrue();

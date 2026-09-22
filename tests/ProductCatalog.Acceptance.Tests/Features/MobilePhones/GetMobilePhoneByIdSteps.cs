@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using Reqnroll;
@@ -29,20 +27,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             PropertyNameCaseInsensitive = true
         };
         private Guid _mobilePhoneId;
-        private Guid _categoryId;
 
         [Given("an existing mobile phone id")]
         public async Task GivenAnExistingMobilePhoneId(Table table)
         {
-            var categoryCode = $"MOBILE-{Guid.NewGuid():N}";
-            var categoryRequest = new CreateCategoryExternalDto(categoryCode, "Mobile category");
-            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest);
-            categoryResponse.EnsureSuccessStatusCode();
 
-            var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
-            category.ShouldNotBeNull();
-
-            _categoryId = category!.Id;
 
             var values = MergeDefaultValues(table);
 
@@ -87,7 +76,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 GetValue(values, "Camera"),
                 ParseBool(values, "FingerPrint"),
                 ParseBool(values, "FaceId"),
-                _categoryId,
                 new CreateMoneyExternalDto(
                     ParseDecimal(values, "PriceAmount"),
                     GetValue(values, "PriceCurrency")),
@@ -138,7 +126,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             mobilePhone.ShouldNotBeNull();
 
             mobilePhone.Id.ShouldBe(_mobilePhoneId);
-            mobilePhone.CategoryId.ShouldBe(_categoryId);
             if (TryGetBool(expected, "IsActive", out var isActive))
             {
                 mobilePhone.IsActive.ShouldBe(isActive);

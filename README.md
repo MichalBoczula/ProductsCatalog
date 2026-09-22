@@ -56,7 +56,7 @@ The service uses CQRS inside one deployable application. Commands work with doma
 
 ## Why SQL Server
 
-The catalog is relational. Products reference other catalog concepts, history is queried alongside current state, and read use cases need filtering, projections, pagination, and joins. SQL Server provides relational integrity, transactions, mature indexing, predictable join execution, and operational tooling suitable for this model.
+The catalog is relational. Mobile phones have current and history records, and read use cases need filtering and projections. SQL Server provides transactions, indexing, and operational tooling suitable for this model.
 
 EF Core is used where aggregate persistence and migrations matter. Dapper is used on the query side where explicit SQL and narrow result sets are more useful. See [ADR-0001](docs/adr/0001-use-sql-server.md).
 
@@ -208,7 +208,16 @@ Runtime migrations are disabled by default to prevent multiple replicas from mod
 | `GET` | `/swagger/v1/swagger.json` | Generated OpenAPI document. |
 | `GET` | `/swagger` | Swagger UI. |
 
-Currency and Categories endpoints still exist in the current codebase but are scheduled for removal and are not part of ongoing feature development.
+Categories and Currencies endpoints have been removed. MobilePhone requests, responses,
+history, and SQL tables no longer have `CategoryId`. `Price.Currency` remains a three-letter
+currency code within the price value object; it is not a lookup into Currencies.
+
+**Breaking change and migration:** clients sending `CategoryId` must stop doing so and
+regenerate their API clients from the new OpenAPI document. The EF migration
+`20260922220000_RemoveCatalogs` drops the four catalogue/current-history tables and
+the `CategoryId` columns in phone/current-history tables. Back up the database before
+applying it: those removed values cannot be reconstructed by rolling the migration back.
+Migration application remains opt-in via `Database:ApplyMigrations`.
 
 ## Health checks
 

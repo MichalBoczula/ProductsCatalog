@@ -82,7 +82,6 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
 
             builder.Property(x => x.Description2).HasMaxLength(2000).IsRequired();
             builder.Property(x => x.Description3).HasMaxLength(2000).IsRequired();
-            builder.HasIndex(x => x.CategoryId);
         }
     }
 }
