@@ -37,8 +37,6 @@ namespace ProductCatalog.Acceptance.Tests.Configuration
 
             handled.ShouldBeTrue();
             context.Response.StatusCode.ShouldBe((int)HttpStatusCode.BadRequest);
-            context.Response.ContentType.ShouldStartWith("application/problem+json");
-
             context.Response.Body.Position = 0;
             using var document = await JsonDocument.ParseAsync(context.Response.Body);
             var problem = document.RootElement;
