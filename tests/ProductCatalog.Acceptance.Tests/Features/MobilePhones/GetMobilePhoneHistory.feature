@@ -65,9 +65,9 @@
     When I request the mobile phone history
     Then the mobile phone history list is empty
 
-  Scenario: Get mobile phone history fails for an invalid page number
+  Scenario Outline: Get mobile phone history fails for an invalid page number <pageNumber>
     Given a missing mobile phone id
-    When I request the mobile phone history with page number 0 and page size 10
+    When I request the mobile phone history with page number <pageNumber> and page size 10
     Then the mobile phone history request fails with validation error
       | Field        | Value                                      |
       | StatusCode   | 400                                        |
@@ -75,12 +75,22 @@
       | ErrorEntity  | PageNumber                                 |
       | ErrorName    | PaginationParametersValidationRule         |
 
-  Scenario: Get mobile phone history fails for an invalid page size
+    Examples:
+      | pageNumber |
+      | 0          |
+      | -1         |
+
+  Scenario Outline: Get mobile phone history fails for an invalid page size <pageSize>
     Given a missing mobile phone id
-    When I request the mobile phone history with page number 1 and page size 0
+    When I request the mobile phone history with page number 1 and page size <pageSize>
     Then the mobile phone history request fails with validation error
       | Field        | Value                                      |
       | StatusCode   | 400                                        |
       | ErrorMessage | Page size must be greater than zero.       |
       | ErrorEntity  | PageSize                                   |
       | ErrorName    | PaginationParametersValidationRule         |
+
+    Examples:
+      | pageSize |
+      | 0        |
+      | -1       |
