@@ -47,7 +47,7 @@ Status legend:
 
 ## Obsolete
 
-- Further acceptance-test investment in Currency and Categories. Both modules are planned for removal.
+- Acceptance tests for removed Categories and Currencies are no longer in scope.
 - Returning `404` for empty query collections such as top, filter, amount, or history of an existing phone.
 - Keeping generated API clients synchronized inside ProductsCatalog.
 
@@ -68,7 +68,7 @@ Status legend:
 
 ### Product cleanup
 
-- Remove Currency and Categories endpoints, application flows, validation, repositories, tests, and obsolete documentation when their replacement plan is approved.
+- Categories and Currencies removal is tracked as CLEAN-01; see README for the breaking API and SQL migration.
 - Decide whether MobilePhones command endpoints require dedicated safe-`500` acceptance scenarios in addition to the completed query matrix.
 
 ### Living documentation and RAG

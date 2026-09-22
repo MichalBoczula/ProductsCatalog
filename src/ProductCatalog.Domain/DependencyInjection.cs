@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.Common.Filters;
@@ -15,15 +13,11 @@ namespace ProductCatalog.Domain
         public static IServiceCollection AddDomain(
             this IServiceCollection services)
         {
-            services.AddScoped<IValidationPolicy<Category>, CategoriesValidationPolicy>();
-            services.AddScoped<IValidationPolicy<Currency>, CurrenciesValidationPolicy>();
             services.AddScoped<IValidationPolicy<MobilePhone>, MobilePhonesValidationPolicy>();
             services.AddScoped<IValidationPolicy<ElectronicDetails>, ElectronicDetailsValidationPolicy>();
             services.AddScoped<IValidationPolicy<int>, AmountValidationPolicy>();
             services.AddScoped<IValidationPolicy<MobilePhoneFilterDto>, MobilePhoneFilterValidationPolicy>();
             services.AddScoped<IValidationPolicy<PaginationParameters>, PaginationParametersValidationPolicy>();
-            services.AddScoped<IValidationPolicyDescriptorProvider, CategoriesValidationPolicy>();
-            services.AddScoped<IValidationPolicyDescriptorProvider, CurrenciesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, MobilePhonesValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, ElectronicDetailsValidationPolicy>();
             services.AddScoped<IValidationPolicyDescriptorProvider, AmountValidationPolicy>();

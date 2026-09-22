@@ -93,7 +93,7 @@
       | FaceId              | true                             |
       | PriceAmount         | 799.99                           |
       | PriceCurrency       | USD                              |
-      | Description2        | desc2                            |
+      | Description2        |                                 |
       | Description3        | desc3                            |
     When I submit the create invalid mobile phone request
     Then the mobile phone creation fails with validation errors
@@ -101,6 +101,6 @@
       | StatusCode   | 400                                        |
       | Title        | Validation failed                          |
       | Detail       | One or more validation errors occurred.    |
-      | ErrorMessage | CategoryId does not exist.                 |
+      | ErrorMessage | Description2 cannot be null or whitespace.                 |
       | ErrorEntity  | MobilePhone                                |
-      | ErrorName    | MobilePhonesCategoryIdValidationRule       |
+      | ErrorName    | MobilePhonesStringValidationRule       |

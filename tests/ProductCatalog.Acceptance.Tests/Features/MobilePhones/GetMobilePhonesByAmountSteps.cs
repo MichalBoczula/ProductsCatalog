@@ -1,10 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Infrastructure.Contexts.Commands;
@@ -28,21 +26,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         private readonly List<MobilePhoneDetailsDto> _createdMobilePhones = new();
         private List<MobilePhoneDto> _result = new();
         private HttpResponseMessage? _response;
-        private Guid _categoryId;
         private int _amount;
 
         [Given("an existing list of mobile phones")]
         public async Task GivenAnExistingListOfMobilePhones(Table table)
         {
-            var categoryCode = $"MOBILE-{Guid.NewGuid():N}";
-            var categoryRequest = new CreateCategoryExternalDto(categoryCode, "Mobile category");
-            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest);
-            categoryResponse.EnsureSuccessStatusCode();
 
-            var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
-            category.ShouldNotBeNull();
-
-            _categoryId = category!.Id;
 
             var requests = new List<CreateMobilePhoneExternalDto>
             {
@@ -189,7 +178,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 GetValue(values, "Camera"),
                 ParseBool(values, "FingerPrint"),
                 ParseBool(values, "FaceId"),
-                _categoryId,
                 new CreateMoneyExternalDto(
                     ParseDecimal(values, "PriceAmount"),
                     GetValue(values, "PriceCurrency")),

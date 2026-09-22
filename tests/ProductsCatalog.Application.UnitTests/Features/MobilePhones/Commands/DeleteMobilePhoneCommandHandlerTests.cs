@@ -53,7 +53,6 @@ public class DeleteMobilePhoneCommandHandlerTests
             "12 MP",
             false,
             false,
-            Guid.NewGuid(),
             new Money(199.99m, "usd"),
             "desc2",
             "desc3");
@@ -143,7 +142,6 @@ public class DeleteMobilePhoneCommandHandlerTests
             "12 MP",
             false,
             false,
-            Guid.NewGuid(),
             new Money(199.99m, "usd"),
             "desc2",
             "desc3");

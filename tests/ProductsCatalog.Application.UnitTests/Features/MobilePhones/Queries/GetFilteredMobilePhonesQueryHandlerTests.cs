@@ -152,7 +152,6 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
             Camera = "12 MP",
             FingerPrint = true,
             FaceId = false,
-            CategoryId = Guid.NewGuid(),
             PriceAmount = 799.99m,
             PriceCurrency = "USD",
             Description2 = "description 2",

@@ -2,8 +2,6 @@
 using BenchmarkDotNet.Order;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.ReadModels;
 using ProductCatalog.Domain.Validation.Abstract;
@@ -29,28 +27,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
         {
             var services = new ServiceCollection();
 
-            var categoriesRepoMock = new Mock<ICategoriesQueriesRepository>();
-            var currenciesRepoMock = new Mock<ICurrenciesQueriesRepository>();
-
-            // Poprawione tworzenie obiektu CategoryReadModel z wymaganymi (required) polami
-            var validCategoryReadModel = new CategoryReadModel
-            {
-                Id = MobilePhonesValidationDataFactory.ValidCategoryId,
-                Code = "MOBILE",
-                Name = "Mobile",
-                IsActive = true
-            };
-
-            categoriesRepoMock
-                .Setup(x => x.GetById(MobilePhonesValidationDataFactory.ValidCategoryId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(validCategoryReadModel);
-
-            categoriesRepoMock
-                .Setup(x => x.GetById(MobilePhonesValidationDataFactory.InvalidCategoryId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync((CategoryReadModel?)null);
-
-            services.AddSingleton(categoriesRepoMock.Object);
-            services.AddSingleton(currenciesRepoMock.Object);
             services.AddScoped<IValidationPolicy<MobilePhone>, MobilePhonesValidationPolicy>();
 
             _serviceProvider = services.BuildServiceProvider();

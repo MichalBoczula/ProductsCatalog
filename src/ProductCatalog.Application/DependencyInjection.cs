@@ -2,15 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Application.Common.Behaviors;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
-using ProductCatalog.Application.Features.Categories.Commands.DeleteCategory;
-using ProductCatalog.Application.Features.Categories.Commands.UpdateCategory;
-using ProductCatalog.Application.Features.Categories.Queries.GetCategories;
-using ProductCatalog.Application.Features.Categories.Queries.GetCategoryById;
-using ProductCatalog.Application.Features.Currencies.Commands.CreateCurrency;
-using ProductCatalog.Application.Features.Currencies.Commands.DeleteCurrency;
-using ProductCatalog.Application.Features.Currencies.Commands.UpdateCurrency;
-using ProductCatalog.Application.Features.Currencies.Queries.GetCurrencies;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
@@ -33,23 +24,11 @@ namespace ProductCatalog.Application
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
-            services.AddScoped<CreateCurrencyCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<CreateCurrencyCommand>, CreateCurrencyCommandFlowDescribtor>();
 
-            services.AddScoped<UpdateCurrencyCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<UpdateCurrencyCommand>, UpdateCurrencyCommandFlowDescribtor>();
 
-            services.AddScoped<DeleteCurrencyCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<DeleteCurrencyCommand>, DeleteCurrencyCommandFlowDescribtor>();
 
-            services.AddScoped<CreateCategoryCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<CreateCategoryCommand>, CreateCategoryCommandFlowDescribtor>();
 
-            services.AddScoped<UpdateCategoryCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<UpdateCategoryCommand>, UpdateCategoryCommandFlowDescribtor>();
 
-            services.AddScoped<DeleteCategoryCommandFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<DeleteCategoryCommand>, DeleteCategoryCommandFlowDescribtor>();
 
             services.AddScoped<CreateMobilePhoneCommandFlowDescribtor>();
             services.AddScoped<IFlowDescriber<CreateMobilePhoneCommand>, CreateMobilePhoneCommandFlowDescribtor>();
@@ -78,14 +57,8 @@ namespace ProductCatalog.Application
             services.AddScoped<GetTopMobilePhonesQueryFlowDescribtor>();
             services.AddScoped<IFlowDescriber<GetTopMobilePhonesQuery>, GetTopMobilePhonesQueryFlowDescribtor>();
 
-            services.AddScoped<GetCurrenciesQueryFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<GetCurrenciesQuery>, GetCurrenciesQueryFlowDescribtor>();
 
-            services.AddScoped<GetCategoriesQueryFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<GetCategoriesQuery>, GetCategoriesQueryFlowDescribtor>();
 
-            services.AddScoped<GetCategoryByIdQueryFlowDescribtor>();
-            services.AddScoped<IFlowDescriber<GetCategoryByIdQuery>, GetCategoryByIdQueryFlowDescribtor>();
 
             return services;
         }

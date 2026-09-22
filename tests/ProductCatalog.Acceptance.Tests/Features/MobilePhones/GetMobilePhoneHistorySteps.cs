@@ -1,10 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Domain.Common.Enums;
@@ -30,7 +28,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             PropertyNameCaseInsensitive = true
         };
         private Guid _mobilePhoneId;
-        private Guid _categoryId;
         private const int PageNumber = 1;
         private const int PageSize = 10;
 
@@ -69,7 +66,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var historyEntry = historyEntries[0];
             historyEntry.Id.ShouldNotBe(Guid.Empty);
             historyEntry.MobilePhoneId.ShouldBe(_mobilePhoneId);
-            historyEntry.CategoryId.ShouldBe(_categoryId);
             if (TryGetBool(expected, "IsActive", out var expectedIsActive))
             {
                 historyEntry.IsActive.ShouldBe(expectedIsActive);
@@ -245,15 +241,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
         private async Task CreateMobilePhoneAsync(Table? table)
         {
-            var categoryCode = $"MOBILE-{Guid.NewGuid():N}";
-            var categoryRequest = new CreateCategoryExternalDto(categoryCode, "Mobile category");
-            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest);
-            categoryResponse.EnsureSuccessStatusCode();
 
-            var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
-            category.ShouldNotBeNull();
-
-            _categoryId = category!.Id;
 
             var values = MergeDefaultValues(table);
             _request = new CreateMobilePhoneExternalDto(
@@ -297,7 +285,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 GetValue(values, "Camera"),
                 ParseBool(values, "FingerPrint"),
                 ParseBool(values, "FaceId"),
-                _categoryId,
                 new CreateMoneyExternalDto(
                     ParseDecimal(values, "PriceAmount"),
                     GetValue(values, "PriceCurrency")),

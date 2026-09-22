@@ -13,7 +13,6 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
         [property: JsonRequired] string Camera,
         [property: JsonRequired] bool FingerPrint,
         [property: JsonRequired] bool FaceId,
-        [property: JsonRequired] Guid CategoryId,
         [property: JsonRequired] UpdateMoneyExternalDto Price,
         [property: JsonRequired] string Description2,
         [property: JsonRequired] string Description3);

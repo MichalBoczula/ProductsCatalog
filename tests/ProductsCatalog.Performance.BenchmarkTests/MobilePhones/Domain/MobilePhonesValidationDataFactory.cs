@@ -7,8 +7,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
 {
     internal static class MobilePhonesValidationDataFactory
     {
-        public static readonly Guid ValidCategoryId = Guid.Parse("587480bb-c126-4f9b-b531-b0244daa4ba4");
-        public static readonly Guid InvalidCategoryId = Guid.Parse("00000000-0000-0000-0000-000000000000");
 
         public static MobilePhone CreateValid()
         {
@@ -45,7 +43,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
                 camera: "48 MP, f/1.8",
                 fingerPrint: false,
                 faceId: true,
-                categoryId: ValidCategoryId,
                 price: price,
                 description2: "Dodatkowy opis produktu w katalogu",
                 description3: "Szczegółowe warunki gwarancji producenta");
@@ -64,7 +61,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
                 camera: valid.Camera,
                 fingerPrint: valid.FingerPrint,
                 faceId: valid.FaceId,
-                categoryId: InvalidCategoryId,
                 price: valid.Price,
                 description2: valid.Description2,
                 description3: valid.Description3);
@@ -85,7 +81,6 @@ namespace ProductCatalog.Performance.BenchmarkTests.MobilePhones.Domain
                 camera: "",
                 fingerPrint: false,
                 faceId: false,
-                categoryId: InvalidCategoryId,
                 price: invalidPrice,
                 description2: "",
                 description3: "");

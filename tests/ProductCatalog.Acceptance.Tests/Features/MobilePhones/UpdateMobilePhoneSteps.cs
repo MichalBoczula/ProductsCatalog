@@ -4,10 +4,8 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
@@ -35,8 +33,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [Given("an existing mobile phone which will be updated")]
         public async Task GivenAnExistingMobilePhoneWhichWillBeUpdated(Table table)
         {
-            var categoryId = await CreateCategoryAsync("MOBILE-BASE");
-            _createRequest = BuildCreateMobilePhoneRequest(categoryId);
+            _createRequest = BuildCreateMobilePhoneRequest();
 
             AllureJson.AttachObject(
                 "Request JSON (create for update)",
@@ -50,8 +47,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
             _createdMobilePhone.ShouldNotBeNull();
 
-            var updatedCategoryId = await CreateCategoryAsync("MOBILE-UPD");
-            _updateRequest = BuildUpdateMobilePhoneRequest(updatedCategoryId, table);
+            _updateRequest = BuildUpdateMobilePhoneRequest(table);
 
             AllureJson.AttachObject(
                 "Request JSON (update)",
@@ -86,7 +82,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             _updatedMobilePhone.ShouldNotBeNull();
             _updatedMobilePhone!.Id.ShouldBe(_createdMobilePhone!.Id);
-            _updatedMobilePhone.CategoryId.ShouldBe(_updateRequest.CategoryId);
             _updatedMobilePhone.FaceId.ShouldBe(_updateRequest.FaceId);
             _updatedMobilePhone.FingerPrint.ShouldBe(_updateRequest.FingerPrint);
             _updatedMobilePhone.Price.Amount.ShouldBe(ParseDecimal(expected, "PriceAmount", _updateRequest.Price.Amount));
@@ -129,8 +124,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         public async Task GivenMobilePhoneIdentifyByIdNotExists(Table table)
         {
             _missingMobilePhoneId = Guid.NewGuid();
-            var categoryId = await CreateCategoryAsync("MOBILE-MISSING");
-            _updateRequest = BuildUpdateMobilePhoneRequest(categoryId, table);
+            _updateRequest = BuildUpdateMobilePhoneRequest(table);
 
             AllureJson.AttachObject(
                 "Request JSON (update missing)",
@@ -171,7 +165,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 && error.Name == GetRequiredValue(expected, "ErrorName"));
         }
 
-        private static CreateMobilePhoneExternalDto BuildCreateMobilePhoneRequest(Guid categoryId)
+        private static CreateMobilePhoneExternalDto BuildCreateMobilePhoneRequest()
         {
             return new CreateMobilePhoneExternalDto(
                 new CommonDescriptionExtrernalDto(
@@ -198,13 +192,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 "camera",
                 true,
                 true,
-                categoryId,
                 new CreateMoneyExternalDto(799.99m, "USD"),
                 "desc2",
                 "desc3");
         }
 
-        private static UpdateMobilePhoneExternalDto BuildUpdateMobilePhoneRequest(Guid categoryId, Table? table)
+        private static UpdateMobilePhoneExternalDto BuildUpdateMobilePhoneRequest(Table? table)
         {
             var values = MergeDefaultValues(table);
             return new UpdateMobilePhoneExternalDto(
@@ -248,7 +241,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 GetValue(values, "Camera"),
                 ParseBool(values, "FingerPrint"),
                 ParseBool(values, "FaceId"),
-                categoryId,
                 new UpdateMoneyExternalDto(
                     ParseDecimal(values, "PriceAmount"),
                     GetValue(values, "PriceCurrency")),
@@ -393,18 +385,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
-        private async Task<Guid> CreateCategoryAsync(string prefix)
-        {
-            var categoryCode = $"{prefix}-{Guid.NewGuid():N}";
-            var categoryRequest = new CreateCategoryExternalDto(categoryCode, "Mobile category");
-            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest, _jsonOptions);
-            categoryResponse.EnsureSuccessStatusCode();
 
-            var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
-            category.ShouldNotBeNull();
-
-            return category!.Id;
-        }
 
     }
 }

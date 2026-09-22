@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ProductCatalog.Domain.AggregatesModel.CategoryAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
-using ProductCatalog.Domain.AggregatesModel.CurrencyAggregate.Repositories;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.ReadModels;
@@ -20,12 +18,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         public async Task Validate_WhenDescriptionsAreInvalid_ShouldReturnErrors()
         {
             //Arrange
-            var categoryId = Guid.NewGuid();
             var currencyCode = "USD";
-            var policy = new MobilePhonesValidationPolicy(
-                new FakeCategoriesQueriesRepository(categoryId),
-                new FakeCurrenciesQueriesRepository(currencyCode));
-            var mobilePhone = CreateMobilePhone(categoryId, currencyCode, null, " ");
+            var policy = new MobilePhonesValidationPolicy();
+            var mobilePhone = CreateMobilePhone(currencyCode, null!, " ");
             //Act
             var result = await policy.Validate(mobilePhone);
             //Assert
@@ -38,12 +33,9 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         public async Task Validate_WhenBrandAndCameraAreInvalid_ShouldReturnErrors()
         {
             //Arrange
-            var categoryId = Guid.NewGuid();
             var currencyCode = "USD";
-            var policy = new MobilePhonesValidationPolicy(
-                new FakeCategoriesQueriesRepository(categoryId),
-                new FakeCurrenciesQueriesRepository(currencyCode));
-            var mobilePhone = CreateMobilePhone(categoryId, currencyCode, "Description 2", "Description 3", " ", " ");
+            var policy = new MobilePhonesValidationPolicy();
+            var mobilePhone = CreateMobilePhone(currencyCode, "Description 2", "Description 3", " ", " ");
             //Act
             var result = await policy.Validate(mobilePhone);
             //Assert
@@ -56,9 +48,7 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         public void Describe_ShouldIncludeDescriptionsRule()
         {
             //Arrange
-            var policy = new MobilePhonesValidationPolicy(
-                new FakeCategoriesQueriesRepository(Guid.NewGuid()),
-                new FakeCurrenciesQueriesRepository("USD"));
+            var policy = new MobilePhonesValidationPolicy();
             //Act
             var result = policy.Describe();
             //Assert
@@ -66,7 +56,6 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
         }
 
         private static MobilePhone CreateMobilePhone(
-            Guid categoryId,
             string currencyCode,
             string description2,
             string description3,
@@ -105,78 +94,10 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Policies
                 camera,
                 true,
                 true,
-                categoryId,
                 price,
                 description2,
                 description3);
         }
 
-        private sealed class FakeCategoriesQueriesRepository : ICategoriesQueriesRepository
-        {
-            private readonly Guid _categoryId;
-
-            public FakeCategoriesQueriesRepository(Guid categoryId)
-            {
-                _categoryId = categoryId;
-            }
-
-            public Task<CategoryReadModel?> GetById(Guid id, CancellationToken ct)
-            {
-                if (id != _categoryId)
-                {
-                    return Task.FromResult<CategoryReadModel?>(null);
-                }
-
-                return Task.FromResult<CategoryReadModel?>(new CategoryReadModel
-                {
-                    Id = _categoryId,
-                    Code = "CAT",
-                    Name = "Category",
-                    IsActive = true
-                });
-            }
-
-            public Task<IReadOnlyList<CategoryReadModel>> GetCategories(CancellationToken ct)
-            {
-                IReadOnlyList<CategoryReadModel> categories = new List<CategoryReadModel>
-                {
-                    new CategoryReadModel
-                    {
-                        Id = _categoryId,
-                        Code = "CAT",
-                        Name = "Category",
-                        IsActive = true
-                    }
-                };
-
-                return Task.FromResult(categories);
-            }
-        }
-
-        private sealed class FakeCurrenciesQueriesRepository : ICurrenciesQueriesRepository
-        {
-            private readonly string _currencyCode;
-
-            public FakeCurrenciesQueriesRepository(string currencyCode)
-            {
-                _currencyCode = currencyCode;
-            }
-
-            public Task<IReadOnlyList<CurrencyReadModel>> GetCurrencies(CancellationToken ct)
-            {
-                IReadOnlyList<CurrencyReadModel> currencies = new List<CurrencyReadModel>
-                {
-                    new CurrencyReadModel
-                    {
-                        Id = Guid.NewGuid(),
-                        Code = _currencyCode,
-                        Description = "Currency",
-                        IsActive = true
-                    }
-                };
-
-                return Task.FromResult(currencies);
-            }
-        }
     }
 }

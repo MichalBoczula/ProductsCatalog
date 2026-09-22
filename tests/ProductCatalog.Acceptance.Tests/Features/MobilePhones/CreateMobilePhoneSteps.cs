@@ -1,9 +1,7 @@
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
-using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
-using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using Reqnroll;
@@ -31,8 +29,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [Given("I have valid mobile phone details")]
         public async Task GivenIHaveValidMobilePhoneDetails(Table table)
         {
-            var categoryId = await CreateCategoryAsync();
-            _validRequest = BuildMobilePhoneRequest(categoryId, table);
+            _validRequest = BuildMobilePhoneRequest(table);
 
             AllureJson.AttachObject(
                 "Request JSON (valid)",
@@ -78,7 +75,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 mobilePhone.IsActive.ShouldBe(isActive);
             }
 
-            mobilePhone.CategoryId.ShouldBe(_validRequest.CategoryId);
             mobilePhone.FingerPrint.ShouldBe(_validRequest.FingerPrint);
             mobilePhone.FaceId.ShouldBe(_validRequest.FaceId);
             mobilePhone.Price.Amount.ShouldBe(ParseDecimal(expected, "PriceAmount", _validRequest.Price.Amount));
@@ -123,7 +119,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [Given("I have invalid mobile phone details")]
         public void GivenIHaveInvalidMobilePhoneDetails(Table table)
         {
-            _invalidRequest = BuildMobilePhoneRequest(Guid.NewGuid(), table);
+            _invalidRequest = BuildMobilePhoneRequest(table);
 
             AllureJson.AttachObject(
               "Request JSON (invalid)",
@@ -161,7 +157,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 && error.Name == GetRequiredValue(expected, "ErrorName"));
         }
 
-        private static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(Guid categoryId, Table? table)
+        private static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(Table? table)
         {
             var values = MergeDefaultValues(table);
             return new CreateMobilePhoneExternalDto(
@@ -205,7 +201,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 GetValue(values, "Camera"),
                 ParseBool(values, "FingerPrint"),
                 ParseBool(values, "FaceId"),
-                categoryId,
                 new CreateMoneyExternalDto(
                     ParseDecimal(values, "PriceAmount"),
                     GetValue(values, "PriceCurrency")),
@@ -362,18 +357,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
-        private async Task<Guid> CreateCategoryAsync()
-        {
-            var categoryCode = $"MOBILE-{Guid.NewGuid():N}";
-            var categoryRequest = new CreateCategoryExternalDto(categoryCode, "Mobile category");
-            var categoryResponse = await TestRunHooks.Client.PostAsJsonAsync("/categories", categoryRequest, _jsonOptions);
-            categoryResponse.EnsureSuccessStatusCode();
 
-            var category = await categoryResponse.Content.ReadFromJsonAsync<CategoryDto>(_jsonOptions);
-            category.ShouldNotBeNull();
-
-            return category!.Id;
-        }
 
         private async Task<T?> DeserializeResponse<T>(HttpResponseMessage response)
         {

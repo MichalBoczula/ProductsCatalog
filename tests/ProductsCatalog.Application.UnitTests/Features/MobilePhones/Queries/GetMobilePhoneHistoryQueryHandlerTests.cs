@@ -25,7 +25,6 @@ public class GetMobilePhoneHistoryQueryHandlerTests
     {
         // Arrange
         var mobilePhoneId = Guid.NewGuid();
-        var categoryId = Guid.NewGuid();
         var pageNumber = 1;
         var pageSize = 10;
         var otherPhotos = new List<string> { "photo1", "photo2" };
@@ -72,7 +71,6 @@ public class GetMobilePhoneHistoryQueryHandlerTests
                 Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
-                CategoryId = categoryId,
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
                 Description2 = "description 2",
@@ -129,7 +127,6 @@ public class GetMobilePhoneHistoryQueryHandlerTests
                 Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
-                CategoryId = Guid.NewGuid(),
                 PriceAmount = 100m,
                 PriceCurrency = "USD",
                 Description2 = "Description 2",
@@ -159,7 +156,6 @@ public class GetMobilePhoneHistoryQueryHandlerTests
         result[0].ElectronicDetails.CPU.ShouldBe(historyEntries[0].CPU);
         result[0].Connectivity.Has5G.ShouldBe(historyEntries[0].Has5G);
         result[0].Camera.ShouldBe(historyEntries[0].Camera);
-        result[0].CategoryId.ShouldBe(historyEntries[0].CategoryId);
         result[0].Price.Amount.ShouldBe(historyEntries[0].PriceAmount);
         result[0].Price.Currency.ShouldBe(historyEntries[0].PriceCurrency);
         result[0].ChangedAt.ShouldBe(changedAt);

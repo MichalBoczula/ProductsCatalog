@@ -124,7 +124,6 @@ namespace ProductCatalog.Domain.UnitTests.Validation.Rules.MobilePhones
                 camera,
                 true,
                 true,
-                Guid.NewGuid(),
                 price,
                 description2,
                 description3);

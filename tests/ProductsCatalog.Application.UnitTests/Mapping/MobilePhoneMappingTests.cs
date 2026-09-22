@@ -43,7 +43,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 "50 MP",
                 true,
                 false,
-                Guid.NewGuid(),
                 price,
                 "desc2",
                 "desc3");
@@ -88,7 +87,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             mobilePhone.Camera.ShouldBe(dto.Camera);
             mobilePhone.FingerPrint.ShouldBeTrue();
             mobilePhone.FaceId.ShouldBeFalse();
-            mobilePhone.CategoryId.ShouldBe(dto.CategoryId);
             mobilePhone.Price.Amount.ShouldBe(price.Amount);
             mobilePhone.Price.Currency.ShouldBe(price.Currency.ToUpperInvariant());
             mobilePhone.IsActive.ShouldBeTrue();
@@ -114,7 +112,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 "108 MP",
                 false,
                 true,
-                Guid.NewGuid(),
                 price,
                 "desc2",
                 "desc3");
@@ -159,7 +156,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             mobilePhone.Camera.ShouldBe(dto.Camera);
             mobilePhone.FingerPrint.ShouldBeFalse();
             mobilePhone.FaceId.ShouldBeTrue();
-            mobilePhone.CategoryId.ShouldBe(dto.CategoryId);
             mobilePhone.Price.Amount.ShouldBe(price.Amount);
             mobilePhone.Price.Currency.ShouldBe(price.Currency.ToUpperInvariant());
             mobilePhone.IsActive.ShouldBeTrue();
@@ -170,7 +166,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         public void MobilePhone_ShouldMapTo_MobilePhoneDto()
         {
             //Arrange
-            var categoryId = Guid.NewGuid();
             var mobilePhone = new MobilePhone(
                 new CommonDescription("Phone", "brand", "Good phone", "main-photo", new List<string>()),
                 new ElectronicDetails("CPU", "GPU", "6GB", "128GB", "AMOLED", 120, 6.5m, 70, 150, "Li-Ion", 4500),
@@ -180,7 +175,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 "12 MP",
                 true,
                 true,
-                categoryId,
                 new Money(199.99m, "usd"),
                 "desc2",
                 "desc3");
@@ -225,7 +219,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Camera.ShouldBe(mobilePhone.Camera);
             dto.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
             dto.FaceId.ShouldBe(mobilePhone.FaceId);
-            dto.CategoryId.ShouldBe(categoryId);
             dto.Price.Amount.ShouldBe(mobilePhone.Price.Amount);
             dto.Price.Currency.ShouldBe(mobilePhone.Price.Currency);
         }
@@ -273,7 +266,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
-                CategoryId = Guid.NewGuid(),
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
                 Description2 = "description 2",
@@ -321,7 +313,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Camera.ShouldBe(readModel.Camera);
             dto.FingerPrint.ShouldBe(readModel.FingerPrint);
             dto.FaceId.ShouldBe(readModel.FaceId);
-            dto.CategoryId.ShouldBe(readModel.CategoryId);
             dto.Price.Amount.ShouldBe(readModel.PriceAmount);
             dto.Price.Currency.ShouldBe(readModel.PriceCurrency);
         }
@@ -330,7 +321,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
         public void MobilePhone_ShouldMapTo_MobilePhonesHistory()
         {
             //Arrange
-            var categoryId = Guid.NewGuid();
             var otherPhotos = new List<string> { "photo1", "photo2" };
             var mobilePhone = new MobilePhone(
                 new CommonDescription("Phone", "brand", "Good phone", "main-photo", otherPhotos),
@@ -341,7 +331,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 "12 MP",
                 true,
                 true,
-                categoryId,
                 new Money(199.99m, "usd"),
                 "desc2",
                 "desc3");
@@ -390,7 +379,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             history.Camera.ShouldBe(mobilePhone.Camera);
             history.FingerPrint.ShouldBe(mobilePhone.FingerPrint);
             history.FaceId.ShouldBe(mobilePhone.FaceId);
-            history.CategoryId.ShouldBe(mobilePhone.CategoryId);
             history.PriceAmount.ShouldBe(mobilePhone.Price.Amount);
             history.PriceCurrency.ShouldBe(mobilePhone.Price.Currency);
             history.IsActive.ShouldBe(mobilePhone.IsActive);
@@ -441,7 +429,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
-                CategoryId = Guid.NewGuid(),
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
                 Description2 = "description 2",
@@ -492,7 +479,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             dto.Sensors.AmbientLight.ShouldBe(history.AmbientLight);
             dto.FingerPrint.ShouldBe(history.FingerPrint);
             dto.FaceId.ShouldBe(history.FaceId);
-            dto.CategoryId.ShouldBe(history.CategoryId);
             dto.Price.Amount.ShouldBe(history.PriceAmount);
             dto.Price.Currency.ShouldBe(history.PriceCurrency);
             dto.IsActive.ShouldBe(history.IsActive);
@@ -543,7 +529,6 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
                 Camera = "12 MP",
                 FingerPrint = true,
                 FaceId = false,
-                CategoryId = Guid.NewGuid(),
                 PriceAmount = 799.99m,
                 PriceCurrency = "USD",
                 Description2 = "description 2",
