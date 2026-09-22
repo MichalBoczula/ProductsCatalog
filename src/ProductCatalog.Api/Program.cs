@@ -47,6 +47,7 @@ namespace ProductCatalog.Api
 
             app.UseExceptionHandler(_ => { });
             app.UseStatusCodePages(status => ApiProblemResponse.WriteEmptyStatusAsync(status.HttpContext));
+            app.UseRouting();
             app.Use(async (context, next) =>
             {
                 RequiredJsonProperties.EnableInspection(context);
