@@ -10,4 +10,4 @@ This checklist is the review standard for a change, not a claim that every exist
 - A compiler warning is recorded or explained if material, but is not by itself a blocker. Vulnerability findings follow their separate severity policy. Do not weaken gates, silence tests, or commit secrets to pass review.
 - README or ADR is updated when the operational or architectural behavior changes. The PR lists actual verification, anything unverified and why, and follow-up work. Update backlog status only when evidence supports it.
 
-REF-03 still tracks reproducible tooling, complete test artifacts, and publishing the same image that passed the vulnerability scan.
+Run `bash scripts/verify.sh` for the full local check where the required tools are available; confirm the relevant CI checks and describe any unavailable checks in the PR.

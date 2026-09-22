@@ -14,11 +14,17 @@ Read this file and [the definition of done](docs/definition-of-done.md) before e
 - For an endpoint change, review request and response DTOs, validation, error status and content type, `.Produces` metadata, generated Swashbuckle OpenAPI, flow descriptions, validation-policy descriptions, and relevant acceptance scenarios together. Do not maintain a second handwritten OpenAPI specification or generated clients in this producer repository.
 - Put pure rules in Domain tests, use-case behavior in Application tests, real SQL behavior in Infrastructure tests, and externally observable behavior in Reqnroll acceptance tests. Use Testcontainers when the behavior requires SQL Server. Check effects on both current data and history for writes.
 - Do not edit generated `.feature.cs` by hand. Change `.feature` and step definitions; use the project's generation process. Do not skip failing tests, hide failures with `continue-on-error`, or lower the existing 70% Domain/Application coverage thresholds to make a PR pass.
-- Ordinary compiler warnings are allowed and must remain visible. Build, formatting, tests, coverage, agreed vulnerability checks (including NuGet high/critical), secret scanning, OpenAPI, and image scanning have their own gates. REF-03 still tracks toolchain, diagnostics, and publishing the scanned image.
+- Ordinary compiler warnings are allowed and must remain visible. Build, formatting, tests, coverage, agreed vulnerability checks (including NuGet high/critical), secret scanning, OpenAPI, and image scanning have their own gates.
 
 ## Local verification
 
-From the repository root, with .NET 10 and Docker available for SQL tests:
+From the repository root, with SDK 10.0.100, Docker, Node.js 22 and Bash available, run the full local check:
+
+```bash
+bash scripts/verify.sh
+```
+
+For focused work, use the individual commands below (they do not include all coverage and OpenAPI checks):
 
 ```bash
 dotnet restore ProductsCatalog.sln
@@ -30,7 +36,7 @@ dotnet test tests/ProductsCatalog.Infrastructure.UnitTests/ProductsCatalog.Infra
 dotnet test tests/ProductCatalog.Acceptance.Tests/ProductCatalog.Acceptance.Tests.csproj --configuration Release --no-restore
 ```
 
-CI additionally checks layer coverage, starts the API to lint `/swagger/v1/swagger.json` with pinned Redocly CLI, scans secrets and dependencies, and builds/scans the image. Review `.github/workflows/dotnet.yml` for the actual commands and results. The local checklist above does not reproduce all CI gates. Never report a check as passing if it was not run.
+CI additionally scans secrets, dependencies and the image before any conditional publish. Review `.github/workflows/dotnet.yml` for the actual commands and results. Never report a check as passing if it was not run.
 
 ## Handoff
 

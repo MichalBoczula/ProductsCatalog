@@ -101,8 +101,9 @@ docs/
 
 ## Prerequisites
 
-- .NET 10 SDK;
+- .NET SDK `10.0.100` (selected by `global.json`);
 - Docker Engine or Docker Desktop;
+- Bash, curl, and Node.js 22 for the complete local verification command;
 - Git;
 - optional: `dotnet-ef` for migration commands;
 - optional: Allure 2 CLI for a local acceptance report.
@@ -220,6 +221,18 @@ Use liveness for process restart decisions and readiness for load-balancer routi
 
 ## Tests
 
+From the repository root, run the complete local build, formatting, four test suites,
+separate 70% coverage checks, OpenAPI lint and Docker build with one command:
+
+```bash
+bash scripts/verify.sh
+```
+
+The script writes TRX, coverage and the generated OpenAPI to the ignored
+`artifacts/verification` directory. CI additionally checks dependencies, secrets
+and image vulnerabilities. The SDK and build-stage Docker image use the version
+in `global.json`; CI uses the same SDK through `setup-dotnet`.
+
 Restore and build the solution:
 
 ```powershell
@@ -266,9 +279,10 @@ GitHub Actions runs for pull requests and pushes to `master`:
 4. enforce separate 70% line-coverage gates for Domain and Application;
 5. run Dependency Review on pull requests and Gitleaks secret scanning;
 6. build the container and fail on high or critical Trivy findings;
-7. publish commit-SHA and `latest` images to Docker Hub on `master`.
+7. after scanning, tag and publish the same local image as commit-SHA and `latest`
+   to Docker Hub on `master`, verifying matching image IDs and registry digests.
 
-The image build depends on a quality gate that requires successful build/OpenAPI, tests with separate 70% Domain/Application coverage, secret scanning, and Dependency Review on pull requests. On a push, Dependency Review is expected to be skipped. Docker Hub publication depends on the gated image job. A failed required check or high/critical container vulnerability blocks publication. Publishing the exact image scanned by Trivy is tracked in REF-03.
+The image build depends on a quality gate that requires successful build/OpenAPI, tests with separate 70% Domain/Application coverage, secret scanning, and Dependency Review on pull requests. On a push, Dependency Review is expected to be skipped. The build, Trivy scan and conditional Docker Hub publication run in the same job, without rebuilding. A failed required check or high/critical container vulnerability blocks publication. Test result artifacts are uploaded even when a test fails.
 
 NuGet audit is enabled for all restores through `Directory.Build.props`. Automatic Dependency Submission maintains the dependency graph. Dependabot remains intentionally disabled.
 
