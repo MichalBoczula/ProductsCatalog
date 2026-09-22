@@ -105,7 +105,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
-            _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
+            var result = await DeserializeResponse<List<MobilePhoneDto>>(_response);
+            result.ShouldNotBeNull();
+            _result = result;
             var expectedAmount = expected.TryGetValue("Amount", out var amountValue)
                 ? int.Parse(amountValue, CultureInfo.InvariantCulture)
                 : _amount;
@@ -120,7 +122,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _response.ShouldNotBeNull();
             _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-            _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
+            var result = await DeserializeResponse<List<MobilePhoneDto>>(_response);
+            result.ShouldNotBeNull();
+            _result = result;
             _result.ShouldBeEmpty();
         }
 
