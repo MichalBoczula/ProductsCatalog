@@ -68,6 +68,7 @@ namespace ProductCatalog.Api.Endpoints
             .WithDescription("Returns a list of mobile phones limited by the provided amount.")
             .WithName("GetMobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
+            .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
             group.MapGet("/{id:guid}/history", async (
