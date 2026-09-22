@@ -494,7 +494,23 @@ jobs:
           -targetdir:"./TestResults/CoverageReport/Domain"
           -reporttypes:"Html;TextSummary"
           -assemblyfilters:"+ProductCatalog.Domain"
-          -minimumCoverageThresholds:"lineCoverage=70"
+
+      - name: Enforce Domain line coverage threshold
+        shell: bash
+        run: |
+          summary="./TestResults/CoverageReport/Domain/Summary.txt"
+          coverage="$(sed -n 's/^[[:space:]]*Line coverage:[[:space:]]*\([0-9.]*\)%.*/\1/p' "$summary" | head -n 1)"
+
+          if ! [[ "$coverage" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+            echo "Unable to read Domain line coverage from $summary." >&2
+            exit 1
+          fi
+
+          echo "Domain line coverage: $coverage% (required: 70%)"
+          awk -v coverage="$coverage" 'BEGIN { exit !(coverage + 0 >= 70) }' || {
+            echo "Domain line coverage $coverage% is below the required 70%." >&2
+            exit 1
+          }
 
       - name: Publish Domain coverage summary
         if: always()
@@ -543,7 +559,23 @@ jobs:
           -targetdir:"./TestResults/CoverageReport/Application"
           -reporttypes:"Html;TextSummary"
           -assemblyfilters:"+ProductCatalog.Application"
-          -minimumCoverageThresholds:"lineCoverage=70"
+
+      - name: Enforce Application line coverage threshold
+        shell: bash
+        run: |
+          summary="./TestResults/CoverageReport/Application/Summary.txt"
+          coverage="$(sed -n 's/^[[:space:]]*Line coverage:[[:space:]]*\([0-9.]*\)%.*/\1/p' "$summary" | head -n 1)"
+
+          if ! [[ "$coverage" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+            echo "Unable to read Application line coverage from $summary." >&2
+            exit 1
+          fi
+
+          echo "Application line coverage: $coverage% (required: 70%)"
+          awk -v coverage="$coverage" 'BEGIN { exit !(coverage + 0 >= 70) }' || {
+            echo "Application line coverage $coverage% is below the required 70%." >&2
+            exit 1
+          }
 
       - name: Publish Application coverage summary
         if: always()
