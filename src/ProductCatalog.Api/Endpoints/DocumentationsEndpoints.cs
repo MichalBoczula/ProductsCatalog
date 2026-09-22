@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.FlowDescriptors.Abstract;
 using ProductCatalog.Application.Common.FlowDescriptors.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
