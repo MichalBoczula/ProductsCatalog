@@ -5,19 +5,18 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneByIds
 {
     internal sealed class GetMobilePhoneByIdsQueryHandler(
-        IMobilePhonesQueriesRepository _mobilePhonesQueriesRepository,
-        GetMobilePhoneByIdsQueryFlowDescribtor _getMobilePhoneByIdsQueryFlowDescribtor)
+        IMobilePhonesQueriesRepository mobilePhonesQueriesRepository,
+        GetMobilePhoneByIdsQueryFlowDescribtor flowDescribtor)
         : IRequestHandler<GetMobilePhoneByIdsQuery, IReadOnlyList<MobilePhoneDto>>
     {
         public async Task<IReadOnlyList<MobilePhoneDto>> Handle(GetMobilePhoneByIdsQuery request, CancellationToken cancellationToken)
         {
-            var mobilePhones = await _getMobilePhoneByIdsQueryFlowDescribtor
-                .GetMobilePhones(_mobilePhonesQueriesRepository, request.ids, cancellationToken);
+            flowDescribtor.EnsureIdsProvided(request.ids);
 
-            var existingMobilePhones = _getMobilePhoneByIdsQueryFlowDescribtor
-                .EnsureAllMobilePhonesFound(mobilePhones, request.ids);
+            var mobilePhones = await flowDescribtor.GetMobilePhones(mobilePhonesQueriesRepository, request.ids, cancellationToken);
+            var existingMobilePhones = flowDescribtor.EnsureAllMobilePhonesFound(mobilePhones, request.ids);
 
-            return _getMobilePhoneByIdsQueryFlowDescribtor.MapMobilePhonesToDto(existingMobilePhones);
+            return flowDescribtor.MapMobilePhonesToDto(existingMobilePhones);
         }
     }
 }

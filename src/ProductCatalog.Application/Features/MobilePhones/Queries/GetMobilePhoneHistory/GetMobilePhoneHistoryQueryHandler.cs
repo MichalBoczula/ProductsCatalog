@@ -1,25 +1,41 @@
 ﻿using MediatR;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
+using ProductCatalog.Domain.Common.Pagination;
+using ProductCatalog.Domain.Validation.Abstract;
+using ProductCatalog.Domain.Validation.Concrete.Policies;
 
 namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory
 {
     internal sealed class GetMobilePhoneHistoryQueryHandler(
-        IMobilePhonesQueriesRepository _mobilePhonesQueriesRepository,
-        GetMobilePhoneHistoryQueryFlowDescribtor _getMobilePhoneHistoryQueryFlowDescribtor)
+        IMobilePhonesQueriesRepository mobilePhonesQueriesRepository,
+        IValidationPolicy<PaginationParameters> paginationValidationPolicy,
+        GetMobilePhoneHistoryQueryFlowDescribtor flowDescribtor)
         : IRequestHandler<GetMobilePhoneHistoryQuery, IReadOnlyList<MobilePhoneHistoryDto>>
     {
-        public async Task<IReadOnlyList<MobilePhoneHistoryDto>> Handle(
-            GetMobilePhoneHistoryQuery request,
-            CancellationToken cancellationToken)
+        public GetMobilePhoneHistoryQueryHandler(
+            IMobilePhonesQueriesRepository mobilePhonesQueriesRepository,
+            GetMobilePhoneHistoryQueryFlowDescribtor flowDescribtor)
+            : this(mobilePhonesQueriesRepository, new PaginationParametersValidationPolicy(), flowDescribtor)
         {
-            var historyEntries = await _getMobilePhoneHistoryQueryFlowDescribtor
-                .LoadHistory(_mobilePhonesQueriesRepository, request.mobilePhoneId, request.pageNumber, request.pageSize, cancellationToken);
+        }
 
-            var existingHistoryEntries = _getMobilePhoneHistoryQueryFlowDescribtor
-                .EnsureHistoryFound(historyEntries, request.mobilePhoneId);
+        public async Task<IReadOnlyList<MobilePhoneHistoryDto>> Handle(GetMobilePhoneHistoryQuery request, CancellationToken cancellationToken)
+        {
+            var validationResult = await flowDescribtor.ValidatePagination(request.pagination, paginationValidationPolicy);
+            flowDescribtor.ThrowValidationExceptionIfPaginationInvalid(validationResult);
 
-            return _getMobilePhoneHistoryQueryFlowDescribtor.MapHistoryToDto(existingHistoryEntries);
+            var mobilePhone = await flowDescribtor.GetMobilePhone(mobilePhonesQueriesRepository, request.mobilePhoneId, cancellationToken);
+            flowDescribtor.EnsureMobilePhoneFound(mobilePhone, request.mobilePhoneId);
+
+            var historyEntries = await flowDescribtor.LoadHistory(
+                mobilePhonesQueriesRepository,
+                request.mobilePhoneId,
+                request.pagination.PageNumber,
+                request.pagination.PageSize,
+                cancellationToken);
+
+            return flowDescribtor.MapHistoryToDto(historyEntries);
         }
     }
 }

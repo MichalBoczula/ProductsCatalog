@@ -2,6 +2,9 @@ using Moq;
 using ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhoneHistory;
 using ProductCatalog.Application.Mapping;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
+using ProductCatalog.Domain.Common.Pagination;
+using ProductCatalog.Domain.Validation.Concrete.Policies;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Validation.Common;
@@ -80,15 +83,63 @@ public class GetMobilePhoneHistoryQueryHandlerTests
             }
         }.AsReadOnly();
 
-        var query = new GetMobilePhoneHistoryQuery(mobilePhoneId, pageNumber, pageSize);
+        var query = new GetMobilePhoneHistoryQuery(mobilePhoneId, new PaginationParameters(pageNumber, pageSize));
 
         var queriesRepositoryMock = new Mock<IMobilePhonesQueriesRepository>(MockBehavior.Strict);
         queriesRepositoryMock
             .Setup(repo => repo.GetHistoryOfChanges(mobilePhoneId, pageNumber, pageSize, It.IsAny<CancellationToken>()))
             .ReturnsAsync(historyEntries);
+        queriesRepositoryMock
+            .Setup(repo => repo.GetById(mobilePhoneId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new MobilePhoneReadModel
+            {
+                Id = mobilePhoneId,
+                Name = "Existing phone",
+                Brand = "Brand",
+                Description = "Description",
+                MainPhoto = "main",
+                OtherPhotos = "[]",
+                CPU = "CPU",
+                GPU = "GPU",
+                Ram = "8GB",
+                Storage = "128GB",
+                DisplayType = "OLED",
+                RefreshRateHz = 60,
+                ScreenSizeInches = 6m,
+                Width = 70,
+                Height = 150,
+                BatteryType = "Li-Ion",
+                BatteryCapacity = 4000,
+                GPS = true,
+                AGPS = true,
+                Galileo = true,
+                GLONASS = true,
+                QZSS = false,
+                Accelerometer = true,
+                Gyroscope = true,
+                Proximity = true,
+                Compass = true,
+                Barometer = false,
+                Halla = false,
+                AmbientLight = true,
+                Has5G = true,
+                WiFi = true,
+                NFC = true,
+                Bluetooth = true,
+                Camera = "12 MP",
+                FingerPrint = true,
+                FaceId = false,
+                CategoryId = Guid.NewGuid(),
+                PriceAmount = 100m,
+                PriceCurrency = "USD",
+                Description2 = "Description 2",
+                Description3 = "Description 3",
+                IsActive = true
+            });
 
         var handler = new GetMobilePhoneHistoryQueryHandler(
             queriesRepositoryMock.Object,
+            new PaginationParametersValidationPolicy(),
             new GetMobilePhoneHistoryQueryFlowDescribtor());
 
         // Act
@@ -116,28 +167,35 @@ public class GetMobilePhoneHistoryQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenHistoryNotFound_ShouldThrowResourceNotFoundException()
+    public async Task Handle_WhenMobilePhoneDoesNotExist_ShouldThrowResourceNotFoundException()
     {
         // Arrange
         var mobilePhoneId = Guid.NewGuid();
         var pageNumber = 1;
         var pageSize = 10;
-        var query = new GetMobilePhoneHistoryQuery(mobilePhoneId, pageNumber, pageSize);
+        var query = new GetMobilePhoneHistoryQuery(mobilePhoneId, new PaginationParameters(pageNumber, pageSize));
 
         var queriesRepositoryMock = new Mock<IMobilePhonesQueriesRepository>(MockBehavior.Strict);
         queriesRepositoryMock
             .Setup(repo => repo.GetHistoryOfChanges(mobilePhoneId, pageNumber, pageSize, It.IsAny<CancellationToken>()))
             .ReturnsAsync((IReadOnlyList<MobilePhonesHistory>?)null);
+        queriesRepositoryMock
+            .Setup(repo => repo.GetById(mobilePhoneId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((MobilePhoneReadModel?)null);
 
         var handler = new GetMobilePhoneHistoryQueryHandler(
             queriesRepositoryMock.Object,
+            new PaginationParametersValidationPolicy(),
             new GetMobilePhoneHistoryQueryFlowDescribtor());
 
         // Act & Assert
         await Should.ThrowAsync<ResourceNotFoundException>(() => handler.Handle(query, CancellationToken.None));
 
         queriesRepositoryMock.Verify(
-            repo => repo.GetHistoryOfChanges(mobilePhoneId, pageNumber, pageSize, It.IsAny<CancellationToken>()),
+            repo => repo.GetById(mobilePhoneId, It.IsAny<CancellationToken>()),
             Times.Once);
+        queriesRepositoryMock.Verify(
+            repo => repo.GetHistoryOfChanges(mobilePhoneId, pageNumber, pageSize, It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 }

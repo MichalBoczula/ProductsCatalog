@@ -11,6 +11,23 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
     internal sealed class GetMobilePhoneByIdsQueryFlowDescribtor : FlowDescriberBase<GetMobilePhoneByIdsQuery>
     {
         [FlowStep(1)]
+        public void EnsureIdsProvided(IReadOnlyCollection<Guid> mobilePhoneIds)
+        {
+            if (mobilePhoneIds.Count == 0)
+            {
+                var validationResult = new ValidationResult();
+                validationResult.AddValidationError(new ValidationError
+                {
+                    Name = nameof(GetMobilePhoneByIdsQuery),
+                    Entity = nameof(mobilePhoneIds),
+                    Message = "At least one mobile phone Id must be provided."
+                });
+
+                throw new ValidationException(validationResult);
+            }
+        }
+
+        [FlowStep(2)]
         public Task<IReadOnlyList<MobilePhoneReadModel>> GetMobilePhones(
             IMobilePhonesQueriesRepository mobilePhonesQueriesRepository,
             IReadOnlyCollection<Guid> mobilePhoneIds,
@@ -19,7 +36,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
             return mobilePhonesQueriesRepository.GetByIds(mobilePhoneIds, cancellationToken);
         }
 
-        [FlowStep(2)]
+        [FlowStep(3)]
         public IReadOnlyList<MobilePhoneReadModel> EnsureAllMobilePhonesFound(
             IReadOnlyList<MobilePhoneReadModel> mobilePhones,
             IReadOnlyCollection<Guid> requestedIds)
@@ -38,7 +55,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
             return mobilePhones;
         }
 
-        [FlowStep(3)]
+        [FlowStep(4)]
         public IReadOnlyList<MobilePhoneDto> MapMobilePhonesToDto(IReadOnlyList<MobilePhoneReadModel> mobilePhones)
         {
             return mobilePhones.Adapt<List<MobilePhoneDto>>().AsReadOnly();

@@ -131,8 +131,8 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
 
         public async Task<IReadOnlyList<MobilePhonesHistory>> GetHistoryOfChanges(Guid mobilePhoneId, int pageNumber, int pageSize, CancellationToken ct)
         {
-            var offset = Math.Max(pageNumber, 1) - 1;
-            var size = Math.Max(pageSize, 1);
+            var offset = pageNumber - 1;
+            var size = pageSize;
 
             var sql = $@"
                 SELECT Id,
