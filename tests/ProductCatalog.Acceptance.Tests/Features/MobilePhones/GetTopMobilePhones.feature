@@ -45,7 +45,7 @@ Scenario: Get top mobile phones returns records when mobile phones exist
 	When I request the top mobile phones list
 	Then the top mobile phones response is successful and contains records
 
-Scenario: Get top mobile phones returns not found when no mobile phones exist
+Scenario: Get top mobile phones returns an empty list when no mobile phones exist
 	Given mobile phones table is empty for top list
 	When I request the top mobile phones list
-	Then the top mobile phones response is not found
+	Then the top mobile phones response is successful and empty
