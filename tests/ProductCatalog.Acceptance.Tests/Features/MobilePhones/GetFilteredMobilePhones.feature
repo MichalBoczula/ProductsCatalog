@@ -31,3 +31,15 @@ Scenario: Filter mobile phones fails when brand is outside enum values
 		| ErrorMessage | Brand must exist in MobilePhonesBrand enum.    |
 		| ErrorEntity  | MobilePhoneFilterDto                           |
 		| ErrorName    | MobilePhoneFilterBrandValidationRule           |
+
+Scenario: Filter mobile phones returns an empty list when no records match
+	Given existing mobile phones for filtering by brand
+		| Name        | Brand   | PriceAmount |
+		| Apple One   | Apple   | 999.99      |
+		| Samsung One | Samsung | 899.99      |
+	When I filter mobile phones by brand
+		| Field        | Value    |
+		| Brand        | Motorola |
+		| MinimalPrice | 1        |
+		| MaximalPrice | 2        |
+	Then the filtered mobile phone list is empty

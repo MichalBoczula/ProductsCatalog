@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
@@ -7,6 +8,7 @@ using ProductCatalog.Application.Features.Categories.Commands.CreateCategory;
 using ProductCatalog.Application.Features.Common;
 using ProductCatalog.Application.Features.MobilePhones.Commands.CreateMobilePhone;
 using ProductCatalog.Domain.Common.Enums;
+using ProductCatalog.Infrastructure.Contexts.Commands;
 using Reqnroll;
 using Shouldly;
 using System.Globalization;
@@ -191,6 +193,54 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             {
                 problem.TraceId.ShouldNotBeNullOrWhiteSpace();
             }
+        }
+
+        [Given("an existing mobile phone without history")]
+        public async Task GivenAnExistingMobilePhoneWithoutHistory()
+        {
+            await CreateMobilePhoneAsync(null);
+
+            using var scope = TestRunHooks.Factory.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            var historyEntries = context.MobilePhonesHistories.Where(history => history.MobilePhoneId == _mobilePhoneId);
+            context.MobilePhonesHistories.RemoveRange(historyEntries);
+            await context.SaveChangesAsync();
+        }
+
+        [When("I request the mobile phone history with page number {int} and page size {int}")]
+        public async Task WhenIRequestTheMobilePhoneHistoryWithPageNumberAndPageSize(int pageNumber, int pageSize)
+        {
+            _responseFailure = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={pageNumber}&pageSize={pageSize}");
+
+            var body = await _responseFailure.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
+        }
+
+        [Then("the mobile phone history list is empty")]
+        public async Task ThenTheMobilePhoneHistoryListIsEmpty()
+        {
+            _response.ShouldNotBeNull();
+            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+            var historyEntries = await DeserializeResponse<List<MobilePhoneHistoryDto>>(_response);
+            historyEntries.ShouldNotBeNull();
+            historyEntries.ShouldBeEmpty();
+        }
+
+        [Then("the mobile phone history request fails with validation error")]
+        public async Task ThenTheMobilePhoneHistoryRequestFailsWithValidationError(Table table)
+        {
+            var expected = ParseExpectedTable(table);
+            _responseFailure.ShouldNotBeNull();
+            _responseFailure!.StatusCode.ShouldBe(ParseStatusCode(expected, HttpStatusCode.BadRequest));
+
+            var problem = await DeserializeResponse<ApiProblemDetails>(_responseFailure);
+            problem.ShouldNotBeNull();
+            problem.Status.ShouldBe((int)_responseFailure.StatusCode);
+            problem.Errors.ShouldContain(error =>
+                error.Message == expected["ErrorMessage"]
+                && error.Entity == expected["ErrorEntity"]
+                && error.Name == expected["ErrorName"]);
         }
 
         private async Task CreateMobilePhoneAsync(Table? table)
