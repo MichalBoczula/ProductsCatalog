@@ -14,7 +14,7 @@ Read this file and [the definition of done](docs/definition-of-done.md) before e
 - For an endpoint change, review request and response DTOs, validation, error status and content type, `.Produces` metadata, generated Swashbuckle OpenAPI, flow descriptions, validation-policy descriptions, and relevant acceptance scenarios together. Do not maintain a second handwritten OpenAPI specification or generated clients in this producer repository.
 - Put pure rules in Domain tests, use-case behavior in Application tests, real SQL behavior in Infrastructure tests, and externally observable behavior in Reqnroll acceptance tests. Use Testcontainers when the behavior requires SQL Server. Check effects on both current data and history for writes.
 - Do not edit generated `.feature.cs` by hand. Change `.feature` and step definitions; use the project's generation process. Do not skip failing tests, hide failures with `continue-on-error`, or lower the existing 70% Domain/Application coverage thresholds to make a PR pass.
-- Ordinary compiler warnings are allowed and must remain visible. Build, formatting, tests, coverage, agreed vulnerability checks (including NuGet high/critical), secret scanning, OpenAPI, and image scanning have their own gates. Current CI configuration is being corrected in REF-02/03; this document does not claim those corrections already exist.
+- Ordinary compiler warnings are allowed and must remain visible. Build, formatting, tests, coverage, agreed vulnerability checks (including NuGet high/critical), secret scanning, OpenAPI, and image scanning have their own gates. REF-03 still tracks toolchain, diagnostics, and publishing the scanned image.
 
 ## Local verification
 

@@ -268,7 +268,7 @@ GitHub Actions runs for pull requests and pushes to `master`:
 6. build the container and fail on high or critical Trivy findings;
 7. publish commit-SHA and `latest` images to Docker Hub on `master`.
 
-The image build depends on all tests, both coverage gates, and secret scanning. Docker Hub publication depends on the gated image job. A failed test, insufficient layer coverage, detected secret, or high/critical container vulnerability blocks publication.
+The image build depends on a quality gate that requires successful build/OpenAPI, tests with separate 70% Domain/Application coverage, secret scanning, and Dependency Review on pull requests. On a push, Dependency Review is expected to be skipped. Docker Hub publication depends on the gated image job. A failed required check or high/critical container vulnerability blocks publication. Publishing the exact image scanned by Trivy is tracked in REF-03.
 
 NuGet audit is enabled for all restores through `Directory.Build.props`. Automatic Dependency Submission maintains the dependency graph. Dependabot remains intentionally disabled.
 

@@ -10,4 +10,4 @@ This checklist is the review standard for a change, not a claim that every exist
 - A compiler warning is recorded or explained if material, but is not by itself a blocker. Vulnerability findings follow their separate severity policy. Do not weaken gates, silence tests, or commit secrets to pass review.
 - README or ADR is updated when the operational or architectural behavior changes. The PR lists actual verification, anything unverified and why, and follow-up work. Update backlog status only when evidence supports it.
 
-Do not claim REF-02/03 behavior (single coverage run, complete CI dependency graph, or publishing the scanned image) is already in place; those are separate planned changes.
+REF-03 still tracks reproducible tooling, complete test artifacts, and publishing the same image that passed the vulnerability scan.
