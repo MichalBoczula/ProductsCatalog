@@ -12,19 +12,13 @@ namespace ProductCatalog.Api.Configuration.Extensions
                 ? $"Resource {exception.ResourceType} identify by id {resourceIds} cannot be found in databese during action {exception.ActionName}."
                 : $"Resource {exception.ResourceType} identified by id(s) {resourceIds} cannot be found in database during action {exception.ActionName}.";
 
-            context.Response.StatusCode = StatusCodes.Status404NotFound;
-            await context.Response.WriteAsJsonAsync(new NotFoundProblemDetails
-            {
-                Status = StatusCodes.Status404NotFound,
-                Title = "Resource not found.",
-                Detail = detail,
-                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
-                Instance = context.Request.Path,
-                Extensions =
-                {
-                    ["traceId"] = context.TraceIdentifier
-                }
-            }, cancellationToken);
+            await ApiProblemResponse.WriteAsync(
+                context,
+                StatusCodes.Status404NotFound,
+                "resource_not_found",
+                "Resource not found.",
+                detail,
+                cancellationToken);
         }
     }
 }
