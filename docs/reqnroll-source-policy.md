@@ -2,6 +2,8 @@
 
 The 12 Reqnroll `.feature` files and their step definitions are the source of
 the acceptance suite. They contain 31 declared scenarios or scenario outlines.
+The clean checkout CI run of CLEAN-01 discovered 35 executable cases after
+expanding outlines; REF-04 must keep these cases discoverable.
 Reqnroll generates `.feature.cs` during build; do not edit or commit these
 generated files. The previously tracked 11 generated files have been removed.
 The scenario for server errors has no previously checked-in generated file;
