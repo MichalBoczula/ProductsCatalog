@@ -91,3 +91,12 @@ Feature: Get mobile phones by ids
       | StatusCode | Id                    | Name                | Brand        | DisplayType   | ScreenSizeInches | Camera        | PriceAmount | PriceCurrency |
       | 200        | {FirstMobilePhoneId}  | First By Ids Phone  | First Brand  | First OLED    | 6.4              | first camera  | 799.99      | USD           |
       | 200        | {SecondMobilePhoneId} | Second By Ids Phone | Second Brand | Second AMOLED | 6.8              | second camera | 999.99      | EUR           |
+
+  Scenario: Get mobile phones by ids fails for an empty id list
+    When I request the mobile phones with an empty id list
+    Then the get mobile phones by ids request fails with validation error
+      | Field        | Value                                                  |
+      | StatusCode   | 400                                                    |
+      | ErrorMessage | At least one mobile phone Id must be provided.        |
+      | ErrorEntity  | mobilePhoneIds                                         |
+      | ErrorName    | GetMobilePhoneByIdsQuery                               |

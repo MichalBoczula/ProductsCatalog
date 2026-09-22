@@ -51,3 +51,12 @@ Scenario: Get mobile phones by amount returns an empty list when no mobile phone
 	Given no mobile phones exist in the database
 	When I request mobile phones with amount 3
 	Then an empty mobile phone list is returned
+
+Scenario: Get mobile phones by amount fails for an invalid amount
+	When I request mobile phones with amount 0
+	Then the mobile phone request fails with validation error
+		| Field        | Value                               |
+		| StatusCode   | 400                                 |
+		| ErrorMessage | Amount must be greater than zero.   |
+		| ErrorEntity  | Amount                              |
+		| ErrorName    | AmountGreaterThanZeroValidationRule |

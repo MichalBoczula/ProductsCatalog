@@ -1,4 +1,5 @@
 using ProductCatalog.Acceptance.Tests.Features.Common;
+using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
@@ -58,6 +59,31 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
+        }
+
+        [When("I request the mobile phones with an empty id list")]
+        public async Task WhenIRequestTheMobilePhonesWithAnEmptyIdList()
+        {
+            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones/by-ids", Array.Empty<Guid>(), _jsonOptions);
+
+            var body = await _response.Content.ReadAsStringAsync();
+            AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
+        }
+
+        [Then("the get mobile phones by ids request fails with validation error")]
+        public async Task ThenTheGetMobilePhonesByIdsRequestFailsWithValidationError(Table table)
+        {
+            var expected = table.Rows.ToDictionary(row => row["Field"], row => row["Value"], StringComparer.OrdinalIgnoreCase);
+            _response.ShouldNotBeNull();
+            _response!.StatusCode.ShouldBe((HttpStatusCode)int.Parse(expected["StatusCode"], CultureInfo.InvariantCulture));
+
+            var problem = await _response.Content.ReadFromJsonAsync<ApiProblemDetails>(_jsonOptions);
+            problem.ShouldNotBeNull();
+            problem.Status.ShouldBe((int)_response.StatusCode);
+            problem.Errors.ShouldContain(error =>
+                error.Message == expected["ErrorMessage"]
+                && error.Entity == expected["ErrorEntity"]
+                && error.Name == expected["ErrorName"]);
         }
 
         [Then("the requested mobile phones are returned successfully")]

@@ -99,6 +99,16 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _result.ShouldAllBe(m => m.Brand.Equals(expected["Brand"], StringComparison.OrdinalIgnoreCase));
         }
 
+        [Then("the filtered mobile phone list is empty")]
+        public async Task ThenTheFilteredMobilePhoneListIsEmpty()
+        {
+            _response.ShouldNotBeNull();
+            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+            _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
+            _result.ShouldBeEmpty();
+        }
+
         [Then("filtering mobile phones fails with API error")]
         public void ThenFilteringMobilePhonesFailsWithApiError(Table table)
         {
@@ -156,7 +166,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             return new MobilePhoneFilterDto
             {
-                Brand = Enum.Parse<ProductCatalog.Domain.Common.Enums.MobilePhonesBrand>(values["Brand"], true)
+                Brand = Enum.Parse<ProductCatalog.Domain.Common.Enums.MobilePhonesBrand>(values["Brand"], true),
+                MinimalPrice = values.TryGetValue("MinimalPrice", out var minimalPrice)
+                    ? decimal.Parse(minimalPrice, CultureInfo.InvariantCulture)
+                    : null,
+                MaximalPrice = values.TryGetValue("MaximalPrice", out var maximalPrice)
+                    ? decimal.Parse(maximalPrice, CultureInfo.InvariantCulture)
+                    : null
             };
         }
 

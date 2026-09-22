@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ProductCatalog.Acceptance.Tests.Features.Common;
+using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Categories;
 using ProductCatalog.Application.Common.Dtos.Common;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
@@ -121,6 +122,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             _result = await DeserializeResponse<List<MobilePhoneDto>>(_response) ?? new List<MobilePhoneDto>();
             _result.ShouldBeEmpty();
+        }
+
+        [Then("the mobile phone request fails with validation error")]
+        public async Task ThenTheMobilePhoneRequestFailsWithValidationError(Table table)
+        {
+            var expected = ParseExpectedTable(table);
+            _response.ShouldNotBeNull();
+            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
+
+            var problem = await DeserializeResponse<ApiProblemDetails>(_response);
+            problem.ShouldNotBeNull();
+            problem.Status.ShouldBe((int)_response.StatusCode);
+            problem.Errors.ShouldContain(error =>
+                error.Message == GetRequiredValue(expected, "ErrorMessage")
+                && error.Entity == GetRequiredValue(expected, "ErrorEntity")
+                && error.Name == GetRequiredValue(expected, "ErrorName"));
         }
 
         private CreateMobilePhoneExternalDto BuildMobilePhoneRequest(string name, Table? table)

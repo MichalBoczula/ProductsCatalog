@@ -59,3 +59,28 @@
       | Title      | Resource not found.                                                                                                                 |
       | Detail     | Resource MobilePhoneHistoryDto identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery.                |
       | Instance   | /mobile-phones/{MobilePhoneId}/history                                                                                              |
+
+  Scenario: Get mobile phone history returns an empty list when the phone has no history
+    Given an existing mobile phone without history
+    When I request the mobile phone history
+    Then the mobile phone history list is empty
+
+  Scenario: Get mobile phone history fails for an invalid page number
+    Given a missing mobile phone id
+    When I request the mobile phone history with page number 0 and page size 10
+    Then the mobile phone history request fails with validation error
+      | Field        | Value                                      |
+      | StatusCode   | 400                                        |
+      | ErrorMessage | Page number must be greater than zero.     |
+      | ErrorEntity  | PageNumber                                 |
+      | ErrorName    | PaginationParametersValidationRule         |
+
+  Scenario: Get mobile phone history fails for an invalid page size
+    Given a missing mobile phone id
+    When I request the mobile phone history with page number 1 and page size 0
+    Then the mobile phone history request fails with validation error
+      | Field        | Value                                      |
+      | StatusCode   | 400                                        |
+      | ErrorMessage | Page size must be greater than zero.       |
+      | ErrorEntity  | PageSize                                   |
+      | ErrorName    | PaginationParametersValidationRule         |
