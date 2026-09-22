@@ -1,8 +1,9 @@
 <Project>
   <PropertyGroup>
     <VSTestResultsDirectory>$(MSBuildThisFileDirectory)artifacts\testresults</VSTestResultsDirectory>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>high</NuGetAuditLevel>
+    <WarningsAsErrors>$(WarningsAsErrors);NU1903;NU1904</WarningsAsErrors>
   </PropertyGroup>
 </Project>

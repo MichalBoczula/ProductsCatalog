@@ -14,12 +14,12 @@ Status legend:
 - Removed the obsolete direct `Microsoft.AspNetCore.Http.Abstractions 2.3.0` dependency.
 - Kept `Microsoft.EntityFrameworkCore.Design` in Infrastructure because that project owns migrations; EF Tools is not a project dependency.
 - Enabled `NuGetAudit` for restore.
-- Enabled production-project warnings as errors; test and benchmark projects retain warnings for deliberate invalid/null test inputs.
+- Ordinary compiler warnings are allowed in all projects. NuGet high/critical advisories (`NU1903` and `NU1904`) remain build errors under the separate security policy.
 - CI runs restore, Release build, format verification, Domain tests, Application tests, Infrastructure integration tests, and acceptance tests.
-- Added independent 70% line-coverage gates for Domain and Application with separate reports.
+- Added independent 70% line-coverage gates for Domain and Application in their existing test jobs; each suite runs once and retains its own report.
 - Enabled Dependency Review for pull requests and Automatic Dependency Submission for the dependency graph.
 - Added Gitleaks secret scanning and Trivy image vulnerability scanning without `continue-on-error`.
-- Made the image build depend on all tests, both coverage gates, and secret scanning. Docker Hub publication depends on the gated image job.
+- Made the image build depend on a quality gate covering build/OpenAPI, all test suites, both coverage thresholds, secret scanning and Dependency Review on PRs. Docker Hub publication depends on the gated image job; publishing the scanned artifact is tracked separately in REF-03.
 
 ### OpenAPI
 
@@ -56,7 +56,7 @@ Status legend:
 - Kiota and automatic API-client generation in this repository.
 - Client-freshness checks while clients are neither stored nor generated here.
 - Dependabot; Dependency Graph, Automatic Dependency Submission, NuGet audit, and Dependency Review remain in use.
-- Treating expected test-project nullability warnings as build errors. Production projects remain strict.
+- Treating ordinary compiler warnings as build errors in any project; vulnerability findings have a separate high/critical policy.
 
 ## Remaining
 
