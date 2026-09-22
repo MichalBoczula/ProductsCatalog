@@ -431,6 +431,9 @@ jobs:
       - application-unit-tests
       - infrastructure-unit-tests
       - acceptance-tests
+      - domain-coverage
+      - application-coverage
+      - secret-scan
 
     steps:
       - name: Checkout source
@@ -457,7 +460,7 @@ jobs:
           ignore-unfixed: true
           severity: CRITICAL,HIGH
 
-  coverage:
+  domain-coverage:
     runs-on: ubuntu-latest
     needs: build
 
@@ -473,32 +476,87 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ProductsCatalog.sln
 
-      - name: Run Domain and Application tests with coverage
-        run: |
-          dotnet test ./tests/ProductCatalog.Domain.UnitTests/ProductCatalog.Domain.UnitTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage" --results-directory ./TestResults/Coverage/Domain
-          dotnet test ./tests/ProductsCatalog.Application.UnitTests/ProductsCatalog.Application.UnitTests.csproj --configuration Release --no-restore --collect:"XPlat Code Coverage" --results-directory ./TestResults/Coverage/Application
+      - name: Run Domain tests with coverage
+        run: >
+          dotnet test ./tests/ProductCatalog.Domain.UnitTests/ProductCatalog.Domain.UnitTests.csproj
+          --configuration Release
+          --no-restore
+          --collect:"XPlat Code Coverage"
+          --results-directory ./TestResults/Coverage/Domain
 
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.4.7
 
-      - name: Create and enforce coverage report
+      - name: Create and enforce Domain coverage report
         run: >
           reportgenerator
-          -reports:"./TestResults/Coverage/**/coverage.cobertura.xml"
-          -targetdir:"./TestResults/CoverageReport"
+          -reports:"./TestResults/Coverage/Domain/**/coverage.cobertura.xml"
+          -targetdir:"./TestResults/CoverageReport/Domain"
           -reporttypes:"Html;TextSummary"
+          -assemblyfilters:"+ProductCatalog.Domain"
           -minimumCoverageThresholds:"lineCoverage=70"
 
-      - name: Publish coverage summary
+      - name: Publish Domain coverage summary
         if: always()
-        run: cat ./TestResults/CoverageReport/Summary.txt >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo "## Domain coverage" >> "$GITHUB_STEP_SUMMARY"
+          cat ./TestResults/CoverageReport/Domain/Summary.txt >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload coverage report
+      - name: Upload Domain coverage report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
-          path: ./TestResults/CoverageReport
+          name: domain-coverage-report
+          path: ./TestResults/CoverageReport/Domain
+
+  application-coverage:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore ProductsCatalog.sln
+
+      - name: Run Application tests with coverage
+        run: >
+          dotnet test ./tests/ProductsCatalog.Application.UnitTests/ProductsCatalog.Application.UnitTests.csproj
+          --configuration Release
+          --no-restore
+          --collect:"XPlat Code Coverage"
+          --results-directory ./TestResults/Coverage/Application
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.4.7
+
+      - name: Create and enforce Application coverage report
+        run: >
+          reportgenerator
+          -reports:"./TestResults/Coverage/Application/**/coverage.cobertura.xml"
+          -targetdir:"./TestResults/CoverageReport/Application"
+          -reporttypes:"Html;TextSummary"
+          -assemblyfilters:"+ProductCatalog.Application"
+          -minimumCoverageThresholds:"lineCoverage=70"
+
+      - name: Publish Application coverage summary
+        if: always()
+        run: |
+          echo "## Application coverage" >> "$GITHUB_STEP_SUMMARY"
+          cat ./TestResults/CoverageReport/Application/Summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Application coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-coverage-report
+          path: ./TestResults/CoverageReport/Application
 
   secret-scan:
     runs-on: ubuntu-latest
