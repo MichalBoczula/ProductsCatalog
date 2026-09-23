@@ -92,7 +92,8 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        IsActive
                 FROM {SqlTableNames.MobilePhones}
                 WHERE Id IN @Ids
-                  AND IsActive = 1;
+                  AND IsActive = 1
+                ORDER BY Id;
                 ";
 
             using var connection = CreateConnection();
@@ -117,7 +118,8 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        PriceCurrency,
                        IsActive
                 FROM {SqlTableNames.MobilePhones}
-                WHERE IsActive = 1;
+                WHERE IsActive = 1
+                ORDER BY Name, Id;
                 ";
 
             using var connection = CreateConnection();
@@ -180,7 +182,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        Operation
                 FROM {SqlTableNames.MobilePhonesHistory}
                 WHERE MobilePhoneId = @MobilePhoneId
-                ORDER BY ChangedAt DESC
+                ORDER BY ChangedAt DESC, Id DESC
                 OFFSET (@Offset * @PageSize) ROWS
                 FETCH NEXT @PageSize ROWS ONLY;
                 ";
@@ -212,7 +214,8 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        PriceAmount,
                        PriceCurrency
                 FROM {SqlTableNames.MobilePhones}
-                WHERE IsActive = 1;
+                WHERE IsActive = 1
+                ORDER BY ChangedAt DESC, Id DESC;
                 ";
 
             using var connection = CreateConnection();
@@ -243,6 +246,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
             ");
 
             var @params = MobilePhoneFilterDtoExtensions.FilterQueryBuilder(mobilePhoneFilter, query);
+            query.Append(" ORDER BY Name, Id;");
 
             using var connection = CreateConnection();
 

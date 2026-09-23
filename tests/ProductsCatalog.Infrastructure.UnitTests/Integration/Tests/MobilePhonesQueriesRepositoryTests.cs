@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Common.Filters;
+using ProductCatalog.Infrastructure.Contexts.Commands;
 using ProductCatalog.Infrastructure.Repositories.MobilePhones;
 using ProductsCatalog.Infrastructure.UnitTests.Integration.Configuration;
 using Shouldly;
@@ -131,6 +133,59 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 mobilePhone.ScreenSizeInches.ShouldBeGreaterThan(0);
                 mobilePhone.PriceCurrency.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.IsActive.ShouldBeTrue();
+            }
+        }
+
+        [Fact]
+        public async Task GetPhones_ShouldApplyNameThenIdBeforeLimitingResults()
+        {
+            var repository = CreateRepository();
+            var all = await repository.GetPhones(100, CancellationToken.None);
+            var limited = await repository.GetPhones(3, CancellationToken.None);
+
+            all.Count.ShouldBeGreaterThan(3);
+            var expected = all.OrderBy(phone => phone.Name, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(phone => phone.Id).Take(3).Select(phone => phone.Id);
+            limited.Select(phone => phone.Id).ShouldBe(expected);
+        }
+
+        [Fact]
+        public async Task GetHistoryOfChanges_ShouldKeepEqualTimestampsOnStablePages()
+        {
+            var repository = CreateRepository();
+            var firstId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+            var secondId = Guid.Parse("00000000-0000-0000-0000-000000000002");
+            var options = new DbContextOptionsBuilder<ProductsContext>()
+                .UseSqlServer(_fixture.ConnectionString).Options;
+
+            await using var context = new ProductsContext(options);
+            var seeded = await context.MobilePhonesHistories.AsNoTracking()
+                .SingleAsync(history => history.Id == AppleIphone16HistoryId);
+            var tiedTime = seeded.ChangedAt.AddDays(1);
+
+            try
+            {
+                foreach (var id in new[] { firstId, secondId })
+                {
+                    var copy = seeded with { ChangedAt = tiedTime };
+                    context.MobilePhonesHistories.Add(copy);
+                    context.Entry(copy).Property(history => history.Id).CurrentValue = id;
+                }
+
+                await context.SaveChangesAsync();
+
+                var firstPage = await repository.GetHistoryOfChanges(AppleIphone16Id, 1, 1, CancellationToken.None);
+                var secondPage = await repository.GetHistoryOfChanges(AppleIphone16Id, 2, 1, CancellationToken.None);
+                var thirdPage = await repository.GetHistoryOfChanges(AppleIphone16Id, 3, 1, CancellationToken.None);
+
+                firstPage.Single().Id.ShouldBe(secondId);
+                secondPage.Single().Id.ShouldBe(firstId);
+                thirdPage.Single().Id.ShouldBe(AppleIphone16HistoryId);
+            }
+            finally
+            {
+                await context.MobilePhonesHistories.Where(history => history.Id == firstId || history.Id == secondId)
+                    .ExecuteDeleteAsync();
             }
         }
 

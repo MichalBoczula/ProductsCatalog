@@ -37,7 +37,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phones by Ids")
-            .WithDescription("Returns the mobile phones matching the provided Ids.")
+            .WithDescription("Returns active mobile phones matching the provided Ids, ordered by Id.")
             .WithName("GetMobilePhonesByIds")
             .Produces<IReadOnlyList<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
@@ -53,7 +53,7 @@ namespace ProductCatalog.Api.Endpoints
                   : Results.Ok(result);
             })
             .WithSummary("Get mobile phone by Id")
-            .WithDescription("Returns the mobile phone details when the Id exists; 404 otherwise.")
+            .WithDescription("Returns the mobile phone details when the Id exists, including inactive phones; 404 otherwise.")
             .WithName("GetMobilePhoneById")
             .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
@@ -65,7 +65,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phones")
-            .WithDescription("Returns a list of mobile phones limited by the provided amount.")
+            .WithDescription("Returns up to the requested amount of active mobile phones ordered by name, then Id.")
             .WithName("GetMobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
@@ -82,7 +82,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phone history")
-            .WithDescription("Returns the change history for a mobile phone.")
+            .WithDescription("Returns paged change history, newest first; ties in ChangedAt are ordered by history Id descending.")
             .WithName("GetMobilePhoneHistory")
             .Produces<List<MobilePhoneHistoryDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
@@ -95,7 +95,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get top mobile phones")
-            .WithDescription("Returns a list of top mobile phones.")
+            .WithDescription("Returns the three most recently changed active mobile phones, ordered by ChangedAt descending, then Id descending. Top means recent changes, not sales popularity.")
             .WithName("GetTopMobilePhones")
             .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
@@ -106,7 +106,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get filtered mobile phones")
-            .WithDescription("Returns a list of filtered mobile phones.")
+            .WithDescription("Returns active mobile phones matching the filter, ordered by name, then Id.")
             .WithName("GetFiltered MobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")

@@ -199,6 +199,15 @@ Runtime migrations are disabled by default to prevent multiple replicas from mod
 | `PUT` | `/mobile-phones/{id}` | `200` with the updated phone | `400`, `500` |
 | `DELETE` | `/mobile-phones/{id}` | `200` with the deactivated phone | `400`, `500` |
 
+Read ordering: `/mobile-phones/top` means the three most recently changed **active**
+phones (`ChangedAt DESC, Id DESC`). It does not represent sales or popularity.
+`GET /mobile-phones?amount=...` and `POST /mobile-phones/filter` return active phones
+by name then Id; `POST /mobile-phones/by-ids` returns active matches by Id.
+History pages use `ChangedAt DESC, Id DESC` so equal timestamps have a stable
+position. `GET /mobile-phones/{id}` returns an existing inactive phone with
+`IsActive: false`; active-only lists omit it. Missing IDs return 404 on this read.
+Missing update/delete IDs retain their existing 400 validation response.
+
 ### Executable documentation
 
 | Method | Route | Purpose |
