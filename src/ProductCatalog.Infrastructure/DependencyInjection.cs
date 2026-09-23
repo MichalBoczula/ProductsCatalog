@@ -30,7 +30,8 @@ namespace ProductCatalog.Infrastructure
                 .AddCheck<SqlServerHealthCheck>(
                     "sql-server",
                     failureStatus: HealthStatus.Unhealthy,
-                    tags: ["ready"]);
+                    tags: ["ready"],
+                    timeout: TimeSpan.FromSeconds(5));
 
 
 

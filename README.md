@@ -133,7 +133,8 @@ boolean at startup. The connection string must specify `Server` and `Database`;
 invalid settings stop startup with an error that does not print credentials.
 Missing `Database:ApplyMigrations` means `false`. Configuration validation does
 not connect to SQL Server: with migrations disabled, OpenAPI can be generated
-while SQL is unavailable. `/health/ready` separately reports SQL availability.
+while SQL is unavailable. `/health/ready` separately checks SQL availability
+and access to the current mobile phone and history tables.
 
 After startup, use the URLs printed by ASP.NET Core. Swagger UI is available at `/swagger`, and the OpenAPI document is available at `/swagger/v1/swagger.json`.
 
@@ -240,9 +241,11 @@ Migration application remains opt-in via `Database:ApplyMigrations`.
 | Route | Meaning |
 |---|---|
 | `/health/live` | The API process is running. It does not depend on SQL Server. |
-| `/health/ready` | The service is ready to receive traffic and its SQL Server dependency is healthy. |
+| `/health/ready` | SQL Server can read the mobile phone and history tables within the five-second check timeout; otherwise `503` (plain-text health response). |
 
 Use liveness for process restart decisions and readiness for load-balancer routing.
+Readiness runs a zero-row schema probe and does not require product data. It does
+not apply migrations, retry an entire startup, or change the opt-in migration policy.
 
 ## Tests
 
