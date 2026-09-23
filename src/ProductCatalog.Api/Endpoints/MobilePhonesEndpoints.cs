@@ -133,10 +133,12 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Update mobile phone")
-            .WithDescription("Updates an existing mobile phone and returns the updated resource.")
+            .WithDescription("Updates a mobile phone. An unchanged request is a successful no-op; a concurrent write returns 409, or 404 if the row was removed during the request.")
             .WithName("UpdateMobilePhone")
             .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json")
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
             group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator, CancellationToken cancellationToken) =>
@@ -145,10 +147,12 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Delete mobile phone")
-            .WithDescription("Soft deletes a mobile phone and returns the deactivated resource.")
+            .WithDescription("Soft deletes a mobile phone. Repeating a delete is a successful no-op; an overlapping update/delete returns 409, or 404 if the row was removed during the request.")
             .WithName("DeleteMobilePhone")
             .Produces<MobilePhoneDetailsDto>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
+            .Produces<ApiProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json")
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
         }
     }

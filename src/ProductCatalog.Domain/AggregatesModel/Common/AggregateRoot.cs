@@ -7,7 +7,11 @@
         public DateTime ChangedAt { get; private set; } = DateTime.UtcNow;
 
 
-        public void SetChangeDate() => ChangedAt = DateTime.UtcNow;
+        public void SetChangeDate()
+        {
+            var now = DateTime.UtcNow;
+            ChangedAt = now > ChangedAt ? now : ChangedAt.AddTicks(1);
+        }
 
         public void Deactivate()
         {

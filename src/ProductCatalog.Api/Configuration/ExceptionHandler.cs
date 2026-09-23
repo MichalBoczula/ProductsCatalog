@@ -30,6 +30,10 @@ namespace ProductCatalog.Api.Configuration
                     NotFoundExceptionHandlerExtension.HandleNotFoundException(
                         context, notFoundException, cancellationToken),
 
+                ConcurrencyConflictException => ApiProblemResponse.WriteAsync(
+                    context, StatusCodes.Status409Conflict, "concurrency_conflict", "Conflict.",
+                    "The mobile phone changed during this request. Reload it and retry.", cancellationToken),
+
                 BadHttpRequestException badHttpRequestException when badHttpRequestException.InnerException is JsonException =>
                     JsonDeserializationExceptionHandlerExtension.HandleJsonDeserializationException(
                         context, cancellationToken),

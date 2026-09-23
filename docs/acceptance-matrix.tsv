@@ -39,3 +39,9 @@ REF07_DescribeValidationPolicies_02	DescribeValidationPolicies	GET	/products-doc
 REF07_CreateMobilePhone_type	CreateMobilePhone	POST	/mobile-phones	400	type	Common/ApiProblemContract.feature	Framework failures have the same JSON problem contract
 REF07_CreateMobilePhone_null	CreateMobilePhone	POST	/mobile-phones	400	null	Common/ApiProblemContract.feature	Framework failures have the same JSON problem contract
 REF07_CreateMobilePhone_missing	CreateMobilePhone	POST	/mobile-phones	400	missing	Common/ApiProblemContract.feature	Framework failures have the same JSON problem contract
+REF08_UpdateMobilePhone_409_ConcurrentUpdate	UpdateMobilePhone	PUT	/mobile-phones/{id:guid}	409	another update commits after read; stale write and history rejected	MobilePhones/WriteRaces.feature	REF08_UpdateMobilePhone_409_ConcurrentUpdate
+REF08_UpdateMobilePhone_409_ConcurrentDelete	UpdateMobilePhone	PUT	/mobile-phones/{id:guid}	409	soft delete commits after read; stale write and history rejected	MobilePhones/WriteRaces.feature	REF08_UpdateMobilePhone_409_ConcurrentDelete
+REF08_DeleteMobilePhone_409_ConcurrentUpdate	DeleteMobilePhone	DELETE	/mobile-phones/{id:guid}	409	another update commits after read; stale soft delete and history rejected	MobilePhones/WriteRaces.feature	REF08_DeleteMobilePhone_409_ConcurrentUpdate
+REF08_UpdateMobilePhone_404_RemovedAfterRead	UpdateMobilePhone	PUT	/mobile-phones/{id:guid}	404	physical removal after read; no update history	MobilePhones/WriteRaces.feature	REF08_UpdateMobilePhone_404_RemovedAfterRead
+REF08_UpdateMobilePhone_200_Unchanged	UpdateMobilePhone	PUT	/mobile-phones/{id:guid}	200	unchanged profile no-op; no new history	MobilePhones/WriteRaces.feature	REF08_UpdateMobilePhone_200_Unchanged
+REF08_DeleteMobilePhone_200_Repeated	DeleteMobilePhone	DELETE	/mobile-phones/{id:guid}	200	repeated soft delete no-op; no additional history	MobilePhones/WriteRaces.feature	REF08_DeleteMobilePhone_200_Repeated
