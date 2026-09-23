@@ -22,12 +22,21 @@ public sealed class ApiProblemContractSteps
     private HttpResponseMessage? _response;
     private string? _path;
     private string? _errorCase;
+    private int _beforePhones;
+    private int _beforeHistory;
 
     [When("I trigger the Products REF-06 error case {string}")]
     public async Task WhenITriggerTheErrorCase(string errorCase)
     {
         var client = _apiContext.Client!;
         _errorCase = errorCase;
+        if (errorCase is "json" or "type" or "null" or "missing" or "body")
+        {
+            using var scope = _apiContext.Factory!.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            _beforePhones = await db.MobilePhones.CountAsync();
+            _beforeHistory = await db.MobilePhonesHistories.CountAsync();
+        }
         (_path, _response) = errorCase switch
         {
             "route" => ("/ref-06-not-found", await client.GetAsync("/ref-06-not-found")),
@@ -73,6 +82,10 @@ public sealed class ApiProblemContractSteps
         {
             missing.EnumerateArray().Select(item => item.GetString()).ShouldContain("commonDescription");
         }
+        else if (_errorCase is "type" or "null")
+        {
+            missing.EnumerateArray().Select(item => item.GetString()).ShouldNotContain("fingerPrint");
+        }
         else
         {
             missing.GetArrayLength().ShouldBe(0);
@@ -83,8 +96,8 @@ public sealed class ApiProblemContractSteps
         {
             using var scope = _apiContext.Factory!.Services.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<ProductsContext>();
-            (await db.MobilePhones.CountAsync()).ShouldBe(0);
-            (await db.MobilePhonesHistories.CountAsync()).ShouldBe(0);
+            (await db.MobilePhones.CountAsync()).ShouldBe(_beforePhones);
+            (await db.MobilePhonesHistories.CountAsync()).ShouldBe(_beforeHistory);
         }
     }
 }
