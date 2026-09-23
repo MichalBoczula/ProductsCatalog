@@ -30,9 +30,9 @@ namespace ProductCatalog.Api.Endpoints
 
         private static void MapMobilePhonesQueries(IEndpointRouteBuilder group)
         {
-            group.MapPost("/by-ids", async (List<Guid> ids, IMediator mediator) =>
+            group.MapPost("/by-ids", async (List<Guid> ids, IMediator mediator, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetMobilePhoneByIdsQuery(ids));
+                var result = await mediator.Send(new GetMobilePhoneByIdsQuery(ids), cancellationToken);
 
                 return Results.Ok(result);
             })
@@ -44,9 +44,9 @@ namespace ProductCatalog.Api.Endpoints
             .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            group.MapGet("/{id:guid}", async (Guid id, IMediator mediator) =>
+            group.MapGet("/{id:guid}", async (Guid id, IMediator mediator, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetMobilePhoneByIdQuery(id));
+                var result = await mediator.Send(new GetMobilePhoneByIdQuery(id), cancellationToken);
 
                 return result is null ?
                     Results.NotFound()
@@ -59,9 +59,9 @@ namespace ProductCatalog.Api.Endpoints
             .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            group.MapGet("", async ([FromQuery] int amount, IMediator mediator) =>
+            group.MapGet("", async ([FromQuery] int amount, IMediator mediator, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetMobilePhonesQuery(amount));
+                var result = await mediator.Send(new GetMobilePhonesQuery(amount), cancellationToken);
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phones")
@@ -75,9 +75,10 @@ namespace ProductCatalog.Api.Endpoints
                 Guid id,
                 [FromQuery] int pageNumber,
                 [FromQuery] int pageSize,
-                IMediator mediator) =>
+                IMediator mediator,
+                CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetMobilePhoneHistoryQuery(id, new PaginationParameters(pageNumber, pageSize)));
+                var result = await mediator.Send(new GetMobilePhoneHistoryQuery(id, new PaginationParameters(pageNumber, pageSize)), cancellationToken);
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phone history")
@@ -88,9 +89,9 @@ namespace ProductCatalog.Api.Endpoints
             .Produces<ApiProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            group.MapGet("/top", async (IMediator mediator) =>
+            group.MapGet("/top", async (IMediator mediator, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetTopMobilePhonesQuery());
+                var result = await mediator.Send(new GetTopMobilePhonesQuery(), cancellationToken);
                 return Results.Ok(result);
             })
             .WithSummary("Get top mobile phones")
@@ -99,9 +100,9 @@ namespace ProductCatalog.Api.Endpoints
             .Produces<List<TopMobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            group.MapPost("/filter", async (IMediator mediator, MobilePhoneFilterDto mobilePhoneFilterDto) =>
+            group.MapPost("/filter", async (IMediator mediator, MobilePhoneFilterDto mobilePhoneFilterDto, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new GetFilteredMobilePhonesQuery(mobilePhoneFilterDto));
+                var result = await mediator.Send(new GetFilteredMobilePhonesQuery(mobilePhoneFilterDto), cancellationToken);
                 return Results.Ok(result);
             })
             .WithSummary("Get filtered mobile phones")
@@ -114,9 +115,9 @@ namespace ProductCatalog.Api.Endpoints
 
         private static void MapMobilePhonesCommands(IEndpointRouteBuilder group)
         {
-            group.MapPost("", async (CreateMobilePhoneExternalDto mobilePhone, IMediator mediator) =>
+            group.MapPost("", async (CreateMobilePhoneExternalDto mobilePhone, IMediator mediator, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new CreateMobilePhoneCommand(mobilePhone));
+                var result = await mediator.Send(new CreateMobilePhoneCommand(mobilePhone), cancellationToken);
                 return Results.Created($"/mobile-phones/{result.Id}", result);
             })
             .WithSummary("Create mobile phone")
@@ -126,9 +127,9 @@ namespace ProductCatalog.Api.Endpoints
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            group.MapPut("/{id:guid}", async (Guid id, UpdateMobilePhoneExternalDto mobilePhone, IMediator mediator) =>
+            group.MapPut("/{id:guid}", async (Guid id, UpdateMobilePhoneExternalDto mobilePhone, IMediator mediator, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new UpdateMobilePhoneCommand(id, mobilePhone));
+                var result = await mediator.Send(new UpdateMobilePhoneCommand(id, mobilePhone), cancellationToken);
                 return Results.Ok(result);
             })
             .WithSummary("Update mobile phone")
@@ -138,9 +139,9 @@ namespace ProductCatalog.Api.Endpoints
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) =>
+            group.MapDelete("/{id:guid}", async (Guid id, IMediator mediator, CancellationToken cancellationToken) =>
             {
-                var result = await mediator.Send(new DeleteMobilePhoneCommand(id));
+                var result = await mediator.Send(new DeleteMobilePhoneCommand(id), cancellationToken);
                 return Results.Ok(result);
             })
             .WithSummary("Delete mobile phone")
