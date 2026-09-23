@@ -164,7 +164,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 && error.Name == GetRequiredValue(expected, "ErrorName"));
         }
 
-        private static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(Table? table)
+        internal static CreateMobilePhoneExternalDto BuildMobilePhoneRequest(Table? table)
         {
             var values = MergeDefaultValues(table);
             return new CreateMobilePhoneExternalDto(
