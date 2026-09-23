@@ -238,8 +238,12 @@ bash scripts/verify.sh
 ```
 
 The script writes TRX, coverage and the generated OpenAPI to the ignored
-`artifacts/verification` directory. CI additionally checks dependencies, secrets
-and image vulnerabilities. The SDK and build-stage Docker image use the version
+`artifacts/verification` directory. Infrastructure tests produce a separate HTML
+and text coverage report for diagnosis without a percentage threshold; Domain
+and Application retain separate 70% line-coverage gates. CI publishes the
+Infrastructure report in the job summary and as an artifact. CI additionally
+checks dependencies, secrets and image vulnerabilities. The SDK and build-stage
+Docker image use the version
 in `global.json`; CI uses the same SDK through `setup-dotnet`.
 
 Restore and build the solution:
@@ -285,7 +289,8 @@ GitHub Actions runs for pull requests and pushes to `master`:
 1. restore, Release build, and format verification;
 2. start the API, generate OpenAPI, and validate the complete specification with a pinned Redocly CLI;
 3. run Domain, Application, Infrastructure, and acceptance tests;
-4. enforce separate 70% line-coverage gates for Domain and Application;
+4. enforce separate 70% line-coverage gates for Domain and Application; report
+   Infrastructure coverage without a percentage gate;
 5. run Dependency Review on pull requests and Gitleaks secret scanning;
 6. build the container and fail on high or critical Trivy findings;
 7. after scanning, tag and publish the same local image as commit-SHA and `latest`
