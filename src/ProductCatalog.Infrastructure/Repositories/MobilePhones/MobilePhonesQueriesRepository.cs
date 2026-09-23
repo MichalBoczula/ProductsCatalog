@@ -35,6 +35,11 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 await using var connection = await OpenConnectionAsync(deadline.Token);
                 return await read(connection, deadline.Token);
             }
+            catch (SqlException) when (cancellationToken.IsCancellationRequested)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                throw;
+            }
             catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested && deadline.IsCancellationRequested)
             {
                 throw new TimeoutException("The catalog read exceeded its time limit.");
