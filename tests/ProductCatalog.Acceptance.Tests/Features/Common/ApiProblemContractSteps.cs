@@ -1,6 +1,9 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ProductCatalog.Infrastructure.Contexts.Commands;
 using Reqnroll;
 using Shouldly;
 
@@ -33,6 +36,10 @@ public sealed class ApiProblemContractSteps
                 "/mobile-phones", new StringContent("{}", Encoding.UTF8, "text/plain"))),
             "json" => ("/mobile-phones", await client.PostAsync(
                 "/mobile-phones", new StringContent("{INTERNAL_FAILURE_MARKER", Encoding.UTF8, "application/json"))),
+            "type" => ("/mobile-phones", await client.PostAsync(
+                "/mobile-phones", new StringContent("{\"fingerPrint\":\"not-a-boolean\"}", Encoding.UTF8, "application/json"))),
+            "null" => ("/mobile-phones", await client.PostAsync(
+                "/mobile-phones", new StringContent("{\"fingerPrint\":null}", Encoding.UTF8, "application/json"))),
             "missing" => ("/mobile-phones", await client.PostAsync(
                 "/mobile-phones", new StringContent("{}", Encoding.UTF8, "application/json"))),
             "body" => ("/mobile-phones", await client.PostAsync(
@@ -72,5 +79,12 @@ public sealed class ApiProblemContractSteps
         }
         body.ShouldNotContain("INTERNAL_FAILURE_MARKER");
         body.ShouldNotContain("stackTrace");
+        if (_errorCase is "json" or "type" or "null" or "missing" or "body")
+        {
+            using var scope = _apiContext.Factory!.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            (await db.MobilePhones.CountAsync()).ShouldBe(0);
+            (await db.MobilePhonesHistories.CountAsync()).ShouldBe(0);
+        }
     }
 }
