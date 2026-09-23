@@ -6,6 +6,7 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ValueObjects;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using ProductCatalog.Infrastructure.Repositories.MobilePhones;
+using ProductCatalog.Domain.Validation.Common;
 using ProductsCatalog.Infrastructure.UnitTests.Integration.Configuration;
 using Shouldly;
 using System.Text.Json;
@@ -240,6 +241,107 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
 
             var newestHistoryResult = historyResults.First();
             AssertHistoryMatchesMobilePhone(newestHistoryResult, mobilePhoneResult, Operation.Updated);
+        }
+
+        [Fact]
+        public async Task ConcurrentUpdates_ShouldRejectStaleWriterAndRollbackItsHistory()
+        {
+            var phone = CreateMobilePhone("Initial Phone", "Initial", 500m);
+            using (var setup = CreateContext())
+            {
+                var repository = new MobilePhonesCommandsRepository(setup);
+                repository.Add(phone);
+                repository.WriteHistory(CreateTestHistory(phone, Operation.Inserted));
+                await repository.SaveChanges(CancellationToken.None);
+            }
+
+            using var firstContext = CreateContext();
+            using var secondContext = CreateContext();
+            var first = new MobilePhonesCommandsRepository(firstContext);
+            var second = new MobilePhonesCommandsRepository(secondContext);
+            var firstPhone = await first.GetById(phone.Id, CancellationToken.None);
+            var secondPhone = await second.GetById(phone.Id, CancellationToken.None);
+            firstPhone.ShouldNotBeNull();
+            secondPhone.ShouldNotBeNull();
+            firstPhone.AssigneNewMobilePhoneInformation(CreateMobilePhone("First Writer", "First", 600m));
+            secondPhone.AssigneNewMobilePhoneInformation(CreateMobilePhone("Second Writer", "Second", 700m));
+            first.Update(firstPhone);
+            first.WriteHistory(CreateTestHistory(firstPhone, Operation.Updated));
+            second.Update(secondPhone);
+            second.WriteHistory(CreateTestHistory(secondPhone, Operation.Updated));
+
+            await first.SaveChanges(CancellationToken.None);
+            await Should.ThrowAsync<ConcurrencyConflictException>(() => second.SaveChanges(CancellationToken.None));
+
+            using var verify = CreateContext();
+            (await verify.MobilePhones.SingleAsync(x => x.Id == phone.Id)).CommonDescription.Name.ShouldBe("First Writer");
+            var history = await verify.MobilePhonesHistories.Where(x => x.MobilePhoneId == phone.Id).ToListAsync();
+            history.Count.ShouldBe(2);
+            history.Count(x => x.Operation == Operation.Updated && x.Name == "First Writer").ShouldBe(1);
+        }
+
+        [Fact]
+        public async Task UpdateAfterSoftDelete_ShouldRejectWriteAndPreserveDeleteHistory()
+        {
+            var phone = CreateMobilePhone("Initial Phone", "Initial", 500m);
+            using (var setup = CreateContext())
+            {
+                var repository = new MobilePhonesCommandsRepository(setup);
+                repository.Add(phone);
+                repository.WriteHistory(CreateTestHistory(phone, Operation.Inserted));
+                await repository.SaveChanges(CancellationToken.None);
+            }
+
+            using var updateContext = CreateContext();
+            using var deleteContext = CreateContext();
+            var update = new MobilePhonesCommandsRepository(updateContext);
+            var delete = new MobilePhonesCommandsRepository(deleteContext);
+            var updatePhone = await update.GetById(phone.Id, CancellationToken.None);
+            var deletePhone = await delete.GetById(phone.Id, CancellationToken.None);
+            updatePhone.ShouldNotBeNull();
+            deletePhone.ShouldNotBeNull();
+            deletePhone.Deactivate();
+            delete.Update(deletePhone);
+            delete.WriteHistory(CreateTestHistory(deletePhone, Operation.Deleted));
+            updatePhone.AssigneNewMobilePhoneInformation(CreateMobilePhone("Stale Update", "Stale", 650m));
+            update.Update(updatePhone);
+            update.WriteHistory(CreateTestHistory(updatePhone, Operation.Updated));
+
+            await delete.SaveChanges(CancellationToken.None);
+            await Should.ThrowAsync<ConcurrencyConflictException>(() => update.SaveChanges(CancellationToken.None));
+
+            using var verify = CreateContext();
+            (await verify.MobilePhones.SingleAsync(x => x.Id == phone.Id)).IsActive.ShouldBeFalse();
+            var history = await verify.MobilePhonesHistories.Where(x => x.MobilePhoneId == phone.Id).ToListAsync();
+            history.Count.ShouldBe(2);
+            history.Count(x => x.Operation == Operation.Deleted).ShouldBe(1);
+        }
+
+        [Fact]
+        public async Task UpdateAfterPhysicalRemoval_ShouldReportNotFoundAndNotWriteHistory()
+        {
+            var phone = CreateMobilePhone("Initial Phone", "Initial", 500m);
+            using (var setup = CreateContext())
+            {
+                var repository = new MobilePhonesCommandsRepository(setup);
+                repository.Add(phone);
+                await repository.SaveChanges(CancellationToken.None);
+            }
+
+            using var staleContext = CreateContext();
+            var stale = new MobilePhonesCommandsRepository(staleContext);
+            var loaded = await stale.GetById(phone.Id, CancellationToken.None);
+            loaded.ShouldNotBeNull();
+            using (var remove = CreateContext())
+                await remove.MobilePhones.Where(x => x.Id == phone.Id).ExecuteDeleteAsync();
+            loaded.AssigneNewMobilePhoneInformation(CreateMobilePhone("Stale", "Stale", 700m));
+            stale.Update(loaded);
+            stale.WriteHistory(CreateTestHistory(loaded, Operation.Updated));
+
+            await Should.ThrowAsync<ResourceNotFoundException>(() => stale.SaveChanges(CancellationToken.None));
+
+            using var verify = CreateContext();
+            (await verify.MobilePhonesHistories.CountAsync(x => x.MobilePhoneId == phone.Id)).ShouldBe(0);
         }
 
         private static MobilePhone CreateMobilePhone(

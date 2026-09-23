@@ -3,6 +3,7 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using Microsoft.EntityFrameworkCore;
+using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
 {
@@ -35,7 +36,24 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
             _db.MobilePhonesHistories.Add(entity);
         }
 
-        public Task SaveChanges(CancellationToken cancellationToken)
-            => _db.SaveChangesAsync(cancellationToken);
+        public async Task SaveChanges(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // EF Core saves the phone and its history in the same SaveChanges transaction.
+                await _db.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException exception) when (exception.Entries.Any(x => x.Entity is MobilePhone))
+            {
+                var phoneId = ((MobilePhone)exception.Entries.First(x => x.Entity is MobilePhone).Entity).Id;
+                _db.ChangeTracker.Clear();
+                var exists = await _db.MobilePhones.AsNoTracking()
+                    .AnyAsync(x => x.Id == phoneId, cancellationToken);
+                if (!exists)
+                    throw new ResourceNotFoundException(nameof(SaveChanges), phoneId, nameof(MobilePhone));
+
+                throw new ConcurrencyConflictException();
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace ProductCatalog.Infrastructure.Configuration.Aggregates
         {
             builder.ToTable(SqlTableNames.MobilePhones);
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.ChangedAt).IsConcurrencyToken();
             builder.Property(x => x.FingerPrint).IsRequired();
             builder.Property(x => x.FaceId).IsRequired();
             builder.ComplexProperty(x => x.CommonDescription, desc =>

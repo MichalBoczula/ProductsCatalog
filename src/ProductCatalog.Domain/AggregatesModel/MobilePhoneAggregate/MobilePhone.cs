@@ -61,5 +61,24 @@ namespace ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate
             Description3 = incoming.Description3;
             SetChangeDate();
         }
+
+        public bool HasSameInformation(MobilePhone other)
+        {
+            return CommonDescription.Name == other.CommonDescription.Name
+                && CommonDescription.Brand == other.CommonDescription.Brand
+                && CommonDescription.Description == other.CommonDescription.Description
+                && CommonDescription.MainPhoto == other.CommonDescription.MainPhoto
+                && CommonDescription.OtherPhotos.SequenceEqual(other.CommonDescription.OtherPhotos)
+                && ElectronicDetails == other.ElectronicDetails
+                && Connectivity == other.Connectivity
+                && SatelliteNavigationSystems == other.SatelliteNavigationSystems
+                && Sensors == other.Sensors
+                && Camera == other.Camera
+                && FingerPrint == other.FingerPrint
+                && FaceId == other.FaceId
+                && Price == other.Price
+                && Description2 == other.Description2
+                && Description3 == other.Description3;
+        }
     }
 }
