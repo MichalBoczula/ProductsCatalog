@@ -127,6 +127,10 @@ dotnet run --project src/ProductCatalog.Api/ProductCatalog.Api.csproj
 ```
 
 `Database__ApplyMigrations=true` is intended for local development. Hosted environments should apply migrations in a dedicated deployment step.
+Repeated opt-in local starts preserve the seeded phones and their history. A failed
+migration stops startup and is not retried as a whole; see
+[the migration strategy](docs/database-migrations.md) for recovery and the separate
+CLEAN-01 existing-data verification.
 
 The API checks the SQL connection string and the optional `Database:ApplyMigrations`
 boolean at startup. The connection string must specify `Server` and `Database`;

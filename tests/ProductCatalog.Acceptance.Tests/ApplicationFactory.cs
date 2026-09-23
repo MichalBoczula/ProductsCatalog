@@ -9,17 +9,22 @@ using ProductCatalog.Infrastructure.Contexts.Commands;
 
 namespace ProductCatalog.Acceptance.Tests
 {
-    public class ApplicationFactory(string connectionString) : WebApplicationFactory<Program>
+    public class ApplicationFactory(string connectionString, bool? applyMigrations = false) : WebApplicationFactory<Program>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureAppConfiguration((_, config) =>
             {
-                config.AddInMemoryCollection(new Dictionary<string, string?>
+                var settings = new Dictionary<string, string?>
                 {
-                    ["ConnectionStrings:ProductCatalogDb"] = connectionString,
-                    ["Database:ApplyMigrations"] = "false"
-                });
+                    ["ConnectionStrings:ProductCatalogDb"] = connectionString
+                };
+                if (applyMigrations.HasValue)
+                {
+                    settings["Database:ApplyMigrations"] = applyMigrations.Value.ToString();
+                }
+
+                config.AddInMemoryCollection(settings);
             });
 
             builder.ConfigureServices(services =>

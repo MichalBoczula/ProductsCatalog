@@ -15,4 +15,16 @@ dotnet ef migrations script --idempotent \
 
 The deployment identity should have schema modification permissions. The runtime API identity should only receive the data permissions required by the service.
 
-The model seed uses EF Core `HasData` and fixed identifiers. Changes are represented by migrations, so applying the same migration set repeatedly is deterministic and idempotent.
+The catalogue seed lives in versioned EF migrations with fixed identifiers and dates.
+On a fresh, isolated SQL database, a second opt-in API startup must leave the 15
+current phones, 15 history entries and applied migration records unchanged. With
+the default setting, startup does not create a missing database; readiness reports
+unhealthy until a deployment step or an explicitly opted-in local startup migrates it.
+
+Runtime migration application runs once during startup when enabled. Failure to
+connect or apply a migration stops startup; there is no retry of the whole migration,
+seed or transaction. After resolving the cause, rerun the deployment step or restart
+an opt-in local instance. Do not enable runtime migrations simultaneously on multiple
+hosted replicas. The fresh-database repeatability test does not verify the CLEAN-01
+migration against an existing database with real data: back up and test that path
+separately before applying it to a hosted database.
