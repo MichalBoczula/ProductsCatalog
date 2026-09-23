@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Application.Common.Dtos.Common;
@@ -36,13 +37,39 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
         [Given("an existing set of mobile phones for top list")]
         public async Task GivenAnExistingSetOfMobilePhonesForTopList(Table table)
+            => await CreateMobilePhones(table, 3);
+
+        [Given("four mobile phones with the same change time for top list")]
+        public async Task GivenFourMobilePhonesWithTheSameChangeTime(Table table)
+        {
+            await CreateMobilePhones(table, 4);
+
+            using var scope = _apiContext.Factory!.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            var ids = _createdMobilePhones.Select(phone => phone.Id).ToArray();
+            var tiedTime = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            await context.MobilePhones.Where(phone => ids.Contains(phone.Id))
+                .ExecuteUpdateAsync(update => update.SetProperty(phone => phone.ChangedAt, tiedTime));
+        }
+
+        [Given("one created phone is inactive")]
+        public async Task GivenOneCreatedPhoneIsInactive()
+        {
+            var inactiveId = _createdMobilePhones[0].Id;
+            using var scope = _apiContext.Factory!.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            await context.MobilePhones.Where(phone => phone.Id == inactiveId)
+                .ExecuteUpdateAsync(update => update.SetProperty(phone => phone.IsActive, false));
+        }
+
+        private async Task CreateMobilePhones(Table table, int count)
         {
             await ClearMobilePhones();
 
             var values = MergeDefaultValues(table);
             var baseName = GetValue(values, "Name");
 
-            for (var i = 1; i <= 3; i++)
+            for (var i = 1; i <= count; i++)
             {
                 values["Name"] = $"{baseName} {i}";
                 var request = BuildMobilePhoneRequest(values);
@@ -91,6 +118,45 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
             result.Count.ShouldBeGreaterThan(0);
+        }
+
+        [Then("the top list contains the three greatest IDs in stable order")]
+        public async Task ThenTheTopListContainsTheThreeGreatestIdsInStableOrder()
+        {
+            _response.ShouldNotBeNull();
+            _response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+            var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
+            result.ShouldNotBeNull();
+            using var scope = _apiContext.Factory!.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            var ids = _createdMobilePhones.Select(phone => phone.Id).ToArray();
+            var expected = await context.MobilePhones.Where(phone => ids.Contains(phone.Id))
+                .OrderByDescending(phone => phone.Id).Take(3).Select(phone => phone.Id).ToListAsync();
+            result.Select(phone => phone.Id).ShouldBe(expected);
+        }
+
+        [Then("the inactive phone is omitted from top but readable by ID")]
+        public async Task ThenInactivePhoneIsOmittedFromTopButReadableById()
+        {
+            var inactiveId = _createdMobilePhones[0].Id;
+            _response.ShouldNotBeNull();
+            _response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var top = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
+            top.ShouldNotBeNull();
+            using var scope = _apiContext.Factory!.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            var ids = _createdMobilePhones.Select(phone => phone.Id).ToArray();
+            var expected = await context.MobilePhones.Where(phone => ids.Contains(phone.Id) && phone.IsActive)
+                .OrderByDescending(phone => phone.Id).Select(phone => phone.Id).ToListAsync();
+            top.Select(phone => phone.Id).ShouldBe(expected);
+
+            var byIdResponse = await _apiContext.Client!.GetAsync($"/mobile-phones/{inactiveId}");
+            byIdResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var byId = await DeserializeResponse<MobilePhoneDetailsDto>(byIdResponse);
+            byId.ShouldNotBeNull();
+            byId.Id.ShouldBe(inactiveId);
+            byId.IsActive.ShouldBeFalse();
         }
 
         [Then("the top mobile phones response is successful and empty")]

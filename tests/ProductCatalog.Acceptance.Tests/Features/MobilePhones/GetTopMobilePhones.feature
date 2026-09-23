@@ -49,3 +49,18 @@ Scenario: Get top mobile phones returns an empty list when no mobile phones exis
 	Given mobile phones table is empty for top list
 	When I request the top mobile phones list
 	Then the top mobile phones response is successful and empty
+
+Scenario: Top keeps a stable boundary when four active phones have the same change time
+	Given four mobile phones with the same change time for top list
+		| Field | Value     |
+		| Name  | Tie Phone |
+	When I request the top mobile phones list
+	Then the top list contains the three greatest IDs in stable order
+
+Scenario: Inactive phone remains readable by ID but is absent from top
+	Given four mobile phones with the same change time for top list
+		| Field | Value          |
+		| Name  | Inactive Phone |
+	And one created phone is inactive
+	When I request the top mobile phones list
+	Then the inactive phone is omitted from top but readable by ID
