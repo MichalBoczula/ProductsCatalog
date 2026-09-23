@@ -127,7 +127,8 @@ public sealed class WriteRacesSteps(ScenarioApiContext context) : IDisposable
             phone.ShouldNotBeNull();
             if (_interruption == Interruption.Update)
                 phone.CommonDescription.Name.ShouldBe("Winner Phone");
-            if (_interruption == Interruption.Delete || _response.RequestMessage?.Method == HttpMethod.Delete)
+            if (_interruption == Interruption.Delete ||
+                (_interruption == Interruption.None && _response.RequestMessage?.Method == HttpMethod.Delete))
                 phone.IsActive.ShouldBeFalse();
             if (_interruption == Interruption.None && _response.RequestMessage?.Method == HttpMethod.Put)
                 phone.CommonDescription.Name.ShouldBe("Test Mobile Phone");
