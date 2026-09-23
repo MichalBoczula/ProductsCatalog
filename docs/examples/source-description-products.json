@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "service": "products",
+  "operationId": "GetMobilePhoneById",
+  "method": "GET",
+  "path": "/mobile-phones/{id:guid}",
+  "request": {
+    "type": "none",
+    "notes": "The id route parameter identifies a mobile phone."
+  },
+  "response": {
+    "type": "MobilePhoneDetailsDto",
+    "notes": "Returns the matching mobile phone, including inactive phones."
+  },
+  "outcomes": [
+    {
+      "status": 200,
+      "cause": "found",
+      "scenarioIds": ["REF07_GetMobilePhoneById_01"]
+    },
+    {
+      "status": 404,
+      "cause": "missing-phone",
+      "scenarioIds": ["REF07_GetMobilePhoneById_02"]
+    }
+  ],
+  "flow": {
+    "flowId": "products.mobile-phone.get-by-id",
+    "steps": [
+      { "stepId": "load-phone", "description": "Load the phone by ID." },
+      { "stepId": "require-phone", "description": "Return not found if it is absent." },
+      { "stepId": "map-response", "description": "Map the read model to the public DTO." }
+    ]
+  },
+  "policies": [],
+  "effects": [],
+  "consistency": "Read only; no transaction or history write."
+}
