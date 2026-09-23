@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Common.Filters;
@@ -19,6 +20,102 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
         public MobilePhonesQueriesRepositoryTests(MsSqlDbTestFixture fixture)
         {
             _fixture = fixture;
+        }
+
+        [Fact]
+        public async Task GetTop_RetriesOpeningAnOfflineDatabaseAfterItComesOnline()
+        {
+            var (database, masterConnectionString, readConnectionString) = await CreateReadTestDatabaseAsync();
+            try
+            {
+                await ExecuteMasterSqlAsync(masterConnectionString, $"ALTER DATABASE [{database}] SET OFFLINE WITH ROLLBACK IMMEDIATE");
+                var repository = new MobilePhonesQueriesRepository(new CustomTestConfiguration(readConnectionString));
+                var read = repository.GetTop(CancellationToken.None);
+
+                await Task.Delay(200);
+                await ExecuteMasterSqlAsync(masterConnectionString, $"ALTER DATABASE [{database}] SET ONLINE");
+
+                (await read).ShouldBeEmpty();
+            }
+            finally
+            {
+                await ExecuteMasterSqlAsync(masterConnectionString, $"ALTER DATABASE [{database}] SET ONLINE");
+                await ExecuteMasterSqlAsync(masterConnectionString, $"ALTER DATABASE [{database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{database}]");
+            }
+        }
+
+        [Fact]
+        public async Task GetTop_DoesNotRetryQueryErrors()
+        {
+            var (database, masterConnectionString, readConnectionString) = await CreateReadTestDatabaseAsync(createTable: false);
+            try
+            {
+                var repository = new MobilePhonesQueriesRepository(new CustomTestConfiguration(readConnectionString));
+                var exception = await Should.ThrowAsync<SqlException>(() => repository.GetTop(CancellationToken.None));
+                exception.Number.ShouldBe(208);
+            }
+            finally
+            {
+                await ExecuteMasterSqlAsync(masterConnectionString, $"ALTER DATABASE [{database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{database}]");
+            }
+        }
+
+        [Fact]
+        public async Task GetTop_CancelsWhileWaitingForSqlLock()
+        {
+            var (database, masterConnectionString, readConnectionString) = await CreateReadTestDatabaseAsync();
+            try
+            {
+                await using var blocker = new SqlConnection(readConnectionString);
+                await blocker.OpenAsync();
+                await using var lockCommand = new SqlCommand("BEGIN TRAN; INSERT INTO dbo.TB_MobilePhones (Id, IsActive, ChangedAt) VALUES (NEWID(), 1, SYSUTCDATETIME()); UPDATE dbo.TB_MobilePhones WITH (TABLOCKX) SET IsActive = 1;", blocker);
+                await lockCommand.ExecuteNonQueryAsync();
+
+                using var cancellation = new CancellationTokenSource(TimeSpan.FromMilliseconds(300));
+                var repository = new MobilePhonesQueriesRepository(new CustomTestConfiguration(readConnectionString));
+                await Should.ThrowAsync<OperationCanceledException>(() => repository.GetTop(cancellation.Token));
+
+                var timeout = await Should.ThrowAsync<SqlException>(() => repository.GetTop(CancellationToken.None));
+                timeout.Number.ShouldBe(-2);
+
+                await using var rollback = new SqlCommand("ROLLBACK TRAN", blocker);
+                await rollback.ExecuteNonQueryAsync();
+            }
+            finally
+            {
+                await ExecuteMasterSqlAsync(masterConnectionString, $"ALTER DATABASE [{database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{database}]");
+            }
+        }
+
+        private async Task<(string Database, string Master, string Read)> CreateReadTestDatabaseAsync(bool createTable = true)
+        {
+            var database = "ReadTest" + Guid.NewGuid().ToString("N");
+            var builder = new SqlConnectionStringBuilder(_fixture.ConnectionString)
+            {
+                InitialCatalog = "master",
+                Pooling = false
+            };
+            var master = builder.ConnectionString;
+            await ExecuteMasterSqlAsync(master, $"CREATE DATABASE [{database}]");
+            builder.InitialCatalog = database;
+            var read = builder.ConnectionString;
+            if (createTable)
+            {
+                await using var connection = new SqlConnection(read);
+                await connection.OpenAsync();
+                await using var command = new SqlCommand("CREATE TABLE dbo.TB_MobilePhones (Id uniqueidentifier NOT NULL, Name nvarchar(100) NULL, Brand nvarchar(100) NULL, MainPhoto nvarchar(100) NULL, PriceAmount decimal(18, 2) NULL, PriceCurrency nvarchar(3) NULL, IsActive bit NOT NULL, ChangedAt datetime2 NOT NULL)", connection);
+                await command.ExecuteNonQueryAsync();
+            }
+
+            return (database, master, read);
+        }
+
+        private static async Task ExecuteMasterSqlAsync(string connectionString, string sql)
+        {
+            await using var connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+            await using var command = new SqlCommand(sql, connection);
+            await command.ExecuteNonQueryAsync();
         }
 
         [Fact]
