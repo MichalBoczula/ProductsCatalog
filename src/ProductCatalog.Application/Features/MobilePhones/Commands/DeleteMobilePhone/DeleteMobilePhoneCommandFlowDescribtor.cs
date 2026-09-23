@@ -35,19 +35,25 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobile
             }
         }
 
-        [FlowStep(4)]
+        [FlowStep(4, "If phone is already inactive, return it without writing history")]
+        public bool IsAlreadyInactive(MobilePhone mobilePhone)
+        {
+            return !mobilePhone.IsActive;
+        }
+
+        [FlowStep(5)]
         public void DeactivateMobilePhone(MobilePhone mobilePhone)
         {
             mobilePhone.Deactivate();
         }
 
-        [FlowStep(5)]
+        [FlowStep(6)]
         public void UpdateMobilePhoneInRepository(MobilePhone mobilePhone, IMobilePhonesCommandsRepository mobilePhonesCommandsRepository)
         {
             mobilePhonesCommandsRepository.Update(mobilePhone);
         }
 
-        [FlowStep(6)]
+        [FlowStep(7)]
         public MobilePhonesHistory CreateMobilePhoneHistoryEntry(MobilePhone mobilePhone)
         {
             var mobilePhonesHistory = mobilePhone.BuildAdapter()
@@ -57,19 +63,19 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobile
             return mobilePhonesHistory;
         }
 
-        [FlowStep(7)]
+        [FlowStep(8)]
         public void WriteHistoryToRepository(IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, MobilePhonesHistory mobilePhonesHistory)
         {
             mobilePhonesCommandsRepository.WriteHistory(mobilePhonesHistory);
         }
 
-        [FlowStep(8)]
+        [FlowStep(9)]
         public Task SaveChanges(IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, CancellationToken cancellationToken)
         {
             return mobilePhonesCommandsRepository.SaveChanges(cancellationToken);
         }
 
-        [FlowStep(9)]
+        [FlowStep(10)]
         public MobilePhoneDetailsDto MapMobilePhoneToMobilePhoneDto(MobilePhone mobilePhone)
         {
             return mobilePhone.Adapt<MobilePhoneDetailsDto>();
