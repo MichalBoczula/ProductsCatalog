@@ -26,7 +26,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
                 .ValidateExistingMobilePhone(mobilePhone, _validationPolicy);
             _updateMobilePhoneCommandFlowDescribtor.ThrowValidationExceptionIfExistingInvalid(validationResultExisting);
 
-            if (mobilePhone!.HasSameInformation(incoming))
+            if (_updateMobilePhoneCommandFlowDescribtor.HasSameInformation(mobilePhone!, incoming))
                 return _updateMobilePhoneCommandFlowDescribtor.MapMobilePhoneToMobilePhoneDto(mobilePhone);
 
             _updateMobilePhoneCommandFlowDescribtor.AssignNewMobilePhoneInformation(mobilePhone, incoming);
