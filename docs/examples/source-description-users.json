@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "service": "users",
+  "operationId": "GetFavoritesByClientId",
+  "method": "GET",
+  "path": "/favorites/clients/{clientId:guid}",
+  "request": {
+    "type": "none",
+    "notes": "The clientId route parameter must be a nonempty GUID."
+  },
+  "response": {
+    "type": "FavoriteResponseDto[]",
+    "notes": "Returns the client's favorites; an empty list is a successful result."
+  },
+  "outcomes": [
+    {
+      "status": 200,
+      "cause": "favorites-loaded",
+      "scenarioIds": ["REF07_GetFavoritesByClientId_01"]
+    },
+    {
+      "status": 400,
+      "cause": "empty-client-id",
+      "scenarioIds": ["REF07_GetFavoritesByClientId_02"]
+    },
+    {
+      "status": 500,
+      "cause": "dependency-failure",
+      "scenarioIds": ["REF07_GetFavoritesByClientId_03"]
+    }
+  ],
+  "flow": {
+    "flowId": "users.favorites.get-by-client-id",
+    "steps": [
+      { "stepId": "validate-client-id", "description": "Validate that clientId is nonempty." },
+      { "stepId": "reject-invalid-id", "description": "Return validation error when clientId is invalid." },
+      { "stepId": "load-favorites", "description": "Read the client's favorites." },
+      { "stepId": "map-response", "description": "Map the favorites to public DTOs." }
+    ]
+  },
+  "policies": [
+    {
+      "policyId": "users.empty-guid",
+      "rules": [
+        { "ruleId": "nonempty-guid", "description": "Reject the empty GUID." }
+      ]
+    }
+  ],
+  "effects": [],
+  "consistency": "Read only; no transaction or history write."
+}
