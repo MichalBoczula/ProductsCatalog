@@ -18,6 +18,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetTopMobilePhonesSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public GetTopMobilePhonesSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -42,7 +49,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
                 AllureJson.AttachObject("Request JSON (create for top)", request, _jsonOptions);
 
-                var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
+                var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
                 response.EnsureSuccessStatusCode();
 
                 var body = await response.Content.ReadAsStringAsync();
@@ -69,7 +76,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 new { Endpoint = "/mobile-phones/top" },
                 _jsonOptions);
 
-            _response = await TestRunHooks.Client.GetAsync("/mobile-phones/top");
+            _response = await _apiContext.Client!.GetAsync("/mobile-phones/top");
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
@@ -101,7 +108,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
         private async Task ClearMobilePhones()
         {
-            using var scope = TestRunHooks.Factory.Services.CreateScope();
+            using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
 
             context.MobilePhonesHistories.RemoveRange(context.MobilePhonesHistories);

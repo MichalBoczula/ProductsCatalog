@@ -16,6 +16,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetMobilePhonesByIdsNotFoundSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public GetMobilePhonesByIdsNotFoundSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -34,7 +41,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var request = BuildMobilePhoneRequest(values);
             AllureJson.AttachObject("Request JSON (create phone for get by ids not found)", request, _jsonOptions);
 
-            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
+            var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
             var body = await response.Content.ReadAsStringAsync();
@@ -57,7 +64,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             };
             AllureJson.AttachObject("Request JSON (get by ids with missing phone)", ids, _jsonOptions);
 
-            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones/by-ids", ids, _jsonOptions);
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones/by-ids", ids, _jsonOptions);
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);

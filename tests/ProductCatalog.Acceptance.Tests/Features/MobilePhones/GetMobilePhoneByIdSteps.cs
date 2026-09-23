@@ -17,6 +17,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetMobilePhoneByIdSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public GetMobilePhoneByIdSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private MobilePhoneDetailsDto? _createdMobilePhone;
         private HttpResponseMessage? _response;
         private HttpResponseMessage? _responseFailure;
@@ -88,7 +95,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request, _jsonOptions);
+            var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _request, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
             var createdBody = await response.Content.ReadAsStringAsync();
@@ -109,7 +116,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            _response = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}");
+            _response = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}");
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
@@ -184,7 +191,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            _responseFailure = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}");
+            _responseFailure = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}");
 
             var body = await _responseFailure.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);

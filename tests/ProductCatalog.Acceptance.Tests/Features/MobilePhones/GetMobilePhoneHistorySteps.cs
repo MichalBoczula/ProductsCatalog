@@ -19,6 +19,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetMobilePhoneHistorySteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public GetMobilePhoneHistorySteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private HttpResponseMessage? _response;
         private HttpResponseMessage? _responseFailure;
         private CreateMobilePhoneExternalDto? _request;
@@ -46,7 +53,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            _response = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={PageNumber}&pageSize={PageSize}");
+            _response = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={PageNumber}&pageSize={PageSize}");
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
@@ -150,7 +157,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            _responseFailure = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={PageNumber}&pageSize={PageSize}");
+            _responseFailure = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={PageNumber}&pageSize={PageSize}");
 
             var body = await _responseFailure.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
@@ -196,7 +203,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             await CreateMobilePhoneAsync(null);
 
-            using var scope = TestRunHooks.Factory.Services.CreateScope();
+            using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
             var historyEntries = context.MobilePhonesHistories.Where(history => history.MobilePhoneId == _mobilePhoneId);
             context.MobilePhonesHistories.RemoveRange(historyEntries);
@@ -206,7 +213,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the mobile phone history with page number {int} and page size {int}")]
         public async Task WhenIRequestTheMobilePhoneHistoryWithPageNumberAndPageSize(int pageNumber, int pageSize)
         {
-            _responseFailure = await TestRunHooks.Client.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={pageNumber}&pageSize={pageSize}");
+            _responseFailure = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={pageNumber}&pageSize={pageSize}");
 
             var body = await _responseFailure.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
@@ -297,7 +304,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _request);
+            var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _request);
             response.EnsureSuccessStatusCode();
 
             var createdBody = await response.Content.ReadAsStringAsync();

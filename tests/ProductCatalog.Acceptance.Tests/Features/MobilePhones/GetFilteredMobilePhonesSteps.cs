@@ -17,6 +17,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetFilteredMobilePhonesSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public GetFilteredMobilePhonesSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -37,7 +44,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
                 AllureJson.AttachObject("Request JSON (create for brand filter)", request, _jsonOptions);
 
-                var createResponse = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
+                var createResponse = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
                 createResponse.EnsureSuccessStatusCode();
 
                 var body = await createResponse.Content.ReadAsStringAsync();
@@ -51,7 +58,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var payload = ParseFilter(table);
             AllureJson.AttachObject("Request JSON (filter mobile phones)", payload, _jsonOptions);
 
-            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones/filter", payload, _jsonOptions);
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones/filter", payload, _jsonOptions);
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
@@ -68,7 +75,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             AllureJson.AttachObject("Request JSON (filter mobile phones invalid)", payload, _jsonOptions);
 
-            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones/filter", payload, _jsonOptions);
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones/filter", payload, _jsonOptions);
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);

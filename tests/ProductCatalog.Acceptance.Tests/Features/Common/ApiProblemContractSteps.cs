@@ -9,6 +9,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common;
 [Binding]
 public sealed class ApiProblemContractSteps
 {
+    private readonly ScenarioApiContext _apiContext;
+
+    public ApiProblemContractSteps(ScenarioApiContext apiContext)
+    {
+        _apiContext = apiContext;
+    }
+
     private HttpResponseMessage? _response;
     private string? _path;
     private string? _errorCase;
@@ -16,7 +23,7 @@ public sealed class ApiProblemContractSteps
     [When("I trigger the Products REF-06 error case {string}")]
     public async Task WhenITriggerTheErrorCase(string errorCase)
     {
-        var client = TestRunHooks.Client;
+        var client = _apiContext.Client!;
         _errorCase = errorCase;
         (_path, _response) = errorCase switch
         {

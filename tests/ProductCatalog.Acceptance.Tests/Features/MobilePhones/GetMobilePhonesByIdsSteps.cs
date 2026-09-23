@@ -16,6 +16,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetMobilePhonesByIdsSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public GetMobilePhonesByIdsSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -32,7 +39,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var request = BuildMobilePhoneRequest(values);
             AllureJson.AttachObject("Request JSON (create phone for get by ids)", request, _jsonOptions);
 
-            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
+            var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
             var body = await response.Content.ReadAsStringAsync();
@@ -51,7 +58,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 .ToList();
             AllureJson.AttachObject("Request JSON (get by ids)", ids, _jsonOptions);
 
-            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones/by-ids", ids, _jsonOptions);
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones/by-ids", ids, _jsonOptions);
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
@@ -60,7 +67,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the mobile phones with an empty id list")]
         public async Task WhenIRequestTheMobilePhonesWithAnEmptyIdList()
         {
-            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones/by-ids", Array.Empty<Guid>(), _jsonOptions);
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones/by-ids", Array.Empty<Guid>(), _jsonOptions);
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);

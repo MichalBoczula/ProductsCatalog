@@ -20,6 +20,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public sealed class MobilePhonesServerErrorsSteps : IDisposable
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public MobilePhonesServerErrorsSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private WebApplicationFactory<Program>? _factory;
         private HttpClient? _client;
         private HttpResponseMessage? _response;
@@ -29,7 +36,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         public void GivenMobilePhoneReadsFailUnexpectedly()
         {
             _repository = new FailingMobilePhonesRepository();
-            _factory = TestRunHooks.Factory.WithWebHostBuilder(builder =>
+            _factory = _apiContext.Factory!.WithWebHostBuilder(builder =>
                 builder.ConfigureTestServices(services =>
                 {
                     services.RemoveAll<IMobilePhonesQueriesRepository>();

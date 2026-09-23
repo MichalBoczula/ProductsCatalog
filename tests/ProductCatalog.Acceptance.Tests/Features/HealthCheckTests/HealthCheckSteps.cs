@@ -7,12 +7,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.HealthCheckTests
     [Binding]
     public class HealthCheckSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public HealthCheckSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private HttpResponseMessage? _httpResponseMessage;
 
         [When("I request the health endpoint")]
         public async Task WhenIRequestTheHealthEndpoint()
         {
-            _httpResponseMessage = await TestRunHooks.Client.GetAsync("/health/live");
+            _httpResponseMessage = await _apiContext.Client!.GetAsync("/health/live");
         }
 
         [Then("the response status code should be {int}")]
