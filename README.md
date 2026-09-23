@@ -128,6 +128,13 @@ dotnet run --project src/ProductCatalog.Api/ProductCatalog.Api.csproj
 
 `Database__ApplyMigrations=true` is intended for local development. Hosted environments should apply migrations in a dedicated deployment step.
 
+The API checks the SQL connection string and the optional `Database:ApplyMigrations`
+boolean at startup. The connection string must specify `Server` and `Database`;
+invalid settings stop startup with an error that does not print credentials.
+Missing `Database:ApplyMigrations` means `false`. Configuration validation does
+not connect to SQL Server: with migrations disabled, OpenAPI can be generated
+while SQL is unavailable. `/health/ready` separately reports SQL availability.
+
 After startup, use the URLs printed by ASP.NET Core. Swagger UI is available at `/swagger`, and the OpenAPI document is available at `/swagger/v1/swagger.json`.
 
 ## Run with Docker Compose

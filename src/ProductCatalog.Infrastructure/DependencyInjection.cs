@@ -39,5 +39,6 @@ namespace ProductCatalog.Infrastructure
 
             return services;
         }
+
     }
 }
