@@ -56,19 +56,25 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
             }
         }
 
-        [FlowStep(7)]
+        [FlowStep(7, "If information is unchanged, return the existing phone without writing history")]
+        public bool HasSameInformation(MobilePhone mobilePhone, MobilePhone incomingMobilePhone)
+        {
+            return mobilePhone.HasSameInformation(incomingMobilePhone);
+        }
+
+        [FlowStep(8)]
         public void AssignNewMobilePhoneInformation(MobilePhone mobilePhone, MobilePhone incomingMobilePhone)
         {
             mobilePhone.AssigneNewMobilePhoneInformation(incomingMobilePhone);
         }
 
-        [FlowStep(8)]
+        [FlowStep(9)]
         public void UpdateMobilePhoneInRepository(MobilePhone mobilePhone, IMobilePhonesCommandsRepository mobilePhonesCommandsRepository)
         {
             mobilePhonesCommandsRepository.Update(mobilePhone);
         }
 
-        [FlowStep(9)]
+        [FlowStep(10)]
         public MobilePhonesHistory CreateMobilePhoneHistoryEntry(MobilePhone mobilePhone)
         {
             var mobilePhonesHistory = mobilePhone.BuildAdapter()
@@ -78,19 +84,19 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobile
             return mobilePhonesHistory;
         }
 
-        [FlowStep(10)]
+        [FlowStep(11)]
         public void WriteHistoryToRepository(IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, MobilePhonesHistory mobilePhonesHistory)
         {
             mobilePhonesCommandsRepository.WriteHistory(mobilePhonesHistory);
         }
 
-        [FlowStep(11)]
+        [FlowStep(12)]
         public Task SaveChanges(IMobilePhonesCommandsRepository mobilePhonesCommandsRepository, CancellationToken cancellationToken)
         {
             return mobilePhonesCommandsRepository.SaveChanges(cancellationToken);
         }
 
-        [FlowStep(12)]
+        [FlowStep(13)]
         public MobilePhoneDetailsDto MapMobilePhoneToMobilePhoneDto(MobilePhone mobilePhone)
         {
             return mobilePhone.Adapt<MobilePhoneDetailsDto>();
