@@ -4,6 +4,7 @@ using ProductCatalog.Api.Endpoints;
 using ProductCatalog.Application;
 using ProductCatalog.Domain;
 using ProductCatalog.Infrastructure;
+using ProductCatalog.Infrastructure.Configuration;
 using ProductCatalog.Infrastructure.Extensions;
 using Serilog;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -44,6 +45,7 @@ namespace ProductCatalog.Api
             builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadRequest = true);
 
             var app = builder.Build();
+            var applyMigrations = DatabaseConfigurationValidator.Validate(app.Configuration);
 
             app.UseExceptionHandler(_ => { });
             app.UseStatusCodePages(status => ApiProblemResponse.WriteEmptyStatusAsync(status.HttpContext));
@@ -74,7 +76,7 @@ namespace ProductCatalog.Api
                 Predicate = registration => registration.Tags.Contains("ready")
             });
 
-            if (builder.Configuration.GetValue<bool>("Database:ApplyMigrations"))
+            if (applyMigrations)
             {
                 app.Services.ApplyMigrations();
             }
