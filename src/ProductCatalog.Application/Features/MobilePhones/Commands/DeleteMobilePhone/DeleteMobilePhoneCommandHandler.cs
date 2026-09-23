@@ -21,7 +21,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Commands.DeleteMobile
                 .ValidateMobilePhone(mobilePhone, _validationPolicy);
             _deleteMobilePhoneCommandFlowDescribtor.ThrowValidationExceptionIfNotValid(validationResult);
 
-            if (!mobilePhone.IsActive)
+            if (_deleteMobilePhoneCommandFlowDescribtor.IsAlreadyInactive(mobilePhone))
                 return _deleteMobilePhoneCommandFlowDescribtor.MapMobilePhoneToMobilePhoneDto(mobilePhone);
 
             _deleteMobilePhoneCommandFlowDescribtor.DeactivateMobilePhone(mobilePhone);
