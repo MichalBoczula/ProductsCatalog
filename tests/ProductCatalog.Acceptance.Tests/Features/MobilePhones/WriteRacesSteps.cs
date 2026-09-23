@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api;
 using ProductCatalog.Application.Common.Dtos.MobilePhones;
+using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhone;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
