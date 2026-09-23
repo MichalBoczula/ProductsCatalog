@@ -263,7 +263,7 @@ dotnet test tests/ProductsCatalog.Infrastructure.UnitTests/ProductsCatalog.Infra
 dotnet test tests/ProductCatalog.Acceptance.Tests/ProductCatalog.Acceptance.Tests.csproj --configuration Release
 ```
 
-Infrastructure and acceptance tests require Docker because SQL Server is created through Testcontainers. Acceptance scenarios verify HTTP status codes, response bodies, validation details, empty collections, missing resources, and safe server-error responses.
+Infrastructure and acceptance tests require Docker because SQL Server is created through Testcontainers. Acceptance tests start one SQL Server container per test run; each Reqnroll scenario gets a separate migrated database, API host, and HTTP client. The scenario hook releases the client and host and drops the database even when a scenario fails. Acceptance scenarios verify HTTP status codes, response bodies, validation details, empty collections, missing resources, and safe server-error responses.
 
 Run benchmarks separately:
 

@@ -16,6 +16,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class DeleteMobilePhoneSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public DeleteMobilePhoneSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private CreateMobilePhoneExternalDto _createRequest = default!;
         private MobilePhoneDetailsDto? _createdMobilePhone;
         private MobilePhoneDetailsDto? _deletedMobilePhone;
@@ -40,7 +47,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
+            var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
             _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
@@ -63,7 +70,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            _response = await TestRunHooks.Client.DeleteAsync($"/mobile-phones/{_createdMobilePhone!.Id}");
+            _response = await _apiContext.Client!.DeleteAsync($"/mobile-phones/{_createdMobilePhone!.Id}");
             var body = await _response.Content.ReadAsStringAsync();
 
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
@@ -127,7 +134,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            _response = await TestRunHooks.Client.DeleteAsync($"/mobile-phones/{_missingMobilePhoneId}");
+            _response = await _apiContext.Client!.DeleteAsync($"/mobile-phones/{_missingMobilePhoneId}");
             var json = await _response.Content.ReadAsStringAsync();
 
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", json);

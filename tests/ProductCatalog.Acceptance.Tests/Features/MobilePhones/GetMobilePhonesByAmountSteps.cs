@@ -18,6 +18,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class GetMobilePhonesByAmountSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public GetMobilePhonesByAmountSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -48,7 +55,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                     _jsonOptions
                 );
 
-                var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", request);
+                var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", request);
                 response.EnsureSuccessStatusCode();
 
                 var body = await response.Content.ReadAsStringAsync();
@@ -63,7 +70,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [Given("no mobile phones exist in the database")]
         public async Task GivenNoMobilePhonesExistInTheDatabase()
         {
-            using var scope = TestRunHooks.Factory.Services.CreateScope();
+            using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
 
             context.MobilePhonesHistories.RemoveRange(context.MobilePhonesHistories);
@@ -81,7 +88,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 new { Amount = amount },
                 _jsonOptions
             );
-            _response = await TestRunHooks.Client.GetAsync($"/mobile-phones?amount={amount}");
+            _response = await _apiContext.Client!.GetAsync($"/mobile-phones?amount={amount}");
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);

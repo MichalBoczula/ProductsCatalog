@@ -17,6 +17,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class UpdateMobilePhoneSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public UpdateMobilePhoneSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private CreateMobilePhoneExternalDto _createRequest = default!;
         private UpdateMobilePhoneExternalDto _updateRequest = default!;
         private MobilePhoneDetailsDto? _createdMobilePhone;
@@ -41,7 +48,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 _jsonOptions
             );
 
-            var response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
+            var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
 
             _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
@@ -61,7 +68,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             _createdMobilePhone.ShouldNotBeNull();
 
-            _response = await TestRunHooks.Client.PutAsJsonAsync(
+            _response = await _apiContext.Client!.PutAsJsonAsync(
                 $"/mobile-phones/{_createdMobilePhone!.Id}",
                 _updateRequest,
                 _jsonOptions);
@@ -136,7 +143,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I submit the update mobile phone request for missing mobile phone")]
         public async Task WhenISubmitTheUpdateMobilePhoneRequestForMissingMobilePhone()
         {
-            _response = await TestRunHooks.Client.PutAsJsonAsync(
+            _response = await _apiContext.Client!.PutAsJsonAsync(
                 $"/mobile-phones/{_missingMobilePhoneId}",
                 _updateRequest,
                 _jsonOptions);

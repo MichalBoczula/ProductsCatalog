@@ -16,6 +16,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
     [Binding]
     public class CreateMobilePhoneSteps
     {
+        private readonly ScenarioApiContext _apiContext;
+
+        public CreateMobilePhoneSteps(ScenarioApiContext apiContext)
+        {
+            _apiContext = apiContext;
+        }
+
         private CreateMobilePhoneExternalDto _validRequest = default!;
         private CreateMobilePhoneExternalDto _invalidRequest = default!;
         private HttpResponseMessage? _response;
@@ -41,7 +48,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I submit the create mobile phone request")]
         public async Task WhenISubmitTheCreateMobilePhoneRequest()
         {
-            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _validRequest, _jsonOptions);
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _validRequest, _jsonOptions);
 
             var body = await _response.Content.ReadAsStringAsync();
 
@@ -131,7 +138,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I submit the create invalid mobile phone request")]
         public async Task WhenISubmitTheCreateInvalidMobilePhoneRequest()
         {
-            _response = await TestRunHooks.Client.PostAsJsonAsync("/mobile-phones", _invalidRequest, _jsonOptions);
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _invalidRequest, _jsonOptions);
 
             var json = await _response.Content.ReadAsStringAsync();
 
