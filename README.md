@@ -247,6 +247,14 @@ Use liveness for process restart decisions and readiness for load-balancer routi
 Readiness runs a zero-row schema probe and does not require product data. It does
 not apply migrations, retry an entire startup, or change the opt-in migration policy.
 
+Dapper catalog reads have a 12-second overall deadline and a five-second SQL command
+timeout. Opening a connection is limited to three seconds per attempt and may be
+retried twice for selected transient connection errors (with 0.5/1-second delays).
+Once a connection is open, a failed query is never retried: callers may receive an
+error even if the database later recovers. Request cancellation stops the opening,
+delay or query. EF Core command writes retain their separate existing retry policy;
+this read policy never repeats a write, transaction, migration or startup.
+
 ## Tests
 
 From the repository root, run the complete local build, formatting, four test suites,

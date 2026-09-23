@@ -7,7 +7,6 @@ using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
 using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Infrastructure.Common;
 using ProductCatalog.Infrastructure.Extensions.Methods;
-using System.Data;
 using System.Text;
 
 namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
@@ -15,12 +14,65 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
     internal sealed class MobilePhonesQueriesRepository : IMobilePhonesQueriesRepository
     {
         private readonly string _connectionString;
-        private IDbConnection CreateConnection() => new SqlConnection(_connectionString);
+        private const int ReadTimeoutSeconds = 12;
+        private const int CommandTimeoutSeconds = 5;
+        private const int MaxOpenAttempts = 3;
 
         public MobilePhonesQueriesRepository(IConfiguration configuration)
         {
-            _connectionString = ConnectionStringExtensions.Initialize(configuration);
+            var connectionString = new SqlConnectionStringBuilder(ConnectionStringExtensions.Initialize(configuration));
+            connectionString.ConnectTimeout = Math.Min(connectionString.ConnectTimeout, 3);
+            _connectionString = connectionString.ConnectionString;
         }
+
+        private async Task<T> ExecuteReadAsync<T>(Func<SqlConnection, CancellationToken, Task<T>> read, CancellationToken cancellationToken)
+        {
+            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            deadline.CancelAfter(TimeSpan.FromSeconds(ReadTimeoutSeconds));
+
+            try
+            {
+                await using var connection = await OpenConnectionAsync(deadline.Token);
+                return await read(connection, deadline.Token);
+            }
+            catch (SqlException) when (cancellationToken.IsCancellationRequested)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested && deadline.IsCancellationRequested)
+            {
+                throw new TimeoutException("The catalog read exceeded its time limit.");
+            }
+        }
+
+        private async Task<SqlConnection> OpenConnectionAsync(CancellationToken cancellationToken)
+        {
+            for (var attempt = 1; ; attempt++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var connection = new SqlConnection(_connectionString);
+                try
+                {
+                    await connection.OpenAsync(cancellationToken);
+                    return connection;
+                }
+                catch (SqlException exception) when (attempt < MaxOpenAttempts && IsTransientOpenFailure(exception) && !cancellationToken.IsCancellationRequested)
+                {
+                    await connection.DisposeAsync();
+                    await Task.Delay(TimeSpan.FromMilliseconds(500 * attempt), cancellationToken);
+                }
+                catch
+                {
+                    await connection.DisposeAsync();
+                    throw;
+                }
+            }
+        }
+
+        private static bool IsTransientOpenFailure(SqlException exception) =>
+            exception.Errors.Cast<SqlError>().Any(error => error.Number is
+                53 or 4060 or 927 or 942 or 10054 or 10060 or 10928 or 10929 or 40197 or 40501 or 40613);
 
         public async Task<MobilePhoneReadModel?> GetById(Guid id, CancellationToken ct)
         {
@@ -70,12 +122,13 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 WHERE Id = @Id;
                 ";
 
-            using var connection = CreateConnection();
+            return await ExecuteReadAsync(async (connection, token) =>
+            {
+                var result = await connection.QuerySingleOrDefaultAsync<MobilePhoneReadModel?>(
+                    new CommandDefinition(sql, new { Id = id }, commandTimeout: CommandTimeoutSeconds, cancellationToken: token));
 
-            var result = await connection.QuerySingleOrDefaultAsync<MobilePhoneReadModel?>(
-                new CommandDefinition(sql, new { Id = id }, cancellationToken: ct));
-
-            return result;
+                return result;
+            }, ct);
         }
 
         public async Task<IReadOnlyList<MobilePhoneReadModel>> GetByIds(IReadOnlyCollection<Guid> ids, CancellationToken ct)
@@ -96,12 +149,13 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 ORDER BY Id;
                 ";
 
-            using var connection = CreateConnection();
+            return await ExecuteReadAsync(async (connection, token) =>
+            {
+                var result = await connection.QueryAsync<MobilePhoneReadModel>(
+                    new CommandDefinition(sql, new { Ids = ids }, commandTimeout: CommandTimeoutSeconds, cancellationToken: token));
 
-            var result = await connection.QueryAsync<MobilePhoneReadModel>(
-                new CommandDefinition(sql, new { Ids = ids }, cancellationToken: ct));
-
-            return result.ToList().AsReadOnly();
+                return result.ToList().AsReadOnly();
+            }, ct);
         }
 
         public async Task<IReadOnlyList<MobilePhoneReadModel>> GetPhones(int amount, CancellationToken ct)
@@ -122,12 +176,13 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 ORDER BY Name, Id;
                 ";
 
-            using var connection = CreateConnection();
+            return await ExecuteReadAsync(async (connection, token) =>
+            {
+                var result = await connection.QueryAsync<MobilePhoneReadModel>(
+                    new CommandDefinition(sql, new { Amount = amount }, commandTimeout: CommandTimeoutSeconds, cancellationToken: token));
 
-            var result = await connection.QueryAsync<MobilePhoneReadModel>(
-                new CommandDefinition(sql, new { Amount = amount }, cancellationToken: ct));
-
-            return result.ToList().AsReadOnly();
+                return result.ToList().AsReadOnly();
+            }, ct);
         }
 
         public async Task<IReadOnlyList<MobilePhonesHistory>> GetHistoryOfChanges(Guid mobilePhoneId, int pageNumber, int pageSize, CancellationToken ct)
@@ -187,20 +242,21 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 FETCH NEXT @PageSize ROWS ONLY;
                 ";
 
-            using var connection = CreateConnection();
+            return await ExecuteReadAsync(async (connection, token) =>
+            {
+                var result = await connection.QueryAsync<MobilePhonesHistory>(
+                    new CommandDefinition(
+                        sql,
+                        new
+                        {
+                            MobilePhoneId = mobilePhoneId,
+                            Offset = offset,
+                            PageSize = size
+                        },
+                        commandTimeout: CommandTimeoutSeconds, cancellationToken: token));
 
-            var result = await connection.QueryAsync<MobilePhonesHistory>(
-                new CommandDefinition(
-                    sql,
-                    new
-                    {
-                        MobilePhoneId = mobilePhoneId,
-                        Offset = offset,
-                        PageSize = size
-                    },
-                    cancellationToken: ct));
-
-            return result.ToList().AsReadOnly();
+                return result.ToList().AsReadOnly();
+            }, ct);
         }
 
         public async Task<IReadOnlyList<MobilePhoneReadModel>> GetTop(CancellationToken ct)
@@ -218,12 +274,13 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                 ORDER BY ChangedAt DESC, Id DESC;
                 ";
 
-            using var connection = CreateConnection();
+            return await ExecuteReadAsync(async (connection, token) =>
+            {
+                var result = await connection.QueryAsync<MobilePhoneReadModel>(
+                    new CommandDefinition(sql, commandTimeout: CommandTimeoutSeconds, cancellationToken: token));
 
-            var result = await connection.QueryAsync<MobilePhoneReadModel>(
-                new CommandDefinition(sql, cancellationToken: ct));
-
-            return result.ToList().AsReadOnly();
+                return result.ToList().AsReadOnly();
+            }, ct);
         }
 
         public async Task<IReadOnlyList<MobilePhoneReadModel>> GetFilteredPhones(
@@ -248,12 +305,13 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
             var @params = MobilePhoneFilterDtoExtensions.FilterQueryBuilder(mobilePhoneFilter, query);
             query.Append(" ORDER BY Name, Id;");
 
-            using var connection = CreateConnection();
+            return await ExecuteReadAsync(async (connection, token) =>
+            {
+                var result = await connection.QueryAsync<MobilePhoneReadModel>(
+                    new CommandDefinition(query.ToString(), @params, commandTimeout: CommandTimeoutSeconds, cancellationToken: token));
 
-            var result = await connection.QueryAsync<MobilePhoneReadModel>(
-                new CommandDefinition(query.ToString(), @params, cancellationToken: ct));
-
-            return result.AsList().AsReadOnly();
+                return result.AsList().AsReadOnly();
+            }, ct);
         }
     }
 }
