@@ -17,8 +17,9 @@ This combines design-first governance with code-generated artifacts:
 1. define the contract and behavior;
 2. implement endpoint metadata, DTOs, validation, and flow descriptors;
 3. prove behavior with unit, integration, and acceptance tests;
-4. generate OpenAPI, flow descriptions, validation descriptions, and Allure results;
-5. validate and publish the generated artifacts.
+4. derive OpenAPI, flow and validation descriptions, operation links, and
+   acceptance results from those sources;
+5. validate the contract and exercised HTTP responses in CI.
 
 ### Description Pattern and RAG-ready documentation
 
@@ -27,9 +28,12 @@ Application flows are intentionally self-describing. Flow descriptor methods use
 - `GET /products-documentation/flow`;
 - `GET /products-documentation/validation-policies`.
 
-Together with OpenAPI and acceptance-test results, these outputs form a structured documentation set generated from executable sources. The target documentation pipeline will version the artifacts with the commit SHA, split them by operation, flow, validation policy, and scenario, and index them for Retrieval-Augmented Generation (RAG). This lets an assistant answer questions using the same contracts and rules that CI verified.
-
-The automatic aggregation, Allure publication contract, and RAG ingestion pipeline are tracked as the next documentation task. The detailed runbook and deployed documentation link will be added in the follow-up documentation update.
+CI derives operation-to-flow-to-policy-to-scenario links from the code and
+acceptance matrix. It rejects missing or duplicate relationships, exports and
+lints OpenAPI, and compares declared responses with the HTTP behavior exercised
+by acceptance tests. Generated projections are ignored build artifacts, not
+another specification committed to the repository. Publishing an Allure/API
+portal and building RAG ingestion are later work; see [the backlog](docs/backlog.md).
 
 ## Architecture
 
@@ -103,7 +107,7 @@ docs/
 
 - .NET SDK `10.0.100` (selected by `global.json`);
 - Docker Engine or Docker Desktop;
-- Bash, curl, and Node.js 22 for the complete local verification command;
+- Bash, Python 3, curl, and Node.js 22 for the complete local verification command;
 - Git;
 - optional: `dotnet-ef` for migration commands;
 - optional: Allure 2 CLI for a local acceptance report.
@@ -195,50 +199,35 @@ dotnet ef migrations script --idempotent --project src/ProductCatalog.Infrastruc
 
 Runtime migrations are disabled by default to prevent multiple replicas from modifying the schema during scale-out. See [the migration strategy](docs/database-migrations.md) and [ADR-0004](docs/adr/0004-database-migration-strategy.md).
 
-## API overview
+## API contract and executable documentation
 
-### MobilePhones
+Swagger UI is available at `/swagger` and the generated contract at
+`/swagger/v1/swagger.json`. CI derives named operations, flow and validation
+policies, HTTP statuses and scenario IDs from executable sources. For current
+methods, routes, payloads and responses use the generated OpenAPI; for tested
+status/cause branches use the [acceptance matrix](docs/acceptance-matrix.md).
+The public [problem contract](docs/api-problem-contract.md) describes stable
+error codes. No handwritten per-operation catalogue is maintained here.
 
-| Method | Route | Successful behavior | Error responses |
-|---|---|---|---|
-| `GET` | `/mobile-phones/{id}` | `200` with one phone | `404`, `500` |
-| `GET` | `/mobile-phones?amount={amount}` | `200` with a collection, including `[]` | `400`, `500` |
-| `POST` | `/mobile-phones/by-ids` | `200` with matching phones | `400`, `404`, `500` |
-| `GET` | `/mobile-phones/{id}/history?pageNumber={n}&pageSize={n}` | `200` with history, including `[]` | `400`, `404`, `500` |
-| `GET` | `/mobile-phones/top` | `200` with a collection, including `[]` | `500` |
-| `POST` | `/mobile-phones/filter` | `200` with matching phones, including `[]` | `400`, `500` |
-| `POST` | `/mobile-phones` | `201` with the created phone | `400`, `500` |
-| `PUT` | `/mobile-phones/{id}` | `200` with the updated phone | `400`, `500` |
-| `DELETE` | `/mobile-phones/{id}` | `200` with the deactivated phone | `400`, `500` |
+The API exposes flow descriptions at `/products-documentation/flow` and domain
+policy descriptions at `/products-documentation/validation-policies`. Updates
+with unchanged information and deletes of already inactive phones do not add a
+history entry. The `top` read means the three most recently changed active
+phones, not sales or popularity. List reads return empty arrays when no active
+phones match; an existing inactive phone remains readable by ID. History pages
+have deterministic `ChangedAt DESC, Id DESC` ordering.
 
-Read ordering: `/mobile-phones/top` means the three most recently changed **active**
-phones (`ChangedAt DESC, Id DESC`). It does not represent sales or popularity.
-`GET /mobile-phones?amount=...` and `POST /mobile-phones/filter` return active phones
-by name then Id; `POST /mobile-phones/by-ids` returns active matches by Id.
-History pages use `ChangedAt DESC, Id DESC` so equal timestamps have a stable
-position. `GET /mobile-phones/{id}` returns an existing inactive phone with
-`IsActive: false`; active-only lists omit it. Missing IDs return 404 on this read.
-Missing update/delete IDs retain their existing 400 validation response.
+Categories and Currencies endpoints were removed. MobilePhone requests,
+responses, history, and SQL tables no longer have `CategoryId`.
+`Price.Currency` remains the three-letter currency code in the price value
+object, not a lookup into Currencies. Clients still sending `CategoryId` must
+update their request and regenerate any client from current OpenAPI.
 
-### Executable documentation
-
-| Method | Route | Purpose |
-|---|---|---|
-| `GET` | `/products-documentation/flow` | Ordered request-processing steps derived from flow descriptors. |
-| `GET` | `/products-documentation/validation-policies` | Validation policies, rules, and possible errors derived from domain descriptors. |
-| `GET` | `/swagger/v1/swagger.json` | Generated OpenAPI document. |
-| `GET` | `/swagger` | Swagger UI. |
-
-Categories and Currencies endpoints have been removed. MobilePhone requests, responses,
-history, and SQL tables no longer have `CategoryId`. `Price.Currency` remains a three-letter
-currency code within the price value object; it is not a lookup into Currencies.
-
-**Breaking change and migration:** clients sending `CategoryId` must stop doing so and
-regenerate their API clients from the new OpenAPI document. The EF migration
-`20260922220000_RemoveCatalogs` drops the four catalogue/current-history tables and
-the `CategoryId` columns in phone/current-history tables. Back up the database before
-applying it: those removed values cannot be reconstructed by rolling the migration back.
-Migration application remains opt-in via `Database:ApplyMigrations`.
+The EF migration `20260922220000_RemoveCatalogs` removes the old catalogue
+current/history tables and `CategoryId` columns. Back up an existing database
+before applying it: removed values cannot be reconstructed by rolling back.
+Its behavior on a populated pre-cleanup database remains unverified under
+CLEAN-01; see [migration guidance](docs/database-migrations.md).
 
 ## Health checks
 
@@ -261,8 +250,9 @@ this read policy never repeats a write, transaction, migration or startup.
 
 ## Tests
 
-From the repository root, run the complete local build, formatting, four test suites,
-separate 70% coverage checks, OpenAPI lint and Docker build with one command:
+From the repository root, run source-link and architecture checks, the complete
+local build, formatting, four test suites, separate 70% coverage checks,
+OpenAPI lint and Docker build with one command:
 
 ```bash
 bash scripts/verify.sh
@@ -318,7 +308,8 @@ Generated `.feature.cs` files are build artifacts and must not be edited manuall
 GitHub Actions runs for pull requests and pushes to `master`:
 
 1. restore, Release build, and format verification;
-2. start the API, generate OpenAPI, and validate the complete specification with a pinned Redocly CLI;
+2. check acceptance/source/architecture links, start the API, generate OpenAPI,
+   and validate it with a pinned Redocly CLI and runtime acceptance assertions;
 3. run Domain, Application, Infrastructure, and acceptance tests;
 4. enforce separate 70% line-coverage gates for Domain and Application; report
    Infrastructure coverage without a percentage gate;
@@ -339,10 +330,9 @@ Database migrations are executed once before rollout rather than by every replic
 
 ## Architecture decisions
 
-- [ADR-0001: Use SQL Server](docs/adr/0001-use-sql-server.md)
-- [ADR-0002: Use CQRS and MediatR](docs/adr/0002-use-cqrs-and-mediatr.md)
-- [ADR-0003: OpenAPI and API client strategy](docs/adr/0003-openapi-and-api-client-strategy.md)
-- [ADR-0004: Database migration strategy](docs/adr/0004-database-migration-strategy.md)
-- [ADR-0005: Living documentation and RAG](docs/adr/0005-living-documentation-and-rag.md)
+The [ADR index](docs/adr/README.md) covers SQL/CQRS, contracts, migration,
+source documentation, errors, acceptance isolation, concurrency and image
+publication. It distinguishes decisions implemented now from later hosting
+and retrieval work.
 
 Current work and intentional exclusions are recorded in [the repository backlog](docs/backlog.md).

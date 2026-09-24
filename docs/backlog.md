@@ -1,80 +1,83 @@
 # ProductsCatalog backlog
 
-Status legend:
+This repository is one of two reference services alongside ECommerceStoreUsers.
+The status below reflects source and CI on `master` after REF-11 and ADR review
+REF-12/3. See [the ADR index](adr/README.md) for accepted decisions,
+[generated OpenAPI](../README.md#api-contract-and-executable-documentation)
+for operations, and the [acceptance matrix](acceptance-matrix.md) for the
+status/cause scenarios. This file does not duplicate those contracts.
 
-- **Done** — implemented and verified;
-- **Obsolete** — no longer matches the product direction;
-- **Intentionally skipped** — evaluated and excluded by decision;
-- **Remaining** — still requires work.
+## Implemented and checked in CI
 
-## Done
+- **REF-01–03, CI and dependencies:** build, format, four test suites, separate
+  Domain/Application 70% line-coverage gates, Infrastructure coverage report,
+  NuGet high/critical audit, Dependency Review on PRs, Gitleaks and Trivy. The
+  image job follows the quality gate. On a `master` push only, Docker Hub SHA
+  and `latest` tags are pushed from the scanned local image; matching image IDs
+  and registry digests are checked. Ordinary compiler warnings remain visible
+  without a global warnings-as-errors gate.
+- **CLEAN-01 code:** Categories/Currencies operations and their dependencies
+  were removed; `Price.Currency` remains. The schema change exists in EF
+  migrations. Existing populated-database migration verification is separate
+  below.
+- **REF-04–08, HTTP and data:** safe problem responses and acceptance
+  status/cause matrix cover query and write paths, including controlled write
+  failures. MobilePhone `ChangedAt` protects concurrent writes; changed state
+  and history save together, and update/delete no-ops avoid new history.
+  Read ordering and cancellation are explicit.
+- **REF-09, local readiness:** configuration fails fast; `/health/live` is
+  independent of SQL and `/health/ready` checks it. Dapper retries selected
+  connection opens within bounds, not failed queries or writes. Opt-in
+  migrations and deterministic seed were repeated on an isolated fresh SQL
+  database.
+- **REF-10–11, contracts and architecture:** flow steps and validation
+  policies come from executed code; operation-to-flow-to-policy-to-scenario
+  links are generated and checked. CI exports/lints OpenAPI, compares actual
+  acceptance HTTP responses with declared statuses/media/schema, and gates
+  forbidden layer and persistence dependencies with negative cases. The
+  runtime comparison proves the executed scenarios, not every possible input.
+- **REF-12/3, decisions:** existing ADRs were reconciled with implementation;
+  the index includes errors, acceptance isolation, concurrency and the scanned
+  image publication boundary.
 
-### Dependencies and CI
+## Remaining before a hosted release
 
-- Removed the obsolete direct `Microsoft.AspNetCore.Http.Abstractions 2.3.0` dependency.
-- Kept `Microsoft.EntityFrameworkCore.Design` in Infrastructure because that project owns migrations; EF Tools is not a project dependency.
-- Enabled `NuGetAudit` for restore.
-- Ordinary compiler warnings are allowed in all projects. NuGet high/critical advisories (`NU1903` and `NU1904`) remain build errors under the separate security policy.
-- CI runs restore, Release build, format verification, Domain tests, Application tests, Infrastructure integration tests, and acceptance tests.
-- Added independent 70% line-coverage gates for Domain and Application in their existing test jobs; each suite runs once and retains its own report.
-- Enabled Dependency Review for pull requests and Automatic Dependency Submission for the dependency graph.
-- Added Gitleaks secret scanning and Trivy image vulnerability scanning without `continue-on-error`.
-- Made the image build depend on a quality gate covering build/OpenAPI, all test suites, both coverage thresholds, secret scanning and Dependency Review on PRs. Docker Hub publication depends on the gated image job; publishing the scanned artifact is tracked separately in REF-03.
+- **CLEAN-01 data migration:** back up and test
+  `20260922220000_RemoveCatalogs` on a copy of an existing database with real
+  Categories/Currencies and `CategoryId` data. Verify upgrade, failure recovery
+  and the agreed rollout; a fresh-database test cannot prove this path.
+- **Deployment-specific security and operations:** define authorization,
+  credentials/identity, backup and restore, migration runner, release and
+  rollback for the actual environment. Current local and CI checks do not
+  certify a public production deployment.
+- **Repository settings:** confirm required checks/rulesets and GitHub native
+  secret-scanning settings with repository administration access. Gitleaks is
+  already a CI gate; absence of settings has not been established.
+- **Dependency evidence:** examine why Infrastructure pins
+  `System.Security.Cryptography.Xml` before removing or changing it.
 
-### OpenAPI
+## Deferred portfolio work
 
-- Retained Swashbuckle as the single OpenAPI generator.
-- Removed unused generated Angular and .NET clients and generator configuration.
-- Added full OpenAPI specification validation in CI using a pinned Redocly CLI.
-- Documented the decision not to store or generate API clients in this repository.
+- Host Allure/API reports and decide artifact retention, version identity and
+  report URL. CI currently generates/validates contract sources and stores
+  test results, without a hosted documentation portal.
+- Design and evaluate RAG ingestion, chunking, access controls and refresh
+  from approved artifacts. Exclude secrets, production payloads and personal
+  data. No vector store or retrieval endpoint exists in this service.
+- Consumer-owned Kiota/client compatibility, Entra integration and BFF token
+  flow belong to their consuming services and the later security phase.
+- Assess pagination/request limits, versioning, browser CORS, performance
+  budgets and observability against real clients and deployment needs; do not
+  introduce these by default solely to match the other reference service.
+- Central reusable CI workflows and cloud deployment follow validation of
+  both reference repositories. `latest` is mutable; deployed consumers should
+  pin a SHA or digest according to their release policy.
 
-### MobilePhones query contracts
+## Decisions retired
 
-- `GET /mobile-phones/{id}` returns `200`, `404`, or `500`.
-- `GET /mobile-phones?amount={amount}` returns `200`, `400`, or `500`; empty results return `200 []`.
-- `POST /mobile-phones/by-ids` returns `200`, `400`, `404`, or `500`; an empty ID list returns `400`.
-- `GET /mobile-phones/{id}/history` validates pagination and returns `200`, `400`, `404`, or `500`; an existing phone without history returns `200 []`.
-- `GET /mobile-phones/top` returns `200` or `500`; empty results return `200 []`.
-- `POST /mobile-phones/filter` uses `MobilePhoneFilterValidationPolicy` and returns `200`, `400`, or `500`; no matches return `200 []`.
-- Added a separate acceptance scenario for every supported MobilePhones query response path, including controlled safe `500` responses.
-- Added a focused test proving `ValidationException` maps to HTTP `400` with validation details and a trace identifier.
-
-### Documentation
-
-- Added the project README, architecture description, local and Docker instructions, migrations, test commands, endpoint overview, health checks, CI/CD description, and scaling rationale.
-- Added ADRs for SQL Server, CQRS/MediatR, OpenAPI, migrations, and living documentation/RAG.
-- Added this status-based backlog.
-
-## Obsolete
-
-- Acceptance tests for removed Categories and Currencies are no longer in scope.
-- Returning `404` for empty query collections such as top, filter, amount, or history of an existing phone.
-- Keeping generated API clients synchronized inside ProductsCatalog.
-
-## Intentionally skipped
-
-- Kiota and automatic API-client generation in this repository.
-- Client-freshness checks while clients are neither stored nor generated here.
-- Dependabot; Dependency Graph, Automatic Dependency Submission, NuGet audit, and Dependency Review remain in use.
-- Treating ordinary compiler warnings as build errors in any project; vulnerability findings have a separate high/critical policy.
-
-## Remaining
-
-### P1
-
-- Verify whether the explicit `System.Security.Cryptography.Xml` package is required or only pins a transitive security version; remove it only with dependency evidence.
-- Compare `actions/setup-dotnet` with the remaining portfolio repositories and align the major version if needed.
-- Verify repository-level GitHub native secret-scanning settings; Gitleaks already gates CI.
-
-### Product cleanup
-
-- Categories and Currencies removal is tracked as CLEAN-01; see README for the breaking API and SQL migration.
-- Decide whether MobilePhones command endpoints require dedicated safe-`500` acceptance scenarios in addition to the completed query matrix.
-
-### Living documentation and RAG
-
-- Finalize automatic Allure generation and publication behavior, artifact retention, and stable report URL.
-- Define the RAG store, chunk schema, metadata, ingestion trigger, version replacement policy, and access controls.
-- Generate versioned OpenAPI, flow, validation, and acceptance artifacts in one documentation pipeline.
-- Ingest only approved artifacts and exclude secrets, production payloads, stack traces, and personal data.
-- Complete task 6b by adding the deployed Allure URL and the final publication/RAG runbook to the README.
+- No generated API clients or handwritten per-operation OpenAPI in this
+  producer repository.
+- No Categories/Currencies endpoints or `CategoryId` contract.
+- Empty collection queries return successful empty collections rather than
+  invented not-found responses.
+- No general warnings-as-errors gate or forced CQRS/MongoDB symmetry with Users.
