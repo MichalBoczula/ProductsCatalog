@@ -13,32 +13,39 @@ Developers and AI assistants need documentation that explains both the external 
 
 Adopt living documentation generated from executable sources.
 
-The documentation set consists of:
+The implemented source set consists of:
 
 - OpenAPI generated from endpoint metadata and DTOs;
-- Reqnroll scenarios and Allure acceptance-test results;
+- Reqnroll scenarios linked by stable scenario IDs to named operations;
 - ordered flow descriptions exposed by `/products-documentation/flow`;
 - validation-policy and error descriptions exposed by `/products-documentation/validation-policies`;
 - ADRs and operational documentation stored in the repository.
 
 Use the Description Pattern for application behavior: each command or query exposes ordered, human-readable flow steps close to the code that performs them. Validation policies expose rule names and possible errors in a similarly structured form.
 
-The target automation will:
+The current CI checks executed flow steps and validation-policy exposure,
+generates operation-to-flow-to-policy-to-scenario links, exports and lints
+OpenAPI, and compares declared responses with actual HTTP outcomes exercised
+by acceptance tests. Generated projections are not committed as parallel
+specifications.
 
-1. generate and validate documentation artifacts in CI;
-2. associate artifacts with a commit SHA and application version;
-3. publish the human-readable Allure and API documentation;
-4. split content by API operation, application action, validation policy, and acceptance scenario;
-5. attach metadata such as route, method, action, response code, version, and source commit;
-6. index approved artifacts for RAG retrieval.
+The following work is planned, not implemented by this decision:
+
+1. publish human-readable Allure and API documentation with commit/version identity;
+2. prepare controlled chunks and metadata for retrieval;
+3. index approved artifacts for RAG retrieval and evaluate the answers.
 
 ## Consequences
 
-Documentation changes with executable behavior and can be validated before publication. RAG answers can cite stable, structured artifacts rather than infer behavior from unrelated code fragments. The documentation endpoints also make application flows and validation rules available to other tooling.
+Source descriptions change with executable behavior and are validated in CI.
+The documentation endpoints expose flows and validation rules to other tooling.
+No hosted portal, RAG ingestion, index or retrieval service is provided today.
 
 Generated documentation may expose internal or sensitive information if inputs are not controlled. The ingestion pipeline must exclude secrets, credentials, production payloads, stack traces, and personal data. Only approved CI artifacts should enter the RAG index.
 
-The exact Allure publication flow, retention policy, RAG store, chunking implementation, and refresh trigger remain follow-up work. They will be finalized in the living-documentation task and recorded in the README update identified as task 6b.
+Allure publication, retention, RAG store, chunking and refresh remain follow-up
+decisions. Accepted here means adopting generated sources, not accepting an
+unimplemented hosting or RAG architecture.
 
 ## Alternatives considered
 

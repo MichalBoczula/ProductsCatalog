@@ -15,6 +15,8 @@ The team follows a design-first process: routes, models, responses, validation, 
 - Use Swashbuckle as the only OpenAPI generator.
 - Generate the document from the running API in CI.
 - Validate the complete document with a pinned Redocly CLI and its OpenAPI `spec` ruleset.
+- Link named operations to executed flows, policies and acceptance scenarios
+  from code, and check declared responses against acceptance HTTP behavior.
 - Treat structural errors and unresolved references as build failures.
 - Do not store or automatically generate Angular, .NET, Kiota, or other API clients in this repository.
 - Do not add client-freshness checks while generated clients are absent.
@@ -25,7 +27,10 @@ The OpenAPI document follows the deployed code and is validated on every change.
 
 Endpoint metadata is production code and must be reviewed with the same care as handlers. Design decisions still occur before implementation, but the repository does not use a handwritten spec-first workflow.
 
-Consumers that need generated clients must generate them in their own build or a dedicated client repository from a published, versioned OpenAPI artifact.
+Consumers that need generated clients own their generation from the API's
+OpenAPI contract. Publishing a versioned contract for consumers is a separate
+deployment decision; this repository currently validates the generated file
+in CI and does not publish a client package.
 
 ## Alternatives considered
 
