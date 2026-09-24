@@ -1,4 +1,5 @@
 using Reqnroll;
+using System.Text.Json;
 
 namespace ProductCatalog.Acceptance.Tests.Features.Common
 {
@@ -6,6 +7,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
     public sealed class TestRunHooks(ScenarioApiContext apiContext)
     {
         private ApplicationFactory? _factory;
+        private JsonDocument? _openApi;
         private string? _databaseName;
 
         [BeforeTestRun]
@@ -25,7 +27,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
                 _factory = new ApplicationFactory(AcceptanceSqlServer.ForDatabase(_databaseName));
                 await _factory.MigrateAsync();
                 apiContext.Factory = _factory;
-                apiContext.Client = _factory.CreateClient();
+                using (var swaggerClient = _factory.CreateClient())
+                    _openApi = JsonDocument.Parse(await swaggerClient.GetStringAsync("/swagger/v1/swagger.json"));
+                apiContext.Client = _factory.CreateDefaultClient(new OpenApiResponseHandler(_openApi));
             }
             catch
             {
@@ -45,6 +49,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
             try
             {
                 apiContext.Client?.Dispose();
+                _openApi?.Dispose();
+                _openApi = null;
                 if (_factory is not null)
                 {
                     await _factory.DisposeAsync();
