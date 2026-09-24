@@ -12,7 +12,10 @@ Local development still needs a convenient way to create and update the database
 ## Decision
 
 - Disable runtime migrations by default with `Database:ApplyMigrations=false`.
-- Allow an explicit local opt-in through `APPLY_MIGRATIONS=true` or `Database__ApplyMigrations=true`.
+- The application reads `Database:ApplyMigrations`; `Database__ApplyMigrations=true`
+  opts a process in. Docker Compose maps its local `APPLY_MIGRATIONS=true`
+  variable to this setting. The application does not read `APPLY_MIGRATIONS`
+  directly.
 - For hosted environments, generate an idempotent EF Core migration script and execute it once in a dedicated deployment step before the API rollout.
 - Give the deployment identity schema-change permissions.
 - Give the runtime identity only the data permissions required by the service.
@@ -23,6 +26,11 @@ Local development still needs a convenient way to create and update the database
 Schema changes are observable deployment events and do not race during horizontal scale-out. Runtime credentials can follow least privilege.
 
 Deployments require migration orchestration and must define rollback or forward-fix handling for incompatible schema changes. Local developers must deliberately enable or execute migrations.
+
+Startup with the setting enabled applies migrations once and fails if they
+cannot complete; it does not retry the whole migration. A repeat startup on a
+fresh isolated database has been tested. The CLEAN-01 migration against a
+copy of an existing database with data still requires separate verification.
 
 Implementation commands are documented in [the migration guide](../database-migrations.md).
 
