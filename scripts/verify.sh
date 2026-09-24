@@ -9,6 +9,7 @@ results_dir="$PWD/artifacts/verification"
 mkdir -p "$results_dir"
 python3 scripts/generate-operation-links.py --output "$results_dir/operation-links.json"
 python3 scripts/test-operation-links.py
+python3 scripts/test-openapi-contract.py
 
 dotnet restore ProductsCatalog.sln
 dotnet build ProductsCatalog.sln --configuration Release --no-restore
@@ -66,6 +67,7 @@ for attempt in {1..30}; do
 done
 test -s "$results_dir/openapi.json"
 npx --yes @redocly/cli@2.53.3 lint "$results_dir/openapi.json" --extends=spec
+python3 scripts/check-openapi-contract.py "$results_dir/openapi.json"
 kill "$api_pid" 2>/dev/null || true
 wait "$api_pid" 2>/dev/null || true
 trap - EXIT
