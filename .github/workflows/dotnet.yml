@@ -58,6 +58,7 @@ jobs:
         run: |
           python3 scripts/generate-operation-links.py --output artifacts/verification/operation-links.json
           python3 scripts/test-operation-links.py
+          python3 scripts/test-openapi-contract.py
 
       - name: Restore dependencies
         run: dotnet restore ProductsCatalog.sln
@@ -87,6 +88,7 @@ jobs:
 
           test -s openapi.json
           npx --yes @redocly/cli@2.53.3 lint openapi.json --extends=spec --format=github-actions
+          python3 scripts/check-openapi-contract.py openapi.json
 
   domain-unit-tests:
     runs-on: ubuntu-latest
