@@ -105,7 +105,7 @@ docs/
 
 ## Prerequisites
 
-- .NET SDK `10.0.100` (selected by `global.json`);
+- .NET SDK `10.0.100` or a newer .NET 10 feature band (selected by `global.json`);
 - Docker Engine or Docker Desktop;
 - Bash, Python 3, curl, and Node.js 22 for the complete local verification command;
 - Git;
@@ -263,9 +263,9 @@ The script writes TRX, coverage and the generated OpenAPI to the ignored
 and text coverage report for diagnosis without a percentage threshold; Domain
 and Application retain separate 70% line-coverage gates. CI publishes the
 Infrastructure report in the job summary and as an artifact. CI additionally
-checks dependencies, secrets and image vulnerabilities. The SDK and build-stage
-Docker image use the version
-in `global.json`; CI uses the same SDK through `setup-dotnet`.
+checks dependencies, secrets and image vulnerabilities. The Docker build stage
+uses SDK 10.0.100. CI selects the SDK through `setup-dotnet` and `global.json`,
+which allows newer .NET 10 feature bands.
 
 Restore and build the solution:
 
