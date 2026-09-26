@@ -309,6 +309,11 @@ Generated `.feature.cs` files are build artifacts and must not be edited manuall
 
 ## CI
 
+The workflow calls `scripts/ci.sh` for source checks, audited restore and
+build, formatting, each test suite and coverage, and the generated OpenAPI
+contract. `scripts/verify.sh` uses the same entry points locally. GitHub
+Actions owns job dependencies, artifact upload, secrets and image scanning.
+
 GitHub Actions runs for pull requests and pushes to `master`:
 
 1. restore, Release build, and format verification;
@@ -326,6 +331,10 @@ The image build depends on a quality gate that requires successful build/OpenAPI
 
 NuGet audit is enabled for all restores through `Directory.Build.props`. Automatic Dependency Submission maintains the dependency graph. Dependabot remains intentionally disabled.
 
+See [ADR-0010](docs/adr/0010-portable-ci-core.md) for the shared script
+boundary and [ADR-0009](docs/adr/0009-image-publication-boundary.md) for image
+publication.
+
 ## Operations
 
 The API is stateless; durable state stays in SQL Server. Multiple API replicas can therefore serve catalog reads behind a load balancer. Read-heavy endpoints can be scaled independently from other e-commerce services, while Dapper queries, SQL indexes, and future caching can be optimized without changing the order or payment domains.
@@ -340,4 +349,3 @@ publication. It distinguishes decisions implemented now from later hosting
 and retrieval work.
 
 Current work and intentional exclusions are recorded in [the repository backlog](docs/backlog.md).
-
