@@ -2,6 +2,8 @@
 
 Architecture Decision Records capture decisions that materially affect the service. A record explains the context, the decision, its consequences, and any follow-up work. Accepted records remain in the repository even if a later ADR supersedes them.
 
+Use repository-local, sequential ADR numbers. Each record has a title, `Status` and `Date` metadata, then `Context`, `Decision`, `Consequences` and `Alternatives considered` sections in that order. Keep accepted records when later decisions supersede them, and add the new record to this index.
+
 | ADR | Status | Decision |
 |---|---|---|
 | [0001](0001-use-sql-server.md) | Accepted | Use SQL Server with EF Core for writes and Dapper for reads. |
