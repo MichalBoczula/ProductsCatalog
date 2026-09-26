@@ -24,6 +24,11 @@ From the repository root, with SDK 10.0.100 or a newer .NET 10 feature band (sel
 bash scripts/verify.sh
 ```
 
+For a focused CI-equivalent check, run `bash scripts/ci.sh source` (or
+`build`, `format`, `contract`) and `bash scripts/ci.sh test <suite>`. The workflow
+calls these entry points.
+
+
 For focused work, use the individual commands below (they do not include all coverage and OpenAPI checks):
 
 ```bash
@@ -41,3 +46,4 @@ CI additionally scans secrets, dependencies and the image before any conditional
 ## Handoff
 
 Use `.github/pull_request_template.md`. Report changed behavior, linked backlog ID, tests and commands actually run, checks not run with reasons, and any remaining contract or migration risk. Mark the backlog item complete only after its acceptance criteria are satisfied in both repositories where applicable.
+

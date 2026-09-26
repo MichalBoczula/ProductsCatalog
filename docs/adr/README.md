@@ -15,3 +15,4 @@ Use repository-local, sequential ADR numbers. Each record has a title, `Status` 
 | [0007](0007-acceptance-isolation.md) | Accepted | Use one test SQL Server with a separate database per scenario. |
 | [0008](0008-optimistic-concurrency-and-history.md) | Accepted | Protect MobilePhone writes and history with an optimistic token. |
 | [0009](0009-image-publication-boundary.md) | Accepted | Scan one image before conditional Docker Hub publication. |
+| [0010](0010-portable-ci-core.md) | Accepted | Invoke core quality checks through repository scripts across CI platforms. |
