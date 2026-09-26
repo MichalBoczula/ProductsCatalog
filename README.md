@@ -1,5 +1,7 @@
 # ProductsCatalog
 
+## Purpose
+
 ProductsCatalog is a standalone product catalog service for an e-commerce platform. It owns product data, exposes HTTP APIs for catalog reads and writes, records MobilePhone change history, and publishes machine-readable descriptions of request flows and validation rules.
 
 The catalog is separated from the rest of the platform because it has a distinct data model and scaling profile. Product browsing is read-heavy and can grow independently from ordering, payments, invoicing, and user management. Keeping the catalog behind its own API allows independent deployment, horizontal scaling, caching, and query optimization without coupling those decisions to transactional services.
@@ -58,7 +60,7 @@ flowchart TD
 
 The service uses CQRS inside one deployable application. Commands work with domain aggregates and EF Core. Queries use Dapper and dedicated read models for explicit SQL and efficient projections. MediatR dispatches commands and queries without exposing infrastructure concerns to the API layer.
 
-## Why SQL Server
+### Why SQL Server
 
 The catalog is relational. Mobile phones have current and history records, and read use cases need filtering and projections. SQL Server provides transactions, indexing, and operational tooling suitable for this model.
 
@@ -83,7 +85,7 @@ EF Core is used where aggregate persistence and migrations matter. Dapper is use
 | Containers | Docker, Docker Compose |
 | CI/CD | GitHub Actions, Dependency Review, Gitleaks, Trivy |
 
-## Repository structure
+### Repository structure
 
 ```text
 src/
@@ -103,7 +105,9 @@ docs/
   database-migrations.md
 ```
 
-## Prerequisites
+## Local startup
+
+### Prerequisites
 
 - .NET SDK `10.0.100` or a newer .NET 10 feature band (selected by `global.json`);
 - Docker Engine or Docker Desktop;
@@ -112,7 +116,7 @@ docs/
 - optional: `dotnet-ef` for migration commands;
 - optional: Allure 2 CLI for a local acceptance report.
 
-## Run locally
+### Run locally
 
 Start SQL Server:
 
@@ -146,7 +150,7 @@ and access to the current mobile phone and history tables.
 
 After startup, use the URLs printed by ASP.NET Core. Swagger UI is available at `/swagger`, and the OpenAPI document is available at `/swagger/v1/swagger.json`.
 
-## Run with Docker Compose
+### Run with Docker Compose
 
 Build the API image and start the complete local stack:
 
@@ -171,7 +175,7 @@ Remove the containers and the local SQL volume:
 docker compose down --volumes
 ```
 
-## Database migrations
+### Database migrations
 
 Install the EF Core tool if required:
 
@@ -199,7 +203,7 @@ dotnet ef migrations script --idempotent --project src/ProductCatalog.Infrastruc
 
 Runtime migrations are disabled by default to prevent multiple replicas from modifying the schema during scale-out. See [the migration strategy](docs/database-migrations.md) and [ADR-0004](docs/adr/0004-database-migration-strategy.md).
 
-## API contract and executable documentation
+## API contract
 
 Swagger UI is available at `/swagger` and the generated contract at
 `/swagger/v1/swagger.json`. CI derives named operations, flow and validation
@@ -303,7 +307,7 @@ allure open artifacts/allure-report
 
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
-## CI/CD pipeline
+## CI
 
 GitHub Actions runs for pull requests and pushes to `master`:
 
@@ -322,7 +326,7 @@ The image build depends on a quality gate that requires successful build/OpenAPI
 
 NuGet audit is enabled for all restores through `Directory.Build.props`. Automatic Dependency Submission maintains the dependency graph. Dependabot remains intentionally disabled.
 
-## Scaling and operations
+## Operations
 
 The API is stateless; durable state stays in SQL Server. Multiple API replicas can therefore serve catalog reads behind a load balancer. Read-heavy endpoints can be scaled independently from other e-commerce services, while Dapper queries, SQL indexes, and future caching can be optimized without changing the order or payment domains.
 
