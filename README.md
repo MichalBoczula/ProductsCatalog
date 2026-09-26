@@ -262,8 +262,8 @@ OpenAPI lint and Docker build with one command:
 bash scripts/verify.sh
 ```
 
-The script writes TRX, coverage and the generated OpenAPI to the ignored
-`artifacts/verification` directory. Infrastructure tests produce a separate HTML
+The script writes TRX, coverage, a combined `summary.md` and generated OpenAPI to the ignored
+`artifacts/verification` directory; see [local verification](docs/local-verification.md) for the shared stage names, paths and failure rules. Infrastructure tests produce a separate HTML
 and text coverage report for diagnosis without a percentage threshold; Domain
 and Application retain separate 70% line-coverage gates. CI publishes the
 Infrastructure report in the job summary and as an artifact. CI additionally
@@ -340,3 +340,4 @@ publication. It distinguishes decisions implemented now from later hosting
 and retrieval work.
 
 Current work and intentional exclusions are recorded in [the repository backlog](docs/backlog.md).
+
