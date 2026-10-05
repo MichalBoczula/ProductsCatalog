@@ -49,6 +49,8 @@ case "$command" in
         ;;
       acceptance)
         project=tests/ProductCatalog.Acceptance.Tests/ProductCatalog.Acceptance.Tests.csproj
+        # Raw Allure files must belong only to this acceptance run.
+        rm -rf "$PWD/artifacts/allure-results/acceptance"
         ;;
       *)
         echo "Unknown test suite: $suite" >&2

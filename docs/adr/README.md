@@ -16,3 +16,4 @@ Use repository-local, sequential ADR numbers. Each record has a title, `Status` 
 | [0008](0008-optimistic-concurrency-and-history.md) | Accepted | Protect MobilePhone writes and history with an optimistic token. |
 | [0009](0009-image-publication-boundary.md) | Accepted | Scan one image before conditional Docker Hub publication. |
 | [0010](0010-portable-ci-core.md) | Accepted | Invoke core quality checks through repository scripts across CI platforms. |
+| [0011](0011-livedocs-blob-publication.md) | Accepted for LD/5 | Package verified source inputs and archive successful master documentation in Blob. |
