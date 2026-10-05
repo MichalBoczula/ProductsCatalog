@@ -57,6 +57,8 @@ jobs:
           path: |
             artifacts/verification/openapi.json
             artifacts/verification/operation-links.json
+            artifacts/verification/flows.json
+            artifacts/verification/validation-policies.json
           if-no-files-found: warn
 
   domain-unit-tests:
@@ -149,6 +151,32 @@ jobs:
           path: artifacts/verification/acceptance/
           if-no-files-found: warn
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-allure-results
+          path: artifacts/allure-results/acceptance/
+          if-no-files-found: error
+          retention-days: 7
+
+  documentation-bundle:
+    needs: [build, acceptance-tests]
+    uses: MichalBoczula/ECommerceStore.LiveDocs/.github/workflows/package-producer.yml@d0f450eb57f779440e8bf8a5e4a222aac48c7dfc
+    with:
+      tooling-ref: d0f450eb57f779440e8bf8a5e4a222aac48c7dfc
+      project: products
+      features: tests/ProductCatalog.Acceptance.Tests/Features
+
+  archive-documentation:
+    if: ${{ always() && !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/master' && vars.LIVEDOCS_PUBLISH_ENABLED == 'true' && needs.quality-gate.result == 'success' && needs.build-docker-image.result == 'success' }}
+    needs: [quality-gate, build-docker-image]
+    permissions:
+      contents: read
+      id-token: write
+    uses: MichalBoczula/ECommerceStore.LiveDocs/.github/workflows/archive-producer.yml@d0f450eb57f779440e8bf8a5e4a222aac48c7dfc
+    with:
+      tooling-ref: d0f450eb57f779440e8bf8a5e4a222aac48c7dfc
+      version: ${{ vars.LIVEDOCS_VERSION || 'v1' }}
+
   quality-gate:
     if: always()
     runs-on: ubuntu-latest
@@ -159,6 +187,7 @@ jobs:
       - application-unit-tests
       - infrastructure-unit-tests
       - acceptance-tests
+      - documentation-bundle
       - secret-scan
       - dependency-review
     steps:
@@ -171,10 +200,11 @@ jobs:
           APPLICATION_RESULT: ${{ needs.application-unit-tests.result }}
           INFRASTRUCTURE_RESULT: ${{ needs.infrastructure-unit-tests.result }}
           ACCEPTANCE_RESULT: ${{ needs.acceptance-tests.result }}
+          DOCUMENTATION_RESULT: ${{ needs.documentation-bundle.result }}
           SECRET_SCAN_RESULT: ${{ needs.secret-scan.result }}
           DEPENDENCY_REVIEW_RESULT: ${{ needs.dependency-review.result }}
         run: |
-          for check in BUILD DOMAIN APPLICATION INFRASTRUCTURE ACCEPTANCE SECRET_SCAN; do
+          for check in BUILD DOMAIN APPLICATION INFRASTRUCTURE ACCEPTANCE DOCUMENTATION SECRET_SCAN; do
             result_var="${check}_RESULT"
             result="${!result_var}"
             if [[ "$result" != "success" ]]; then

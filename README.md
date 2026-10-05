@@ -299,7 +299,7 @@ dotnet run --configuration Release --project tests/ProductsCatalog.Performance.B
 Generate a local Allure report:
 
 ```powershell
-npm install --global allure-commandline@2
+npm install --global allure-commandline@2.46.1
 dotnet test tests/ProductCatalog.Acceptance.Tests/ProductCatalog.Acceptance.Tests.csproj
 allure generate artifacts/allure-results/acceptance -o artifacts/allure-report --clean
 allure open artifacts/allure-report
@@ -349,3 +349,28 @@ publication. It distinguishes decisions implemented now from later hosting
 and retrieval work.
 
 Current work and intentional exclusions are recorded in [the repository backlog](docs/backlog.md).
+
+### LiveDocs publication (LD/5)
+
+CI exports OpenAPI, flows, validation policies and operation/scenario links and
+preserves the acceptance run's raw Allure output. A commit-pinned reusable workflow
+from ECommerceStore.LiveDocs packages those inputs with feature files and source
+commit/run identity. Bundle validation is a required quality-gate check before
+building/scanning/publishing the service image. PRs retain a short-lived
+`documentation-bundle` artifact for review and never upload to Azure.
+
+After a successful master image publication, the optional archive job writes the
+same source's bundle and discovery receipt to the private `livedocs` Blob container.
+It uses a dedicated OIDC writer identity provisioned by application Terraform,
+scoped to that container; it has no photo-storage or LiveDocs GitHub write access.
+Set `LIVEDOCS_PUBLISH_ENABLED=true` only after Azure setup. Missing credentials or
+failed uploads then fail the workflow. Docker Hub publication remains subject to
+all existing gates and uses the already scanned image.
+
+LiveDocs independently verifies a completed successful producer CI run and opens
+a manifest PR in its own repository. Its image builder generates Allure 2.46.1,
+then application Terraform deploys the chosen documentation image digest. This
+handoff is asynchronous: service and documentation publication are not an atomic
+deployment transaction. See [ADR-0011](docs/adr/0011-livedocs-blob-publication.md)
+and the [shared setup guide](https://github.com/MichalBoczula/ECommerceStore.LiveDocs/blob/main/docs/producer-integration.md)
+for repository variables, identities and version selection.
