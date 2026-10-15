@@ -28,3 +28,19 @@ an opt-in local instance. Do not enable runtime migrations simultaneously on mul
 hosted replicas. The fresh-database repeatability test does not verify the CLEAN-01
 migration against an existing database with real data: back up and test that path
 separately before applying it to a hosted database.
+
+## Development phone photo seeds
+
+The existing `SeedMobilePhone1` through `SeedMobilePhone15` migrations contain
+the canonical URLs from the verified Products photo manifest. Both the current
+phone and its original history row use `Main.webp` as `MainPhoto`, with
+`OtherPhotos` ordered **Front, Back, Side**. The URLs target
+`stecproductsdevmb261013/photos`; spaces and Polish characters are percent encoded.
+
+These seed files were edited for the disposable development database. Recreate
+that database and rerun the complete migration chain to receive the updated seed
+values. Running migrations against an already-seeded database will not rerun
+these migration IDs. There is no additional corrective migration in this change.
+
+The container remains private. Browser image delivery and Angular photo bindings
+are separate application steps; a canonical Blob URL alone does not grant access.

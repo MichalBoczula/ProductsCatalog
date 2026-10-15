@@ -62,9 +62,9 @@ INSERT INTO [dbo].[TB_MobilePhones]
            ,1
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'Top-class display The 6.1-inch Super Retina XDR OLED screen makes watching movies and photos incredibly enjoyable. The 2556 x 1179 resolution delivers impressive sharpness and realism. True Tone and Haptic Touch improve everyday comfort. It is a display that raises the standard of mobile entertainment.'
-           ,'apple-iphone-16-white-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Main.webp'
            ,'Apple iPhone 16 128GB White'
-           ,'[""apple-iphone-16-white-1.jpg"",""apple-iphone-16-white-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Side.webp""]'
            ,1
            ,1
            ,1
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'5b8b2f19-4f6b-4aa7-8a49-1d5f1fd3a7d2'
            ,'Apple iPhone 16 128GB White'
            ,'Top-class display The 6.1-inch Super Retina XDR OLED screen makes watching movies and photos incredibly enjoyable. The 2556 x 1179 resolution delivers impressive sharpness and realism. True Tone and Haptic Touch improve everyday comfort. It is a display that raises the standard of mobile entertainment.'
-           ,'apple-iphone-16-white-main.jpg'
-           ,'[""apple-iphone-16-white-1.jpg"",""apple-iphone-16-white-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Side.webp""]'
            ,'Apple A18'
            ,'Apple GPU'
            ,'6 GB'

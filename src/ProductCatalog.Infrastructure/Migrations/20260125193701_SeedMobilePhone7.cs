@@ -62,9 +62,9 @@ INSERT INTO [dbo].[TB_MobilePhones]
            ,1
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'Phenomenal display The 6.3-inch Super Retina XDR OLED screen with a 120 Hz refresh rate makes browsing, watching movies, and gaming a standout experience. ProMotion adjusts the refresh rate to the task, improving smoothness and saving power. The 2622 x 1206 resolution delivers crisp detail. True Tone and Haptic Touch make interaction natural and intuitive.'
-           ,'apple-iphone-17-black-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Main.webp'
            ,'Apple iPhone 17 256GB Black'
-           ,'[""apple-iphone-17-black-1.jpg"",""apple-iphone-17-black-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Side.webp""]'
            ,1
            ,1
            ,1
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'3cf6e155-2a07-40e3-9c40-9be5a4c97d6c'
            ,'Apple iPhone 17 256GB Black'
            ,'Phenomenal display The 6.3-inch Super Retina XDR OLED screen with a 120 Hz refresh rate makes browsing, watching movies, and gaming a standout experience. ProMotion adjusts the refresh rate to the task, improving smoothness and saving power. The 2622 x 1206 resolution delivers crisp detail. True Tone and Haptic Touch make interaction natural and intuitive.'
-           ,'apple-iphone-17-black-main.jpg'
-           ,'[""apple-iphone-17-black-1.jpg"",""apple-iphone-17-black-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20256GB%20Czarny/Side.webp""]'
            ,'Apple A19'
            ,'Apple GPU'
            ,'8 GB'

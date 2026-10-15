@@ -62,9 +62,9 @@ INSERT INTO [dbo].[TB_MobilePhones]
            ,1
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'The durable build combines Ceramic Shield 2 glass on the display with reinforced back protection, and an IP68 rating helps protect against water and dust. iPhone 17 Pro supports eSIM (Dual eSIM), so you can add a plan in moments without a physical card, while MagSafe makes wireless charging and accessories effortless. It is a practical choice when you want a premium smartphone ready for a fast-paced day.'
-           ,'apple-iphone-17-pro-silver-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Main.webp'
            ,'Apple iPhone 17 Pro 256GB Silver'
-           ,'[""apple-iphone-17-pro-silver-1.jpg"",""apple-iphone-17-pro-silver-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Side.webp""]'
            ,1
            ,1
            ,1
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'2a3c3fa7-3ffb-4df1-9454-5c243fcbfc7b'
            ,'Apple iPhone 17 Pro 256GB Silver'
            ,'The durable build combines Ceramic Shield 2 glass on the display with reinforced back protection, and an IP68 rating helps protect against water and dust. iPhone 17 Pro supports eSIM (Dual eSIM), so you can add a plan in moments without a physical card, while MagSafe makes wireless charging and accessories effortless. It is a practical choice when you want a premium smartphone ready for a fast-paced day.'
-           ,'apple-iphone-17-pro-silver-main.jpg'
-           ,'[""apple-iphone-17-pro-silver-1.jpg"",""apple-iphone-17-pro-silver-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2017%20Pro%20256GB%20Srebrny/Side.webp""]'
            ,'Apple A19 Pro'
            ,'Apple GPU'
            ,'8 GB'

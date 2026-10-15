@@ -62,9 +62,9 @@ namespace ProductCatalog.Infrastructure.Migrations
            ,1
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'Everyday performance The Apple A16 Bionic delivers smooth app and game performance with high energy efficiency. As a result, iPhone 15 stays fast and responsive regardless of the number of running tasks. It is an ideal choice for those who want reliable performance.'
-           ,'apple-iphone-15-blue-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Main.webp'
            ,'Apple iPhone 15 128GB Blue'
-           ,'[""apple-iphone-15-blue-1.jpg"",""apple-iphone-15-blue-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Side.webp""]'
            ,1
            ,1
            ,1
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'8d5f9e61-8a71-4d9a-9d86-3f4ef0c5ed4a'
            ,'Apple iPhone 15 128GB Blue'
            ,'Everyday performance The Apple A16 Bionic delivers smooth app and game performance with high energy efficiency. As a result, iPhone 15 stays fast and responsive regardless of the number of running tasks. It is an ideal choice for those who want reliable performance.'
-           ,'apple-iphone-15-blue-main.jpg'
-           ,'[""apple-iphone-15-blue-1.jpg"",""apple-iphone-15-blue-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2015%20128GB%20Blue/Side.webp""]'
            ,'Apple A16 Bionic'
            ,'Apple GPU'
            ,'6 GB'

@@ -14,8 +14,14 @@ builds and runs the suite from a clean checkout, including the SQL Server
 container. Keep this check enabled when changing the feature generation policy
 so that a missing scenario cannot silently disappear from discovery.
 
-Infrastructure still pins `System.Security.Cryptography.Xml` 10.0.12. There
-is no direct source import, but that alone cannot establish whether it pins a
-transitive dependency needed for security. REF-04 retains the pin and does not
-alter the NuGet audit gate; a future package graph/security review can justify
-an upgrade or removal.
+Infrastructure retains its `System.Security.Cryptography.Xml` pin, updated to
+10.0.13. The October 2026 security advisories affect 10.0.12 and its transitive
+`System.Security.Cryptography.Pkcs` dependency. The API separately resolves PKCS
+through SqlClient, so it directly pins the patched 9.0.21 version instead of
+the vulnerable 9.0.4 version. The existing high/critical NuGet audit gate remains
+enabled; these package updates let restore satisfy it.
+
+See the Microsoft advisories for [PKCS](https://github.com/advisories/GHSA-846f-f764-76mx)
+and XML cryptography: [GHSA-7hqp-7c5m-4vq6](https://github.com/advisories/GHSA-7hqp-7c5m-4vq6),
+[GHSA-c399-9853-6jmj](https://github.com/advisories/GHSA-c399-9853-6jmj), and
+[GHSA-r955-8q5j-3h83](https://github.com/advisories/GHSA-r955-8q5j-3h83).

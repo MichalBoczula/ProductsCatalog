@@ -62,9 +62,9 @@ INSERT INTO [dbo].[TB_MobilePhones]
            ,1
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'The Leica camera system in Xiaomi 15T is designed for users who expect professional results. Wide, ultrawide, and telephoto lenses capture a broad range of scenes, while Light Fusion 800 technology improves image quality in low light.'
-           ,'xiaomi-15t-5g-black-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Main.webp'
            ,'Xiaomi 15T 5G 12/512 Black 120Hz'
-           ,'[""xiaomi-15t-5g-black-1.jpg"",""xiaomi-15t-5g-black-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Side.webp""]'
            ,1
            ,1
            ,1
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'07d39209-33b8-4274-b82d-2f0c4f341a9a'
            ,'Xiaomi 15T 5G 12/512 Black 120Hz'
            ,'The Leica camera system in Xiaomi 15T is designed for users who expect professional results. Wide, ultrawide, and telephoto lenses capture a broad range of scenes, while Light Fusion 800 technology improves image quality in low light.'
-           ,'xiaomi-15t-5g-black-main.jpg'
-           ,'[""xiaomi-15t-5g-black-1.jpg"",""xiaomi-15t-5g-black-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%2015T%205G%2012512%20Black%20120Hz/Side.webp""]'
            ,'MediaTek Dimensity 8400 Ultra'
            ,'Mali-G720'
            ,'12 GB'
