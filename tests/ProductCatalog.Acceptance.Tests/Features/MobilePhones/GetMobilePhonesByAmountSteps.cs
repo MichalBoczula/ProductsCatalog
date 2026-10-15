@@ -109,7 +109,17 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 : _amount;
             _result.Count.ShouldBe(expectedAmount);
 
-            _ = expected;
+            foreach (var phone in _result)
+            {
+                var created = _createdMobilePhones.Single(item => item.Id == phone.Id);
+                phone.MainPhoto.ShouldBe(created.CommonDescription.MainPhoto);
+            }
+
+            using var json = JsonDocument.Parse(await _response.Content.ReadAsStringAsync());
+            foreach (var phone in json.RootElement.EnumerateArray())
+            {
+                phone.GetProperty("mainPhoto").GetString().ShouldNotBeNullOrWhiteSpace();
+            }
         }
 
         [Then("an empty mobile phone list is returned")]

@@ -189,6 +189,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             var appleIphone = result.Single(mobilePhone => mobilePhone.Id == AppleIphone16Id);
             appleIphone.Name.ShouldBe("Apple iPhone 16 128GB White");
             appleIphone.Brand.ShouldBe("Apple");
+            appleIphone.MainPhoto.ShouldBe("https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Main.webp");
             appleIphone.Camera.ShouldBe("48 MP (f/1.6) rear + 12 MP ultrawide, 12 MP front");
             appleIphone.DisplayType.ShouldBe("OLED");
             appleIphone.ScreenSizeInches.ShouldBe(6.10m);
@@ -199,6 +200,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             var xiaomiPoco = result.Single(mobilePhone => mobilePhone.Id == XiaomiPocoF7Id);
             xiaomiPoco.Name.ShouldBe("Xiaomi POCO F7 12/512GB Black");
             xiaomiPoco.Brand.ShouldBe("Xiaomi");
+            xiaomiPoco.MainPhoto.ShouldBe("https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Main.webp");
             xiaomiPoco.Camera.ShouldBe("50 MP (Sony LYT-600, OIS) + 8 MP ultrawide, 20 MP front");
             xiaomiPoco.DisplayType.ShouldBe("AMOLED");
             xiaomiPoco.ScreenSizeInches.ShouldBe(6.83m);
@@ -225,6 +227,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 mobilePhone.Id.ShouldNotBe(Guid.Empty);
                 mobilePhone.Name.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.Brand.ShouldNotBeNullOrWhiteSpace();
+                mobilePhone.MainPhoto.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.Camera.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.DisplayType.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.ScreenSizeInches.ShouldBeGreaterThan(0);
@@ -454,6 +457,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 mobilePhone.Id.ShouldNotBe(Guid.Empty);
                 mobilePhone.Name.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.Brand.ShouldNotBeNullOrWhiteSpace();
+                mobilePhone.MainPhoto.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.Camera.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.DisplayType.ShouldNotBeNullOrWhiteSpace();
                 mobilePhone.ScreenSizeInches.ShouldBeGreaterThan(0);

@@ -26,7 +26,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__ProductCatalogDb=Server=product-db;Database=ProductsDb;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True
-      - Database__ApplyMigrations=${APPLY_MIGRATIONS:-false}
+      - Database__ApplyMigrations=${APPLY_MIGRATIONS:-true}
     depends_on:
       product-db:
         condition: service_healthy
