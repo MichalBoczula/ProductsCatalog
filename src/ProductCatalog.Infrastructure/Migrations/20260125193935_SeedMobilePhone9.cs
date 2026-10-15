@@ -62,9 +62,9 @@ INSERT INTO [dbo].[TB_MobilePhones]
            ,0
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'Circle to Search with Google brings a new way to search. While scrolling your favorite social app, use the S Pen or your finger to circle anything and get Google search results instantly.'
-           ,'samsung-galaxy-s24-black-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Main.webp'
            ,'Samsung Galaxy S24 8GB/128GB Black'
-           ,'[""samsung-galaxy-s24-black-1.jpg"",""samsung-galaxy-s24-black-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Side.webp""]'
            ,1
            ,1
            ,1
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'b7a2a7c1-3caa-4de0-8f3b-0b3bdcc55d5f'
            ,'Samsung Galaxy S24 8GB/128GB Black'
            ,'Circle to Search with Google brings a new way to search. While scrolling your favorite social app, use the S Pen or your finger to circle anything and get Google search results instantly.'
-           ,'samsung-galaxy-s24-black-main.jpg'
-           ,'[""samsung-galaxy-s24-black-1.jpg"",""samsung-galaxy-s24-black-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S24%208GB128GB%20Czarny/Side.webp""]'
            ,'Samsung Exynos 2400'
            ,'Samsung GPU'
            ,'8 GB'

@@ -62,9 +62,9 @@ INSERT INTO [dbo].[TB_MobilePhones]
            ,0
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'Galaxy AI. Welcome to a new era of mobile artificial intelligence with an AI partner that stays ahead of your needs. Simply let a natural conversation guide you to effortless completion of everyday tasks.'
-           ,'photo'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Main.webp'
            ,'Samsung Galaxy S25 12/256GB Green'
-           ,'[]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Side.webp""]'
            ,1
            ,1
            ,1
@@ -153,8 +153,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'3c1c2b2e-0a63-4a6d-8f0c-5d3a1e8f9a21'
            ,'Samsung Galaxy S25 12/256GB Green'
            ,'Galaxy AI. Welcome to a new era of mobile artificial intelligence with an AI partner that stays ahead of your needs. Simply let a natural conversation guide you to effortless completion of everyday tasks.'
-           ,'photo'
-           ,'[]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Samsung%20Galaxy%20S25%2012256GB%20Czarny/Side.webp""]'
            ,'Qualcomm Snapdragon 8 Elite (2x 4.32 GHz + 6x 3.53 GHz)'
            ,''
            ,'12 GB'

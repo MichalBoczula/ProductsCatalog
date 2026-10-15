@@ -62,9 +62,9 @@ INSERT INTO [dbo].[TB_MobilePhones]
            ,1
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'The heart of the Xiaomi Redmi Note 15 Pro is the advanced MediaTek Helio G200 Ultra processor, which delivers smooth performance even in the most demanding apps. Thanks to it, users can enjoy fast game and app launches, translating into a great experience during use. It is an ideal companion for avid gamers.'
-           ,'xiaomi-redmi-note-15-pro-black-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Main.webp'
            ,'Xiaomi Redmi Note 15 Pro 8/256GB Black'
-           ,'[""xiaomi-redmi-note-15-pro-black-1.jpg"",""xiaomi-redmi-note-15-pro-black-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Side.webp""]'
            ,1
            ,0
            ,1
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'5e9d3b34-8005-4b73-9e90-1cc25f8f5c34'
            ,'Xiaomi Redmi Note 15 Pro 8/256GB Black'
            ,'The heart of the Xiaomi Redmi Note 15 Pro is the advanced MediaTek Helio G200 Ultra processor, which delivers smooth performance even in the most demanding apps. Thanks to it, users can enjoy fast game and app launches, translating into a great experience during use. It is an ideal companion for avid gamers.'
-           ,'xiaomi-redmi-note-15-pro-black-main.jpg'
-           ,'[""xiaomi-redmi-note-15-pro-black-1.jpg"",""xiaomi-redmi-note-15-pro-black-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%20Note%2015%20Pro%208256GB%20Black/Side.webp""]'
            ,'MediaTek Helio G200 Ultra'
            ,'Mali-G57 MC2'
            ,'8 GB'

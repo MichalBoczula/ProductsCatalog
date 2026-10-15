@@ -135,8 +135,8 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             result.Description.ShouldBe("Top-class display The 6.1-inch Super Retina XDR OLED screen makes watching movies and photos incredibly enjoyable. The 2556 x 1179 resolution delivers impressive sharpness and realism. True Tone and Haptic Touch improve everyday comfort. It is a display that raises the standard of mobile entertainment.");
             result.Description2.ShouldBe("Professional photography The 48 MP camera captures detailed photos in any lighting. The 12 MP ultrawide lens lets you capture a wider perspective. Modern imaging algorithms make videos and photos look professional. It is a solution for those who want more than standard photos.");
             result.Description3.ShouldBe("Top performance The Apple A18 processor delivers outstanding speed and stability. The smartphone runs iOS 18 with new features and improvements. The built-in battery supports fast and wireless charging for daily convenience. It is a phone that performs well in every situation.");
-            result.MainPhoto.ShouldBe("apple-iphone-16-white-main.jpg");
-            result.OtherPhotos.ShouldBe("[\"apple-iphone-16-white-1.jpg\",\"apple-iphone-16-white-2.jpg\"]");
+            result.MainPhoto.ShouldBe("https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Main.webp");
+            result.OtherPhotos.ShouldBe("""["https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Front.webp","https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Back.webp","https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Side.webp"]""");
             result.CPU.ShouldBe("Apple A18");
             result.GPU.ShouldBe("Apple GPU");
             result.Ram.ShouldBe("6 GB");
@@ -305,8 +305,8 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             history.MobilePhoneId.ShouldBe(AppleIphone16Id);
             history.Name.ShouldBe("Apple iPhone 16 128GB White");
             history.Brand.ShouldBe("Apple");
-            history.MainPhoto.ShouldBe("apple-iphone-16-white-main.jpg");
-            history.OtherPhotos.ShouldBe("[\"apple-iphone-16-white-1.jpg\",\"apple-iphone-16-white-2.jpg\"]");
+            history.MainPhoto.ShouldBe("https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Main.webp");
+            history.OtherPhotos.ShouldBe("""["https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Front.webp","https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Back.webp","https://stecproductsdevmb261013.blob.core.windows.net/photos/Apple%20iPhone%2016%20128GB%20Bia%C5%82y/Side.webp"]""");
             history.CPU.ShouldBe("Apple A18");
             history.GPU.ShouldBe("Apple GPU");
             history.Ram.ShouldBe("6 GB");

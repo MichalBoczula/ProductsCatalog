@@ -62,9 +62,9 @@ namespace ProductCatalog.Infrastructure.Migrations
            ,1
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'The smartphone is equipped with a Qualcomm Snapdragon 6s Gen 3 processor, which delivers smooth performance even in demanding apps and games. The device handles everyday tasks as well as heavier processes with ease. Optimization for Android 15 lets you use the latest system features without performance drops.'
-           ,'xiaomi-redmi-15-5g-black-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Main.webp'
            ,'Xiaomi Redmi 15 5G 4/128GB Midnight Black'
-           ,'[""xiaomi-redmi-15-5g-black-1.jpg"",""xiaomi-redmi-15-5g-black-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Side.webp""]'
            ,1
            ,1
            ,0
@@ -152,8 +152,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'a243cf6f-dde1-4c05-8a58-2fa7f04ed984'
            ,'Xiaomi Redmi 15 5G 4/128GB Midnight Black'
            ,'The smartphone is equipped with a Qualcomm Snapdragon 6s Gen 3 processor, which delivers smooth performance even in demanding apps and games. The device handles everyday tasks as well as heavier processes with ease. Optimization for Android 15 lets you use the latest system features without performance drops.'
-           ,'xiaomi-redmi-15-5g-black-main.jpg'
-           ,'[""xiaomi-redmi-15-5g-black-1.jpg"",""xiaomi-redmi-15-5g-black-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20Redmi%2015%205G%204128GB%20Midnight%20Black/Side.webp""]'
            ,'Qualcomm Snapdragon 6s Gen 3'
            ,'Adreno'
            ,'4 GB'

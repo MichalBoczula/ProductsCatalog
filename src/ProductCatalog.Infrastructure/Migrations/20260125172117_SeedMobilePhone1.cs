@@ -61,9 +61,9 @@ namespace ProductCatalog.Infrastructure.Migrations
            ,0
            ,'587480bb-c126-4f9b-b531-b0244daa4ba4'
            ,'The POCO F7 display has a 2772 x 1280 px resolution and a 120 Hz refresh rate. The image looks smooth and detailed, making it easier to watch movies and use apps. The smartphone also supports 5G, Wi-Fi 7, and Bluetooth 5.4, so you can download files quickly and browse the internet without delays. The in-display fingerprint reader improves convenience, and the USB-C port enables fast charging and data transfer.'
-           ,'xiaomi-poco-f7-black-main.jpg'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Main.webp'
            ,'Xiaomi POCO F7 12/512GB Black'
-           ,'[""xiaomi-poco-f7-black-1.jpg"",""xiaomi-poco-f7-black-2.jpg""]'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Side.webp""]'
            ,1
            ,1
            ,1
@@ -151,8 +151,8 @@ INSERT INTO [dbo].[TB_MobilePhones_History]
            ,'0f62c3e1-8e3e-4b1f-9d74-3d6e2ff2c6d2'
            ,'Xiaomi POCO F7 12/512GB Black'
            ,'The POCO F7 display has a 2772 x 1280 px resolution and a 120 Hz refresh rate. The image looks smooth and detailed, making it easier to watch movies and use apps. The smartphone also supports 5G, Wi-Fi 7, and Bluetooth 5.4, so you can download files quickly and browse the internet without delays. The in-display fingerprint reader improves convenience, and the USB-C port enables fast charging and data transfer.'
-           ,'xiaomi-poco-f7-black-main.jpg'
-           ,'[""xiaomi-poco-f7-black-1.jpg"",""xiaomi-poco-f7-black-2.jpg""]'
+           ,'https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Main.webp'
+           ,'[""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Front.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Back.webp"",""https://stecproductsdevmb261013.blob.core.windows.net/photos/Xiaomi%20POCO%20F7%2012512GB%20Black/Side.webp""]'
            ,'Qualcomm Snapdragon 8s Gen 4'
            ,'Adreno'
            ,'12 GB'
