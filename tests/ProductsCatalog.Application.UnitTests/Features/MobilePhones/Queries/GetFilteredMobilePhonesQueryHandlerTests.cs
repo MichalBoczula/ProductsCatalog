@@ -44,6 +44,7 @@ public sealed class GetFilteredMobilePhonesQueryHandlerTests
                 Id = readModels[0].Id,
                 Name = readModels[0].Name,
                 Brand = readModels[0].Brand,
+                MainPhoto = readModels[0].MainPhoto,
                 DisplayType = readModels[0].DisplayType,
                 ScreenSizeInches = readModels[0].ScreenSizeInches,
                 Camera = readModels[0].Camera,

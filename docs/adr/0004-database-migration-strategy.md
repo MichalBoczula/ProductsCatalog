@@ -11,11 +11,15 @@ Local development still needs a convenient way to create and update the database
 
 ## Decision
 
-- Disable runtime migrations by default with `Database:ApplyMigrations=false`.
+- Explicitly disable runtime migrations in hosted environments with
+  `Database:ApplyMigrations=false`.
 - The application reads `Database:ApplyMigrations`; `Database__ApplyMigrations=true`
-  opts a process in. Docker Compose maps its local `APPLY_MIGRATIONS=true`
-  variable to this setting. The application does not read `APPLY_MIGRATIONS`
-  directly.
+  enables migration application for a process. The checked-in appsettings and
+  local Docker Compose now default to `true` for convenient development startup.
+  Compose maps its local `APPLY_MIGRATIONS` variable to this setting and supports
+  an explicit `false` override. The application does not read `APPLY_MIGRATIONS`
+  directly. If the setting is absent from all configuration, it falls back to
+  `false`.
 - For hosted environments, generate an idempotent EF Core migration script and execute it once in a dedicated deployment step before the API rollout.
 - Give the deployment identity schema-change permissions.
 - Give the runtime identity only the data permissions required by the service.
@@ -25,7 +29,7 @@ Local development still needs a convenient way to create and update the database
 
 Schema changes are observable deployment events and do not race during horizontal scale-out. Runtime credentials can follow least privilege.
 
-Deployments require migration orchestration and must define rollback or forward-fix handling for incompatible schema changes. Local developers must deliberately enable or execute migrations.
+Deployments require migration orchestration and must define rollback or forward-fix handling for incompatible schema changes. Local development automatically applies pending migrations unless explicitly disabled.
 
 Startup with the setting enabled applies migrations once and fails if they
 cannot complete; it does not retry the whole migration. A repeat startup on a

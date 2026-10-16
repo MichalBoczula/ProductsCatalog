@@ -156,12 +156,22 @@ Build the API image and start the complete local stack:
 
 ```powershell
 Copy-Item .env.example .env
-# Set MSSQL_SA_PASSWORD and optionally APPLY_MIGRATIONS=true in .env.
+# Set a strong MSSQL_SA_PASSWORD value in .env.
 docker build -f src/ProductCatalog.Api/Dockerfile -t productcatalogapi:latest .
 docker compose up -d
 ```
 
 The API is exposed at `http://localhost:5000`, and SQL Server at `localhost:1433`.
+
+Local Compose enables `Database:ApplyMigrations` by default, matching
+`appsettings.json`. The API waits for healthy SQL before applying pending
+migrations at startup. Set `APPLY_MIGRATIONS=false` in `.env` to disable this;
+an existing `.env` value overrides the Compose default.
+
+`GET /mobile-phones?amount=15` includes each phone's `mainPhoto` alongside its
+list fields. Filtered and by-ID lists use the same response DTO and also include
+`mainPhoto`. This is the stored photo URL; access to private Blob photos is
+handled separately.
 
 Stop the containers without deleting database data:
 

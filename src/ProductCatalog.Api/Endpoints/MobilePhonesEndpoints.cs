@@ -37,7 +37,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phones by Ids")
-            .WithDescription("Returns active mobile phones matching the provided Ids, ordered by Id.")
+            .WithDescription("Returns active mobile phones matching the provided Ids, including each mainPhoto, ordered by Id.")
             .WithName("GetMobilePhonesByIds")
             .Produces<IReadOnlyList<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
@@ -65,7 +65,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get mobile phones")
-            .WithDescription("Returns up to the requested amount of active mobile phones ordered by name, then Id.")
+            .WithDescription("Returns up to the requested amount of active mobile phones, including each mainPhoto for list images, ordered by name, then Id.")
             .WithName("GetMobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
@@ -106,7 +106,7 @@ namespace ProductCatalog.Api.Endpoints
                 return Results.Ok(result);
             })
             .WithSummary("Get filtered mobile phones")
-            .WithDescription("Returns active mobile phones matching the filter, ordered by name, then Id.")
+            .WithDescription("Returns active mobile phones matching the filter, including each mainPhoto, ordered by name, then Id.")
             .WithName("GetFiltered MobilePhones")
             .Produces<List<MobilePhoneDto>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")

@@ -542,6 +542,7 @@ namespace ProductsCatalog.Application.UnitTests.Mapping
             //Assert
             dto.Id.ShouldBe(readModel.Id);
             dto.Name.ShouldBe(readModel.Name);
+            dto.MainPhoto.ShouldBe(readModel.MainPhoto);
             dto.Camera.ShouldBe(readModel.Camera);
             dto.DisplayType.ShouldBe(readModel.DisplayType);
             dto.ScreenSizeInches.ShouldBe(readModel.ScreenSizeInches);

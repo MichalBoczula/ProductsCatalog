@@ -1,11 +1,12 @@
 ﻿Feature: Get mobile phones by amount
 
 Scenario: Get mobile phones by amount returns matching list
-	Given an existing list of mobile phones
+	Given no mobile phones exist in the database
+	And an existing list of mobile phones
 		| Field            | Value                                 |
 		| Brand            | Brand                                 |
 		| Description      | Phone created by filter test          |
-		| MainPhoto        | main-photo.jpg                        |
+		| MainPhoto        | https://photos.example.com/Main.webp   |
 		| OtherPhotos      | photo-1.jpg, photo-2.jpg              |
 		| CPU              | Octa-core                             |
 		| GPU              | Adreno                                |

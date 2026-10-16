@@ -13,7 +13,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.HealthCheckTests;
 public sealed class DatabaseStartupSteps(ScenarioApiContext apiContext)
 {
     private string? _connectionString;
-    private HttpStatusCode _defaultLiveStatus;
+    private HttpStatusCode _disabledLiveStatus;
     private StartupSnapshot? _firstStartup;
     private StartupSnapshot? _secondStartup;
 
@@ -26,19 +26,19 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext apiContext)
         await context.Database.EnsureDeletedAsync();
     }
 
-    [When("the API starts with default migration settings")]
-    public async Task WhenTheApiStartsWithDefaultMigrationSettings()
+    [When("the API starts with migrations disabled")]
+    public async Task WhenTheApiStartsWithMigrationsDisabled()
     {
-        using var factory = new ApplicationFactory(_connectionString!, applyMigrations: null);
+        using var factory = new ApplicationFactory(_connectionString!, applyMigrations: false);
         using var client = factory.CreateClient();
         using var response = await client.GetAsync("/health/live");
-        _defaultLiveStatus = response.StatusCode;
+        _disabledLiveStatus = response.StatusCode;
     }
 
     [Then("startup leaves the database absent and liveness healthy")]
     public async Task ThenStartupLeavesTheDatabaseAbsentAndLivenessHealthy()
     {
-        _defaultLiveStatus.ShouldBe(HttpStatusCode.OK);
+        _disabledLiveStatus.ShouldBe(HttpStatusCode.OK);
 
         var builder = new SqlConnectionStringBuilder(_connectionString);
         var database = builder.InitialCatalog;
@@ -50,9 +50,9 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext apiContext)
         (await command.ExecuteScalarAsync()).ShouldBe(DBNull.Value);
     }
 
-    [When("the API starts with migrations enabled")]
-    public async Task WhenTheApiStartsWithMigrationsEnabled()
-        => _firstStartup = await StartAndCaptureAsync();
+    [When("the API starts with default migration settings")]
+    public async Task WhenTheApiStartsWithDefaultMigrationSettings()
+        => _firstStartup = await StartAndCaptureAsync(applyMigrations: null);
 
     [Then("the database contains the initial seed and no pending migrations")]
     public void ThenTheDatabaseContainsTheInitialSeedAndNoPendingMigrations()
@@ -79,9 +79,9 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext apiContext)
         _secondStartup.Applied.SequenceEqual(_firstStartup.Applied).ShouldBeTrue();
     }
 
-    private async Task<StartupSnapshot> StartAndCaptureAsync()
+    private async Task<StartupSnapshot> StartAndCaptureAsync(bool? applyMigrations = true)
     {
-        using var factory = new ApplicationFactory(_connectionString!, applyMigrations: true);
+        using var factory = new ApplicationFactory(_connectionString!, applyMigrations: applyMigrations);
         using var client = factory.CreateClient();
         using var response = await client.GetAsync("/health/ready");
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
