@@ -17,3 +17,4 @@ Use repository-local, sequential ADR numbers. Each record has a title, `Status` 
 | [0009](0009-image-publication-boundary.md) | Accepted | Scan one image before conditional Docker Hub publication. |
 | [0010](0010-portable-ci-core.md) | Accepted | Invoke core quality checks through repository scripts across CI platforms. |
 | [0011](0011-livedocs-blob-publication.md) | Accepted for LD/5 | Package verified source inputs and archive successful master documentation in Blob. |
+| [0012](0012-consolidated-livedocs-upload.md) | Accepted | Upload Products bundles to the consolidated private archive using a container SAS. |

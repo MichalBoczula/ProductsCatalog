@@ -371,16 +371,88 @@ building/scanning/publishing the service image. PRs retain a short-lived
 
 After a successful master image publication, the optional archive job writes the
 same source's bundle and discovery receipt to the private `livedocs` Blob container.
-It uses a dedicated OIDC writer identity provisioned by application Terraform,
-scoped to that container; it has no photo-storage or LiveDocs GitHub write access.
-Set `LIVEDOCS_PUBLISH_ENABLED=true` only after Azure setup. Missing credentials or
-failed uploads then fail the workflow. Docker Hub publication remains subject to
-all existing gates and uses the already scanned image.
+The consolidated store uses `stecproductsdevmb261013` by default. Products authenticates
+with a container-scoped SAS held in its Actions secret `LIVEDOCS_STORAGE_SAS_TOKEN`.
+The token needs read/create/write access to `livedocs`; read permits byte verification
+when retrying an upload. It grants no access to `photos` or `invoices`. No Azure login,
+new identity or Terraform resource is needed for this producer step.
+
+Set `LIVEDOCS_PUBLISH_ENABLED=true` only after the secret is configured. When enabled,
+missing credentials, expiry, upload failures or conflicting existing bytes fail the
+archive job. PRs never upload. Docker Hub publication remains subject to all existing
+gates and uses the already scanned image. Bundle validation remains mandatory even
+when archive publication is disabled.
+
+The job writes a content-addressed bundle first, then the discovery receipt:
+
+```text
+livedocs/reports/products/<source-commit>/<bundle-sha256>.zip
+livedocs/candidates/v1/products/<workflow-run-id>-<bundle-sha256>.json
+```
+
+The ZIP contains raw Allure results and attachments, Reqnroll feature sources, generated
+OpenAPI, flows, validation policies and operation/scenario links. Products generates
+these inputs from its tested commit; LiveDocs generates the Allure HTML when building
+its documentation image. The receipt records the source commit/run, checksum, size
+and a stable private Blob URL without a SAS query. The `documentation-reference`
+Actions artifact and archive job summary expose the paths for the next integration
+step. A retry accepts an existing object only after downloading and comparing its
+bytes; it never overwrites a different bundle or receipt.
+
+### Configure the Products archive upload
+
+Run the following in PowerShell from the consolidated Terraform folder after the
+`livedocs` container has been applied. Azure CLI must be signed into the subscription;
+GitHub CLI must be signed into an account that can manage this repository's Actions
+secrets and variables. The existing storage account allows Shared Key access. This
+creates an HTTPS-only container SAS with a 90-day expiry, captures it locally and
+sends it to GitHub through standard input without printing it:
+
+```powershell
+$archiveAccount = terraform output -raw livedocs_storage_account_name
+if ($LASTEXITCODE -ne 0) { throw 'Storage account output failed' }
+$expiry = (Get-Date).ToUniversalTime().AddDays(90).ToString('yyyy-MM-ddTHH:mmZ')
+$archiveSas = az storage container generate-sas --account-name $archiveAccount --name livedocs --permissions rcw --https-only --expiry $expiry --output tsv --only-show-errors
+if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($archiveSas)) { throw 'SAS creation failed' }
+$archiveSas | gh secret set LIVEDOCS_STORAGE_SAS_TOKEN --repo MichalBoczula/ProductsCatalog
+if ($LASTEXITCODE -ne 0) { throw 'GitHub secret update failed' }
+Remove-Variable archiveSas
+gh variable set LIVEDOCS_STORAGE_ACCOUNT --body $archiveAccount --repo MichalBoczula/ProductsCatalog
+if ($LASTEXITCODE -ne 0) { throw 'GitHub account variable update failed' }
+gh variable set LIVEDOCS_PUBLISH_ENABLED --body true --repo MichalBoczula/ProductsCatalog
+if ($LASTEXITCODE -ne 0) { throw 'GitHub publication variable update failed' }
+```
+
+`LIVEDOCS_VERSION` is optional and defaults to `v1`. Renew the SAS before its expiry by
+replacing the same Actions secret. Do not paste the token into chat, source files or
+workflow output. For UI setup, use Products → Settings → Secrets and variables →
+Actions; create the secret above and the nonsecret publication/account variables.
+See the official [Azure container SAS command](https://learn.microsoft.com/en-us/cli/azure/storage/container#az-storage-container-generate-sas)
+and [GitHub secret command](https://cli.github.com/manual/gh_secret_set).
+
+Configure publication before merging this CI change, or before the next normal
+master push. Check that `archive-documentation` actually succeeds;
+a skipped job means publication was disabled or the run was not an eligible master
+push and needs a new eligible push after setup. Download the `documentation-reference`
+artifact for the exact archive URL.
+From the signed-in Azure CLI, this lists uploaded Products bundles without exposing
+the CI SAS:
+
+```powershell
+az storage blob list --account-name $archiveAccount --container-name livedocs --prefix reports/products/ --query '[].{name:name,size:properties.contentLength}' --output table
+```
+
+If an enabled upload fails, fix the credential or access issue and rerun only the
+failed archive job. It reuses the same tested bundle and verifies existing bytes.
+Generating a second bundle for the same run can create ambiguous receipts, so avoid
+rerunning successful packaging jobs during archive recovery.
 
 LiveDocs independently verifies a completed successful producer CI run and opens
 a manifest PR in its own repository. Its image builder generates Allure 2.46.1,
-then application Terraform deploys the chosen documentation image digest. This
+then the consolidated ECommerceStore.Terraform deploys the chosen documentation image digest. This
 handoff is asynchronous: service and documentation publication are not an atomic
 deployment transaction. See [ADR-0011](docs/adr/0011-livedocs-blob-publication.md)
-and the [shared setup guide](https://github.com/MichalBoczula/ECommerceStore.LiveDocs/blob/main/docs/producer-integration.md)
-for repository variables, identities and version selection.
+and [ADR-0012](docs/adr/0012-consolidated-livedocs-upload.md) for this producer's
+authentication and storage setup. LiveDocs' current reader/import documentation still
+describes the older OIDC setup; configuring its reader and adding the Products path
+are a separate follow-up. This change does not update a running documentation site.
