@@ -369,7 +369,7 @@ commit/run identity. Bundle validation is a required quality-gate check before
 building/scanning/publishing the service image. PRs retain a short-lived
 `documentation-bundle` artifact for review and never upload to Azure.
 
-After a successful master image publication, the optional archive job writes the
+After every successful master image publication, the archive job writes the
 same source's bundle and discovery receipt to the private `livedocs` Blob container.
 The consolidated store uses `stecproductsdevmb261013` by default. Products authenticates
 with a container-scoped SAS held in its Actions secret `LIVEDOCS_STORAGE_SAS_TOKEN`.
@@ -377,11 +377,12 @@ The token needs read/create/write access to `livedocs`; read permits byte verifi
 when retrying an upload. It grants no access to `photos` or `invoices`. No Azure login,
 new identity or Terraform resource is needed for this producer step.
 
-Set `LIVEDOCS_PUBLISH_ENABLED=true` only after the secret is configured. When enabled,
-missing credentials, expiry, upload failures or conflicting existing bytes fail the
+Configure the SAS secret before a master push. Missing credentials, expiry, upload
+failures or conflicting existing bytes fail the
 archive job. PRs never upload. Docker Hub publication remains subject to all existing
-gates and uses the already scanned image. Bundle validation remains mandatory even
-when archive publication is disabled.
+gates and uses the already scanned image. Bundle validation remains mandatory.
+The previous `LIVEDOCS_PUBLISH_ENABLED` variable is no longer used; a successful master
+run publishes automatically, without an additional activation setting.
 
 The job writes a content-addressed bundle first, then the discovery receipt:
 
@@ -419,21 +420,19 @@ if ($LASTEXITCODE -ne 0) { throw 'GitHub secret update failed' }
 Remove-Variable archiveSas
 gh variable set LIVEDOCS_STORAGE_ACCOUNT --body $archiveAccount --repo MichalBoczula/ProductsCatalog
 if ($LASTEXITCODE -ne 0) { throw 'GitHub account variable update failed' }
-gh variable set LIVEDOCS_PUBLISH_ENABLED --body true --repo MichalBoczula/ProductsCatalog
-if ($LASTEXITCODE -ne 0) { throw 'GitHub publication variable update failed' }
 ```
 
 `LIVEDOCS_VERSION` is optional and defaults to `v1`. Renew the SAS before its expiry by
 replacing the same Actions secret. Do not paste the token into chat, source files or
 workflow output. For UI setup, use Products → Settings → Secrets and variables →
-Actions; create the secret above and the nonsecret publication/account variables.
+Actions; create the secret above and, if overriding the default account, the nonsecret
+`LIVEDOCS_STORAGE_ACCOUNT` variable.
 See the official [Azure container SAS command](https://learn.microsoft.com/en-us/cli/azure/storage/container#az-storage-container-generate-sas)
 and [GitHub secret command](https://cli.github.com/manual/gh_secret_set).
 
-Configure publication before merging this CI change, or before the next normal
-master push. Check that `archive-documentation` actually succeeds;
-a skipped job means publication was disabled or the run was not an eligible master
-push and needs a new eligible push after setup. Download the `documentation-reference`
+Configure the secret before the next normal master push. Check that
+`archive-documentation` actually succeeds. It is skipped on PRs and when its required
+quality/image jobs do not succeed. Download the `documentation-reference`
 artifact for the exact archive URL.
 From the signed-in Azure CLI, this lists uploaded Products bundles without exposing
 the CI SAS:

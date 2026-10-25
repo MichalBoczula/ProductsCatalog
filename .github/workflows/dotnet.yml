@@ -167,7 +167,7 @@ jobs:
       features: tests/ProductCatalog.Acceptance.Tests/Features
 
   archive-documentation:
-    if: ${{ always() && !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/master' && vars.LIVEDOCS_PUBLISH_ENABLED == 'true' && needs.quality-gate.result == 'success' && needs.build-docker-image.result == 'success' }}
+    if: ${{ always() && !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.quality-gate.result == 'success' && needs.build-docker-image.result == 'success' }}
     needs: [quality-gate, build-docker-image]
     runs-on: ubuntu-24.04
     timeout-minutes: 10

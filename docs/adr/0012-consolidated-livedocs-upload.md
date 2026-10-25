@@ -20,15 +20,16 @@ validation policies and operation links. Render Allure HTML in LiveDocs, preserv
 the existing artifact contract rather than introducing a second report format.
 
 After successful master quality checks, image scanning and Docker Hub publication,
-an explicitly enabled Products archive job uses Azure CLI with a container-scoped
+the Products archive job uses Azure CLI with a container-scoped
 SAS from `LIVEDOCS_STORAGE_SAS_TOKEN`. Keep the default target account
 `stecproductsdevmb261013`, allow the existing account/version variables to override
 it, and require read/create/write permissions to `livedocs`. No Azure OIDC login,
 management credentials or new cloud resources are required for this producer.
 
 Keep all existing security/coverage gates and the required documentation-bundle job.
-PRs never upload; publication defaults off until `LIVEDOCS_PUBLISH_ENABLED=true`.
-Once enabled, missing/expired credentials and storage errors fail the archive job.
+PRs never upload. Every successful master image publication archives its documentation;
+the SAS secret is the required setup, with no separate publication-enable variable.
+Missing/expired credentials and storage errors fail the archive job.
 Before upload, verify bundle metadata matches the Products repository, source commit
 and workflow run. Compute the ZIP's SHA-256 and size and publish the bundle before
 its stable discovery receipt, using the existing reports/candidates paths.
