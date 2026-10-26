@@ -426,8 +426,10 @@ filter documents case-insensitive names and numeric enum values. Photo reference
 can be filenames or URLs, so they do not claim an absolute-URI format. Existing SQL
 history timestamps omit the offset: OpenAPI now calls that form `date-time-local`
 and explains the stored UTC semantics, rather than claiming RFC 3339 `date-time`.
-Wire payloads, business validation and persistence behavior are unchanged; this
-package corrects their published metadata without adding dependencies.
+The stricter checks also exposed a missing SQL projection: top phones returned a
+null description despite the non-null DTO. The query now selects the stored
+description, and SQL/HTTP tests check it against the created phone. Business
+validation and write/history behavior are unchanged; no dependency is added.
 
 Each captured exchange has a linked `HTTP contract observation` with its operation,
 request-schema result and actual response-contract result. Invalid requests still

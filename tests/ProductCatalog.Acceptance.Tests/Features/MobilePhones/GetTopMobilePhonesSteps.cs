@@ -131,6 +131,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
             result.Count.ShouldBe(table.Rows.Count);
+            AssertTopPayload(result);
             for (var i = 0; i < table.Rows.Count; i++)
             {
                 var expected = table.Rows[i];
@@ -152,6 +153,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
             result.Count.ShouldBe(int.Parse(ParseExpectedTable(table)["Amount"], CultureInfo.InvariantCulture));
+            AssertTopPayload(result);
             using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
             var ids = _createdMobilePhones.Select(phone => phone.Id).ToArray();
@@ -169,6 +171,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var top = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             top.ShouldNotBeNull();
             top.Count.ShouldBe(int.Parse(ParseExpectedTable(table)["Amount"], CultureInfo.InvariantCulture));
+            AssertTopPayload(top);
             using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
             var ids = _createdMobilePhones.Select(phone => phone.Id).ToArray();
@@ -197,6 +200,19 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
 
+
+        private void AssertTopPayload(IEnumerable<TopMobilePhoneDto> phones)
+        {
+            foreach (var phone in phones)
+            {
+                var expected = _createdMobilePhones.Single(created => created.Id == phone.Id);
+                phone.CommonDescription.Name.ShouldBe(expected.CommonDescription.Name);
+                phone.CommonDescription.Brand.ShouldBe(expected.CommonDescription.Brand);
+                phone.CommonDescription.Description.ShouldBe(expected.CommonDescription.Description);
+                phone.CommonDescription.MainPhoto.ShouldBe(expected.CommonDescription.MainPhoto);
+                phone.Price.ShouldBe(expected.Price);
+            }
+        }
 
         private async Task ClearMobilePhones()
         {

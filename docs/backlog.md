@@ -52,6 +52,8 @@ all 10 revised technical cases matched their source descriptions/tables. BDD-07
 adds request/response schema checks to all scenario clients, generated field
 semantics/examples, accurate nullable enum/timestamp metadata and create Location
 checks, with linked per-exchange observations and negative contract regressions.
+The stricter null check exposed a missing Description column in the top-phone
+SQL projection; it now returns the stored description as its DTO declares.
 Its completion requires full CI and review of the actual report bundle.
 BDD-08 and BDD-09 remain planned. Green checks for one package do not certify the later packages.
 Deployment and LiveDocs snapshot promotion are deferred until all packages are
