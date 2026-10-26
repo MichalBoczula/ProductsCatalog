@@ -348,6 +348,22 @@ The acceptance matrix retains the same stable IDs after title changes. Validatio
 races/faults, technical cases and deeper contract checks remain in their later
 packages; no application endpoint or database schema changes in this package.
 
+BDD-04 makes the 23 validation, missing-resource and framework rejection cases
+explicit. Nine framework failures are individual scenarios with HTTP input tables,
+raw body text or a single JSON-member mutation. Type/null cases start from an
+otherwise valid create body; the missing-member case omits only commonDescription.
+Every revised case checks the problem status, media type, stable code, path,
+trace ID and error/missing-member arrays alongside its cause-specific expectations.
+A SQL snapshot before the rejected action is compared with current data and history
+afterward, including field values as well as counts; the report records the result.
+The original stable scenario IDs are retained. Converting the nine framework
+examples to plain scenarios replaces their example instance identities because
+the Case/Status/Code outline parameters are no longer their input model. Malformed
+text and bodyless requests retain faithful HTTP evidence. Runtime API behavior,
+validation policies and schemas are unchanged; deployment and LiveDocs promotion
+remain deferred. Races/persistence faults, technical scenarios and deeper contract
+validation remain in BDD-05 through BDD-08.
+
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
 ## CI

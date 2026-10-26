@@ -25,14 +25,26 @@ Scenario: Browsing an empty catalogue returns an empty list
 		| StatusCode | 200   |
 		| Amount     | 0     |
 
-Scenario Outline: Get mobile phones by amount fails for an invalid amount <amount>
+Scenario Outline: Browsing the catalogue rejects a nonpositive amount <amount>
+  The requested amount must be greater than zero; rejection cannot change catalogue data or history.
+	Given the catalogue and history are recorded before the rejected request
 	When I request mobile phones with amount <amount>
 	Then the mobile phone request fails with validation error
-		| Field        | Value                               |
-		| StatusCode   | 400                                 |
-		| ErrorMessage | Amount must be greater than zero.   |
-		| ErrorEntity  | Amount                              |
-		| ErrorName    | AmountGreaterThanZeroValidationRule |
+		| Field                  | Value                               |
+		| StatusCode             | 400                                 |
+		| Code                   | validation_failed                   |
+		| ContentType            | application/problem+json            |
+		| ErrorCount             | 1                                   |
+		| MissingPropertiesCount | 0                                   |
+		| ErrorMessage           | Amount must be greater than zero.   |
+		| ErrorEntity            | Amount                              |
+		| ErrorName              | AmountGreaterThanZeroValidationRule |
+	And the rejected request leaves the catalogue and history unchanged
+		| Field                | Value |
+		| CurrentRowsChange    | 0     |
+		| HistoryRowsChange    | 0     |
+		| CurrentDataUnchanged | true  |
+		| HistoryDataUnchanged | true  |
 
 	Examples:
 		| amount | scenarioId               |

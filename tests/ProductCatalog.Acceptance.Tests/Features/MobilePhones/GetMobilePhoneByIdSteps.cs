@@ -170,32 +170,27 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             mobilePhone.Sensors.AmbientLight.ShouldBe(_request.Sensors.AmbientLight);
         }
 
-        [Given("a mobile phone without specific id doesnt exists")]
+        [Given("a mobile phone ID that does not exist for reading")]
         public void GivenAMobilePhoneWithoutSpecificIdDoesntExists()
         {
             _mobilePhoneId = Guid.NewGuid();
         }
 
-        [When("I send request for mobile phone by not existed id")]
+        [When("I request the mobile phone using the unknown ID")]
         public async Task WhenIRequestTheMobilePhoneByNotExistedId()
         {
-            AllureJson.AttachObject(
-                "Request JSON (get by missing id)",
-                new { MobilePhoneId = _mobilePhoneId },
-                _jsonOptions
-            );
-
             _responseFailure = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}");
 
             var body = await _responseFailure.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
         }
 
-        [Then("response show not found error for mobile phone")]
+        [Then("the unknown phone returns a not-found problem")]
         public async Task ThenResponseShowNotFoundErrorForMobilePhone(Table table)
         {
             var expected = ParseExpectedTable(table);
             _responseFailure.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_responseFailure, table);
             _responseFailure!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             var problem = await DeserializeResponse<NotFoundProblemDetails>(_responseFailure);

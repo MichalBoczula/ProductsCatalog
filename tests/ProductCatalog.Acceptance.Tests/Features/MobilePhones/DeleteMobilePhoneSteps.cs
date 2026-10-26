@@ -116,17 +116,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I submit the delete mobile phone request for missing mobile phone")]
         public async Task WhenISubmitTheDeleteMobilePhoneRequestForMissingMobilePhone()
         {
-            var deleteRequest = new
-            {
-                MobilePhoneId = _missingMobilePhoneId
-            };
-
-            AllureJson.AttachObject(
-                "Request JSON (delete missing)",
-                deleteRequest,
-                _jsonOptions
-            );
-
             _response = await _apiContext.Client!.DeleteAsync($"/mobile-phones/{_missingMobilePhoneId}");
             var json = await _response.Content.ReadAsStringAsync();
 
@@ -136,10 +125,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone deletion fails with validation errors")]
-        public void ThenTheMobilePhoneDeletionFailsWithValidationErrors(Table table)
+        public async Task ThenTheMobilePhoneDeletionFailsWithValidationErrors(Table table)
         {
             var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_response, table);
             _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             _apiProblem.ShouldNotBeNull();

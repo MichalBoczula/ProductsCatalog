@@ -113,6 +113,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_response, table);
             _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             var problem = await DeserializeResponse<ApiProblemDetails>(_response);

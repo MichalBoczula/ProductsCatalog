@@ -75,6 +75,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             var expected = ParseTable(table);
             _response.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_response, table);
 
             var expectedStatus = (HttpStatusCode)int.Parse(GetValue(expected, "StatusCode"), CultureInfo.InvariantCulture);
             _response.StatusCode.ShouldBe(expectedStatus);

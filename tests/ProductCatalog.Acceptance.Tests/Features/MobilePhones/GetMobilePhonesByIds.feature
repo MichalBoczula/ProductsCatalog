@@ -96,11 +96,25 @@ Feature: Get mobile phones by ids
 
 
   @allure.label.scenarioId:REF07_GetMobilePhonesByIds_03
-  Scenario: Get mobile phones by ids fails for an empty id list
+  Scenario: Reading selected phones rejects an empty ID list
+    The by-IDs endpoint requires at least one ID and rejects an empty JSON array.
+    Given the catalogue and history are recorded before the rejected request
     When I request the mobile phones with an empty id list
+      | Field | Value |
+      | Ids   | []    |
     Then the get mobile phones by ids request fails with validation error
-      | Field        | Value                                                  |
-      | StatusCode   | 400                                                    |
-      | ErrorMessage | At least one mobile phone Id must be provided.        |
-      | ErrorEntity  | mobilePhoneIds                                         |
-      | ErrorName    | GetMobilePhoneByIdsQuery                               |
+      | Field                  | Value                                          |
+      | StatusCode             | 400                                            |
+      | Code                   | validation_failed                              |
+      | ContentType            | application/problem+json                       |
+      | ErrorCount             | 1                                              |
+      | MissingPropertiesCount | 0                                              |
+      | ErrorMessage           | At least one mobile phone Id must be provided. |
+      | ErrorEntity            | mobilePhoneIds                                 |
+      | ErrorName              | GetMobilePhoneByIdsQuery                       |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |

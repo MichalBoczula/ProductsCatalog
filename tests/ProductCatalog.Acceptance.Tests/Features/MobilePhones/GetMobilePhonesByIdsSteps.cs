@@ -65,9 +65,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [When("I request the mobile phones with an empty id list")]
-        public async Task WhenIRequestTheMobilePhonesWithAnEmptyIdList()
+        public async Task WhenIRequestTheMobilePhonesWithAnEmptyIdList(Table table)
         {
-            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones/by-ids", Array.Empty<Guid>(), _jsonOptions);
+            var values = table.Rows.ToDictionary(row => row["Field"], row => row["Value"]);
+            var ids = JsonSerializer.Deserialize<Guid[]>(values["Ids"]);
+            ids.ShouldNotBeNull();
+            ids.ShouldBeEmpty();
+            _response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones/by-ids", ids, _jsonOptions);
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
@@ -78,6 +82,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             var expected = table.Rows.ToDictionary(row => row["Field"], row => row["Value"], StringComparer.OrdinalIgnoreCase);
             _response.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_response, table);
             _response!.StatusCode.ShouldBe((HttpStatusCode)int.Parse(expected["StatusCode"], CultureInfo.InvariantCulture));
 
             var problem = await _response.Content.ReadFromJsonAsync<ApiProblemDetails>(_jsonOptions);

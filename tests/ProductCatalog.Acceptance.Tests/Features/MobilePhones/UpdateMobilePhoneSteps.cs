@@ -125,7 +125,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _updatedMobilePhone.Description3.ShouldBe(_updateRequest.Description3);
         }
 
-        [Given("mobile phone identify by id not exists")]
+        [Given("a mobile phone ID that does not exist for replacement")]
         public async Task GivenMobilePhoneIdentifyByIdNotExists(Table table)
         {
             _missingMobilePhoneId = Guid.NewGuid();
@@ -154,10 +154,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone update fails with validation errors")]
-        public void ThenTheMobilePhoneUpdateFailsWithValidationErrors(Table table)
+        public async Task ThenTheMobilePhoneUpdateFailsWithValidationErrors(Table table)
         {
             var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_response, table);
             _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             _apiProblem.ShouldNotBeNull();
