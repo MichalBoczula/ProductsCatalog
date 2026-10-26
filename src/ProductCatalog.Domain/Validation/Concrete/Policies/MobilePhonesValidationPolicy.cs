@@ -1,4 +1,4 @@
-﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
@@ -6,6 +6,7 @@ using ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
+    [Documentation("products.policy.phone", "Validate aggregate presence, common description and camera/secondary descriptions. The money-rule collection is empty; hardware policy is not invoked.")]
     public sealed class MobilePhonesValidationPolicy
         : IValidationPolicy<MobilePhone>, IValidationPolicyDescriptorProvider
     {

@@ -37,8 +37,19 @@ python3 - "$exports_dir" <<'CHECK'
 import json
 from pathlib import Path
 import sys
+from importlib.machinery import SourceFileLoader
 for name in ["flows.json", "validation-policies.json"]:
     value = json.loads((Path(sys.argv[1]) / name).read_text())
     if not isinstance(value, (dict, list)) or not value:
         raise SystemExit(f"Missing structured documentation: {name}")
+links = SourceFileLoader("operation_links", "scripts/generate-operation-links.py").load_module().generate()["documentation"]
+flows = {item["actionName"]: item for item in json.loads((Path(sys.argv[1]) / "flows.json").read_text())}
+assert set(flows) == {item["actionName"] for item in links["flows"]}, "Runtime flow inventory differs from source"
+for flow in links["flows"]:
+    assert flows[flow["actionName"]]["steps"] == [step["description"] for step in flow["steps"]], "Runtime/source step descriptions differ"
+policies = {item["policyName"]: item for item in json.loads((Path(sys.argv[1]) / "validation-policies.json").read_text())}
+assert set(policies) == {item["name"] for item in links["policies"]}, "Runtime policy inventory differs from source"
+for policy in links["policies"]:
+    assert {rule["ruleName"] for rule in policies[policy["name"]]["rules"]} == {rule["name"] for rule in policy["rules"]}, "Runtime/source policy rules differ"
+print("Verified runtime flow text and policy rule inventories against stable source metadata")
 CHECK

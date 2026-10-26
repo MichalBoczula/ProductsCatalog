@@ -57,3 +57,11 @@ changes. The asynchronously published bundle still belongs to the tested commit/
 - Use the storage account key: gives the producer access beyond `livedocs`.
 - Upload generated HTML only: changes the existing validated source-bundle contract
   and loses inputs required by LiveDocs' versioned renderer.
+
+## Subsequent integration note (BDD-08)
+
+The shared LiveDocs portal subsequently integrated producer bundles. Producer
+archive upload and selection/deployment of a portal snapshot remain separate
+operations. BDD-08 improves Products sources and evidence links; promotion of
+these packages waits for the BDD-09 selected-snapshot audit. This note does not
+claim a new Azure upload or portal deployment was verified by this PR.

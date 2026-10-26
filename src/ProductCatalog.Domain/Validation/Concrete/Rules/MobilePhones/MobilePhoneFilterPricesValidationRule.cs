@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.Common.Filters;
+using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 {
+    [Documentation("products.rule.filter-prices", "Reject a negative supplied minimum or maximum price; omitted/null bounds are allowed.")]
     public sealed class MobilePhoneFilterPricesValidationRule : IValidationRule<MobilePhoneFilterDto>
     {
         private readonly ValidationError minimalPriceMustBeGreaterThanOrEqualToZero;

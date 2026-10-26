@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.Common.Filters;
+using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 {
+    [Documentation("products.rule.filter-range", "When both bounds are supplied, require minimum strictly less than maximum; equality is rejected.")]
     public sealed class MobilePhoneFilterPriceRangeValidationRule : IValidationRule<MobilePhoneFilterDto>
     {
         private readonly ValidationError minimalPriceMustBeLowerThanMaximalPrice;

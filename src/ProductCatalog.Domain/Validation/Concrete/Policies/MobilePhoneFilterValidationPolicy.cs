@@ -1,10 +1,11 @@
-﻿using ProductCatalog.Domain.Common.Filters;
+using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
+    [Documentation("products.policy.filter", "Validate optional brand and price bounds before constructing SQL filters.")]
     public sealed class MobilePhoneFilterValidationPolicy : IValidationPolicy<MobilePhoneFilterDto>, IValidationPolicyDescriptorProvider
     {
         private readonly List<IValidationRule<MobilePhoneFilterDto>> _rules = [];

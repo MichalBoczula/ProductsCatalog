@@ -1,13 +1,14 @@
 # Acceptance source and generated code
 
-The 12 Reqnroll `.feature` files and their step definitions are the source of
-the acceptance suite. They contain 31 declared scenarios or scenario outlines.
-The clean checkout CI run of CLEAN-01 discovered 35 executable cases after
-expanding outlines; REF-04 must keep these cases discoverable.
-Reqnroll generates `.feature.cs` during build; do not edit or commit these
-generated files. The previously tracked 11 generated files have been removed.
-The scenario for server errors has no previously checked-in generated file;
-the clean checkout build must generate it alongside the others.
+The `.feature` files and their step definitions are authoritative. At BDD-08,
+Products has 18 features, 56 declared scenarios/outlines and 64 expanded BDD cases;
+the acceptance project also contains non-BDD xUnit checks. Derive discovery counts
+from the reviewed source revision and CI results instead of treating this snapshot
+as a permanent total. Stable scenario/example IDs are metadata, independent of
+readable titles. The six framework cases now carry explicit branch labels.
+
+Reqnroll generates `.feature.cs` during build; do not edit or commit generated
+files. A clean checkout must discover all source scenarios and outline examples.
 
 Run the acceptance project using the command in `AGENTS.md`. CI restores,
 builds and runs the suite from a clean checkout, including the SQL Server

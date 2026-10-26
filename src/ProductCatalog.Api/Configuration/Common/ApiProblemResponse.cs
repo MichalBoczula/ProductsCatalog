@@ -1,7 +1,11 @@
 using ProductCatalog.Domain.Validation.Common;
+using ProductCatalog.Application.Common.FlowDescriptors.Common;
 
 namespace ProductCatalog.Api.Configuration.Common;
 
+[FlowOutcome("products.branch.http.route", "Routing finds no matching endpoint.", "Return route_not_found 404 as a safe JSON problem; no business flow is entered.", Stage = "framework")]
+[FlowOutcome("products.branch.http.method", "A route exists but does not support the supplied method.", "Return method_not_allowed 405 as a safe JSON problem; no business flow is entered.", Stage = "framework")]
+[FlowOutcome("products.branch.http.media", "Body binding rejects the supplied request media type.", "Return unsupported_media_type 415 as a safe JSON problem; no business flow is entered.", Stage = "framework")]
 internal static class ApiProblemResponse
 {
     public static Task WriteAsync(

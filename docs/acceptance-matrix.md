@@ -48,3 +48,13 @@ is a separate contract decision. The existing column requires no SQL migration.
 Physical removal after loading is covered for both PUT and DELETE. The DELETE
 case asserts 404 / `resource_not_found`, the missing current row, and preservation
 of the original history without an additional delete history entry.
+
+BDD-08 adds explicit source-owned `branchId` and comma-separated `ruleIds` to
+matrix rows. The generator verifies references, ownership and invoked-policy
+scope; it does not infer branches from status/cause prose. Six technical framework
+scenarios carry branch labels in Gherkin. The generated coverage section reports
+unlinked branches and active rules without rejection scenarios. HTTP documentation
+links distinguish primary When outcomes from setup, competing calls and follow-up
+reads, and require actual rejection errors to match expected rule IDs. See the
+[source documentation contract](source-description-contract.md) for identity,
+proof limits and future same-bundle RAG joins.

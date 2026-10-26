@@ -1,8 +1,9 @@
-﻿using ProductCatalog.Domain.Validation.Abstract;
+using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.Common
 {
+    [Documentation("products.rule.amount-positive", "Require amount greater than zero.")]
     public sealed class AmountGreaterThanZeroValidationRule : IValidationRule<int>
     {
         private readonly ValidationError amountMustBeGreaterThanZero;

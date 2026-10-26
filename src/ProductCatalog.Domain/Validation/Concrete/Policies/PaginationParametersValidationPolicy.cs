@@ -5,6 +5,7 @@ using ProductCatalog.Domain.Validation.Concrete.Rules.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
+    [Documentation("products.policy.pagination", "Validate history pagination before phone existence lookup.")]
     public sealed class PaginationParametersValidationPolicy : IValidationPolicy<PaginationParameters>, IValidationPolicyDescriptorProvider
     {
         private readonly List<IValidationRule<PaginationParameters>> _rules = [new PaginationParametersValidationRule()];

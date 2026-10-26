@@ -38,6 +38,44 @@ class OperationLinksTests(unittest.TestCase):
         with self.corrupt_endpoint(before, after), self.assertRaisesRegex(AssertionError, "No described flow"):
             links.generate()
 
+    def test_duplicate_stable_policy_or_rule_id_fails(self):
+        original = links.source
+        def changed(path):
+            code = original(path)
+            if path.name == "MobilePhonesStringValidationRule.cs":
+                return code.replace("products.rule.phone-strings", "products.rule.phone-exists")
+            return code
+        with patch.object(links, "source", side_effect=changed), self.assertRaisesRegex(AssertionError, "Duplicate policy/rule documentation ID"):
+            links.generate()
+
+    def test_missing_step_identity_fails(self):
+        original = links.source
+        def changed(path):
+            code = original(path)
+            if path.name == "CreateMobilePhoneCommandFlowDescribtor.cs":
+                return code.replace('"map-input", ', '', 1)
+            return code
+        with patch.object(links, "source", side_effect=changed), self.assertRaisesRegex(AssertionError, "Missing step identity"):
+            links.generate()
+
+    def test_standalone_rule_cannot_be_attached_to_an_invoked_branch(self):
+        original = links.source
+        def changed(path):
+            code = original(path)
+            if path.name == "CreateMobilePhoneCommandFlowDescribtor.cs":
+                return code.replace('"products.rule.phone-strings"', '"products.rule.hardware-numbers"', 1)
+            return code
+        with patch.object(links, "source", side_effect=changed), self.assertRaisesRegex(AssertionError, "inactive/standalone"):
+            links.generate()
+
+    def test_projection_preserves_actual_gaps_instead_of_claiming_full_coverage(self):
+        result = links.generate()["documentation"]
+        self.assertEqual(len(result["flows"]), 9)
+        self.assertEqual(len(result["technicalScenarios"]), 6)
+        self.assertEqual({p["name"] for p in result["policies"] if p["usage"] == "standalone"}, {"ElectronicDetailsValidationPolicy"})
+        self.assertIn("products.branch.history.history-read-failure", result["coverage"]["branchesWithoutLinkedScenario"])
+        self.assertIn("products.rule.filter-prices", result["coverage"]["activeRulesWithoutRejectedScenario"])
+
 
 if __name__ == "__main__":
     unittest.main()

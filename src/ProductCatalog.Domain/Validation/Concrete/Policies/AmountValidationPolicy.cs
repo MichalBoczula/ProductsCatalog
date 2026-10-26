@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.Validation.Abstract;
+using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
+    [Documentation("products.policy.amount", "Validate the requested maximum list amount before querying SQL.")]
     public sealed class AmountValidationPolicy : IValidationPolicy<int>, IValidationPolicyDescriptorProvider
     {
         private readonly List<IValidationRule<int>> _rules = [];

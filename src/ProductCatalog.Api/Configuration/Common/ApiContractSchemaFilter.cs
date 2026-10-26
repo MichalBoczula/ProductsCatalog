@@ -89,7 +89,7 @@ public sealed class ApiContractSchemaFilter : ISchemaFilter
         ["message"] = ("Human-readable possible or actual validation error.", "\"Name cannot be null or whitespace.\""),
         ["entity"] = ("Name of the validated entity or request type.", "\"MobilePhone\""),
         ["actionName"] = ("Command/query name whose flow is described.", "\"CreateMobilePhoneCommand\""),
-        ["steps"] = ("Ordered source flow labels. Publishing a flow does not prove every branch was executed.", "[\"ValidateEntity\"]"),
+        ["steps"] = ("Ordered source flow labels. Publishing a flow does not prove every branch was executed.", "[\"Validate amount greater than zero before querying SQL.\"]"),
         ["policyName"] = ("Published validation policy name. Publication alone does not mean an endpoint invokes the policy.", "\"MobilePhonesValidationPolicy\""),
         ["ruleName"] = ("Published rule implementation name.", "\"MobilePhonesCommonDescriptionValidationRule\""),
         ["rules"] = ("Policy rule descriptors, or a rule's possible validation errors, according to the referenced item schema.", null)

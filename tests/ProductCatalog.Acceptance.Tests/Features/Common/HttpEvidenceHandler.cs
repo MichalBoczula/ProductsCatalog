@@ -6,12 +6,14 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common;
 internal sealed class HttpEvidenceHandler(ScenarioHttpEvidence evidence) : DelegatingHandler
 {
     internal static readonly HttpRequestOptionsKey<string> ExchangeIdKey = new("Products.HttpEvidence.ExchangeId");
+    internal static readonly HttpRequestOptionsKey<string> StepPhaseKey = new("Products.HttpEvidence.StepPhase");
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var sequence = evidence.NextExchange();
         var exchangeId = $"{evidence.InstanceId}/{sequence}";
         request.Options.Set(ExchangeIdKey, exchangeId);
+        request.Options.Set(StepPhaseKey, evidence.StepPhase);
         var method = request.Method.Method;
         var path = request.RequestUri?.AbsolutePath;
         var query = request.RequestUri?.Query;

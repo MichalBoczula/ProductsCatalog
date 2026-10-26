@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetailsRules
 {
+    [Documentation("products.rule.hardware-strings", "Standalone rule: reject blank CPU, GPU, RAM, storage, display type or battery type; create/update do not invoke this policy.")]
     public sealed class ElectronicDetailsStringsValidationRule : IValidationRule<ElectronicDetails>
     {
         private readonly ValidationError cpuIsNullOrWhitespace;

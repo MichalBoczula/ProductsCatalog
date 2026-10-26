@@ -4,6 +4,7 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.Common
 {
+    [Documentation("products.rule.pagination-positive", "Require both one-based page number and page size greater than zero before looking up the phone.")]
     public sealed class PaginationParametersValidationRule : IValidationRule<PaginationParameters>
     {
         private readonly List<ValidationError> _errors =

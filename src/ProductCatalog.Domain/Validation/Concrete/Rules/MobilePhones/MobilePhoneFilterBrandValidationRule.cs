@@ -1,10 +1,11 @@
-﻿using ProductCatalog.Domain.Common.Enums;
+using ProductCatalog.Domain.Common.Enums;
 using ProductCatalog.Domain.Common.Filters;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 {
+    [Documentation("products.rule.filter-brand", "If a brand is supplied, require a defined MobilePhonesBrand value; null means no brand filter.")]
     public sealed class MobilePhoneFilterBrandValidationRule : IValidationRule<MobilePhoneFilterDto>
     {
         private readonly ValidationError brandMustExistInMobilePhonesBrand;

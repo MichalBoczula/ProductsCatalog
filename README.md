@@ -444,6 +444,31 @@ and report schema comparison as not applicable. Bootstrap Swagger retrieval stay
 outside scenario exchanges. Deployment and LiveDocs promotion remain deferred;
 BDD-08 covers semantic flow/rule/evidence links before the BDD-09 final audit.
 
+BDD-08 gives all 57 flow steps readable source descriptions and stable keys.
+Source attributes identify nine flows, five policies, ten policy rules, the inline
+empty-ID guard and declared branch conditions/effects. The existing generated
+operation-links artifact now includes that catalogue, source locations, explicit
+scenario/branch/rule joins and uncovered branches/rules. Runtime flow and policy
+endpoint shapes are retained; their text/inventories are compared with source.
+
+Each exchange receives `HTTP documentation links` joined to its actual request,
+response and contract observation by exchangeId. A target operation/status in the
+When phase identifies the primary scenario exchange; setup/competing calls and
+follow-up reads do not claim its branch. Expected rejection rules must be present
+in actual validation errors. Declared steps/policies and expected branches are
+source knowledge, not runtime step telemetry. Technical framework labels have
+explicit source branches; health/startup/isolation evidence does not invent
+business-rule execution. Scenario IDs, example identities and existing tables
+are preserved.
+
+The hardware policy remains standalone and the phone policy has no money rules.
+Three application branches and three active validation rules currently have no
+dedicated linked BDD case; the generated coverage section names them. The
+[source documentation contract](docs/source-description-contract.md) explains the
+gaps, proof limits and same-bundle retrieval joins. No new Python script, package,
+Azure resource, business rule or RAG index is added. BDD-09 must review completeness
+and historical design-first evidence before deployment/LiveDocs promotion.
+
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
 ## CI
