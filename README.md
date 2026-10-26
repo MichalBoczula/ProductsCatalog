@@ -421,7 +421,10 @@ The API's Swagger filters add field semantics and typed examples to the DTO-deri
 schemas. Response fields that are always serialized are marked present; request
 requiredness still follows serializer metadata. In particular, an unannotated
 nested record parameter is not automatically a required JSON member. Unknown
-request members remain allowed, matching System.Text.Json. The nullable brand
+request members remain allowed, matching System.Text.Json. Request JSON member
+matching is case-insensitive like ASP.NET's web serializer, so a known member
+such as `Brand` still receives the `brand` schema checks; response names remain
+exact. Captured request bytes are never renamed or rewritten. The nullable brand
 filter documents case-insensitive names and numeric enum values. Photo references
 can be filenames or URLs, so they do not claim an absolute-URI format. Existing SQL
 history timestamps omit the offset: OpenAPI now calls that form `date-time-local`

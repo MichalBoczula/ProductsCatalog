@@ -107,12 +107,13 @@ public sealed class OpenApiContractTests
         Assert.Throws<JsonException>(() => JsonSerializer.Deserialize<CreateMobilePhoneExternalDto>(sample, new JsonSerializerOptions(JsonSerializerDefaults.Web)));
     }
 
-    [Fact]
-    public async Task InvalidRequestsReachTheServerAndTheirProblemsAndEvidenceAreValidated()
+    [Theory]
+    [InlineData("/mobile-phones", "{not-json")]
+    [InlineData("/mobile-phones/filter", "{\"Brand\":999}")]
+    public async Task InvalidRequestsReachTheServerAndTheirProblemsAndEvidenceAreValidated(string path, string raw)
     {
         using var document = await Contract();
         var evidence = new ScenarioHttpEvidence("REF07_CreateMobilePhone_type", "Contract checks", "Invalid JSON", new());
-        const string raw = "{not-json";
         var received = false;
         using var client = new HttpClient(new OpenApiResponseHandler(document, evidence)
         {
@@ -126,7 +127,7 @@ public sealed class OpenApiContractTests
                 })
             }
         });
-        using var response = await client.PostAsync("http://localhost/mobile-phones", new StringContent(raw, Encoding.UTF8, "application/json"));
+        using var response = await client.PostAsync($"http://localhost{path}", new StringContent(raw, Encoding.UTF8, "application/json"));
         Assert.True(received);
         var records = new List<(string Name, JsonElement Value)>();
         evidence.Flush((name, value) => records.Add((name, JsonSerializer.SerializeToElement(value, ScenarioHttpEvidence.JsonOptions))));

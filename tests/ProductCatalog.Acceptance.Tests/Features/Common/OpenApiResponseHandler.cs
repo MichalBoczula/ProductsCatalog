@@ -77,6 +77,7 @@ internal sealed class OpenApiResponseHandler(JsonDocument document, ScenarioHttp
             request = new
             {
                 schemaApplicable = operationId is not null,
+                jsonPropertyNameComparison = operationId is null ? null : "ordinal-ignore-case",
                 matchesSchema = operationId is null ? (bool?)null : requestErrors.Count == 0,
                 rejectedInvalidInput = allowedInvalidRequest,
                 errors = requestErrors
@@ -141,7 +142,7 @@ internal sealed class OpenApiResponseHandler(JsonDocument document, ScenarioHttp
             errors.Add("request.body: unsupported media type");
             return;
         }
-        CheckJson(representation.GetProperty("schema"), bytes, "request.body", errors);
+        CheckJson(representation.GetProperty("schema"), bytes, "request.body", errors, caseInsensitiveProperties: true);
     }
 
     private async Task CheckResponse(HttpResponseMessage response, JsonElement declared, List<string> errors, CancellationToken cancellation)
@@ -208,12 +209,12 @@ internal sealed class OpenApiResponseHandler(JsonDocument document, ScenarioHttp
         catch (JsonException) { errors.Add("Problem body is not valid JSON"); }
     }
 
-    private void CheckJson(JsonElement schema, byte[] bytes, string path, List<string> errors)
+    private void CheckJson(JsonElement schema, byte[] bytes, string path, List<string> errors, bool caseInsensitiveProperties = false)
     {
         try
         {
             using var body = JsonDocument.Parse(bytes);
-            errors.AddRange(OpenApiSchemaAssertions.Errors(schema, body.RootElement, Components, path));
+            errors.AddRange(OpenApiSchemaAssertions.Errors(schema, body.RootElement, Components, path, caseInsensitiveProperties));
         }
         catch (JsonException) { errors.Add($"{path}: malformed JSON"); }
     }
