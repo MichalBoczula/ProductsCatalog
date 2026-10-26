@@ -6,9 +6,9 @@ Feature: Product documentation endpoints
     Then the "<operationId>" documentation lists registered descriptors
 
     Examples:
-      | operationId                |
-      | DescribeAllFlows           |
-      | DescribeValidationPolicies |
+      | operationId                | scenarioId                          |
+      | DescribeAllFlows           | REF07_DescribeAllFlows_01           |
+      | DescribeValidationPolicies | REF07_DescribeValidationPolicies_01 |
 
   Scenario Outline: <operationId> returns a safe 500 when a descriptor fails
     Given the "<operationId>" documentation descriptor fails
@@ -16,6 +16,6 @@ Feature: Product documentation endpoints
     Then the documentation error is safe and the descriptor was called
 
     Examples:
-      | operationId                |
-      | DescribeAllFlows           |
-      | DescribeValidationPolicies |
+      | operationId                | scenarioId                          |
+      | DescribeAllFlows           | REF07_DescribeAllFlows_02           |
+      | DescribeValidationPolicies | REF07_DescribeValidationPolicies_02 |

@@ -1,5 +1,6 @@
 ﻿Feature: Get mobile phone by id
 
+  @allure.label.scenarioId:REF07_GetMobilePhoneById_01
   Scenario: Get mobile phone by id returns mobile phone
     Given an existing mobile phone id
       | Field            | Value                             |
@@ -52,6 +53,7 @@
       | PriceAmount   | 799.99           |
       | PriceCurrency | USD              |
 
+  @allure.label.scenarioId:REF07_GetMobilePhoneById_02
   Scenario: Get mobile phone by id fails for missing mobile phone
     Given a mobile phone without specific id doesnt exists
     When I send request for mobile phone by not existed id

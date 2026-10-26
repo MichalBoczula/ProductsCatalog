@@ -1,5 +1,6 @@
 ﻿Feature: Get mobile phones by amount
 
+@allure.label.scenarioId:REF07_GetMobilePhones_01
 Scenario: Get mobile phones by amount returns matching list
 	Given no mobile phones exist in the database
 	And an existing list of mobile phones
@@ -48,6 +49,7 @@ Scenario: Get mobile phones by amount returns matching list
 		| StatusCode       | 200          |
 		| Amount           | 2            |
 
+@allure.label.scenarioId:REF07_GetMobilePhones_02
 Scenario: Get mobile phones by amount returns an empty list when no mobile phones exist
 	Given no mobile phones exist in the database
 	When I request mobile phones with amount 3
@@ -63,6 +65,6 @@ Scenario Outline: Get mobile phones by amount fails for an invalid amount <amoun
 		| ErrorName    | AmountGreaterThanZeroValidationRule |
 
 	Examples:
-		| amount |
-		| 0      |
-		| -1     |
+		| amount | scenarioId               |
+		| 0      | REF07_GetMobilePhones_03 |
+		| -1     | REF07_GetMobilePhones_03 |

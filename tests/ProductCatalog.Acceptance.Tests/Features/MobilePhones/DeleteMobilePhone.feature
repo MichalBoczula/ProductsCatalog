@@ -1,5 +1,6 @@
 ﻿Feature: Delete mobile phone
 
+  @allure.label.scenarioId:REF07_DeleteMobilePhone_01
   Scenario: Delete mobile phone returns ok response
     Given an existing mobile phone to delete
       | Field            | Value                             |
@@ -53,6 +54,7 @@
       | PriceAmount   | 799.99            |
       | PriceCurrency | USD               |
 
+  @allure.label.scenarioId:REF07_DeleteMobilePhone_02
   Scenario: Delete mobile phone fails for missing mobile phone
     Given a mobile phone id that does not exist
     When I submit the delete mobile phone request for missing mobile phone

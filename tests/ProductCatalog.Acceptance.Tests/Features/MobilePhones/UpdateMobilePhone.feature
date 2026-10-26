@@ -1,5 +1,6 @@
 ﻿Feature: Update mobile phone
 
+  @allure.label.scenarioId:REF07_UpdateMobilePhone_01
   Scenario: Update mobile phone returns ok response
     Given an existing mobile phone which will be updated
       | Field               | Value                            |
@@ -51,6 +52,7 @@
       | PriceAmount   | 899.99               |
       | PriceCurrency | EUR                  |
 
+  @allure.label.scenarioId:REF07_UpdateMobilePhone_02
   Scenario: Update mobile phone fails for missing mobile phone
     Given mobile phone identify by id not exists
       | Field               | Value                            |

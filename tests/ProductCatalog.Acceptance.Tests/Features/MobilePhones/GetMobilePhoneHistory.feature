@@ -1,5 +1,6 @@
 ﻿Feature: Get mobile phone history
 
+  @allure.label.scenarioId:REF07_GetMobilePhoneHistory_01
   Scenario: Get mobile phone history returns history
     Given an existing mobile phone with history
       | Field           | Value                                |
@@ -50,6 +51,7 @@
       | IsActive   | true     |
       | ChangedAt  | set      |
 
+  @allure.label.scenarioId:REF07_GetMobilePhoneHistory_02
   Scenario: Get mobile phone history fails for missing mobile phone
     Given a missing mobile phone id
     When I request the mobile phone history for the missing id
@@ -60,6 +62,7 @@
       | Detail     | Resource MobilePhoneHistoryDto identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery.                |
       | Instance   | /mobile-phones/{MobilePhoneId}/history                                                                                              |
 
+  @allure.label.scenarioId:REF07_GetMobilePhoneHistory_03
   Scenario: Get mobile phone history returns an empty list when the phone has no history
     Given an existing mobile phone without history
     When I request the mobile phone history
@@ -76,9 +79,9 @@
       | ErrorName    | PaginationParametersValidationRule         |
 
     Examples:
-      | pageNumber |
-      | 0          |
-      | -1         |
+      | pageNumber | scenarioId                     |
+      | 0          | REF07_GetMobilePhoneHistory_04 |
+      | -1         | REF07_GetMobilePhoneHistory_04 |
 
   Scenario Outline: Get mobile phone history fails for an invalid page size <pageSize>
     Given a missing mobile phone id
@@ -91,6 +94,6 @@
       | ErrorName    | PaginationParametersValidationRule         |
 
     Examples:
-      | pageSize |
-      | 0        |
-      | -1       |
+      | pageSize | scenarioId                     |
+      | 0        | REF07_GetMobilePhoneHistory_05 |
+      | -1       | REF07_GetMobilePhoneHistory_05 |

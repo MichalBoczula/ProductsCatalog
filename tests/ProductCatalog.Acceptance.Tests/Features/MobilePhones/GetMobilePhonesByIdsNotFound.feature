@@ -1,5 +1,6 @@
 Feature: Get mobile phones by ids not found
 
+  @allure.label.scenarioId:REF07_GetMobilePhonesByIds_01
   Scenario: Get mobile phones by ids fails when one requested mobile phone does not exist
     Given an existing mobile phone and a missing mobile phone id
       | Field            | Value                             |

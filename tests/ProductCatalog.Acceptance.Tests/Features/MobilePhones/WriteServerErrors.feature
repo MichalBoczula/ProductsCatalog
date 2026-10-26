@@ -7,7 +7,7 @@ Feature: Mobile phone write failures
     Then a safe error is returned and the phone and history are unchanged
 
     Examples:
-      | operationId       |
-      | CreateMobilePhone |
-      | UpdateMobilePhone |
-      | DeleteMobilePhone |
+      | operationId       | scenarioId                 |
+      | CreateMobilePhone | REF07_CreateMobilePhone_03 |
+      | UpdateMobilePhone | REF07_UpdateMobilePhone_03 |
+      | DeleteMobilePhone | REF07_DeleteMobilePhone_03 |

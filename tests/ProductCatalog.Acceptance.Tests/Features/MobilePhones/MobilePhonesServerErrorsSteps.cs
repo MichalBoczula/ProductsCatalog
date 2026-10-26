@@ -42,7 +42,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                     services.RemoveAll<IMobilePhonesQueriesRepository>();
                     services.AddSingleton<IMobilePhonesQueriesRepository>(_repository);
                 }));
-            _client = _factory.CreateClient();
+            _client = _apiContext.CreateClient(_factory);
         }
 
         [When("I request {string} during the read failure")]

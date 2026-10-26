@@ -1,5 +1,6 @@
 Feature: Database startup migration settings
 
+  @allure.label.scenarioId:REF09_Startup_IdempotentSeed
   Scenario: Repeated local startup preserves seeded phones and history
     When the scenario SQL database is removed before startup
     And the API starts with migrations disabled

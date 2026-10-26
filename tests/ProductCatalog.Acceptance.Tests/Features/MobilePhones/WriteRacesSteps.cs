@@ -62,7 +62,7 @@ public sealed class WriteRacesSteps(ScenarioApiContext context) : IDisposable
                 (IMobilePhonesCommandsRepository)ActivatorUtilities.CreateInstance(provider, registration.ImplementationType!),
                 () => Interrupt(interruption)));
         }));
-        _client = _factory.CreateClient();
+        _client = context.CreateClient(_factory);
     }
 
     private async Task Interrupt(Interruption interruption)

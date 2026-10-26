@@ -59,7 +59,7 @@ public sealed class WriteServerErrorsSteps(ScenarioApiContext context) : IDispos
                 return _repository;
             });
         }));
-        _client = _factory.CreateClient();
+        _client = context.CreateClient(_factory);
     }
 
     [When("I perform the failing {string} mobile phone write")]
