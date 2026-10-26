@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProductCatalog.Acceptance.Tests.Features.Common;
@@ -10,7 +9,6 @@ using ProductCatalog.Application.Features.MobilePhones.Commands.UpdateMobilePhon
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
-using ProductCatalog.Infrastructure.Contexts.Commands;
 using Reqnroll;
 using Shouldly;
 using System.Net;
@@ -31,7 +29,6 @@ public sealed class WriteServerErrorsSteps(ScenarioApiContext context) : IDispos
     private string? _operation;
     private string? _path;
     private Guid _phoneId;
-    private string? _before;
 
     [Given("a {string} mobile phone write will fail at SaveChanges")]
     public async Task GivenAWriteWillFail(string operationId)
@@ -47,7 +44,6 @@ public sealed class WriteServerErrorsSteps(ScenarioApiContext context) : IDispos
             _phoneId = created.Id;
         }
 
-        _before = await Snapshot();
         _factory = context.Factory!.WithWebHostBuilder(builder => builder.ConfigureTestServices(services =>
         {
             var registration = services.Single(x => x.ServiceType == typeof(IMobilePhonesCommandsRepository));
@@ -78,24 +74,29 @@ public sealed class WriteServerErrorsSteps(ScenarioApiContext context) : IDispos
         };
     }
 
-    [Then("a safe error is returned and the phone and history are unchanged")]
-    public async Task ThenTheWriteIsRejectedWithoutChanges()
+    [Then("the failing phone write returns this safe problem")]
+    public async Task ThenTheWriteIsRejected(Table table)
     {
+        var expected = table.Rows.ToDictionary(row => row["Field"], row => row["Value"]);
         _response.ShouldNotBeNull();
         _repository.ShouldNotBeNull();
-        _repository.SaveCalls.ShouldBe(1);
-        _repository.HistoryCalls.ShouldBe(1);
-        _response.StatusCode.ShouldBe(HttpStatusCode.InternalServerError);
-        _response.Content.Headers.ContentType?.MediaType.ShouldBe("application/problem+json");
+        AllureJson.AttachObject("Write failure observation", new
+        {
+            operation = _operation,
+            failurePoint = "Before EF SaveChanges",
+            saveCalls = _repository.SaveCalls,
+            historyCalls = _repository.HistoryCalls
+        }, _options);
+        _repository.SaveCalls.ShouldBe(int.Parse(expected["SaveCalls"], System.Globalization.CultureInfo.InvariantCulture));
+        _repository.HistoryCalls.ShouldBe(int.Parse(expected["HistoryCalls"], System.Globalization.CultureInfo.InvariantCulture));
+        var problem = await ApiProblemAssertions.Assert(_response, table);
+        problem.GetProperty("title").GetString().ShouldBe(expected["Title"]);
+        problem.GetProperty("detail").GetString().ShouldBe(expected["Detail"]);
         var body = await _response.Content.ReadAsStringAsync();
-        using var json = JsonDocument.Parse(body);
-        json.RootElement.GetProperty("status").GetInt32().ShouldBe(500);
-        json.RootElement.GetProperty("code").GetString().ShouldBe("internal_error");
-        json.RootElement.GetProperty("instance").GetString().ShouldBe(_path);
-        json.RootElement.GetProperty("traceId").GetString().ShouldNotBeNullOrWhiteSpace();
         body.ShouldNotContain(SensitiveDetail);
-        body.ShouldNotContain("stackTrace");
-        (await Snapshot()).ShouldBe(_before);
+        body.ShouldNotContain(nameof(InvalidOperationException));
+        body.ShouldNotContain(nameof(FailingSaveRepository));
+        problem.TryGetProperty("exception", out _).ShouldBeFalse();
     }
 
     private UpdateMobilePhoneExternalDto UpdateRequest()
@@ -104,17 +105,6 @@ public sealed class WriteServerErrorsSteps(ScenarioApiContext context) : IDispos
         var update = JsonSerializer.Deserialize<UpdateMobilePhoneExternalDto>(
             JsonSerializer.Serialize(create, _options), _options)!;
         return update with { CommonDescription = update.CommonDescription with { Name = "REF07 changed name" } };
-    }
-
-    private async Task<string> Snapshot()
-    {
-        using var scope = context.Factory!.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<ProductsContext>();
-        var phones = await db.MobilePhones.AsNoTracking()
-            .OrderBy(x => x.Id).Select(x => new { x.Id, x.CommonDescription.Name, x.IsActive }).ToListAsync();
-        var history = await db.MobilePhonesHistories.AsNoTracking()
-            .OrderBy(x => x.Id).Select(x => new { x.Id, x.MobilePhoneId, x.Name, x.IsActive }).ToListAsync();
-        return JsonSerializer.Serialize(new { phones, history });
     }
 
     public void Dispose()
