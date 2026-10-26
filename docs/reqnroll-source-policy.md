@@ -1,7 +1,7 @@
 # Acceptance source and generated code
 
 The `.feature` files and their step definitions are authoritative. At BDD-09,
-Products has 19 features, 59 declared scenarios/outlines and 75 expanded BDD cases;
+Products has 19 features, 60 declared scenarios/outlines and 76 expanded BDD cases;
 the acceptance project also contains non-BDD xUnit checks. Derive discovery counts
 from the reviewed source revision and CI results instead of treating this snapshot
 as a permanent total. Stable scenario/example IDs are metadata, independent of

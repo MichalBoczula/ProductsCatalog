@@ -47,9 +47,9 @@ pattern in the other producers. Generated sources remain authoritative; these
 packages do not introduce parallel handwritten contracts or new Azure resources.
 BDD-01 through BDD-08 are implemented and verified by PRs #200 through #207.
 BDD-08 passed 132 acceptance tests, including 64 BDD cases and 116 paired HTTP
-exchanges with contract and source-documentation observations. BDD-09 adds 11
+exchanges with contract and source-documentation observations. BDD-09 adds 12
 missing validation/history-failure examples and classifies the non-normal null-list
-guard explicitly. Its source checks cover 11 operations, 60 matrix cases, 57 steps,
+guard explicitly. Its source checks cover 11 operations, 61 matrix cases, 57 steps,
 nine flows and five policies. Final CI, archive and LiveDocs snapshot evidence must
 be recorded before the last checklist item is checked. The audit does not certify
 every invalid-field combination, SQL rollback, RAG ingestion or historical design

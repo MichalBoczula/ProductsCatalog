@@ -62,7 +62,7 @@ constraints as enforced HTTP rules. Unregistered Domain policy classes are outsi
 this published inventory.
 
 BDD-09 adds actual rejection examples for blank name/brand/main description,
-camera/Description3, incoming update validation, negative minimum/maximum filter
+camera/Description3, a present null common-description object, incoming update validation, negative minimum/maximum filter
 bounds, equal/reversed bounds, and a history-query fault after a successful real
 SQL phone lookup. All active published rule IDs now have a rejection scenario.
 Existing case and instance identities are retained; the new cases add identities.
@@ -72,8 +72,8 @@ Generated coverage deliberately retains `products.branch.list.null-result`.
 empty results return 200. The guard concerns a substituted repository violating
 that contract, so this audit does not invent a normal HTTP 404 or advertise full
 branch coverage. Hardware rules remain standalone. The common-description policy
-also describes the default value-object guard: ordinary JSON null/missing object
-failures are framework binding cases, separate from the present blank strings.
+also describes the default value-object guard: a present JSON null has its own
+rejection case, distinct from the framework case for an omitted required member.
 A linked rule still does not prove every combination of invalid fields.
 
 The controlled save-failure cases throw before EF SaveChanges. They demonstrate

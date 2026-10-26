@@ -71,3 +71,34 @@ Feature: Complete active validation evidence
       | REF07_Filter_NegativeMaximum | negative maximum | {"brand":"Motorola","minimalPrice":null,"maximalPrice":-1} | MobilePhoneFilterPricesValidationRule    | Maximal price must be greater than or equal to zero.      |
       | REF07_Filter_ReversedBounds  | reversed bounds  | {"brand":"Motorola","minimalPrice":10,"maximalPrice":5}    | MobilePhoneFilterPriceRangeValidationRule | Minimal price must be lower than maximal price.           |
       | REF07_Filter_EqualBounds     | equal bounds     | {"brand":"Motorola","minimalPrice":10,"maximalPrice":10}   | MobilePhoneFilterPriceRangeValidationRule | Minimal price must be lower than maximal price.           |
+
+  @allure.label.scenarioId:REF07_Create_NullCommonDescription
+  Scenario: Creating a phone rejects a null common description before persistence
+    The required member is present as JSON null, so this differs from omitting it.
+    Mapping produces the default description value and the phone policy rejects it.
+    Given a saved baseline phone for the validation audit
+    And the catalogue and history are recorded before the rejected request
+    When I submit this blank phone field
+      | Field     | Value             |
+      | Method    | POST              |
+      | Field     | commonDescription |
+      | Value     |                   |
+      | ValueKind | null              |
+    Then the audit rejection contains this exact validation error
+      | Field                  | Value                                       |
+      | StatusCode             | 400                                         |
+      | ContentType            | application/problem+json                    |
+      | Code                   | validation_failed                           |
+      | Title                  | Validation failed                           |
+      | Detail                 | One or more validation errors occurred.     |
+      | ErrorCount             | 1                                           |
+      | MissingPropertiesCount | 0                                           |
+      | ErrorName              | MobilePhonesCommonDescriptionValidationRule |
+      | ErrorEntity            | MobilePhone                                 |
+      | ErrorMessage           | Common description cannot be null.          |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |

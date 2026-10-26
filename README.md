@@ -464,7 +464,7 @@ are preserved.
 
 The hardware policy remains standalone and the phone policy has no money rules.
 BDD-09 closes the incoming-update/later-history-query gaps and gives all active
-published rule IDs real rejection evidence. It adds 11 BDD examples for the missing
+published rule IDs real rejection evidence. It adds 12 BDD examples for the missing
 blank strings, price boundaries and later read failure. The defensive null-list
 branch remains explicitly classified: the real repository returns a non-null
 list, including an empty list, and no normal HTTP 404 is invented for it.

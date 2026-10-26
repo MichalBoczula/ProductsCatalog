@@ -34,7 +34,7 @@ public sealed class ValidationCompletenessSteps(ScenarioApiContext apiContext) :
         var payload = JsonSerializer.SerializeToNode(CreateMobilePhoneSteps.BuildMobilePhoneRequest(null), _json)!;
         var segments = values["Field"].Split('.');
         var owner = segments.Length == 1 ? payload : payload[segments[0]]!;
-        owner[segments[^1]] = values["Value"];
+        owner[segments[^1]] = values.GetValueOrDefault("ValueKind") == "null" ? null : values["Value"];
         using var request = new HttpRequestMessage(new HttpMethod(values["Method"]),
             values["Method"] == "POST" ? "/mobile-phones" : $"/mobile-phones/{_phoneId}")
         {
