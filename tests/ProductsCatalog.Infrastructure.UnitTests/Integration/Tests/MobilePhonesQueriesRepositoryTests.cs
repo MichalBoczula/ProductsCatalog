@@ -103,7 +103,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             {
                 await using var connection = new SqlConnection(read);
                 await connection.OpenAsync();
-                await using var command = new SqlCommand("CREATE TABLE dbo.TB_MobilePhones (Id uniqueidentifier NOT NULL, Name nvarchar(100) NULL, Brand nvarchar(100) NULL, MainPhoto nvarchar(100) NULL, PriceAmount decimal(18, 2) NULL, PriceCurrency nvarchar(3) NULL, IsActive bit NOT NULL, ChangedAt datetime2 NOT NULL)", connection);
+                await using var command = new SqlCommand("CREATE TABLE dbo.TB_MobilePhones (Id uniqueidentifier NOT NULL, Name nvarchar(100) NULL, Brand nvarchar(100) NULL, Description nvarchar(max) NULL, MainPhoto nvarchar(100) NULL, PriceAmount decimal(18, 2) NULL, PriceCurrency nvarchar(3) NULL, IsActive bit NOT NULL, ChangedAt datetime2 NOT NULL)", connection);
                 await command.ExecuteNonQueryAsync();
             }
 
