@@ -59,17 +59,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             _createdMobilePhone.ShouldNotBeNull();
 
-            var deleteRequest = new
-            {
-                MobilePhoneId = _createdMobilePhone!.Id
-            };
-
-            AllureJson.AttachObject(
-                "Request JSON (delete)",
-                deleteRequest,
-                _jsonOptions
-            );
-
             _response = await _apiContext.Client!.DeleteAsync($"/mobile-phones/{_createdMobilePhone!.Id}");
             var body = await _response.Content.ReadAsStringAsync();
 
@@ -113,6 +102,10 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _deletedMobilePhone.CommonDescription.MainPhoto.ShouldBe(_createRequest.CommonDescription.MainPhoto);
             _deletedMobilePhone.CommonDescription.OtherPhotos.ShouldBe(_createRequest.CommonDescription.OtherPhotos);
         }
+
+        [Then("the deleted phone has the following saved state and history")]
+        public Task ThenDeletedStateAndHistory(Table table)
+            => MobilePhonePersistenceAssertions.AssertSaved(_apiContext, _createdMobilePhone!.Id, table, _createdMobilePhone);
 
         [Given("a mobile phone id that does not exist")]
         public void GivenAMobilePhoneIdThatDoesNotExist()

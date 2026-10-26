@@ -1,48 +1,49 @@
 Feature: Get mobile phones by ids
 
   @allure.label.scenarioId:REF07_GetMobilePhonesByIds_02
-  Scenario: Get mobile phones by ids returns the requested mobile phones
+  Scenario: Reading selected phone IDs returns exactly those catalogue entries
+    Each requested active phone includes its summary, photo, specifications and price.
     Given an existing mobile phone for the by ids request
-      | Field            | Value                                  |
-      | Name             | First By Ids Phone                     |
-      | Brand            | First Brand                            |
-      | Description      | First phone requested by id            |
-      | MainPhoto        | first-main-photo.jpg                   |
-      | OtherPhotos      | first-photo-1.jpg, first-photo-2.jpg   |
-      | CPU              | First Octa-core                        |
-      | GPU              | First Adreno                           |
-      | Ram              | 8GB                                    |
-      | Storage          | 256GB                                  |
-      | DisplayType      | First OLED                             |
-      | RefreshRateHz    | 120                                    |
-      | ScreenSizeInches | 6.4                                    |
-      | Width            | 72                                     |
-      | Height           | 152                                    |
-      | BatteryType      | Li-Ion                                 |
-      | BatteryCapacity  | 4500                                   |
-      | Has5G            | true                                   |
-      | WiFi             | true                                   |
-      | NFC              | true                                   |
-      | Bluetooth        | true                                   |
-      | GPS              | true                                   |
-      | AGPS             | true                                   |
-      | Galileo          | true                                   |
-      | GLONASS          | true                                   |
-      | QZSS             | true                                   |
-      | Accelerometer    | true                                   |
-      | Gyroscope        | true                                   |
-      | Proximity        | true                                   |
-      | Compass          | true                                   |
-      | Barometer        | true                                   |
-      | Halla            | false                                  |
-      | AmbientLight     | true                                   |
-      | Camera           | first camera                           |
-      | FingerPrint      | true                                   |
-      | FaceId           | true                                   |
-      | PriceAmount      | 799.99                                 |
-      | PriceCurrency    | USD                                    |
-      | Description2     | first desc2                            |
-      | Description3     | first desc3                            |
+      | Field            | Value                                |
+      | Name             | First By Ids Phone                   |
+      | Brand            | First Brand                          |
+      | Description      | First phone requested by id          |
+      | MainPhoto        | first-main-photo.jpg                 |
+      | OtherPhotos      | first-photo-1.jpg, first-photo-2.jpg |
+      | CPU              | First Octa-core                      |
+      | GPU              | First Adreno                         |
+      | Ram              | 8GB                                  |
+      | Storage          | 256GB                                |
+      | DisplayType      | First OLED                           |
+      | RefreshRateHz    | 120                                  |
+      | ScreenSizeInches | 6.4                                  |
+      | Width            | 72                                   |
+      | Height           | 152                                  |
+      | BatteryType      | Li-Ion                               |
+      | BatteryCapacity  | 4500                                 |
+      | Has5G            | true                                 |
+      | WiFi             | true                                 |
+      | NFC              | true                                 |
+      | Bluetooth        | true                                 |
+      | GPS              | true                                 |
+      | AGPS             | true                                 |
+      | Galileo          | true                                 |
+      | GLONASS          | true                                 |
+      | QZSS             | true                                 |
+      | Accelerometer    | true                                 |
+      | Gyroscope        | true                                 |
+      | Proximity        | true                                 |
+      | Compass          | true                                 |
+      | Barometer        | true                                 |
+      | Halla            | false                                |
+      | AmbientLight     | true                                 |
+      | Camera           | first camera                         |
+      | FingerPrint      | true                                 |
+      | FaceId           | true                                 |
+      | PriceAmount      | 799.99                               |
+      | PriceCurrency    | USD                                  |
+      | Description2     | first desc2                          |
+      | Description3     | first desc3                          |
     And an existing mobile phone for the by ids request
       | Field            | Value                                  |
       | Name             | Second By Ids Phone                    |
@@ -89,9 +90,10 @@ Feature: Get mobile phones by ids
       | {FirstMobilePhoneId}  |
       | {SecondMobilePhoneId} |
     Then the requested mobile phones are returned successfully
-      | StatusCode | Id                    | Name                | Brand        | DisplayType   | ScreenSizeInches | Camera        | PriceAmount | PriceCurrency |
-      | 200        | {FirstMobilePhoneId}  | First By Ids Phone  | First Brand  | First OLED    | 6.4              | first camera  | 799.99      | USD           |
-      | 200        | {SecondMobilePhoneId} | Second By Ids Phone | Second Brand | Second AMOLED | 6.8              | second camera | 999.99      | EUR           |
+      | StatusCode | Id                    | Name                | Brand        | DisplayType   | ScreenSizeInches | Camera        | PriceAmount | PriceCurrency | MainPhoto             |
+      | 200        | {FirstMobilePhoneId}  | First By Ids Phone  | First Brand  | First OLED    | 6.4              | first camera  | 799.99      | USD           | first-main-photo.jpg  |
+      | 200        | {SecondMobilePhoneId} | Second By Ids Phone | Second Brand | Second AMOLED | 6.8              | second camera | 999.99      | EUR           | second-main-photo.jpg |
+
 
   @allure.label.scenarioId:REF07_GetMobilePhonesByIds_03
   Scenario: Get mobile phones by ids fails for an empty id list

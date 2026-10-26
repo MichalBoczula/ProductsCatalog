@@ -1,20 +1,25 @@
 Feature: Get filtered mobile phones
 
 @allure.label.scenarioId:REF07_GetFiltered_MobilePhones_01
-Scenario: Filter mobile phones by brand returns matching records
+Scenario: Filtering by brand returns exactly the matching catalogue entries
+  Phones of other brands are excluded from the result.
 	Given existing mobile phones for filtering by brand
-		| Name             | Brand    | PriceAmount |
-		| Apple One        | Apple    | 999.99      |
-		| Samsung One      | Samsung  | 899.99      |
-		| Apple Two        | Xiaomi    | 1099.99     |
+		| Name        | Brand   | PriceAmount |
+		| Apple One   | Apple   | 999.99      |
+		| Samsung One | Samsung | 899.99      |
+		| Xiaomi One  | Xiaomi  | 1099.99     |
 	When I filter mobile phones by brand
-		| Field | Value |
+		| Field | Value  |
 		| Brand | Xiaomi |
 	Then only mobile phones matching brand are returned
-		| Field      | Value |
-		| StatusCode | 200   |
-		| Amount     | 1     |
-		| Brand      | Xiaomi |
+		| Field         | Value          |
+		| StatusCode    | 200            |
+		| Amount        | 1              |
+		| Name          | Xiaomi One     |
+		| Brand         | Xiaomi         |
+		| MainPhoto     | main-photo.jpg |
+		| PriceAmount   | 1099.99        |
+		| PriceCurrency | USD            |
 
 @allure.label.scenarioId:REF07_GetFiltered_MobilePhones_02
 Scenario: Filter mobile phones fails when brand is outside enum values
@@ -35,7 +40,8 @@ Scenario: Filter mobile phones fails when brand is outside enum values
 		| ErrorName    | MobilePhoneFilterBrandValidationRule           |
 
 @allure.label.scenarioId:REF07_GetFiltered_MobilePhones_03
-Scenario: Filter mobile phones returns an empty list when no records match
+Scenario: Filtering with no matching phones returns an empty list
+  A valid brand and price filter with no matches is a successful result.
 	Given existing mobile phones for filtering by brand
 		| Name        | Brand   | PriceAmount |
 		| Apple One   | Apple   | 999.99      |
@@ -46,3 +52,6 @@ Scenario: Filter mobile phones returns an empty list when no records match
 		| MinimalPrice | 1        |
 		| MaximalPrice | 2        |
 	Then the filtered mobile phone list is empty
+		| Field      | Value |
+		| StatusCode | 200   |
+		| Amount     | 0     |

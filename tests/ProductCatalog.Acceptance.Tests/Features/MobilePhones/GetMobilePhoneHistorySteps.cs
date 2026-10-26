@@ -44,6 +44,15 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             await CreateMobilePhoneAsync(table);
         }
 
+        [When("I request the saved phone history page")]
+        public async Task WhenSavedHistoryPage(Table table)
+        {
+            var page = ParseExpectedTable(table);
+            var number = int.Parse(page["PageNumber"], CultureInfo.InvariantCulture);
+            var size = int.Parse(page["PageSize"], CultureInfo.InvariantCulture);
+            _response = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={number}&pageSize={size}");
+        }
+
         [When("I request the mobile phone history")]
         public async Task WhenIRequestTheMobilePhoneHistory()
         {
@@ -68,7 +77,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             var historyEntries = await DeserializeResponse<List<MobilePhoneHistoryDto>>(_response);
             historyEntries.ShouldNotBeNull();
-            historyEntries!.Count.ShouldBeGreaterThan(0);
+            historyEntries!.Count.ShouldBe(int.Parse(expected["Amount"], CultureInfo.InvariantCulture));
+            historyEntries[0].CommonDescription.Name.ShouldBe(expected["Name"]);
+            historyEntries[0].CommonDescription.Brand.ShouldBe(expected["Brand"]);
+            historyEntries[0].CommonDescription.MainPhoto.ShouldBe(expected["MainPhoto"]);
+            historyEntries[0].Price.Amount.ShouldBe(decimal.Parse(expected["PriceAmount"], CultureInfo.InvariantCulture));
+            historyEntries[0].Price.Currency.ShouldBe(expected["PriceCurrency"]);
 
             var historyEntry = historyEntries[0];
             historyEntry.Id.ShouldNotBe(Guid.Empty);
@@ -199,9 +213,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Given("an existing mobile phone without history")]
-        public async Task GivenAnExistingMobilePhoneWithoutHistory()
+        public async Task GivenAnExistingMobilePhoneWithoutHistory(Table table)
         {
-            await CreateMobilePhoneAsync(null);
+            await CreateMobilePhoneAsync(table);
 
             using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
@@ -220,13 +234,14 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone history list is empty")]
-        public async Task ThenTheMobilePhoneHistoryListIsEmpty()
+        public async Task ThenTheMobilePhoneHistoryListIsEmpty(Table table)
         {
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(ParseExpectedTable(table), HttpStatusCode.OK));
 
             var historyEntries = await DeserializeResponse<List<MobilePhoneHistoryDto>>(_response);
             historyEntries.ShouldNotBeNull();
+            historyEntries.Count.ShouldBe(int.Parse(ParseExpectedTable(table)["Amount"], CultureInfo.InvariantCulture));
             historyEntries.ShouldBeEmpty();
         }
 

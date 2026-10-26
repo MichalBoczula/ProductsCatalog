@@ -27,6 +27,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         private CreateMobilePhoneExternalDto _invalidRequest = default!;
         private HttpResponseMessage? _response;
         private ApiProblemDetails? _apiProblem;
+        private MobilePhoneDetailsDto? _createdMobilePhone;
         private readonly JsonSerializerOptions _jsonOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -34,7 +35,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         };
 
         [Given("I have valid mobile phone details")]
-        public async Task GivenIHaveValidMobilePhoneDetails(Table table)
+        public void GivenIHaveValidMobilePhoneDetails(Table table)
         {
             _validRequest = BuildMobilePhoneRequest(table);
 
@@ -64,6 +65,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             var mobilePhone = await DeserializeResponse<MobilePhoneDetailsDto>(_response);
             mobilePhone.ShouldNotBeNull();
+            _createdMobilePhone = mobilePhone;
 
             if (TryGetBool(expected, "HasId", out var hasId))
             {
@@ -122,6 +124,23 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             mobilePhone.Description2.ShouldBe(_validRequest.Description2);
             mobilePhone.Description3.ShouldBe(_validRequest.Description3);
         }
+
+        [Then("the created phone Location returns its saved details")]
+        public async Task ThenLocationReturnsSavedDetails()
+        {
+            _createdMobilePhone.ShouldNotBeNull();
+            _response!.Headers.Location.ShouldNotBeNull();
+            _response.Headers.Location.OriginalString.ShouldBe($"/mobile-phones/{_createdMobilePhone.Id}");
+            using var read = await _apiContext.Client!.GetAsync(_response.Headers.Location);
+            read.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var saved = await read.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
+            saved.ShouldNotBeNull();
+            JsonSerializer.Serialize(saved, _jsonOptions).ShouldBe(JsonSerializer.Serialize(_createdMobilePhone, _jsonOptions));
+        }
+
+        [Then("the created phone has the following saved state and history")]
+        public Task ThenCreatedStateAndHistory(Table table)
+            => MobilePhonePersistenceAssertions.AssertSaved(_apiContext, _createdMobilePhone!.Id, table);
 
         [Given("I have invalid mobile phone details")]
         public void GivenIHaveInvalidMobilePhoneDetails(Table table)

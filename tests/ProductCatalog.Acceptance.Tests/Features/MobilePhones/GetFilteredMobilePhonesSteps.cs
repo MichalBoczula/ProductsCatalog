@@ -94,19 +94,25 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             var result = await DeserializeResponse<List<MobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
             _result = result;
-            _result.Count.ShouldBeGreaterThanOrEqualTo(int.Parse(expected["Amount"], CultureInfo.InvariantCulture));
+            _result.Count.ShouldBe(int.Parse(expected["Amount"], CultureInfo.InvariantCulture));
+            var phone = _result.Single();
+            phone.Name.ShouldBe(expected["Name"]);
+            phone.MainPhoto.ShouldBe(expected["MainPhoto"]);
+            phone.Price.Amount.ShouldBe(decimal.Parse(expected["PriceAmount"], CultureInfo.InvariantCulture));
+            phone.Price.Currency.ShouldBe(expected["PriceCurrency"]);
             _result.ShouldAllBe(m => m.Brand.Equals(expected["Brand"], StringComparison.OrdinalIgnoreCase));
         }
 
         [Then("the filtered mobile phone list is empty")]
-        public async Task ThenTheFilteredMobilePhoneListIsEmpty()
+        public async Task ThenTheFilteredMobilePhoneListIsEmpty(Table table)
         {
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response!.StatusCode.ShouldBe((HttpStatusCode)int.Parse(ParseExpected(table)["StatusCode"], CultureInfo.InvariantCulture));
 
             var result = await DeserializeResponse<List<MobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
             _result = result;
+            _result.Count.ShouldBe(int.Parse(ParseExpected(table)["Amount"], CultureInfo.InvariantCulture));
             _result.ShouldBeEmpty();
         }
 

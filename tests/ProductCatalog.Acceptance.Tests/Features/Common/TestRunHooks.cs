@@ -1,3 +1,4 @@
+using Allure.Net.Commons;
 using Reqnroll;
 using System.Text.Json;
 
@@ -44,7 +45,13 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
         public Task AfterScenario() => CleanupAsync();
 
         [BeforeStep]
-        public void BeforeStep() => apiContext.PublishEvidenceIdentity();
+        public void BeforeStep()
+        {
+            apiContext.PublishEvidenceIdentity();
+            var description = scenarioContext.ScenarioInfo.Description;
+            if (!string.IsNullOrWhiteSpace(description))
+                AllureApi.SetDescription(description);
+        }
 
         [AfterStep]
         public void AfterStep() => apiContext.FlushEvidence();

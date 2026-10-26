@@ -1,59 +1,29 @@
 ﻿Feature: Get mobile phones by amount
 
 @allure.label.scenarioId:REF07_GetMobilePhones_01
-Scenario: Get mobile phones by amount returns matching list
+Scenario: Browsing the catalogue returns the requested number of phones in name order
+  The amount limits the active catalogue list, ordered by name and then ID.
 	Given no mobile phones exist in the database
-	And an existing list of mobile phones
-		| Field            | Value                                 |
-		| Brand            | Brand                                 |
-		| Description      | Phone created by filter test          |
-		| MainPhoto        | https://photos.example.com/Main.webp   |
-		| OtherPhotos      | photo-1.jpg, photo-2.jpg              |
-		| CPU              | Octa-core                             |
-		| GPU              | Adreno                                |
-		| Ram              | 8GB                                   |
-		| Storage          | 256GB                                 |
-		| DisplayType      | OLED                                  |
-		| RefreshRateHz    | 120                                   |
-		| ScreenSizeInches | 6.4                                   |
-		| Width            | 72                                    |
-		| Height           | 152                                   |
-		| BatteryType      | Li-Ion                                |
-		| BatteryCapacity  | 4500                                  |
-		| Has5G            | true                                  |
-		| WiFi             | true                                  |
-		| NFC              | true                                  |
-		| Bluetooth        | true                                  |
-		| GPS              | true                                  |
-		| AGPS             | true                                  |
-		| Galileo          | true                                  |
-		| GLONASS          | true                                  |
-		| QZSS             | true                                  |
-		| Accelerometer    | true                                  |
-		| Gyroscope        | true                                  |
-		| Proximity        | true                                  |
-		| Compass          | true                                  |
-		| Barometer        | true                                  |
-		| Halla            | false                                 |
-		| AmbientLight     | true                                  |
-		| Camera           | camera                                |
-		| FingerPrint      | true                                  |
-		| FaceId           | true                                  |
-		| PriceAmount      | 799.99                                |
-		| PriceCurrency    | USD                                   |
-		| Description2     | desc2                                 |
-		| Description3     | desc3                                 |
+	And the following phones are available in the catalogue
+		| Name        | Brand | MainPhoto | PriceAmount | PriceCurrency |
+		| Cedar Phone | Brand | cedar.jpg | 799.99      | USD           |
+		| Aspen Phone | Brand | aspen.jpg | 599.99      | USD           |
+		| Birch Phone | Brand | birch.jpg | 699.99      | USD           |
 	When I request mobile phones with amount 2
-	Then the mobile phone list is returned with the requested amount
-		| Field            | Value        |
-		| StatusCode       | 200          |
-		| Amount           | 2            |
+	Then the catalogue page contains exactly these phones in order
+		| StatusCode | Name        | MainPhoto | PriceAmount | PriceCurrency |
+		| 200        | Aspen Phone | aspen.jpg | 599.99      | USD           |
+		| 200        | Birch Phone | birch.jpg | 699.99      | USD           |
 
 @allure.label.scenarioId:REF07_GetMobilePhones_02
-Scenario: Get mobile phones by amount returns an empty list when no mobile phones exist
+Scenario: Browsing an empty catalogue returns an empty list
+  An empty catalogue is a successful result even when more phones are requested.
 	Given no mobile phones exist in the database
 	When I request mobile phones with amount 3
 	Then an empty mobile phone list is returned
+		| Field      | Value |
+		| StatusCode | 200   |
+		| Amount     | 0     |
 
 Scenario Outline: Get mobile phones by amount fails for an invalid amount <amount>
 	When I request mobile phones with amount <amount>
