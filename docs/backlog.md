@@ -45,12 +45,12 @@ status/cause scenarios. This file does not duplicate those contracts.
 Improve Products first in small, separately verified PRs before reusing the
 pattern in the other producers. Generated sources remain authoritative; these
 packages do not introduce parallel handwritten contracts or new Azure resources.
-BDD-01, BDD-02 and BDD-03 are implemented and verified by PRs #200, #201 and
-#202. BDD-03 passed 84 acceptance tests; its 64 BDD cases included 116 paired
-HTTP exchanges, and all 15 revised descriptions and 38 tables matched the source.
-BDD-04 makes 23 rejection cases explicit and checks the problem contract and
-unchanged saved state; full CI and raw report checks are required for completion.
-BDD-05 through BDD-09 remain planned. Green checks for one package do not certify
+BDD-01 through BDD-04 are implemented and verified by PRs #200 through #203.
+BDD-04 passed 84 acceptance tests, including 64 BDD cases and 116 paired HTTP
+exchanges; all 23 revised descriptions and 65 tables matched the source, with
+full saved-state comparisons. BDD-05 makes 16 conditional-write and repository
+failure cases explicit; full CI and raw report checks are required for completion.
+BDD-06 through BDD-09 remain planned. Green checks for one package do not certify
 the later packages. Deployment and LiveDocs snapshot promotion are deferred until
 all packages are complete.
 
@@ -60,7 +60,7 @@ all packages are complete.
 | BDD-02 | Shared HTTP attachments | All scenario HTTP clients capture request method/path/query/body and actual response status/body consistently, with stable scenario identity and correct handling of text and malformed JSON. |
 | BDD-03 | Successful catalogue scenarios | Read/create/update/delete cases use readable descriptions, Given/When/Then and meaningful input/expected-result tables or examples, with complete evidence. |
 | BDD-04 | Validation and framework errors | Invalid fields/pagination, empty IDs, malformed JSON, binding, media and routing failures explain their cause and include the exact request and response. |
-| BDD-05 | Concurrency and persistence failures | Reports expose competing actions, no-ops, physical removal and failed saves, with current/history assertions and HTTP evidence. |
+| BDD-05 | Concurrency and persistence failures | Reports expose competing actions, no-ops, physical removal, failed saves and read-repository failures, with current/history assertions and HTTP evidence. |
 | BDD-06 | Technical scenarios | Health, readiness, startup and documentation cases include appropriate actual HTTP/text or startup evidence and explicit technical exceptions. |
 | BDD-07 | Request/response contracts | Schema validation covers applicable types, required fields, nullability, enums and formats; generated contracts describe field semantics, examples and relevant response headers. |
 | BDD-08 | Flows, rules and RAG links | Source descriptions explain decisions, side effects and failures; distinguish enforced rules from standalone policies; link operation/rule/branch/scenario/evidence identities and reconcile stale docs. |

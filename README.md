@@ -364,6 +364,25 @@ validation policies and schemas are unchanged; deployment and LiveDocs promotion
 remain deferred. Races/persistence faults, technical scenarios and deeper contract
 validation remain in BDD-05 through BDD-08.
 
+BDD-05 makes 16 conditional-write and repository-failure cases explicit. The
+seven write-race/no-op scenarios show the original profile, competing action,
+pending request, expected status and ordered history. Their timeline is buffered
+inside the server callback and attached from the calling scenario. Complete SQL
+snapshots before and after the pending result prove that the losing/no-op request
+preserves every saved field, including ChangedAt and history identities; the
+original inserted snapshot is also preserved. Physical removal is recorded as a
+SQL action, while competing update/delete requests retain their HTTP evidence.
+
+The three injected SaveChanges failures and six read-repository failures reuse
+the full-value unchanged-state comparison from BDD-04. Reports record actual
+repository calls and safe problem responses. Save failures are injected before
+EF SaveChanges, so these cases verify that queued changes remain unsaved; they
+do not simulate a database failure during a transaction. The history read-failure
+case explicitly fails at its initial GetById lookup before loading history.
+Stable scenario/example identities remain unchanged. Application behavior,
+contracts, schema and dependencies are unchanged; deployment and LiveDocs promotion
+remain deferred. Health/startup/documentation cases continue in BDD-06.
+
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
 ## CI
