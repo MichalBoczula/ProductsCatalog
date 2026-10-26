@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ProductCatalog.Acceptance.Tests.Features.Common;
 using ProductCatalog.Api;
+using ProductCatalog.Application.Common.Dtos.MobilePhones;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.History;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.ReadModel;
 using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate.Repositories;
@@ -11,6 +12,8 @@ using ProductCatalog.Domain.Common.Filters;
 using Reqnroll;
 using Shouldly;
 using System.Globalization;
+using System.Net;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
@@ -25,11 +28,33 @@ public sealed class MobilePhonesServerErrorsSteps(ScenarioApiContext apiContext)
     private HttpRequestMessage? _request;
     private HttpResponseMessage? _response;
     private FailingMobilePhonesRepository? _repository;
+    private IServiceScope? _lookupScope;
+    private Guid _historyPhoneId;
 
     [Given("mobile phone reads fail unexpectedly")]
     public void GivenMobilePhoneReadsFailUnexpectedly()
     {
         _repository = new FailingMobilePhonesRepository();
+        CreateFailureClient();
+    }
+
+    [Given("the history query fails after a successful phone lookup")]
+    public async Task GivenLaterHistoryFailure()
+    {
+        using var response = await apiContext.Client!.PostAsJsonAsync(
+            "/mobile-phones", CreateMobilePhoneSteps.BuildMobilePhoneRequest(null), _json);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        var phone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_json);
+        phone.ShouldNotBeNull();
+        _historyPhoneId = phone.Id;
+        _lookupScope = apiContext.Factory!.Services.CreateScope();
+        _repository = new FailingMobilePhonesRepository(
+            _lookupScope.ServiceProvider.GetRequiredService<IMobilePhonesQueriesRepository>());
+        CreateFailureClient();
+    }
+
+    private void CreateFailureClient()
+    {
         _factory = apiContext.Factory!.WithWebHostBuilder(builder => builder.ConfigureTestServices(services =>
         {
             services.RemoveAll<IMobilePhonesQueriesRepository>();
@@ -42,7 +67,8 @@ public sealed class MobilePhonesServerErrorsSteps(ScenarioApiContext apiContext)
     public async Task WhenReadRequest(Table table)
     {
         var values = Values(table);
-        _request = new HttpRequestMessage(new HttpMethod(values["Method"]), values["Path"]);
+        _request = new HttpRequestMessage(new HttpMethod(values["Method"]),
+            values["Path"].Replace("{existingPhoneId}", _historyPhoneId.ToString(), StringComparison.Ordinal));
         if (values.TryGetValue("JsonBody", out var body))
             _request.Content = new StringContent(body, Encoding.UTF8, "application/json");
         _response = await _client!.SendAsync(_request);
@@ -60,7 +86,7 @@ public sealed class MobilePhonesServerErrorsSteps(ScenarioApiContext apiContext)
             repositoryMethods = _repository.Methods
         }, _json);
         _repository.Methods.Count.ShouldBe(int.Parse(expected["RepositoryCalls"], CultureInfo.InvariantCulture));
-        _repository.Methods.Single().ShouldBe(expected["RepositoryMethod"]);
+        _repository.Methods.ShouldBe(expected["RepositoryMethod"].Split(',', StringSplitOptions.TrimEntries));
         var problem = await ApiProblemAssertions.Assert(_response, table);
         problem.GetProperty("title").GetString().ShouldBe(expected["Title"]);
         problem.GetProperty("detail").GetString().ShouldBe(expected["Detail"]);
@@ -80,9 +106,10 @@ public sealed class MobilePhonesServerErrorsSteps(ScenarioApiContext apiContext)
         _request?.Dispose();
         _client?.Dispose();
         _factory?.Dispose();
+        _lookupScope?.Dispose();
     }
 
-    private sealed class FailingMobilePhonesRepository : IMobilePhonesQueriesRepository
+    private sealed class FailingMobilePhonesRepository(IMobilePhonesQueriesRepository? historyLookup = null) : IMobilePhonesQueriesRepository
     {
         public const string SensitiveDetail = "INTERNAL_FAILURE_MARKER_DO_NOT_EXPOSE";
         public List<string> Methods { get; } = [];
@@ -94,7 +121,12 @@ public sealed class MobilePhonesServerErrorsSteps(ScenarioApiContext apiContext)
         }
 
         public Task<MobilePhoneReadModel?> GetById(Guid id, CancellationToken ct)
-            => Fail<MobilePhoneReadModel?>(nameof(GetById));
+        {
+            if (historyLookup is null)
+                return Fail<MobilePhoneReadModel?>(nameof(GetById));
+            Methods.Add(nameof(GetById));
+            return historyLookup.GetById(id, ct);
+        }
         public Task<IReadOnlyList<MobilePhoneReadModel>> GetByIds(IReadOnlyCollection<Guid> ids, CancellationToken ct)
             => Fail<IReadOnlyList<MobilePhoneReadModel>>(nameof(GetByIds));
         public Task<IReadOnlyList<MobilePhoneReadModel>> GetPhones(int amount, CancellationToken ct)
@@ -107,3 +139,4 @@ public sealed class MobilePhonesServerErrorsSteps(ScenarioApiContext apiContext)
             => Fail<IReadOnlyList<MobilePhoneReadModel>>(nameof(GetFilteredPhones));
     }
 }
+

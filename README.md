@@ -463,12 +463,16 @@ business-rule execution. Scenario IDs, example identities and existing tables
 are preserved.
 
 The hardware policy remains standalone and the phone policy has no money rules.
-Three application branches and three active validation rules currently have no
-dedicated linked BDD case; the generated coverage section names them. The
-[source documentation contract](docs/source-description-contract.md) explains the
-gaps, proof limits and same-bundle retrieval joins. No new Python script, package,
-Azure resource, business rule or RAG index is added. BDD-09 must review completeness
-and historical design-first evidence before deployment/LiveDocs promotion.
+BDD-09 closes the incoming-update/later-history-query gaps and gives all active
+published rule IDs real rejection evidence. It adds 11 BDD examples for the missing
+blank strings, price boundaries and later read failure. The defensive null-list
+branch remains explicitly classified: the real repository returns a non-null
+list, including an empty list, and no normal HTTP 404 is invented for it.
+The [source documentation contract](docs/source-description-contract.md) explains
+these limits and same-bundle retrieval joins. No new Python script, package, Azure
+resource, business rule or RAG index is added. Final selected-snapshot evidence
+and the LiveDocs refresh are recorded in the BDD-09 audit handoff; generated
+sources do not establish historical design-first approval.
 
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
@@ -610,3 +614,4 @@ and [ADR-0012](docs/adr/0012-consolidated-livedocs-upload.md) for this producer'
 authentication and storage setup. LiveDocs' current reader/import documentation still
 describes the older OIDC setup; configuring its reader and adding the Products path
 are a separate follow-up. This change does not update a running documentation site.
+

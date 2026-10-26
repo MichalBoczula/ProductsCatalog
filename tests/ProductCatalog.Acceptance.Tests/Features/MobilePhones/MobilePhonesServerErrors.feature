@@ -164,3 +164,31 @@ Feature: Mobile phone query server errors
       | HistoryRowsChange    | 0     |
       | CurrentDataUnchanged | true  |
       | HistoryDataUnchanged | true  |
+
+  @allure.label.scenarioId:REF07_GetMobilePhoneHistory_07
+  Scenario: Reading phone history returns a safe error when the later history query fails
+    A real SQL lookup finds the saved phone before the controlled history query fails; no catalogue or history data changes.
+    Given the history query fails after a successful phone lookup
+    And the catalogue and history are recorded before the rejected request
+    When I send this request during the read failure
+      | Field  | Value                                                                                |
+      | Method | GET                                                                                  |
+      | Path   | /mobile-phones/{existingPhoneId}/history?pageNumber=1&pageSize=10 |
+    Then the read failure returns this safe problem
+      | Field                  | Value                         |
+      | StatusCode             | 500                           |
+      | ContentType            | application/problem+json      |
+      | Code                   | internal_error                |
+      | Title                  | Server error                  |
+      | Detail                 | An unexpected error occurred. |
+      | ErrorCount             | 0                             |
+      | MissingPropertiesCount | 0                             |
+      | RepositoryCalls        | 2                             |
+      | RepositoryMethod       | GetById, GetHistoryOfChanges                       |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |
+

@@ -73,9 +73,10 @@ class OperationLinksTests(unittest.TestCase):
         self.assertEqual(len(result["flows"]), 9)
         self.assertEqual(len(result["technicalScenarios"]), 6)
         self.assertEqual({p["name"] for p in result["policies"] if p["usage"] == "standalone"}, {"ElectronicDetailsValidationPolicy"})
-        self.assertIn("products.branch.history.history-read-failure", result["coverage"]["branchesWithoutLinkedScenario"])
-        self.assertIn("products.rule.filter-prices", result["coverage"]["activeRulesWithoutRejectedScenario"])
+        self.assertEqual(result["coverage"]["branchesWithoutLinkedScenario"], ["products.branch.list.null-result"])
+        self.assertEqual(result["coverage"]["activeRulesWithoutRejectedScenario"], [])
 
 
 if __name__ == "__main__":
     unittest.main()
+

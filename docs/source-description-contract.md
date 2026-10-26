@@ -61,23 +61,26 @@ money-rule collection is empty. Do not present hypothetical hardware or money
 constraints as enforced HTTP rules. Unregistered Domain policy classes are outside
 this published inventory.
 
-Generated coverage lists missing links rather than synthesizing success. Current
-unlinked application branches are incoming-update validation failure, failure of
-the later history query after successful existence lookup, and the defensive null
-list-result guard. The real list repository returns a non-null list; the latter is
-not a declared normal HTTP response. Active rules without a rejection BDD case
-are phone common-description validation, negative filter bounds and strict filter
-price range. Domain/unit tests and an HTTP rejection scenario are different proof.
-A rule with one linked rejection can still have untested error conditions; for
-example, a Description2 rejection does not prove the camera/Description3 errors.
-BDD-09 must compare possible error messages with actual responses as well as IDs.
-These gaps must be assessed in BDD-09; green source checks do not erase them.
+BDD-09 adds actual rejection examples for blank name/brand/main description,
+camera/Description3, incoming update validation, negative minimum/maximum filter
+bounds, equal/reversed bounds, and a history-query fault after a successful real
+SQL phone lookup. All active published rule IDs now have a rejection scenario.
+Existing case and instance identities are retained; the new cases add identities.
+
+Generated coverage deliberately retains `products.branch.list.null-result`.
+`MobilePhonesQueriesRepository.GetPhones` materializes a non-null read-only list;
+empty results return 200. The guard concerns a substituted repository violating
+that contract, so this audit does not invent a normal HTTP 404 or advertise full
+branch coverage. Hardware rules remain standalone. The common-description policy
+also describes the default value-object guard: ordinary JSON null/missing object
+failures are framework binding cases, separate from the present blank strings.
+A linked rule still does not prove every combination of invalid fields.
 
 The controlled save-failure cases throw before EF SaveChanges. They demonstrate
 that queued current/history changes were not saved, not rollback of a real SQL
 transaction failure. Concurrency cases separately compare the winning current
-state and history. History's existing controlled read fault is at initial GetById,
-not at the later history query.
+state and history. History now distinguishes an initial GetById fault from a later history-query
+fault after successful real lookup; both retain full unchanged-state evidence.
 
 ## Verification and retrieval use
 
@@ -102,3 +105,4 @@ producer evidence only. Deployment and promotion of a new portal snapshot remain
 deferred until the BDD packages and final audit are complete. Generated output
 also does not establish historical design-first approval; record that evidence or
 its remaining gap in BDD-09.
+
