@@ -233,8 +233,8 @@ have deterministic `ChangedAt DESC, Id DESC` ordering.
 
 Categories and Currencies endpoints were removed. MobilePhone requests,
 responses, history, and SQL tables no longer have `CategoryId`.
-`Price.Currency` remains the three-letter currency code in the price value
-object, not a lookup into Currencies. Clients still sending `CategoryId` must
+`Price.Currency` remains currency text in the price value object, uppercased by
+`Money`; no three-letter constraint or currency lookup is enforced. Clients still sending `CategoryId` must
 update their request and regenerate any client from current OpenAPI.
 
 The EF migration `20260922220000_RemoveCatalogs` removes the old catalogue
@@ -404,6 +404,45 @@ Stable scenario/example identities remain unchanged. Runtime API/configuration,
 schema, dependencies and CI are unchanged; deployment and LiveDocs promotion
 remain deferred. Request/response contracts and semantic flow/RAG links follow
 in BDD-07 and BDD-08, then BDD-09 audits the complete selected evidence.
+
+BDD-07 checks the generated request and response contracts for every scenario
+client, including fault and race clients. The checker covers the schema vocabulary
+emitted here: objects/arrays, required members, nullability, scalar types, numeric
+enums, reference/composition schemas, patterns, numeric widths and applicable
+formats. It validates query/path parameters, JSON bodies, statuses/media and the
+required create `Location` header, including its relationship to the returned ID.
+Regression tests corrupt real generated-schema samples to ensure these failures
+are detected; they also check field documentation and example/schema agreement.
+This is a checker for this producer's emitted OpenAPI 3.0 vocabulary, not a general
+JSON Schema implementation. New formats require explicit support; excessive
+recursive depth fails instead of silently skipping children.
+
+The API's Swagger filters add field semantics and typed examples to the DTO-derived
+schemas. Response fields that are always serialized are marked present; request
+requiredness still follows serializer metadata. In particular, an unannotated
+nested record parameter is not automatically a required JSON member. Unknown
+request members remain allowed, matching System.Text.Json. Request JSON member
+matching is case-insensitive like ASP.NET's web serializer, so a known member
+such as `Brand` still receives the `brand` schema checks; response names remain
+exact. Captured request bytes are never renamed or rewritten. The nullable brand
+filter documents case-insensitive names and numeric enum values. Photo references
+can be filenames or URLs, so they do not claim an absolute-URI format. Existing SQL
+history timestamps omit the offset: OpenAPI now calls that form `date-time-local`
+and explains the stored UTC semantics, rather than claiming RFC 3339 `date-time`.
+The stricter checks also exposed a missing SQL projection: top phones returned a
+null description despite the non-null DTO. The query now selects the stored
+description, and SQL/HTTP tests check it against the created phone. Business
+validation and write/history behavior are unchanged; no dependency is added.
+
+Each captured exchange has a linked `HTTP contract observation` with its operation,
+request-schema result and actual response-contract result. Invalid requests still
+reach the API and retain their exact bytes. Schema-invalid input is permitted in
+400/415 rejection scenarios, while the returned problem must satisfy its schema;
+a schema-valid request can still fail a business rule. Routing 404/405 and media
+415 use the shared problem schema. Health probes have an explicit text contract
+and report schema comparison as not applicable. Bootstrap Swagger retrieval stays
+outside scenario exchanges. Deployment and LiveDocs promotion remain deferred;
+BDD-08 covers semantic flow/rule/evidence links before the BDD-09 final audit.
 
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 

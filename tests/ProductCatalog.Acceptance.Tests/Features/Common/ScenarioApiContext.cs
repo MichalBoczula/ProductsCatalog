@@ -18,11 +18,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
         public void PublishEvidenceIdentity() => _evidence!.PublishIdentity();
         public void FlushEvidence() => _evidence!.Flush();
 
-        public HttpClient CreateClient(WebApplicationFactory<Program> factory, bool validateContract = false)
+        public HttpClient CreateClient(WebApplicationFactory<Program> factory, bool validateContract = true)
         {
             var capture = new HttpEvidenceHandler(_evidence ?? throw new InvalidOperationException("Scenario evidence is not initialized."));
             return validateContract
-                ? factory.CreateDefaultClient(new OpenApiResponseHandler(OpenApi!), capture)
+                ? factory.CreateDefaultClient(new OpenApiResponseHandler(OpenApi!, _evidence), capture)
                 : factory.CreateDefaultClient(capture);
         }
     }

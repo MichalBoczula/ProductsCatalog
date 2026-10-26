@@ -1,80 +1,232 @@
+using Microsoft.AspNetCore.WebUtilities;
+using System.Globalization;
 using System.Text.Json;
 
 namespace ProductCatalog.Acceptance.Tests.Features.Common;
 
-/// <summary>Checks real acceptance HTTP responses against the generated Swagger document.</summary>
-internal sealed class OpenApiResponseHandler(JsonDocument document) : DelegatingHandler
+/// <summary>Checks actual HTTP exchanges against generated OpenAPI, after evidence has been captured.</summary>
+internal sealed class OpenApiResponseHandler(JsonDocument document, ScenarioHttpEvidence? evidence = null) : DelegatingHandler
 {
+    private JsonElement Components => document.RootElement.GetProperty("components").GetProperty("schemas");
+
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var response = await base.SendAsync(request, cancellationToken);
-        var path = request.RequestUri?.AbsolutePath ?? string.Empty;
-        if (path.StartsWith("/health", StringComparison.OrdinalIgnoreCase) || path.StartsWith("/swagger", StringComparison.OrdinalIgnoreCase))
-            return response;
+        var path = request.RequestUri!.AbsolutePath;
+        var status = (int)response.StatusCode;
+        var requestErrors = new List<string>();
+        var responseErrors = new List<string>();
+        string? operationId = null;
+        var scope = "openapi";
 
-        var paths = document.RootElement.GetProperty("paths");
-        var route = paths.EnumerateObject()
-            .Where(item => Matches(item.Name, path))
-            .OrderByDescending(item => item.Name.Split('/').Count(part => !part.StartsWith('{')))
-            .FirstOrDefault(item => item.Value.TryGetProperty(request.Method.Method.ToLowerInvariant(), out _));
-        if (route.Value.ValueKind == JsonValueKind.Undefined)
+        if (path is "/health/live" or "/health/ready")
         {
-            // No named operation exists for routing 404 and method 405.
-            if ((int)response.StatusCode is 404 or 405)
+            scope = "technical-health-text";
+            var text = await response.Content.ReadAsStringAsync(cancellationToken);
+            if (response.Content.Headers.ContentType?.MediaType != "text/plain" ||
+                status is not (200 or 503) || text != (status == 200 ? "Healthy" : "Unhealthy") ||
+                path == "/health/live" && status != 200)
+                responseErrors.Add("Health response differs from the explicit text probe contract");
+        }
+        else
+        {
+            var route = document.RootElement.GetProperty("paths").EnumerateObject()
+                .Where(item => Matches(item.Name, path))
+                .OrderByDescending(item => item.Name.Split('/').Count(part => !part.StartsWith('{')))
+                .FirstOrDefault(item => item.Value.TryGetProperty(request.Method.Method.ToLowerInvariant(), out _));
+            if (route.Value.ValueKind == JsonValueKind.Undefined)
             {
-                await ValidateFrameworkProblem(response, cancellationToken);
-                return response;
+                scope = "framework-routing";
+                if (status is not (404 or 405))
+                    responseErrors.Add("HTTP operation absent from OpenAPI");
+                await CheckProblem(response, responseErrors, cancellationToken);
             }
-            throw new InvalidOperationException($"HTTP operation absent from OpenAPI: {request.Method} {path}");
-        }
-
-        var operation = route.Value.GetProperty(request.Method.Method.ToLowerInvariant());
-        var status = ((int)response.StatusCode).ToString(System.Globalization.CultureInfo.InvariantCulture);
-        if (!operation.GetProperty("responses").TryGetProperty(status, out var declared))
-        {
-            // Unsupported request media is rejected before the endpoint executes.
-            if ((int)response.StatusCode == 415)
+            else
             {
-                await ValidateFrameworkProblem(response, cancellationToken);
-                return response;
+                var operation = route.Value.GetProperty(request.Method.Method.ToLowerInvariant());
+                operationId = operation.GetProperty("operationId").GetString();
+                await CheckRequest(request, route.Name, operation, requestErrors, cancellationToken);
+                var responses = operation.GetProperty("responses");
+                if (responses.TryGetProperty(status.ToString(CultureInfo.InvariantCulture), out var declared))
+                    await CheckResponse(response, declared, responseErrors, cancellationToken);
+                else if (status == 415)
+                {
+                    scope = "framework-media";
+                    await CheckProblem(response, responseErrors, cancellationToken);
+                }
+                else
+                    responseErrors.Add($"Undeclared runtime status: {operationId} {status}");
             }
-            throw new InvalidOperationException($"Undeclared runtime status: {operation.GetProperty("operationId").GetString()} {status}");
         }
 
-        var bytes = await response.Content.ReadAsByteArrayAsync(cancellationToken);
-        if ((int)response.StatusCode == 204)
+        // Rejection scenarios must reach the server. Schema-invalid input is evidence, not a reason to suppress the call.
+        // A successful call or a server/repository failure must have a structurally valid request.
+        var allowedInvalidRequest = requestErrors.Count > 0 && status is 400 or 415;
+        request.Options.TryGetValue(HttpEvidenceHandler.ExchangeIdKey, out var exchangeId);
+        evidence?.Record("HTTP contract observation", new
         {
-            if (bytes.Length != 0 || declared.TryGetProperty("content", out _))
-                throw new InvalidOperationException($"204 response contains or declares a body: {path}");
-            return response;
+            service = "products",
+            scenarioId = evidence.ScenarioId,
+            instanceId = evidence.InstanceId,
+            exchangeId,
+            operationId,
+            method = request.Method.Method,
+            path,
+            status,
+            scope,
+            request = new
+            {
+                schemaApplicable = operationId is not null,
+                jsonPropertyNameComparison = operationId is null ? null : "ordinal-ignore-case",
+                matchesSchema = operationId is null ? (bool?)null : requestErrors.Count == 0,
+                rejectedInvalidInput = allowedInvalidRequest,
+                errors = requestErrors
+            },
+            response = new
+            {
+                kind = scope == "technical-health-text" ? "text-probe" : "json-schema",
+                matchesContract = responseErrors.Count == 0,
+                matchesSchema = scope == "technical-health-text" ? (bool?)null : responseErrors.Count == 0,
+                errors = responseErrors
+            }
+        });
+        if (responseErrors.Count > 0 || requestErrors.Count > 0 && !allowedInvalidRequest)
+        {
+            response.Dispose();
+            throw new InvalidOperationException(string.Join("; ", responseErrors.Concat(allowedInvalidRequest ? [] : requestErrors)));
         }
-
-        var mediaType = response.Content.Headers.ContentType?.MediaType;
-        if (mediaType is null || !declared.TryGetProperty("content", out var content) ||
-            !content.TryGetProperty(mediaType, out var representation) ||
-            !representation.TryGetProperty("schema", out var schema) || bytes.Length == 0)
-            throw new InvalidOperationException($"Response media type/body differs from OpenAPI: {request.Method} {path} {status} ({mediaType})");
-
-        var expectedMedia = (int)response.StatusCode >= 400 ? "application/problem+json" : "application/json";
-        if (mediaType != expectedMedia)
-            throw new InvalidOperationException($"Unexpected response media type: {request.Method} {path} {status} ({mediaType})");
-
-        using var body = JsonDocument.Parse(bytes);
-        Validate(schema, body.RootElement, document.RootElement.GetProperty("components").GetProperty("schemas"), path, 0);
         return response;
     }
 
-    private static async Task ValidateFrameworkProblem(HttpResponseMessage response, CancellationToken cancellationToken)
+    private async Task CheckRequest(HttpRequestMessage request, string template, JsonElement operation, List<string> errors, CancellationToken cancellation)
+    {
+        var actual = request.RequestUri!.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        var expected = template.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        var query = QueryHelpers.ParseQuery(request.RequestUri.Query);
+        if (operation.TryGetProperty("parameters", out var parameters))
+            foreach (var parameter in parameters.EnumerateArray())
+            {
+                var name = parameter.GetProperty("name").GetString()!;
+                string? raw = null;
+                if (parameter.GetProperty("in").GetString() == "path")
+                {
+                    var index = Array.FindIndex(expected, part => part == $"{{{name}}}");
+                    if (index >= 0)
+                        raw = Uri.UnescapeDataString(actual[index]);
+                }
+                else if (query.TryGetValue(name, out var values))
+                    raw = values.LastOrDefault();
+                if (raw is null)
+                {
+                    if (parameter.TryGetProperty("required", out var required) && required.GetBoolean())
+                        errors.Add($"request.{name}: required parameter missing");
+                    continue;
+                }
+                var schema = parameter.GetProperty("schema");
+                using var value = ParameterValue(schema, raw);
+                errors.AddRange(OpenApiSchemaAssertions.Errors(schema, value.RootElement, Components, $"request.{name}"));
+            }
+
+        if (!operation.TryGetProperty("requestBody", out var body))
+            return;
+        var bytes = request.Content is null ? [] : await request.Content.ReadAsByteArrayAsync(cancellation);
+        if (bytes.Length == 0)
+        {
+            if (body.TryGetProperty("required", out var required) && required.GetBoolean())
+                errors.Add("request.body: required body missing");
+            return;
+        }
+        var media = request.Content!.Headers.ContentType?.MediaType;
+        if (media is null || !body.GetProperty("content").TryGetProperty(media, out var representation))
+        {
+            errors.Add("request.body: unsupported media type");
+            return;
+        }
+        CheckJson(representation.GetProperty("schema"), bytes, "request.body", errors, caseInsensitiveProperties: true);
+    }
+
+    private async Task CheckResponse(HttpResponseMessage response, JsonElement declared, List<string> errors, CancellationToken cancellation)
+    {
+        var bytes = await response.Content.ReadAsByteArrayAsync(cancellation);
+        if ((int)response.StatusCode == 204)
+        {
+            if (bytes.Length != 0 || declared.TryGetProperty("content", out _))
+                errors.Add("204 response contains or declares a body");
+            return;
+        }
+        var media = response.Content.Headers.ContentType?.MediaType;
+        if (media is null || !declared.TryGetProperty("content", out var content) ||
+            !content.TryGetProperty(media, out var representation) || !representation.TryGetProperty("schema", out var schema) || bytes.Length == 0)
+        {
+            errors.Add("Response media type/body differs from OpenAPI");
+            return;
+        }
+        if (media != ((int)response.StatusCode >= 400 ? "application/problem+json" : "application/json"))
+            errors.Add("Unexpected response media type");
+        CheckJson(schema, bytes, "response.body", errors);
+        if ((int)response.StatusCode >= 400)
+            CheckProblemStatus(bytes, (int)response.StatusCode, errors);
+
+        if (declared.TryGetProperty("headers", out var headers))
+            foreach (var header in headers.EnumerateObject())
+            {
+                if (!response.Headers.TryGetValues(header.Name, out var values))
+                {
+                    if (header.Value.TryGetProperty("required", out var required) && required.GetBoolean())
+                        errors.Add($"response.header.{header.Name}: required header missing");
+                    continue;
+                }
+                using var value = JsonDocument.Parse(JsonSerializer.Serialize(values.Single()));
+                errors.AddRange(OpenApiSchemaAssertions.Errors(header.Value.GetProperty("schema"), value.RootElement, Components, $"response.header.{header.Name}"));
+            }
+        if ((int)response.StatusCode == 201 && response.Headers.Location is { } location)
+        {
+            using var body = JsonDocument.Parse(bytes);
+            if (body.RootElement.ValueKind != JsonValueKind.Object || !body.RootElement.TryGetProperty("id", out var id) ||
+                id.ValueKind != JsonValueKind.String || location.ToString() != $"/mobile-phones/{id.GetString()}")
+                errors.Add("Location does not identify the created phone");
+        }
+    }
+
+    private async Task CheckProblem(HttpResponseMessage response, List<string> errors, CancellationToken cancellation)
     {
         if (response.Content.Headers.ContentType?.MediaType != "application/problem+json")
-            throw new InvalidOperationException($"Framework error has unexpected media type: {(int)response.StatusCode}");
-        using var body = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(cancellationToken));
-        var problem = body.RootElement;
-        if (!problem.TryGetProperty("status", out var status) || status.GetInt32() != (int)response.StatusCode ||
-            !problem.TryGetProperty("code", out var code) || string.IsNullOrWhiteSpace(code.GetString()) ||
-            !problem.TryGetProperty("title", out var title) || string.IsNullOrWhiteSpace(title.GetString()) ||
-            !problem.TryGetProperty("type", out var type) || string.IsNullOrWhiteSpace(type.GetString()))
-            throw new InvalidOperationException($"Framework problem body is incomplete: {(int)response.StatusCode}");
+            errors.Add("Framework error has unexpected media type");
+        var bytes = await response.Content.ReadAsByteArrayAsync(cancellation);
+        CheckJson(Components.GetProperty("ApiProblemDetails"), bytes, "response.body", errors);
+        CheckProblemStatus(bytes, (int)response.StatusCode, errors);
+    }
+
+    private static void CheckProblemStatus(byte[] bytes, int expected, List<string> errors)
+    {
+        try
+        {
+            using var body = JsonDocument.Parse(bytes);
+            if (body.RootElement.ValueKind != JsonValueKind.Object || !body.RootElement.TryGetProperty("status", out var status) ||
+                status.ValueKind != JsonValueKind.Number || !status.TryGetInt32(out var actual) || actual != expected)
+                errors.Add("Problem status differs from HTTP status");
+        }
+        catch (JsonException) { errors.Add("Problem body is not valid JSON"); }
+    }
+
+    private void CheckJson(JsonElement schema, byte[] bytes, string path, List<string> errors, bool caseInsensitiveProperties = false)
+    {
+        try
+        {
+            using var body = JsonDocument.Parse(bytes);
+            errors.AddRange(OpenApiSchemaAssertions.Errors(schema, body.RootElement, Components, path, caseInsensitiveProperties));
+        }
+        catch (JsonException) { errors.Add($"{path}: malformed JSON"); }
+    }
+
+    private static JsonDocument ParameterValue(JsonElement schema, string raw)
+    {
+        if (schema.TryGetProperty("type", out var type) && type.GetString() is "integer" or "number" or "boolean")
+        {
+            try { return JsonDocument.Parse(raw); }
+            catch (JsonException) { /* Retain a string so scalar validation reports the invalid parameter. */ }
+        }
+        return JsonDocument.Parse(JsonSerializer.Serialize(raw));
     }
 
     private static bool Matches(string template, string path)
@@ -84,45 +236,5 @@ internal sealed class OpenApiResponseHandler(JsonDocument document) : Delegating
         return expected.Length == actual.Length && expected.Zip(actual).All(parts =>
             parts.First.StartsWith('{') && parts.First.EndsWith('}') ||
             string.Equals(parts.First, parts.Second, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private static void Validate(JsonElement schema, JsonElement value, JsonElement components, string path, int depth)
-    {
-        if (depth > 16)
-            return; // Recursive DTOs can be arbitrarily deep; validate the represented root and children.
-        if (schema.TryGetProperty("$ref", out var reference))
-        {
-            var name = reference.GetString()!.Split('/').Last();
-            Validate(components.GetProperty(name), value, components, path, depth + 1);
-            return;
-        }
-        if (schema.TryGetProperty("allOf", out var allOf))
-        {
-            foreach (var part in allOf.EnumerateArray())
-                Validate(part, value, components, path, depth + 1);
-        }
-        if (!schema.TryGetProperty("type", out var type))
-            return;
-        if (type.GetString() == "array")
-        {
-            if (value.ValueKind != JsonValueKind.Array)
-                throw new InvalidOperationException($"Expected array response at {path}");
-            if (schema.TryGetProperty("items", out var items))
-                foreach (var element in value.EnumerateArray())
-                    Validate(items, element, components, path, depth + 1);
-        }
-        if (type.GetString() == "object")
-        {
-            if (value.ValueKind != JsonValueKind.Object)
-                throw new InvalidOperationException($"Expected object response at {path}");
-            if (schema.TryGetProperty("required", out var required))
-                foreach (var field in required.EnumerateArray())
-                    if (!value.TryGetProperty(field.GetString()!, out _))
-                        throw new InvalidOperationException($"Required response field missing at {path}: {field.GetString()}");
-            if (schema.TryGetProperty("properties", out var properties))
-                foreach (var property in properties.EnumerateObject())
-                    if (value.TryGetProperty(property.Name, out var child) && child.ValueKind != JsonValueKind.Null)
-                        Validate(property.Value, child, components, path, depth + 1);
-        }
     }
 }

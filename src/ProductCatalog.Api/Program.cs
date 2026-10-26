@@ -28,7 +28,12 @@ namespace ProductCatalog.Api
             builder.Services.AddAuthorization();
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c => c.SupportNonNullableReferenceTypes());
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SupportNonNullableReferenceTypes();
+                c.SchemaFilter<ApiContractSchemaFilter>();
+                c.OperationFilter<ApiContractOperationFilter>();
+            });
 
             builder.Services.AddDomain();
             builder.Services.AddInfrastructure(builder.Configuration);

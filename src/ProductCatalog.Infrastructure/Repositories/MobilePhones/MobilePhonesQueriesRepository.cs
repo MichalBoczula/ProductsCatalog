@@ -268,6 +268,7 @@ namespace ProductCatalog.Infrastructure.Repositories.MobilePhones
                        Id,
                        Name,
                        Brand,
+                       Description,
                        MainPhoto,
                        PriceAmount,
                        PriceCurrency
