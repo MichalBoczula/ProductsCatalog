@@ -22,6 +22,18 @@ coverage in both directions; source parsing alone cannot certify the contract.
 Regression cases exercise missing coverage and metadata placement through the
 existing `scripts/test-openapi-contract.py` entry point.
 
+BDD-07 validates actual request parameters/bodies and response bodies/headers for
+all scenario clients against generated OpenAPI. Its `HTTP contract observation`
+links to the canonical request/response pair by `exchangeId` and includes the
+operation ID. Schema-invalid input is retained and must receive 400/415; its
+response still satisfies the problem schema. Structurally valid input can fail a
+domain rule. Framework routing/media problems use the shared problem schema;
+health/startup probes use their explicit text contract and mark JSON schema
+comparison as not applicable. See README for the emitted schema vocabulary,
+serializer-required versus optional members and the existing offsetless SQL
+timestamp wire form. These checks do not replace the status/cause matrix or
+current/history assertions, and do not certify unexecuted input combinations.
+
 MobilePhone uses its existing SQL `ChangedAt` column as an EF Core concurrency
 token. Each changed write advances it monotonically; EF updates the phone and
 history in one `SaveChanges` transaction. A stale write returns

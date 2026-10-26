@@ -45,13 +45,15 @@ status/cause scenarios. This file does not duplicate those contracts.
 Improve Products first in small, separately verified PRs before reusing the
 pattern in the other producers. Generated sources remain authoritative; these
 packages do not introduce parallel handwritten contracts or new Azure resources.
-BDD-01 through BDD-05 are implemented and verified by PRs #200 through #204.
-BDD-05 passed 84 acceptance tests, including 64 BDD cases and 116 paired HTTP
-exchanges; all 16 revised descriptions and 50 tables matched the source, with
-race/no-op state and repository-failure observations. BDD-06 completes the 10
-technical cases with explicit text/startup/documentation/isolation evidence;
-full CI and raw report checks are required for completion. BDD-07 through BDD-09
-remain planned. Green checks for one package do not certify the later packages.
+BDD-01 through BDD-06 are implemented and verified by PRs #200 through #205.
+BDD-06 passed 84 acceptance tests, including 64 BDD cases and 116 paired HTTP
+exchanges; every BDD case has a description and Given/When/Then structure, and
+all 10 revised technical cases matched their source descriptions/tables. BDD-07
+adds request/response schema checks to all scenario clients, generated field
+semantics/examples, accurate nullable enum/timestamp metadata and create Location
+checks, with linked per-exchange observations and negative contract regressions.
+Its completion requires full CI and review of the actual report bundle.
+BDD-08 and BDD-09 remain planned. Green checks for one package do not certify the later packages.
 Deployment and LiveDocs snapshot promotion are deferred until all packages are
 complete.
 
