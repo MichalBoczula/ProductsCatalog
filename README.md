@@ -315,6 +315,26 @@ allure generate artifacts/allure-results/acceptance -o artifacts/allure-report -
 allure open artifacts/allure-report
 ```
 
+BDD-02 adds a shared, scenario-local HTTP evidence recorder for the default,
+fault and startup clients. Each exchange has paired `HTTP nnn request` and
+`HTTP nnn response` JSON attachments with service/scenario identity, a stable
+example instance, method/path/query, actual status/media type, body format, byte
+length and unmodified text. Parsed JSON is included when valid; malformed JSON,
+plain text and empty/absent bodies remain distinguishable. Transport failures
+are recorded by type and rethrown. Recording sits inside the existing response
+validator, so evidence survives a contract assertion failure.
+
+The recorder queues evidence from all clients, including calls made in server
+callbacks, then attaches it after the Gherkin step. Scenario IDs reuse the
+acceptance matrix through Gherkin labels or an Examples `scenarioId` column;
+technical cases have explicit REF identifiers. Parameters distinguish outline
+examples without deriving identity from display names. Legacy per-step body
+attachments remain during packages BDD-03 through BDD-06; the shared HTTP
+attachments are the canonical exchange evidence. Bootstrap Swagger retrieval is
+setup input, not a scenario HTTP exchange. No new dependency or runtime API
+behavior is introduced. Deployment and LiveDocs promotion wait until all packages
+are complete; ordinary producer CI still builds and archives its evidence.
+
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
 ## CI

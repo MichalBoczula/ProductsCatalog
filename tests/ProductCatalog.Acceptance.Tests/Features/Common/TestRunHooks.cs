@@ -4,7 +4,7 @@ using System.Text.Json;
 namespace ProductCatalog.Acceptance.Tests.Features.Common
 {
     [Binding]
-    public sealed class TestRunHooks(ScenarioApiContext apiContext)
+    public sealed class TestRunHooks(ScenarioApiContext apiContext, ScenarioContext scenarioContext, FeatureContext featureContext)
     {
         private ApplicationFactory? _factory;
         private JsonDocument? _openApi;
@@ -21,6 +21,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
         [BeforeScenario]
         public async Task BeforeScenario()
         {
+            apiContext.InitializeEvidence(scenarioContext.ScenarioInfo, featureContext.FeatureInfo.Title);
             _databaseName = $"acceptance_{Guid.NewGuid():N}";
             try
             {
@@ -29,7 +30,8 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
                 apiContext.Factory = _factory;
                 using (var swaggerClient = _factory.CreateClient())
                     _openApi = JsonDocument.Parse(await swaggerClient.GetStringAsync("/swagger/v1/swagger.json"));
-                apiContext.Client = _factory.CreateDefaultClient(new OpenApiResponseHandler(_openApi));
+                apiContext.OpenApi = _openApi;
+                apiContext.Client = apiContext.CreateClient(_factory, validateContract: true);
             }
             catch
             {
@@ -41,6 +43,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
         [AfterScenario]
         public Task AfterScenario() => CleanupAsync();
 
+        [BeforeStep]
+        public void BeforeStep() => apiContext.PublishEvidenceIdentity();
+
+        [AfterStep]
+        public void AfterStep() => apiContext.FlushEvidence();
+
         [AfterTestRun]
         public static Task AfterTestRun() => AcceptanceSqlServer.DisposeAsync();
 
@@ -51,6 +59,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
                 apiContext.Client?.Dispose();
                 _openApi?.Dispose();
                 _openApi = null;
+                apiContext.OpenApi = null;
                 if (_factory is not null)
                 {
                     await _factory.DisposeAsync();

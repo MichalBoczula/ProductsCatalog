@@ -13,6 +13,6 @@ Feature: Products acceptance scenario isolation
     And this Products scenario has one phone and history named "REF05 isolation marker"
 
     Examples:
-      | run    |
-      | first  |
-      | second |
+      | run    | scenarioId             |
+      | first  | REF05_Isolation_First  |
+      | second | REF05_Isolation_Second |

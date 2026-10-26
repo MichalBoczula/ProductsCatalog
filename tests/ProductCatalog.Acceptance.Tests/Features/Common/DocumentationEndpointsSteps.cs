@@ -50,7 +50,7 @@ public sealed class DocumentationEndpointsSteps(ScenarioApiContext context) : ID
                     throw new ArgumentOutOfRangeException(nameof(operationId));
             }
         }));
-        _client = _factory.CreateClient();
+        _client = context.CreateClient(_factory);
     }
 
     [When("I request the {string} documentation endpoint")]

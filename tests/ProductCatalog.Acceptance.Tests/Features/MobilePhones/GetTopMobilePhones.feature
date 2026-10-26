@@ -1,5 +1,6 @@
 Feature: Get top mobile phones
 
+@allure.label.scenarioId:REF07_GetTopMobilePhones_01
 Scenario: Get top mobile phones returns records when mobile phones exist
 	Given an existing set of mobile phones for top list
 		| Field            | Value                                 |
@@ -45,11 +46,13 @@ Scenario: Get top mobile phones returns records when mobile phones exist
 	When I request the top mobile phones list
 	Then the top mobile phones response is successful and contains records
 
+@allure.label.scenarioId:REF07_GetTopMobilePhones_02
 Scenario: Get top mobile phones returns an empty list when no mobile phones exist
 	Given mobile phones table is empty for top list
 	When I request the top mobile phones list
 	Then the top mobile phones response is successful and empty
 
+@allure.label.scenarioId:REF08_GetTopMobilePhones_200_StableTie
 Scenario: Top keeps a stable boundary when four active phones have the same change time
 	Given four mobile phones with the same change time for top list
 		| Field | Value     |
@@ -57,6 +60,7 @@ Scenario: Top keeps a stable boundary when four active phones have the same chan
 	When I request the top mobile phones list
 	Then the top list contains the three greatest IDs in stable order
 
+@allure.label.scenarioId:REF08_GetTopMobilePhones_200_Inactive
 Scenario: Inactive phone remains readable by ID but is absent from top
 	Given four mobile phones with the same change time for top list
 		| Field | Value          |

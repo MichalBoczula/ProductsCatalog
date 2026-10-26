@@ -30,7 +30,7 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext apiContext)
     public async Task WhenTheApiStartsWithMigrationsDisabled()
     {
         using var factory = new ApplicationFactory(_connectionString!, applyMigrations: false);
-        using var client = factory.CreateClient();
+        using var client = apiContext.CreateClient(factory);
         using var response = await client.GetAsync("/health/live");
         _disabledLiveStatus = response.StatusCode;
     }
@@ -82,7 +82,7 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext apiContext)
     private async Task<StartupSnapshot> StartAndCaptureAsync(bool? applyMigrations = true)
     {
         using var factory = new ApplicationFactory(_connectionString!, applyMigrations: applyMigrations);
-        using var client = factory.CreateClient();
+        using var client = apiContext.CreateClient(factory);
         using var response = await client.GetAsync("/health/ready");
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 

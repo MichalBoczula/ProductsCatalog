@@ -1,5 +1,6 @@
 Feature: Get filtered mobile phones
 
+@allure.label.scenarioId:REF07_GetFiltered_MobilePhones_01
 Scenario: Filter mobile phones by brand returns matching records
 	Given existing mobile phones for filtering by brand
 		| Name             | Brand    | PriceAmount |
@@ -15,6 +16,7 @@ Scenario: Filter mobile phones by brand returns matching records
 		| Amount     | 1     |
 		| Brand      | Xiaomi |
 
+@allure.label.scenarioId:REF07_GetFiltered_MobilePhones_02
 Scenario: Filter mobile phones fails when brand is outside enum values
 	Given existing mobile phones for filtering by brand
 		| Name             | Brand    | PriceAmount |
@@ -32,6 +34,7 @@ Scenario: Filter mobile phones fails when brand is outside enum values
 		| ErrorEntity  | MobilePhoneFilterDto                           |
 		| ErrorName    | MobilePhoneFilterBrandValidationRule           |
 
+@allure.label.scenarioId:REF07_GetFiltered_MobilePhones_03
 Scenario: Filter mobile phones returns an empty list when no records match
 	Given existing mobile phones for filtering by brand
 		| Name        | Brand   | PriceAmount |

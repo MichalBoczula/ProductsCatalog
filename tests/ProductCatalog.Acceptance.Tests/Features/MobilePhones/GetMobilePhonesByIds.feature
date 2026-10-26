@@ -1,5 +1,6 @@
 Feature: Get mobile phones by ids
 
+  @allure.label.scenarioId:REF07_GetMobilePhonesByIds_02
   Scenario: Get mobile phones by ids returns the requested mobile phones
     Given an existing mobile phone for the by ids request
       | Field            | Value                                  |
@@ -92,6 +93,7 @@ Feature: Get mobile phones by ids
       | 200        | {FirstMobilePhoneId}  | First By Ids Phone  | First Brand  | First OLED    | 6.4              | first camera  | 799.99      | USD           |
       | 200        | {SecondMobilePhoneId} | Second By Ids Phone | Second Brand | Second AMOLED | 6.8              | second camera | 999.99      | EUR           |
 
+  @allure.label.scenarioId:REF07_GetMobilePhonesByIds_03
   Scenario: Get mobile phones by ids fails for an empty id list
     When I request the mobile phones with an empty id list
     Then the get mobile phones by ids request fails with validation error

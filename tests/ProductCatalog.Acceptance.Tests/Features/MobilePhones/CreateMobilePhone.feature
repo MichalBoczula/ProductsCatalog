@@ -1,5 +1,6 @@
 ﻿Feature: Create mobile phone
 
+  @allure.label.scenarioId:REF07_CreateMobilePhone_01
   Scenario: Create mobile phone returns created response
     Given I have valid mobile phone details
       | Field               | Value                            |
@@ -53,6 +54,7 @@
       | PriceAmount   | 799.99           |
       | PriceCurrency | USD              |
 
+  @allure.label.scenarioId:REF07_CreateMobilePhone_02
   Scenario: Create mobile phone fails with invalid details
     Given I have invalid mobile phone details
       | Field               | Value                            |
