@@ -70,6 +70,9 @@ def check(document, generated):
                     assert {"title", "status", "detail", "type"} <= set(props), \
                         f"Incomplete problem DTO: {name} {status}"
             checked += 1
+        covered = {str(case["status"]) for case in item["scenarios"]}
+        uncovered = set(responses) - covered
+        assert not uncovered, f"OpenAPI response without acceptance case: {name} {sorted(uncovered)}"
     return len(actual), checked
 
 

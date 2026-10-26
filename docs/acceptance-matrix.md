@@ -14,6 +14,14 @@ example exist. For a new distinct response cause, add a scenario and matrix row.
 The matrix is a navigation aid; the HTTP and database assertions are in the
 linked acceptance tests. REF-08 adds conditional write and no-op cases.
 
+BDD-01 checks complete endpoint registrations, including response metadata after
+`.WithName(...)` and nested generic DTOs. A named operation with no parsed response
+status fails the check. Matrix statuses must be declared, and every declared
+status must have a matrix case. The exported OpenAPI check independently verifies
+coverage in both directions; source parsing alone cannot certify the contract.
+Regression cases exercise missing coverage and metadata placement through the
+existing `scripts/test-openapi-contract.py` entry point.
+
 MobilePhone uses its existing SQL `ChangedAt` column as an EF Core concurrency
 token. Each changed write advances it monotonically; EF updates the phone and
 history in one `SaveChanges` transaction. A stale write returns
@@ -24,3 +32,7 @@ decision. Repeating an identical PUT or soft DELETE returns 200 without new
 history. This is a server-side concurrency check; the HTTP DTO has no client
 version/precondition, so a later sequential request based on stale client state
 is a separate contract decision. The existing column requires no SQL migration.
+
+Physical removal after loading is covered for both PUT and DELETE. The DELETE
+case asserts 404 / `resource_not_found`, the missing current row, and preservation
+of the original history without an additional delete history entry.

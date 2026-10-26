@@ -20,6 +20,11 @@ Feature: Mobile phone conditional writes
     When the pending update is submitted
     Then the conditional phone write returns 404 and preserves only the winning history
 
+  Scenario: Delete returns not found when the phone is removed after loading
+    Given a phone write is interrupted by a physical removal
+    When the pending delete is submitted
+    Then the conditional phone write returns 404 and preserves only the winning history
+
   Scenario: REF08_UpdateMobilePhone_200_Unchanged
     Given a phone exists for an unchanged update
     When the unchanged update is submitted

@@ -22,11 +22,21 @@ def operations():
     for file in API.glob("*.cs"):
         source = file.read_text(encoding="utf-8-sig")
         prefix = re.search(r'MapGroup\("([^"]+)"\)', source).group(1)
-        pattern = r'group\.Map(Get|Post|Put|Delete)\("([^"]*)"[\s\S]*?\.WithName\("([^"]+)"\)'
-        for match in re.finditer(pattern, source):
-            method, path, name = match.groups()
-            section = match.group(0)
-            statuses = set(re.findall(r'\.Produces(?:<[^>]+>)?\(StatusCodes\.Status(\d{3})', section))
+        pattern = r'group\.Map(Get|Post|Put|Delete)\("([^"]*)"'
+        matches = list(re.finditer(pattern, source))
+        for index, match in enumerate(matches):
+            method, path = match.groups()
+            # Read the complete registration: Produces can follow WithName,
+            # and its DTO can contain nested generic arguments.
+            end = matches[index + 1].start() if index + 1 < len(matches) else len(source)
+            section = source[match.start():end]
+            names = re.findall(r'\.WithName\("([^"]+)"\)', section)
+            assert len(names) == 1, f"Expected one named operation: {method} {prefix + path}"
+            name = names[0]
+            assert name not in result, f"Duplicate operationId: {name}"
+            statuses = set(re.findall(
+                r'\.Produces(?:<[^;()]+>)?\s*\(\s*StatusCodes\.Status(\d{3})', section))
+            assert statuses, f"No declared response statuses parsed: {name}"
             result[name] = (method.upper(), (prefix + path).rstrip("/") or "/", statuses)
     return result
 
@@ -48,6 +58,7 @@ def verify():
         assert re.fullmatch(r"REF\d{2}_[A-Za-z0-9_]+", row["scenarioId"]), row
         assert row["cause"].strip(), row
         assert row["status"] in {"200", "201", "204", "400", "404", "409", "500"}, row
+        assert row["status"] in actual[name][2], f"Undeclared response status in matrix: {name} {row['status']}"
         feature = FEATURES / row["feature"]
         assert feature.is_file(), feature
         text = feature.read_text(encoding="utf-8-sig")
