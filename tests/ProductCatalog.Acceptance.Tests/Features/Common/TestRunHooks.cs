@@ -42,11 +42,20 @@ namespace ProductCatalog.Acceptance.Tests.Features.Common
         }
 
         [AfterScenario]
-        public Task AfterScenario() => CleanupAsync();
+        public async Task AfterScenario()
+        {
+            try
+            {
+                if (scenarioContext.TestError is null)
+                    apiContext.CompleteDocumentationLinks();
+            }
+            finally { await CleanupAsync(); }
+        }
 
         [BeforeStep]
         public void BeforeStep()
         {
+            apiContext.BeginStep(scenarioContext.StepContext.StepInfo.StepDefinitionType.ToString());
             apiContext.PublishEvidenceIdentity();
             var description = scenarioContext.ScenarioInfo.Description;
             if (!string.IsNullOrWhiteSpace(description))

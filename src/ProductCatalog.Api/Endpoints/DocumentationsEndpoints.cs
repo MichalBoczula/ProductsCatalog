@@ -18,6 +18,10 @@ using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Api.Endpoints
 {
+    [FlowOutcome("products.branch.docs.flows", "Registered flow descriptors succeed.", "Return all nine source flow descriptions as 200; publication is not branch execution evidence.", Stage = "documentation")]
+    [FlowOutcome("products.branch.docs.flow-failure", "A flow descriptor throws.", "Return safe internal_error 500 without exposing the descriptor exception.", Stage = "documentation")]
+    [FlowOutcome("products.branch.docs.policies", "Registered validation descriptors succeed.", "Return all five published policies as 200, including the standalone hardware policy.", Stage = "documentation")]
+    [FlowOutcome("products.branch.docs.policy-failure", "A validation descriptor throws.", "Return safe internal_error 500 without exposing the descriptor exception.", Stage = "documentation")]
     public static class DocumentationsEndpoints
     {
         public static IEndpointRouteBuilder MapDocumentationsEndpoints(this IEndpointRouteBuilder app)
@@ -52,7 +56,7 @@ namespace ProductCatalog.Api.Endpoints
             })
             .WithName("DescribeAllFlows")
             .WithSummary("Describe all request flows")
-            .WithDescription("Returns the ordered steps executed when handling every documented request.")
+            .WithDescription("Returns declared ordered source flow steps. Conditional paths may skip steps; publishing a description is not runtime execution evidence.")
             .Produces<IReadOnlyCollection<FlowDescription>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
@@ -63,7 +67,7 @@ namespace ProductCatalog.Api.Endpoints
                     .ToList()))
             .WithName("DescribeValidationPolicies")
             .WithSummary("Describe all validation policies")
-            .WithDescription("Returns validation policies with their rules and possible validation errors.")
+            .WithDescription("Returns published policies, rules and possible errors, including standalone policies not invoked by catalogue endpoints. The generated source catalogue records invocation scope.")
             .Produces<IReadOnlyCollection<ValidationPolicyDescriptor>>(StatusCodes.Status200OK)
             .Produces<ApiProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 

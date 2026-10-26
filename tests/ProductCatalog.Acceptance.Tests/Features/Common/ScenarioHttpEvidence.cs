@@ -36,6 +36,7 @@ internal sealed class ScenarioHttpEvidence
     internal string Scenario { get; }
     internal SortedDictionary<string, string?> Parameters { get; }
     internal string InstanceId { get; }
+    internal string StepPhase { get; set; } = "Setup";
 
     internal static ScenarioHttpEvidence From(ScenarioInfo info, string feature)
     {

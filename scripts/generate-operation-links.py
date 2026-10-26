@@ -101,6 +101,132 @@ def user_flows(policies):
     return unique(services, "service method"), set(descriptors)
 
 
+# Products source metadata is additive to the existing projection consumed by LiveDocs.
+LITERAL = r'"(?:[^"\\]|\\.)*"'
+
+
+def attribute_arguments(kind, code):
+    for match in re.finditer(r'\[' + kind + r'\((.*?)\)\]', code, re.DOTALL):
+        args = match.group(1)
+        stage = re.search(r'Stage\s*=\s*(' + LITERAL + ')', args)
+        positional = re.split(r',\s*Stage\s*=', args)[0]
+        yield [json.loads(value) for value in re.findall(LITERAL, positional)], \
+            json.loads(stage.group(1)) if stage else 'application'
+
+
+def products_documentation(operations, policy_registrations):
+    registry = {}
+    for path in sorted((DOMAIN / 'Validation/Concrete').rglob('*.cs')):
+        attributes = list(attribute_arguments('Documentation', source(path)))
+        if not attributes:
+            continue
+        assert len(attributes) == 1, f'Duplicate documentation metadata: {path}'
+        values, _ = attributes[0]
+        assert len(values) == 2 and all(values), f'Incomplete documentation metadata: {path}'
+        assert path.stem not in registry, f'Ambiguous documentation type: {path.stem}'
+        registry[path.stem] = {'id': values[0], 'summary': values[1], 'source': str(path.relative_to(ROOT))}
+    assert set(policy_registrations.values()) <= registry.keys(), 'Published policy lacks stable metadata'
+    policy_docs = {}
+    rule_docs = {}
+    for name in policy_registrations.values():
+        metadata = dict(registry[name])
+        code = source(ROOT / metadata['source'])
+        rules = sorted(set(re.findall(r'\bnew\s+(\w+Rule)\s*\(', code)))
+        assert rules and set(rules) <= registry.keys(), f'Rule metadata missing: {name}'
+        metadata['name'] = name
+        metadata['rules'] = [dict(registry[rule], name=rule, kind='policy-rule') for rule in rules]
+        policy_docs[name] = metadata
+        rule_docs.update({rule['id']: rule for rule in metadata['rules']})
+    flows = {}
+    branches = {}
+    for path in sorted((APP / 'Features').rglob('*FlowDescribtor.cs')):
+        code = source(path)
+        action = re.search(r'FlowDescriberBase<(\w+)>', code).group(1)
+        values, _ = list(attribute_arguments('Documentation', code))[0]
+        steps = []
+        for match in re.finditer(r'\[FlowStep\((.*?)\)\]\s*public\s+(?:virtual\s+)?(?:async\s+)?[\w<>,?\[\]\s]+?\s+(\w+)\s*\(', code, re.DOTALL):
+            args, method = match.groups()
+            parts = [json.loads(value) for value in re.findall(LITERAL, re.split(r',\s*RuleId\s*=', args)[0])]
+            assert len(parts) == 2 and all(parts), f'Missing step identity/meaning: {action}.{method}'
+            inline = re.search(r'RuleId\s*=\s*(' + LITERAL + ')', args)
+            step = {'id': values[0] + '.' + parts[0], 'order': int(args.split(',', 1)[0]),
+                    'method': method, 'description': parts[1]}
+            if inline:
+                rule_id = json.loads(inline.group(1))
+                step['inlineRuleId'] = rule_id
+                rule_docs[rule_id] = {'id': rule_id, 'name': action, 'kind': 'inline-guard',
+                                      'summary': parts[1], 'source': str(path.relative_to(ROOT))}
+            steps.append(step)
+        assert steps and len({s['id'] for s in steps}) == len(steps), f'Duplicate/missing step IDs: {action}'
+        flows[action] = {'id': values[0], 'actionName': action, 'summary': values[1],
+                         'source': str(path.relative_to(ROOT)), 'steps': steps, 'branches': []}
+        for args, stage in attribute_arguments('FlowOutcome', code):
+            assert stage == 'application', f'Invalid application branch stage: {action}'
+            assert len(args) >= 3 and all(args), f'Incomplete branch: {action}'
+            branch = {'id': args[0], 'condition': args[1], 'effects': args[2], 'ruleIds': args[3:],
+                      'stage': stage, 'flowId': values[0], 'source': str(path.relative_to(ROOT))}
+            assert branch['id'] not in branches, f'Duplicate branch ID: {branch["id"]}'
+            branches[branch['id']] = branch
+            flows[action]['branches'].append(branch['id'])
+    for path in sorted(API.parent.rglob('*.cs')):
+        for args, stage in attribute_arguments('FlowOutcome', source(path)):
+            assert len(args) == 3 and stage in ['framework', 'documentation'], f'Invalid API branch: {path}'
+            branch = {'id': args[0], 'condition': args[1], 'effects': args[2], 'ruleIds': [],
+                      'stage': stage, 'flowId': None, 'source': str(path.relative_to(ROOT))}
+            assert branch['id'] not in branches, f'Duplicate branch ID: {branch["id"]}'
+            branches[branch['id']] = branch
+    declared_ids = [item['id'] for item in registry.values()]
+    assert len(declared_ids) == len(set(declared_ids)), 'Duplicate policy/rule documentation ID'
+    ids = [step['id'] for flow in flows.values() for step in flow['steps']] + [item['id'] for item in flows.values()] + [p['id'] for p in policy_docs.values()] + list(rule_docs) + list(branches)
+    assert len(ids) == len(set(ids)), 'Duplicate stable documentation ID'
+    assert all(re.fullmatch(r'products\.[a-z0-9.-]+', identity) for identity in ids), 'Invalid stable documentation ID'
+    for branch in branches.values():
+        assert set(branch['ruleIds']) <= rule_docs.keys(), f'Orphan branch rule: {branch["id"]}'
+    with (ROOT / 'docs/acceptance-matrix.tsv').open(newline='', encoding='utf-8') as stream:
+        cases = {row['scenarioId']: row for row in csv.DictReader(stream, delimiter='\t')}
+    invoked_policy_names = set()
+    covered_rules = set()
+    covered_branches = set()
+    for operation in operations:
+        flow = flows.get(operation['flow'])
+        operation['flowId'] = flow['id'] if flow else None
+        operation['policyIds'] = [policy_docs[name]['id'] for name in operation['policies']]
+        allowed_rules = {rule['id'] for name in operation['policies'] for rule in policy_docs[name]['rules']}
+        if flow:
+            allowed_rules.update(step['inlineRuleId'] for step in flow['steps'] if 'inlineRuleId' in step)
+        invoked_policy_names.update(operation['policies'])
+        operation['ruleIds'] = sorted(allowed_rules)
+        for case in operation['scenarios']:
+            row = cases[case['scenarioId']]
+            assert row['branchId'] in branches, f'Orphan branch: {row["branchId"]}'
+            branch = branches[row['branchId']]
+            assert branch['flowId'] == operation['flowId'] or branch['stage'] == 'framework', f'Branch belongs to another flow: {case["scenarioId"]}'
+            assert not flow or set(branch['ruleIds']) <= allowed_rules, f'Branch uses inactive/standalone rules: {branch["id"]}'
+            rules = [identity for identity in row['ruleIds'].split(',') if identity]
+            assert set(rules) <= set(branch['ruleIds']), f'Orphan/incorrect scenario rule: {case["scenarioId"]}'
+            case.update({'branchId': branch['id'], 'ruleIds': rules, 'feature': row['feature'], 'scenario': row['scenario']})
+            covered_branches.add(branch['id']); covered_rules.update(rules)
+    technical = []
+    features = ROOT / 'tests/ProductCatalog.Acceptance.Tests/Features'
+    for path in sorted(features.rglob('*.feature')):
+        for match in re.finditer(r'@allure.label.scenarioId:(\S+)\s+@allure.label.branchId:(\S+)', source(path)):
+            scenario_id, branch_id = match.groups()
+            assert branch_id in branches and branches[branch_id]['stage'] == 'framework', f'Orphan/nontechnical branch: {branch_id}'
+            assert scenario_id not in cases, f'Technical case also in matrix: {scenario_id}'
+            technical.append({'scenarioId': scenario_id, 'branchId': branch_id, 'source': str(path.relative_to(ROOT))})
+            covered_branches.add(branch_id)
+    for name, policy in policy_docs.items():
+        policy['usage'] = 'invoked-by-endpoint-flow' if name in invoked_policy_names else 'standalone'
+        policy['operationIds'] = sorted(op['operationId'] for op in operations if name in op['policies'])
+    active_rules = {rule['id'] for name in invoked_policy_names for rule in policy_docs[name]['rules']}
+    active_rules.update(rule['id'] for rule in rule_docs.values() if rule['kind'] == 'inline-guard')
+    return {'serviceId': 'products', 'flows': list(flows.values()), 'policies': list(policy_docs.values()), 'rules': list(rule_docs.values()),
+            'branches': list(branches.values()), 'technicalScenarios': technical,
+            'coverage': {'basis': 'Explicit primary scenario links, not runtime branch telemetry or coverage of every possible error message.',
+                         'branchesWithoutLinkedScenario': sorted(set(branches) - covered_branches),
+                         'activeRulesWithoutRejectedScenario': sorted(active_rules - covered_rules)}}
+
+
 def generate():
     policies = registrations()
     flows = product_flows(policies) if PRODUCTS else None
@@ -163,9 +289,12 @@ def generate():
         operation["scenarios"] = scenarios[operation["operationId"]]
         assert operation["scenarios"], f"Operation without scenario: {operation['operationId']}"
     assert operations, "No HTTP operations found"
-    return {"service": "ProductsCatalog" if PRODUCTS else "ECommerceStoreUsers",
+    result = {"service": "ProductsCatalog" if PRODUCTS else "ECommerceStoreUsers",
             "operations": operations,
             "standalonePolicies": sorted(set(policies.values()) - used_policies)}
+    if PRODUCTS:
+        result["documentation"] = products_documentation(operations, policies)
+    return result
 
 
 if __name__ == "__main__":

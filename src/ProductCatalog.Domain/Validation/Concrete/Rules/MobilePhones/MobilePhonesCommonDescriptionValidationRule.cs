@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 {
+    [Documentation("products.rule.phone-description", "Reject a missing common description or blank name, brand or main description; do not validate photo references here.")]
     public sealed class MobilePhonesCommonDescriptionValidationRule : IValidationRule<MobilePhone>
     {
         private readonly ValidationError commonDescriptionIsNull;

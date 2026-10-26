@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 {
+    [Documentation("products.rule.phone-exists", "Reject a missing phone aggregate; update/delete currently expose this policy rejection as 400 before saving.")]
     public sealed class MobilePhonesIsNullValidationRule : IValidationRule<MobilePhone>
     {
         private readonly ValidationError mobilePhoneIsNull;

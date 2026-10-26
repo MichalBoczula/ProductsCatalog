@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
+using ProductCatalog.Domain.AggregatesModel.MobilePhoneAggregate;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.MobilePhones
 {
+    [Documentation("products.rule.phone-strings", "Reject blank camera, Description2 or Description3 values.")]
     public sealed class MobilePhonesStringValidationRule : IValidationRule<MobilePhone>
     {
         private readonly ValidationError description2IsNullOrWhitespace;

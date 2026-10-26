@@ -10,7 +10,7 @@ Use repository-local, sequential ADR numbers. Each record has a title, `Status` 
 | [0002](0002-use-cqrs-and-mediatr.md) | Accepted | Separate commands and queries and dispatch them through MediatR. |
 | [0003](0003-openapi-and-api-client-strategy.md) | Accepted | Generate one OpenAPI document from endpoint code and do not store generated clients. |
 | [0004](0004-database-migration-strategy.md) | Accepted | Apply migrations as an explicit deployment activity. |
-| [0005](0005-living-documentation-and-rag.md) | Accepted | Generate source descriptions and links in CI; hosting and RAG remain planned. |
+| [0005](0005-living-documentation-and-rag.md) | Accepted | Generate source descriptions and links; hosting/publication followed in ADR-0011/0012, RAG ingestion remains planned. |
 | [0006](0006-public-error-contract.md) | Accepted | Translate failures into safe problem responses. |
 | [0007](0007-acceptance-isolation.md) | Accepted | Use one test SQL Server with a separate database per scenario. |
 | [0008](0008-optimistic-concurrency-and-history.md) | Accepted | Protect MobilePhone writes and history with an optimistic token. |

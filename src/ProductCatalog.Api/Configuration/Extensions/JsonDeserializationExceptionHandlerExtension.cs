@@ -1,7 +1,9 @@
 using ProductCatalog.Api.Configuration.Common;
+using ProductCatalog.Application.Common.FlowDescriptors.Common;
 
 namespace ProductCatalog.Api.Configuration.Extensions;
 
+[FlowOutcome("products.branch.http.json-binding", "JSON syntax, scalar type, required member or non-null value-type binding fails before MediatR.", "Return invalid_json 400 with safe problem details; the business flow is not entered and no current/history write occurs.", Stage = "framework")]
 public static class JsonDeserializationExceptionHandlerExtension
 {
     public static async Task HandleJsonDeserializationException(

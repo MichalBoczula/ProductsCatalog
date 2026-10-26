@@ -2,6 +2,7 @@ Feature: Public API error contract
   Invalid HTTP inputs return safe problems before business processing.
 
   @allure.label.scenarioId:REF06_Framework_RouteNotFound
+  @allure.label.branchId:products.branch.http.route
   Scenario: An unknown route returns a route-not-found problem
     No endpoint matches the requested URL, so routing returns 404.
     Given the rejected HTTP request has these details
@@ -27,6 +28,7 @@ Feature: Public API error contract
       | HistoryDataUnchanged | true  |
 
   @allure.label.scenarioId:REF06_Framework_MethodNotAllowed
+  @allure.label.branchId:products.branch.http.method
   Scenario: An unsupported method returns a method-not-allowed problem
     The top route supports GET; sending POST returns 405 before business processing.
     Given the rejected HTTP request has these details
@@ -52,6 +54,7 @@ Feature: Public API error contract
       | HistoryDataUnchanged | true  |
 
   @allure.label.scenarioId:REF06_Framework_UnsupportedMediaType
+  @allure.label.branchId:products.branch.http.media
   Scenario: Creating a phone with text media returns an unsupported-media-type problem
     The create endpoint requires JSON; an explicit text/plain body returns 415.
     Given the rejected HTTP request has these details
@@ -82,6 +85,7 @@ Feature: Public API error contract
       | HistoryDataUnchanged | true  |
 
   @allure.label.scenarioId:REF06_Framework_InvalidJson
+  @allure.label.branchId:products.branch.http.json-binding
   Scenario: Creating a phone with malformed JSON returns an invalid-JSON problem
     The malformed request text is preserved as evidence, while the response hides its internal marker.
     Given the rejected HTTP request has these details
@@ -202,6 +206,7 @@ Feature: Public API error contract
       | HistoryDataUnchanged | true  |
 
   @allure.label.scenarioId:REF06_Framework_EmptyBody
+  @allure.label.branchId:products.branch.http.request-binding
   Scenario: Creating a phone with an empty JSON body returns an invalid-request problem
     An explicit zero-length application/json body cannot bind to the required create DTO.
     Given the rejected HTTP request has these details
@@ -229,6 +234,7 @@ Feature: Public API error contract
       | HistoryDataUnchanged | true  |
 
   @allure.label.scenarioId:REF06_Framework_InvalidParameter
+  @allure.label.branchId:products.branch.http.request-binding
   Scenario: Browsing with a nonnumeric amount returns an invalid-request problem
     The amount query value cannot bind to an integer; it never reaches the positive-amount policy.
     Given the rejected HTTP request has these details

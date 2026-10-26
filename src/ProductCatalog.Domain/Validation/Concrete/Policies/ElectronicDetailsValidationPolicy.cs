@@ -1,10 +1,11 @@
-﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 using ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetailsRules;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Policies
 {
+    [Documentation("products.policy.hardware", "Published and registered standalone policy; no catalogue endpoint invokes it. Publication does not imply enforcement.")]
     public sealed class ElectronicDetailsValidationPolicy
         : IValidationPolicy<ElectronicDetails>, IValidationPolicyDescriptorProvider
     {

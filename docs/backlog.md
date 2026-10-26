@@ -45,17 +45,14 @@ status/cause scenarios. This file does not duplicate those contracts.
 Improve Products first in small, separately verified PRs before reusing the
 pattern in the other producers. Generated sources remain authoritative; these
 packages do not introduce parallel handwritten contracts or new Azure resources.
-BDD-01 through BDD-06 are implemented and verified by PRs #200 through #205.
-BDD-06 passed 84 acceptance tests, including 64 BDD cases and 116 paired HTTP
-exchanges; every BDD case has a description and Given/When/Then structure, and
-all 10 revised technical cases matched their source descriptions/tables. BDD-07
-adds request/response schema checks to all scenario clients, generated field
-semantics/examples, accurate nullable enum/timestamp metadata and create Location
-checks, with linked per-exchange observations and negative contract regressions.
-The stricter null check exposed a missing Description column in the top-phone
-SQL projection; it now returns the stored description as its DTO declares.
-Its completion requires full CI and review of the actual report bundle.
-BDD-08 and BDD-09 remain planned. Green checks for one package do not certify the later packages.
+BDD-01 through BDD-07 are implemented and verified by PRs #200 through #206.
+BDD-07 passed 124 acceptance tests, including 64 BDD cases, 116 paired HTTP
+exchanges and 116 contract observations. Its review checked 753 attachments,
+184 documented fields, 148 typed leaf examples and preserved case identities.
+BDD-08 adds semantic source metadata, explicit policy/inline-rule classification,
+branch/scenario/evidence links and truthful coverage gaps. Its completion requires
+full CI and raw bundle review. BDD-09 remains the final audit; green checks for one
+package do not certify every branch, rule or unexecuted input.
 Deployment and LiveDocs snapshot promotion are deferred until all packages are
 complete.
 
@@ -122,9 +119,7 @@ pattern to Users, Orders/Invoices and Payments remains separate work.
 
 ## Deferred portfolio work
 
-- Host Allure/API reports and decide artifact retention, version identity and
-  report URL. CI currently generates/validates contract sources and stores
-  test results, without a hosted documentation portal.
+- The shared LiveDocs portal and consolidated producer archive exist (ADR-0011/0012). Complete the BDD-09 selected-snapshot audit and promotion after these packages; producer upload does not update the running portal.
 - Design and evaluate RAG ingestion, chunking, access controls and refresh
   from approved artifacts. Exclude secrets, production payloads and personal
   data. No vector store or retrieval endpoint exists in this service.

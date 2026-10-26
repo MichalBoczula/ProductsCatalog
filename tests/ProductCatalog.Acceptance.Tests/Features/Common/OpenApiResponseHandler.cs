@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace ProductCatalog.Acceptance.Tests.Features.Common;
 
 /// <summary>Checks actual HTTP exchanges against generated OpenAPI, after evidence has been captured.</summary>
-internal sealed class OpenApiResponseHandler(JsonDocument document, ScenarioHttpEvidence? evidence = null) : DelegatingHandler
+internal sealed class OpenApiResponseHandler(JsonDocument document, ScenarioHttpEvidence? evidence = null, DocumentationEvidence? documentation = null) : DelegatingHandler
 {
     private JsonElement Components => document.RootElement.GetProperty("components").GetProperty("schemas");
 
@@ -90,6 +90,8 @@ internal sealed class OpenApiResponseHandler(JsonDocument document, ScenarioHttp
                 errors = responseErrors
             }
         });
+        if (documentation is not null && evidence is not null)
+            await documentation.Observe(evidence, request, response, operationId, exchangeId, scope, cancellationToken);
         if (responseErrors.Count > 0 || requestErrors.Count > 0 && !allowedInvalidRequest)
         {
             response.Dispose();

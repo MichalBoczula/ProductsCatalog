@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Diagnostics;
 using ProductCatalog.Api.Configuration.Common;
 using ProductCatalog.Api.Configuration.Extensions;
 using ProductCatalog.Domain.Validation.Common;
+using ProductCatalog.Application.Common.FlowDescriptors.Common;
 
 namespace ProductCatalog.Api.Configuration
 {
+    [FlowOutcome("products.branch.http.request-binding", "A required body or scalar query parameter cannot bind without a JSON parser error.", "Return invalid_request 400 before the business flow; preserve current/history.", Stage = "framework")]
     public sealed class ExceptionHandler : IExceptionHandler
     {
         private readonly ILogger<ExceptionHandler> _logger;

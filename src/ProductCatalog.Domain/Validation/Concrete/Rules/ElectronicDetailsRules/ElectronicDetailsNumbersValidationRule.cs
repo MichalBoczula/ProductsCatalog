@@ -1,9 +1,10 @@
-﻿using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
+using ProductCatalog.Domain.AggregatesModel.Common.ValueObjects;
 using ProductCatalog.Domain.Validation.Abstract;
 using ProductCatalog.Domain.Validation.Common;
 
 namespace ProductCatalog.Domain.Validation.Concrete.Rules.ElectronicDetailsRules
 {
+    [Documentation("products.rule.hardware-numbers", "Standalone rule: require positive refresh rate, screen size, width, height and battery capacity; create/update do not invoke this policy.")]
     public sealed class ElectronicDetailsNumbersValidationRule : IValidationRule<ElectronicDetails>
     {
         private readonly ValidationError refreshRateIsZeroOrBelow;

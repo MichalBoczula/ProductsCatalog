@@ -1,6 +1,6 @@
 # ADR-0005: Living documentation and RAG
 
-- Status: Accepted
+- Status: Accepted; hosting/publication follow-ups subsequently implemented by ADR-0011/ADR-0012
 - Date: 2026-09-22
 
 ## Context
@@ -29,22 +29,17 @@ OpenAPI, and compares declared responses with actual HTTP outcomes exercised
 by acceptance tests. Generated projections are not committed as parallel
 specifications.
 
-The following work is planned, not implemented by this decision:
-
-1. publish human-readable Allure and API documentation with commit/version identity;
-2. prepare controlled chunks and metadata for retrieval;
-3. index approved artifacts for RAG retrieval and evaluate the answers.
+Subsequent work implemented the producer archive and the shared portfolio LiveDocs portal; see ADR-0011/ADR-0012. BDD-08 adds stable semantic source and scenario/evidence links. Controlled retrieval chunks, indexing and RAG evaluation remain future work.
 
 ## Consequences
 
 Source descriptions change with executable behavior and are validated in CI.
 The documentation endpoints expose flows and validation rules to other tooling.
-No hosted portal, RAG ingestion, index or retrieval service is provided today.
+The shared LiveDocs portal hosts selected snapshots. This producer does not implement RAG ingestion, an index or a retrieval service.
 
 Generated documentation may expose internal or sensitive information if inputs are not controlled. The ingestion pipeline must exclude secrets, credentials, production payloads, stack traces, and personal data. Only approved CI artifacts should enter the RAG index.
 
-Allure publication, retention, RAG store, chunking and refresh remain follow-up
-decisions. Accepted here means adopting generated sources, not accepting an
+Producer publication and archive provenance are covered by later ADRs. RAG store, chunking and retrieval refresh remain follow-up decisions. Accepted here means adopting generated sources, not accepting an
 unimplemented hosting or RAG architecture.
 
 ## Alternatives considered
