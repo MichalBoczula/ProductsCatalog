@@ -1,16 +1,30 @@
 Feature: Products acceptance scenario isolation
-  Each scenario gets its own migrated database, including current and history records.
+  Each example receives its own migrated test database with independent current and history records.
 
-  Scenario Outline: A previous scenario cannot leave a phone or its history in this scenario (<run>)
-    Given no Products phone or history has the name "REF05 isolation marker"
+  Scenario Outline: A fresh scenario database isolates the marker phone and history (<run>)
+    Each example verifies marker absence before creating one linked phone and inserted history; the check does not depend on example execution order.
+    Given the isolated scenario starts with this marker state
+      | Field       | Value                  |
+      | Name        | REF05 isolation marker |
+      | CurrentRows | 0                      |
+      | HistoryRows | 0                      |
     And I have valid mobile phone details
       | Field | Value                  |
       | Name  | REF05 isolation marker |
     When I submit the create mobile phone request
     Then the mobile phone is created successfully
-      | Field      | Value |
-      | StatusCode | 201   |
-    And this Products scenario has one phone and history named "REF05 isolation marker"
+      | Field      | Value                  |
+      | StatusCode | 201                    |
+      | HasId      | true                   |
+      | IsActive   | true                   |
+      | Name       | REF05 isolation marker |
+    And the isolated scenario contains this linked marker state
+      | Field            | Value                  |
+      | Name             | REF05 isolation marker |
+      | CurrentRows      | 1                      |
+      | HistoryRows      | 1                      |
+      | IsActive         | true                   |
+      | HistoryOperation | Inserted               |
 
     Examples:
       | run    | scenarioId             |

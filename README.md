@@ -383,6 +383,28 @@ Stable scenario/example identities remain unchanged. Application behavior,
 contracts, schema and dependencies are unchanged; deployment and LiveDocs promotion
 remain deferred. Health/startup/documentation cases continue in BDD-06.
 
+BDD-06 completes the 10 technical cases: health/readiness, repeated startup,
+documentation and acceptance isolation. Probe tables assert exact status, text
+media type and Healthy/Unhealthy body; unhealthy readiness is a documented 503
+text exception to business problem JSON. SQL observations distinguish deletion
+of the scenario database from a missing history table and its migration recovery.
+Unqueried table/seed state is recorded as null instead of an invented empty result.
+
+Startup records the requested override, effective ApplyMigrations value, actual
+probe and full current/history snapshots with applied/pending migration IDs. The
+repository appsettings.json currently enables migrations; an absent setting still
+defaults to false in configuration validation. A repeated enabled startup preserves
+all stored values and migration IDs. Evidence excludes connection strings.
+Documentation tables list the nine flow and five policy names; responses also
+contain nonempty steps/rules/errors. Publishing policy metadata does not prove
+runtime enforcement. Descriptor failures check the complete safe problem and
+actual call count. Isolation examples record separate database identities and
+verify one correctly linked marker phone/history without relying on run order.
+Stable scenario/example identities remain unchanged. Runtime API/configuration,
+schema, dependencies and CI are unchanged; deployment and LiveDocs promotion
+remain deferred. Request/response contracts and semantic flow/RAG links follow
+in BDD-07 and BDD-08, then BDD-09 audits the complete selected evidence.
+
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
 ## CI
