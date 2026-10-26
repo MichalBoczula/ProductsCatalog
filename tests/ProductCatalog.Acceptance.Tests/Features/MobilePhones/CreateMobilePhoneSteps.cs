@@ -135,7 +135,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             read.StatusCode.ShouldBe(HttpStatusCode.OK);
             var saved = await read.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
             saved.ShouldNotBeNull();
-            JsonSerializer.Serialize(saved, _jsonOptions).ShouldBe(JsonSerializer.Serialize(_createdMobilePhone, _jsonOptions));
+            JsonElement.DeepEquals(
+                JsonSerializer.SerializeToElement(saved, _jsonOptions),
+                JsonSerializer.SerializeToElement(_createdMobilePhone, _jsonOptions)).ShouldBeTrue();
         }
 
         [Then("the created phone has the following saved state and history")]
