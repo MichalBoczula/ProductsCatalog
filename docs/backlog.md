@@ -45,16 +45,15 @@ status/cause scenarios. This file does not duplicate those contracts.
 Improve Products first in small, separately verified PRs before reusing the
 pattern in the other producers. Generated sources remain authoritative; these
 packages do not introduce parallel handwritten contracts or new Azure resources.
-BDD-01 through BDD-07 are implemented and verified by PRs #200 through #206.
-BDD-07 passed 124 acceptance tests, including 64 BDD cases, 116 paired HTTP
-exchanges and 116 contract observations. Its review checked 753 attachments,
-184 documented fields, 148 typed leaf examples and preserved case identities.
-BDD-08 adds semantic source metadata, explicit policy/inline-rule classification,
-branch/scenario/evidence links and truthful coverage gaps. Its completion requires
-full CI and raw bundle review. BDD-09 remains the final audit; green checks for one
-package do not certify every branch, rule or unexecuted input.
-Deployment and LiveDocs snapshot promotion are deferred until all packages are
-complete.
+BDD-01 through BDD-08 are implemented and verified by PRs #200 through #207.
+BDD-08 passed 132 acceptance tests, including 64 BDD cases and 116 paired HTTP
+exchanges with contract and source-documentation observations. BDD-09 adds 12
+missing validation/history-failure examples and classifies the non-normal null-list
+guard explicitly. Its source checks cover 11 operations, 61 matrix cases, 57 steps,
+nine flows and five policies. Final CI, archive and LiveDocs snapshot evidence must
+be recorded before the last checklist item is checked. The audit does not certify
+every invalid-field combination, SQL rollback, RAG ingestion or historical design
+approval. See [the source documentation contract](source-description-contract.md).
 
 | Package | Scope | Completion evidence |
 | --- | --- | --- |
@@ -140,3 +139,4 @@ pattern to Users, Orders/Invoices and Payments remains separate work.
 - Empty collection queries return successful empty collections rather than
   invented not-found responses.
 - No general warnings-as-errors gate or forced CQRS/MongoDB symmetry with Users.
+

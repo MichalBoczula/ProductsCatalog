@@ -1,7 +1,7 @@
 # Acceptance source and generated code
 
-The `.feature` files and their step definitions are authoritative. At BDD-08,
-Products has 18 features, 56 declared scenarios/outlines and 64 expanded BDD cases;
+The `.feature` files and their step definitions are authoritative. At BDD-09,
+Products has 19 features, 60 declared scenarios/outlines and 76 expanded BDD cases;
 the acceptance project also contains non-BDD xUnit checks. Derive discovery counts
 from the reviewed source revision and CI results instead of treating this snapshot
 as a permanent total. Stable scenario/example IDs are metadata, independent of
@@ -26,3 +26,4 @@ See the Microsoft advisories for [PKCS](https://github.com/advisories/GHSA-846f-
 and XML cryptography: [GHSA-7hqp-7c5m-4vq6](https://github.com/advisories/GHSA-7hqp-7c5m-4vq6),
 [GHSA-c399-9853-6jmj](https://github.com/advisories/GHSA-c399-9853-6jmj), and
 [GHSA-r955-8q5j-3h83](https://github.com/advisories/GHSA-r955-8q5j-3h83).
+

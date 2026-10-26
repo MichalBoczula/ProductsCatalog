@@ -17,7 +17,7 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
     [FlowOutcome("products.branch.history.invalid-pagination", "Page number or size is zero or negative.", "Return validation_failed 400 before the phone lookup.", "products.rule.pagination-positive")]
     [FlowOutcome("products.branch.history.missing", "Valid pagination reaches the lookup, but the phone does not exist.", "Return resource_not_found 404 without history read or writes.")]
     [FlowOutcome("products.branch.history.repository-failure", "The initial GetById lookup throws.", "Return safe internal_error 500 without writes; this is the existing controlled BDD read fault.")]
-    [FlowOutcome("products.branch.history.history-read-failure", "The history query throws after successful existence lookup.", "Return safe internal_error 500 without writes; no dedicated BDD fault currently proves this later read.")]
+    [FlowOutcome("products.branch.history.history-read-failure", "The history query throws after successful existence lookup.", "Return safe internal_error 500 without writes; a controlled history-query fault follows a successful real phone lookup.")]
     internal sealed class GetMobilePhoneHistoryQueryFlowDescribtor : FlowDescriberBase<GetMobilePhoneHistoryQuery>
     {
         [FlowStep(1, "validate-pagination", "Validate pageNumber and pageSize greater than zero before looking up the phone.")]
@@ -55,3 +55,4 @@ namespace ProductCatalog.Application.Features.MobilePhones.Queries.GetMobilePhon
             => historyEntries.Adapt<List<MobilePhoneHistoryDto>>().AsReadOnly();
     }
 }
+
