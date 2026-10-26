@@ -23,7 +23,9 @@ changed by generating it.
 
 - Operation identity is `(products, operationId)`, preserving the existing
   case-sensitive `GetFiltered MobilePhones` name, including its space. Join the
-  method and route with exported OpenAPI. The generator reads the actual
+  method and route with exported OpenAPI. The legacy projection root retains
+  `service: ProductsCatalog`; `documentation.serviceId: products` is the canonical
+  join value used by bundle and Allure evidence. The generator reads the actual
   mediator call and verifies its handler/descriptor/policy relationships.
 - Class-owned `Documentation` IDs identify flows, policies and rules. A step ID
   combines its explicit flow ID and explicit step key; it is independent of its
@@ -38,10 +40,12 @@ changed by generating it.
   `instanceId`. Join actual evidence using `exchangeId`. Each exchange has a
   request, response, contract observation and `HTTP documentation links` item.
 - A primary link requires the target operation and status during the `When`
-  phase; a technical framework label selects its own `When` request. Exactly one
+  phase unless explicitly marked supporting; a technical framework label selects its own `When` request. Exactly one
   primary exchange is required for each bound case. Setup, competing requests,
   follow-up reads and technical probes remain separate exchanges. A first DELETE
-  during `Given` must not claim the repeated-delete branch of the later `When`.
+  during setup must not claim the repeated-delete branch. When first and repeated
+  DELETE share one When step, the first request is explicitly marked supporting;
+  its actual phase and bytes are retained.
 - `declaredStepIds`/`declaredPolicyIds` describe the nominal source flow, not a
   runtime trace. `expectedBranchId` comes from the scenario's declared intent;
   assertions establish the outcome. `observedErrorRuleIds` come from actual
@@ -64,6 +68,9 @@ list-result guard. The real list repository returns a non-null list; the latter 
 not a declared normal HTTP response. Active rules without a rejection BDD case
 are phone common-description validation, negative filter bounds and strict filter
 price range. Domain/unit tests and an HTTP rejection scenario are different proof.
+A rule with one linked rejection can still have untested error conditions; for
+example, a Description2 rejection does not prove the camera/Description3 errors.
+BDD-09 must compare possible error messages with actual responses as well as IDs.
 These gaps must be assessed in BDD-09; green source checks do not erase them.
 
 The controlled save-failure cases throw before EF SaveChanges. They demonstrate

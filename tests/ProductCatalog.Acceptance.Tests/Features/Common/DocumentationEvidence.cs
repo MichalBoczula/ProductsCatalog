@@ -37,7 +37,8 @@ internal sealed class DocumentationEvidence
         var catalogue = Source.Value;
         var status = (int)response.StatusCode;
         request.Options.TryGetValue(HttpEvidenceHandler.StepPhaseKey, out var phase);
-        var primary = phase == "When" && (_case is not null
+        request.Options.TryGetValue(HttpEvidenceHandler.SupportingExchangeKey, out var supporting);
+        var primary = phase == "When" && !supporting && (_case is not null
             ? operationId == _case.OperationId && status == _case.Status
             : _technicalBranch is not null);
         var branchId = primary ? _case?.BranchId ?? _technicalBranch : null;
@@ -70,6 +71,7 @@ internal sealed class DocumentationEvidence
             path = request.RequestUri!.AbsolutePath,
             status,
             stepPhase = phase,
+            explicitlySupporting = supporting,
             scope,
             role = primary ? "primary-scenario-outcome" : "supporting-or-technical-exchange",
             linkBasis = "Declared source metadata and scenario expectation joined to an actual HTTP exchange; not runtime branch/step telemetry.",

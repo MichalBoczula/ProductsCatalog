@@ -7,6 +7,7 @@ internal sealed class HttpEvidenceHandler(ScenarioHttpEvidence evidence) : Deleg
 {
     internal static readonly HttpRequestOptionsKey<string> ExchangeIdKey = new("Products.HttpEvidence.ExchangeId");
     internal static readonly HttpRequestOptionsKey<string> StepPhaseKey = new("Products.HttpEvidence.StepPhase");
+    internal static readonly HttpRequestOptionsKey<bool> SupportingExchangeKey = new("Products.HttpEvidence.SupportingExchange");
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {

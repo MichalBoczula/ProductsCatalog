@@ -19,13 +19,16 @@ public sealed class DocumentationEvidenceTests
         Assert.Equal("products.policy.filter", Assert.Single(source.OperationFlows["GetFiltered MobilePhones"].PolicyIds));
     }
 
-    [Fact]
-    public async Task SetupWithTheSameOperationAndStatusDoesNotClaimTheRepeatedDeleteBranch()
+    [Theory]
+    [InlineData("Given", false)]
+    [InlineData("When", true)]
+    public async Task SetupWithTheSameOperationAndStatusDoesNotClaimTheRepeatedDeleteBranch(string setupPhase, bool explicitlySupporting)
     {
         var evidence = Evidence("REF08_DeleteMobilePhone_200_Repeated");
         var links = new DocumentationEvidence(evidence.ScenarioId);
         using var response = Reply(200);
-        using var setup = Request("Given");
+        using var setup = Request(setupPhase);
+        setup.Options.Set(HttpEvidenceHandler.SupportingExchangeKey, explicitlySupporting);
         await links.Observe(evidence, setup, response, "DeleteMobilePhone", "setup", "openapi", default);
         Assert.Throws<InvalidOperationException>(links.Complete);
         using var action = Request("When");

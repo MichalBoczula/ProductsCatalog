@@ -141,7 +141,9 @@ public sealed class WriteRacesSteps(ScenarioApiContext context) : IDisposable
     [When("I delete the phone and repeat the delete")]
     public async Task WhenRepeatedDelete()
     {
-        using var first = await context.Client!.DeleteAsync($"/mobile-phones/{_created.Id}");
+        using var firstRequest = new HttpRequestMessage(HttpMethod.Delete, $"/mobile-phones/{_created.Id}");
+        firstRequest.Options.Set(HttpEvidenceHandler.SupportingExchangeKey, true);
+        using var first = await context.Client!.SendAsync(firstRequest);
         first.StatusCode.ShouldBe(HttpStatusCode.OK);
         var deleted = await first.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_json);
         deleted.ShouldNotBeNull();

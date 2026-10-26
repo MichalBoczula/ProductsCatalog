@@ -453,7 +453,8 @@ endpoint shapes are retained; their text/inventories are compared with source.
 
 Each exchange receives `HTTP documentation links` joined to its actual request,
 response and contract observation by exchangeId. A target operation/status in the
-When phase identifies the primary scenario exchange; setup/competing calls and
+When phase identifies the primary scenario exchange unless explicitly marked
+supporting (the first DELETE in the repeated-delete action); setup/competing calls and
 follow-up reads do not claim its branch. Expected rejection rules must be present
 in actual validation errors. Declared steps/policies and expected branches are
 source knowledge, not runtime step telemetry. Technical framework labels have

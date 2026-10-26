@@ -220,7 +220,7 @@ def products_documentation(operations, policy_registrations):
         policy['operationIds'] = sorted(op['operationId'] for op in operations if name in op['policies'])
     active_rules = {rule['id'] for name in invoked_policy_names for rule in policy_docs[name]['rules']}
     active_rules.update(rule['id'] for rule in rule_docs.values() if rule['kind'] == 'inline-guard')
-    return {'flows': list(flows.values()), 'policies': list(policy_docs.values()), 'rules': list(rule_docs.values()),
+    return {'serviceId': 'products', 'flows': list(flows.values()), 'policies': list(policy_docs.values()), 'rules': list(rule_docs.values()),
             'branches': list(branches.values()), 'technicalScenarios': technical,
             'coverage': {'basis': 'Explicit primary scenario links, not runtime branch telemetry or coverage of every possible error message.',
                          'branchesWithoutLinkedScenario': sorted(set(branches) - covered_branches),
