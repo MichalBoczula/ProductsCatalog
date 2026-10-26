@@ -37,31 +37,25 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             PropertyNameCaseInsensitive = true
         };
 
-        [Given("an existing mobile phone which will be updated")]
-        public async Task GivenAnExistingMobilePhoneWhichWillBeUpdated(Table table)
+        [Given("an existing mobile phone before replacement")]
+        public async Task GivenOriginalPhone(Table table)
         {
-            _createRequest = BuildCreateMobilePhoneRequest();
-
-            AllureJson.AttachObject(
-                "Request JSON (create for update)",
-                _createRequest,
-                _jsonOptions
-            );
-
-            var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
-            response.EnsureSuccessStatusCode();
-
+            _createRequest = CreateMobilePhoneSteps.BuildMobilePhoneRequest(table);
+            using var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", _createRequest, _jsonOptions);
+            response.StatusCode.ShouldBe(HttpStatusCode.Created);
             _createdMobilePhone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
             _createdMobilePhone.ShouldNotBeNull();
-
-            _updateRequest = BuildUpdateMobilePhoneRequest(table);
-
-            AllureJson.AttachObject(
-                "Request JSON (update)",
-                _updateRequest,
-                _jsonOptions
-            );
         }
+
+        [Given("the replacement mobile phone details are")]
+        public void GivenReplacementDetails(Table table)
+        {
+            _updateRequest = BuildUpdateMobilePhoneRequest(table);
+        }
+
+        [Then("the updated phone has the following saved state and history")]
+        public Task ThenUpdatedStateAndHistory(Table table)
+            => MobilePhonePersistenceAssertions.AssertSaved(_apiContext, _createdMobilePhone!.Id, table, _createdMobilePhone);
 
         [When("I submit the update mobile phone request")]
         public async Task WhenISubmitTheUpdateMobilePhoneRequest()
@@ -89,6 +83,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
 
             _updatedMobilePhone.ShouldNotBeNull();
             _updatedMobilePhone!.Id.ShouldBe(_createdMobilePhone!.Id);
+            _updatedMobilePhone.IsActive.ShouldBeTrue();
             _updatedMobilePhone.FaceId.ShouldBe(_updateRequest.FaceId);
             _updatedMobilePhone.FingerPrint.ShouldBe(_updateRequest.FingerPrint);
             _updatedMobilePhone.Price.Amount.ShouldBe(ParseDecimal(expected, "PriceAmount", _updateRequest.Price.Amount));
@@ -125,6 +120,9 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             _updatedMobilePhone.Sensors.Barometer.ShouldBe(_updateRequest.Sensors.Barometer);
             _updatedMobilePhone.Sensors.Halla.ShouldBe(_updateRequest.Sensors.Halla);
             _updatedMobilePhone.Sensors.AmbientLight.ShouldBe(_updateRequest.Sensors.AmbientLight);
+            _updatedMobilePhone.Camera.ShouldBe(_updateRequest.Camera);
+            _updatedMobilePhone.Description2.ShouldBe(_updateRequest.Description2);
+            _updatedMobilePhone.Description3.ShouldBe(_updateRequest.Description3);
         }
 
         [Given("mobile phone identify by id not exists")]
@@ -170,38 +168,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 error.Message == GetRequiredValue(expected, "ErrorMessage")
                 && error.Entity == GetRequiredValue(expected, "ErrorEntity")
                 && error.Name == GetRequiredValue(expected, "ErrorName"));
-        }
-
-        private static CreateMobilePhoneExternalDto BuildCreateMobilePhoneRequest()
-        {
-            return new CreateMobilePhoneExternalDto(
-                new CommonDescriptionExtrernalDto(
-                    "Baseline Mobile Phone",
-                    "Brand",
-                    "Phone created for update test",
-                    "base-main.jpg",
-                    new List<string> { "base-photo-1.jpg", "base-photo-2.jpg" }),
-                new CreateElectronicDetailsExternalDto(
-                    "Octa-core",
-                    "Adreno",
-                    "8GB",
-                    "256GB",
-                    "OLED",
-                    120,
-                    6.4m,
-                    72,
-                    152,
-                    "Li-Ion",
-                    4500),
-                new CreateConnectivityExternalDto(true, true, true, true),
-                new CreateSatelliteNavigationSystemExternalDto(true, true, true, true, true),
-                new CreateSensorsExternalDto(true, true, true, true, true, false, true),
-                "camera",
-                true,
-                true,
-                new CreateMoneyExternalDto(799.99m, "USD"),
-                "desc2",
-                "desc3");
         }
 
         private static UpdateMobilePhoneExternalDto BuildUpdateMobilePhoneRequest(Table? table)

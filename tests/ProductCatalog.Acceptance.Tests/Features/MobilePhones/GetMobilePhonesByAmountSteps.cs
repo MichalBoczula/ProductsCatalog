@@ -35,35 +35,20 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         private HttpResponseMessage? _response;
         private int _amount;
 
-        [Given("an existing list of mobile phones")]
-        public async Task GivenAnExistingListOfMobilePhones(Table table)
+        [Given("the following phones are available in the catalogue")]
+        public async Task GivenCataloguePhones(Table table)
         {
-
-
-            var requests = new List<CreateMobilePhoneExternalDto>
+            foreach (var row in table.Rows)
             {
-                BuildMobilePhoneRequest("Filter Phone 1", table),
-                BuildMobilePhoneRequest("Filter Phone 2", table),
-                BuildMobilePhoneRequest("Filter Phone 3", table)
-            };
-
-            foreach (var request in requests)
-            {
-                AllureJson.AttachObject(
-                    "Request JSON (create for filter)",
-                    request,
-                    _jsonOptions
-                );
-
-                var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", request);
-                response.EnsureSuccessStatusCode();
-
-                var body = await response.Content.ReadAsStringAsync();
-                AllureJson.AttachRawJson($"Response JSON ({(int)response.StatusCode})", body);
-
-                var created = JsonSerializer.Deserialize<MobilePhoneDetailsDto>(body, _jsonOptions);
+                var details = new Table("Field", "Value");
+                foreach (var column in table.Header)
+                    details.AddRow(column, row[column]);
+                var request = CreateMobilePhoneSteps.BuildMobilePhoneRequest(details);
+                using var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", request, _jsonOptions);
+                response.StatusCode.ShouldBe(HttpStatusCode.Created);
+                var created = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
                 created.ShouldNotBeNull();
-                _createdMobilePhones.Add(created!);
+                _createdMobilePhones.Add(created);
             }
         }
 
@@ -83,54 +68,43 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         public async Task WhenIRequestMobilePhonesWithAmount(int amount)
         {
             _amount = amount;
-            AllureJson.AttachObject(
-                "Request JSON (get by filter)",
-                new { Amount = amount },
-                _jsonOptions
-            );
             _response = await _apiContext.Client!.GetAsync($"/mobile-phones?amount={amount}");
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
-        [Then("the mobile phone list is returned with the requested amount")]
-        public async Task ThenTheMobilePhoneListIsReturnedWithTheRequestedAmount(Table table)
+        [Then("the catalogue page contains exactly these phones in order")]
+        public async Task ThenExactCataloguePage(Table table)
         {
-            var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
-
-            var result = await DeserializeResponse<List<MobilePhoneDto>>(_response);
+            _response.StatusCode.ShouldBe((HttpStatusCode)int.Parse(table.Rows[0]["StatusCode"], CultureInfo.InvariantCulture));
+            var result = await _response.Content.ReadFromJsonAsync<List<MobilePhoneDto>>(_jsonOptions);
             result.ShouldNotBeNull();
-            _result = result;
-            var expectedAmount = expected.TryGetValue("Amount", out var amountValue)
-                ? int.Parse(amountValue, CultureInfo.InvariantCulture)
-                : _amount;
-            _result.Count.ShouldBe(expectedAmount);
-
-            foreach (var phone in _result)
+            result.Count.ShouldBe(table.Rows.Count);
+            result.Count.ShouldBe(_amount);
+            for (var i = 0; i < table.Rows.Count; i++)
             {
-                var created = _createdMobilePhones.Single(item => item.Id == phone.Id);
-                phone.MainPhoto.ShouldBe(created.CommonDescription.MainPhoto);
-            }
-
-            using var json = JsonDocument.Parse(await _response.Content.ReadAsStringAsync());
-            foreach (var phone in json.RootElement.EnumerateArray())
-            {
-                phone.GetProperty("mainPhoto").GetString().ShouldNotBeNullOrWhiteSpace();
+                var expected = table.Rows[i];
+                var phone = result[i];
+                phone.Id.ShouldBe(_createdMobilePhones.Single(created => created.CommonDescription.Name == expected["Name"]).Id);
+                phone.Name.ShouldBe(expected["Name"]);
+                phone.MainPhoto.ShouldBe(expected["MainPhoto"]);
+                phone.Price.Amount.ShouldBe(decimal.Parse(expected["PriceAmount"], CultureInfo.InvariantCulture));
+                phone.Price.Currency.ShouldBe(expected["PriceCurrency"]);
             }
         }
 
         [Then("an empty mobile phone list is returned")]
-        public async Task ThenAnEmptyMobilePhoneListIsReturned()
+        public async Task ThenAnEmptyMobilePhoneListIsReturned(Table table)
         {
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(ParseExpectedTable(table), "StatusCode"));
 
             var result = await DeserializeResponse<List<MobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
             _result = result;
+            _result.Count.ShouldBe(int.Parse(ParseExpectedTable(table)["Amount"], CultureInfo.InvariantCulture));
             _result.ShouldBeEmpty();
         }
 
@@ -148,126 +122,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 error.Message == GetRequiredValue(expected, "ErrorMessage")
                 && error.Entity == GetRequiredValue(expected, "ErrorEntity")
                 && error.Name == GetRequiredValue(expected, "ErrorName"));
-        }
-
-        private CreateMobilePhoneExternalDto BuildMobilePhoneRequest(string name, Table? table)
-        {
-            var values = MergeDefaultValues(table);
-            values["Name"] = name;
-            return new CreateMobilePhoneExternalDto(
-                new CommonDescriptionExtrernalDto(
-                    GetValue(values, "Name"),
-                    GetValue(values, "Brand"),
-                    GetValue(values, "Description"),
-                    GetValue(values, "MainPhoto"),
-                    ParseList(values, "OtherPhotos")),
-                new CreateElectronicDetailsExternalDto(
-                    GetValue(values, "CPU"),
-                    GetValue(values, "GPU"),
-                    GetValue(values, "Ram"),
-                    GetValue(values, "Storage"),
-                    GetValue(values, "DisplayType"),
-                    ParseInt(values, "RefreshRateHz"),
-                    ParseDecimal(values, "ScreenSizeInches"),
-                    ParseInt(values, "Width"),
-                    ParseInt(values, "Height"),
-                    GetValue(values, "BatteryType"),
-                    ParseInt(values, "BatteryCapacity")),
-                new CreateConnectivityExternalDto(
-                    ParseBool(values, "Has5G"),
-                    ParseBool(values, "WiFi"),
-                    ParseBool(values, "NFC"),
-                    ParseBool(values, "Bluetooth")),
-                new CreateSatelliteNavigationSystemExternalDto(
-                    ParseBool(values, "GPS"),
-                    ParseBool(values, "AGPS"),
-                    ParseBool(values, "Galileo"),
-                    ParseBool(values, "GLONASS"),
-                    ParseBool(values, "QZSS")),
-                new CreateSensorsExternalDto(
-                    ParseBool(values, "Accelerometer"),
-                    ParseBool(values, "Gyroscope"),
-                    ParseBool(values, "Proximity"),
-                    ParseBool(values, "Compass"),
-                    ParseBool(values, "Barometer"),
-                    ParseBool(values, "Halla"),
-                    ParseBool(values, "AmbientLight")),
-                GetValue(values, "Camera"),
-                ParseBool(values, "FingerPrint"),
-                ParseBool(values, "FaceId"),
-                new CreateMoneyExternalDto(
-                    ParseDecimal(values, "PriceAmount"),
-                    GetValue(values, "PriceCurrency")),
-                GetValue(values, "Description2"),
-                GetValue(values, "Description3"));
-        }
-
-        private static Dictionary<string, string> MergeDefaultValues(Table? table)
-        {
-            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["Name"] = "Filter Phone",
-                ["Brand"] = "Brand",
-                ["Description"] = "Phone created by filter test",
-                ["MainPhoto"] = "main-photo.jpg",
-                ["OtherPhotos"] = "photo-1.jpg, photo-2.jpg",
-                ["CPU"] = "Octa-core",
-                ["GPU"] = "Adreno",
-                ["Ram"] = "8GB",
-                ["Storage"] = "256GB",
-                ["DisplayType"] = "OLED",
-                ["RefreshRateHz"] = "120",
-                ["ScreenSizeInches"] = "6.4",
-                ["Width"] = "72",
-                ["Height"] = "152",
-                ["BatteryType"] = "Li-Ion",
-                ["BatteryCapacity"] = "4500",
-                ["Has5G"] = "true",
-                ["WiFi"] = "true",
-                ["NFC"] = "true",
-                ["Bluetooth"] = "true",
-                ["GPS"] = "true",
-                ["AGPS"] = "true",
-                ["Galileo"] = "true",
-                ["GLONASS"] = "true",
-                ["QZSS"] = "true",
-                ["Accelerometer"] = "true",
-                ["Gyroscope"] = "true",
-                ["Proximity"] = "true",
-                ["Compass"] = "true",
-                ["Barometer"] = "true",
-                ["Halla"] = "false",
-                ["AmbientLight"] = "true",
-                ["Camera"] = "camera",
-                ["FingerPrint"] = "true",
-                ["FaceId"] = "true",
-                ["PriceAmount"] = "799.99",
-                ["PriceCurrency"] = "USD",
-                ["Description2"] = "desc2",
-                ["Description3"] = "desc3"
-            };
-
-            if (table is null)
-            {
-                return values;
-            }
-
-            foreach (var row in table.Rows)
-            {
-                values[row["Field"]] = row["Value"];
-            }
-
-            return values;
-        }
-
-        private static string GetValue(IReadOnlyDictionary<string, string> values, string key)
-        {
-            if (!values.TryGetValue(key, out var value))
-            {
-                throw new InvalidOperationException($"Missing '{key}' value in mobile phone contract table.");
-            }
-
-            return value;
         }
 
         private static Dictionary<string, string> ParseExpectedTable(Table table)
@@ -294,27 +148,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             }
 
             return value;
-        }
-
-        private static bool ParseBool(IReadOnlyDictionary<string, string> values, string key)
-        {
-            return bool.Parse(GetValue(values, key));
-        }
-
-        private static int ParseInt(IReadOnlyDictionary<string, string> values, string key)
-        {
-            return int.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
-        }
-
-        private static decimal ParseDecimal(IReadOnlyDictionary<string, string> values, string key)
-        {
-            return decimal.Parse(GetValue(values, key), CultureInfo.InvariantCulture);
-        }
-
-        private static IReadOnlyList<string> ParseList(IReadOnlyDictionary<string, string> values, string key)
-        {
-            return GetValue(values, key)
-                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
 
         private async Task<T?> DeserializeResponse<T>(HttpResponseMessage response)

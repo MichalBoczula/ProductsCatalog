@@ -107,6 +107,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
                 var phone = phones.SingleOrDefault(candidate => candidate.Id == expectedId);
                 phone.ShouldNotBeNull();
                 phone.Name.ShouldBe(expected["Name"]);
+                phone.MainPhoto.ShouldBe(expected["MainPhoto"]);
                 phone.Brand.ShouldBe(expected["Brand"]);
                 phone.DisplayType.ShouldBe(expected["DisplayType"]);
                 phone.ScreenSizeInches.ShouldBe(decimal.Parse(expected["ScreenSizeInches"], CultureInfo.InvariantCulture));

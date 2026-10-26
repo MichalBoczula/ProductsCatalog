@@ -45,11 +45,13 @@ status/cause scenarios. This file does not duplicate those contracts.
 Improve Products first in small, separately verified PRs before reusing the
 pattern in the other producers. Generated sources remain authoritative; these
 packages do not introduce parallel handwritten contracts or new Azure resources.
-BDD-01 is implemented and verified by PR #200. BDD-02 adds the shared HTTP
-evidence foundation; its full suite and artifact checks are required before
-completion. BDD-03 through BDD-09 remain planned. Green checks for one package
-do not certify the later packages. Deployment and LiveDocs snapshot promotion
-are deferred until all packages are complete.
+BDD-01 is implemented and verified by PR #200; BDD-02 is implemented and
+verified by PR #201 (84 acceptance tests, including 64 BDD cases with 113 paired
+HTTP exchanges). BDD-03 makes the 15 successful catalogue cases explicit; its
+full suite and raw report checks are required before completion. BDD-04 through
+BDD-09 remain planned. Green checks for one package do not certify the later
+packages. Deployment and LiveDocs snapshot promotion are deferred until all
+packages are complete.
 
 | Package | Scope | Completion evidence |
 | --- | --- | --- |

@@ -110,12 +110,6 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the mobile phone by id")]
         public async Task WhenIRequestTheMobilePhoneById()
         {
-            AllureJson.AttachObject(
-                "Request JSON (get by id)",
-                new { MobilePhoneId = _mobilePhoneId },
-                _jsonOptions
-            );
-
             _response = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}");
 
             var body = await _response.Content.ReadAsStringAsync();

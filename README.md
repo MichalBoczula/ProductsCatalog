@@ -335,6 +335,19 @@ setup input, not a scenario HTTP exchange. No new dependency or runtime API
 behavior is introduced. Deployment and LiveDocs promotion wait until all packages
 are complete; ordinary producer CI still builds and archives its evidence.
 
+BDD-03 makes the 15 successful catalogue cases readable as business scenarios.
+Their Gherkin descriptions also populate each Allure case description.
+Input and expected-result tables show exact lists, empty results, photos, prices,
+explicit history pagination and the three-entry top boundary. Top is ordered by
+`ChangedAt` descending, then ID descending; the normal catalogue page is ordered
+by name, then ID. Update setup separates the original entry from its replacement.
+Create follows its actual Location, and create/update/delete check SQL current
+state and ordered history, attaching the observed state before assertions.
+Success GET and DELETE calls use the recorder's faithful bodyless request evidence.
+The acceptance matrix retains the same stable IDs after title changes. Validation,
+races/faults, technical cases and deeper contract checks remain in their later
+packages; no application endpoint or database schema changes in this package.
+
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
 ## CI

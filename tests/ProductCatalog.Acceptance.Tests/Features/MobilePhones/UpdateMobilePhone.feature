@@ -1,48 +1,58 @@
 ﻿Feature: Update mobile phone
 
   @allure.label.scenarioId:REF07_UpdateMobilePhone_01
-  Scenario: Update mobile phone returns ok response
-    Given an existing mobile phone which will be updated
-      | Field               | Value                            |
-      | Name                | Updated Mobile Phone             |
-      | Brand               | Brand                            |
-      | Description         | Updated by acceptance test       |
-      | MainPhoto           | updated-main.jpg                 |
-      | OtherPhotos         | updated-photo-1.jpg, updated-photo-2.jpg |
-      | CPU                 | Deca-core                        |
-      | GPU                 | Mali                             |
-      | Ram                 | 12GB                             |
-      | Storage             | 512GB                            |
-      | DisplayType         | AMOLED                           |
-      | RefreshRateHz       | 144                              |
-      | ScreenSizeInches    | 6.8                              |
-      | Width               | 74                               |
-      | Height              | 160                              |
-      | BatteryType         | Li-Poly                          |
-      | BatteryCapacity     | 5200                             |
-      | Has5G               | false                            |
-      | WiFi                | true                             |
-      | NFC                 | false                            |
-      | Bluetooth           | true                             |
-      | GPS                 | true                             |
-      | AGPS                | false                            |
-      | Galileo             | true                             |
-      | GLONASS             | true                             |
-      | QZSS                | false                            |
-      | Accelerometer       | true                             |
-      | Gyroscope           | false                            |
-      | Proximity           | true                             |
-      | Compass             | true                             |
-      | Barometer           | false                            |
-      | Halla               | true                             |
-      | AmbientLight        | true                             |
-      | Camera              | camera                           |
-      | FingerPrint         | false                            |
-      | FaceId              | true                             |
-      | PriceAmount         | 899.99                           |
-      | PriceCurrency       | EUR                              |
-      | Description2        | desc2                            |
-      | Description3        | desc3                            |
+  Scenario: Updating a phone replaces its details and preserves both history snapshots
+    Replacing an existing catalogue entry retains its ID and records the new state.
+    Given an existing mobile phone before replacement
+      | Field         | Value                              |
+      | Name          | Baseline Mobile Phone              |
+      | Brand         | Brand                              |
+      | Description   | Phone created for update test      |
+      | MainPhoto     | base-main.jpg                      |
+      | OtherPhotos   | base-photo-1.jpg, base-photo-2.jpg |
+      | PriceAmount   | 799.99                             |
+      | PriceCurrency | USD                                |
+    And the replacement mobile phone details are
+      | Field            | Value                                    |
+      | Name             | Updated Mobile Phone                     |
+      | Brand            | Brand                                    |
+      | Description      | Updated by acceptance test               |
+      | MainPhoto        | updated-main.jpg                         |
+      | OtherPhotos      | updated-photo-1.jpg, updated-photo-2.jpg |
+      | CPU              | Deca-core                                |
+      | GPU              | Mali                                     |
+      | Ram              | 12GB                                     |
+      | Storage          | 512GB                                    |
+      | DisplayType      | AMOLED                                   |
+      | RefreshRateHz    | 144                                      |
+      | ScreenSizeInches | 6.8                                      |
+      | Width            | 74                                       |
+      | Height           | 160                                      |
+      | BatteryType      | Li-Poly                                  |
+      | BatteryCapacity  | 5200                                     |
+      | Has5G            | false                                    |
+      | WiFi             | true                                     |
+      | NFC              | false                                    |
+      | Bluetooth        | true                                     |
+      | GPS              | true                                     |
+      | AGPS             | false                                    |
+      | Galileo          | true                                     |
+      | GLONASS          | true                                     |
+      | QZSS             | false                                    |
+      | Accelerometer    | true                                     |
+      | Gyroscope        | false                                    |
+      | Proximity        | true                                     |
+      | Compass          | true                                     |
+      | Barometer        | false                                    |
+      | Halla            | true                                     |
+      | AmbientLight     | true                                     |
+      | Camera           | camera                                   |
+      | FingerPrint      | false                                    |
+      | FaceId           | true                                     |
+      | PriceAmount      | 899.99                                   |
+      | PriceCurrency    | EUR                                      |
+      | Description2     | desc2                                    |
+      | Description3     | desc3                                    |
     When I submit the update mobile phone request
     Then the mobile phone is updated successfully
       | Field         | Value                |
@@ -51,6 +61,13 @@
       | Brand         | Brand                |
       | PriceAmount   | 899.99               |
       | PriceCurrency | EUR                  |
+    And the updated phone has the following saved state and history
+      | Field             | Value                |
+      | CurrentRows       | 1                    |
+      | Name              | Updated Mobile Phone |
+      | MainPhoto         | updated-main.jpg     |
+      | IsActive          | true                 |
+      | HistoryOperations | Inserted, Updated    |
 
   @allure.label.scenarioId:REF07_UpdateMobilePhone_02
   Scenario: Update mobile phone fails for missing mobile phone

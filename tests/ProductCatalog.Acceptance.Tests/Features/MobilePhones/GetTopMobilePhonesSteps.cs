@@ -35,9 +35,27 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         private readonly List<MobilePhoneDetailsDto> _createdMobilePhones = new();
         private HttpResponseMessage? _response;
 
-        [Given("an existing set of mobile phones for top list")]
-        public async Task GivenAnExistingSetOfMobilePhonesForTopList(Table table)
-            => await CreateMobilePhones(table, 3);
+        [Given("the following phones are available for the top list")]
+        public async Task GivenTopListPhones(Table table)
+        {
+            await ClearMobilePhones();
+            using var scope = _apiContext.Factory!.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
+            foreach (var row in table.Rows)
+            {
+                var details = new Table("Field", "Value");
+                foreach (var column in table.Header.Where(column => column != "ChangedAt"))
+                    details.AddRow(column, row[column]);
+                using var response = await _apiContext.Client!.PostAsJsonAsync("/mobile-phones", CreateMobilePhoneSteps.BuildMobilePhoneRequest(details), _jsonOptions);
+                response.StatusCode.ShouldBe(HttpStatusCode.Created);
+                var phone = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
+                phone.ShouldNotBeNull();
+                _createdMobilePhones.Add(phone);
+                var changedAt = DateTime.Parse(row["ChangedAt"], CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                await context.MobilePhones.Where(candidate => candidate.Id == phone.Id)
+                    .ExecuteUpdateAsync(update => update.SetProperty(candidate => candidate.ChangedAt, changedAt));
+            }
+        }
 
         [Given("four mobile phones with the same change time for top list")]
         public async Task GivenFourMobilePhonesWithTheSameChangeTime(Table table)
@@ -56,10 +74,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         public async Task GivenOneCreatedPhoneIsInactive()
         {
             var inactiveId = _createdMobilePhones[0].Id;
-            using var scope = _apiContext.Factory!.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
-            await context.MobilePhones.Where(phone => phone.Id == inactiveId)
-                .ExecuteUpdateAsync(update => update.SetProperty(phone => phone.IsActive, false));
+            using var response = await _apiContext.Client!.DeleteAsync($"/mobile-phones/{inactiveId}");
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            var inactive = await response.Content.ReadFromJsonAsync<MobilePhoneDetailsDto>(_jsonOptions);
+            inactive.ShouldNotBeNull();
+            inactive.IsActive.ShouldBeFalse();
         }
 
         private async Task CreateMobilePhones(Table table, int count)
@@ -98,36 +117,41 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the top mobile phones list")]
         public async Task WhenIRequestTheTopMobilePhonesList()
         {
-            AllureJson.AttachObject(
-                "Request JSON (get top)",
-                new { Endpoint = "/mobile-phones/top" },
-                _jsonOptions);
-
             _response = await _apiContext.Client!.GetAsync("/mobile-phones/top");
 
             var body = await _response.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_response.StatusCode})", body);
         }
 
-        [Then("the top mobile phones response is successful and contains records")]
-        public async Task ThenTheTopMobilePhonesResponseIsSuccessfulAndContainsRecords()
+        [Then("the top list contains exactly these phones in order")]
+        public async Task ThenExactTopList(Table table)
         {
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
-
+            _response.StatusCode.ShouldBe((HttpStatusCode)int.Parse(table.Rows[0]["StatusCode"], CultureInfo.InvariantCulture));
             var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
-            result.Count.ShouldBeGreaterThan(0);
+            result.Count.ShouldBe(table.Rows.Count);
+            for (var i = 0; i < table.Rows.Count; i++)
+            {
+                var expected = table.Rows[i];
+                var phone = result[i];
+                phone.Id.ShouldBe(_createdMobilePhones.Single(created => created.CommonDescription.Name == expected["Name"]).Id);
+                phone.CommonDescription.Name.ShouldBe(expected["Name"]);
+                phone.CommonDescription.MainPhoto.ShouldBe(expected["MainPhoto"]);
+                phone.Price.Amount.ShouldBe(decimal.Parse(expected["PriceAmount"], CultureInfo.InvariantCulture));
+                phone.Price.Currency.ShouldBe(expected["PriceCurrency"]);
+            }
         }
 
         [Then("the top list contains the three greatest IDs in stable order")]
-        public async Task ThenTheTopListContainsTheThreeGreatestIdsInStableOrder()
+        public async Task ThenTheTopListContainsTheThreeGreatestIdsInStableOrder(Table table)
         {
             _response.ShouldNotBeNull();
-            _response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response.StatusCode.ShouldBe(ParseStatusCode(ParseExpectedTable(table), "StatusCode"));
 
             var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
+            result.Count.ShouldBe(int.Parse(ParseExpectedTable(table)["Amount"], CultureInfo.InvariantCulture));
             using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
             var ids = _createdMobilePhones.Select(phone => phone.Id).ToArray();
@@ -137,13 +161,14 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the inactive phone is omitted from top but readable by ID")]
-        public async Task ThenInactivePhoneIsOmittedFromTopButReadableById()
+        public async Task ThenInactivePhoneIsOmittedFromTopButReadableById(Table table)
         {
             var inactiveId = _createdMobilePhones[0].Id;
             _response.ShouldNotBeNull();
-            _response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response.StatusCode.ShouldBe(ParseStatusCode(ParseExpectedTable(table), "StatusCode"));
             var top = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             top.ShouldNotBeNull();
+            top.Count.ShouldBe(int.Parse(ParseExpectedTable(table)["Amount"], CultureInfo.InvariantCulture));
             using var scope = _apiContext.Factory!.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ProductsContext>();
             var ids = _createdMobilePhones.Select(phone => phone.Id).ToArray();
@@ -152,21 +177,22 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
             top.Select(phone => phone.Id).ShouldBe(expected);
 
             var byIdResponse = await _apiContext.Client!.GetAsync($"/mobile-phones/{inactiveId}");
-            byIdResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
+            byIdResponse.StatusCode.ShouldBe(ParseStatusCode(ParseExpectedTable(table), "ReadByIdStatusCode"));
             var byId = await DeserializeResponse<MobilePhoneDetailsDto>(byIdResponse);
             byId.ShouldNotBeNull();
             byId.Id.ShouldBe(inactiveId);
-            byId.IsActive.ShouldBeFalse();
+            byId.IsActive.ShouldBe(bool.Parse(ParseExpectedTable(table)["ReadByIdIsActive"]));
         }
 
         [Then("the top mobile phones response is successful and empty")]
-        public async Task ThenTheTopMobilePhonesResponseIsSuccessfulAndEmpty()
+        public async Task ThenTheTopMobilePhonesResponseIsSuccessfulAndEmpty(Table table)
         {
             _response.ShouldNotBeNull();
-            _response!.StatusCode.ShouldBe(HttpStatusCode.OK);
+            _response!.StatusCode.ShouldBe(ParseStatusCode(ParseExpectedTable(table), "StatusCode"));
 
             var result = await DeserializeResponse<List<TopMobilePhoneDto>>(_response);
             result.ShouldNotBeNull();
+            result.Count.ShouldBe(int.Parse(ParseExpectedTable(table)["Amount"], CultureInfo.InvariantCulture));
             result.ShouldBeEmpty();
         }
 
