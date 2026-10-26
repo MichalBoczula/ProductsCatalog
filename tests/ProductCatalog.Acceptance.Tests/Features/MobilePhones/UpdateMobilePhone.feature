@@ -70,54 +70,66 @@
       | HistoryOperations | Inserted, Updated    |
 
   @allure.label.scenarioId:REF07_UpdateMobilePhone_02
-  Scenario: Update mobile phone fails for missing mobile phone
-    Given mobile phone identify by id not exists
-      | Field               | Value                            |
-      | Name                | Updated Mobile Phone             |
-      | Brand               | Brand                            |
-      | Description         | Updated by acceptance test       |
-      | MainPhoto           | updated-main.jpg                 |
-      | OtherPhotos         | updated-photo-1.jpg, updated-photo-2.jpg |
-      | CPU                 | Deca-core                        |
-      | GPU                 | Mali                             |
-      | Ram                 | 12GB                             |
-      | Storage             | 512GB                            |
-      | DisplayType         | AMOLED                           |
-      | RefreshRateHz       | 144                              |
-      | ScreenSizeInches    | 6.8                              |
-      | Width               | 74                               |
-      | Height              | 160                              |
-      | BatteryType         | Li-Poly                          |
-      | BatteryCapacity     | 5200                             |
-      | Has5G               | false                            |
-      | WiFi                | true                             |
-      | NFC                 | false                            |
-      | Bluetooth           | true                             |
-      | GPS                 | true                             |
-      | AGPS                | false                            |
-      | Galileo             | true                             |
-      | GLONASS             | true                             |
-      | QZSS                | false                            |
-      | Accelerometer       | true                             |
-      | Gyroscope           | false                            |
-      | Proximity           | true                             |
-      | Compass             | true                             |
-      | Barometer           | false                            |
-      | Halla               | true                             |
-      | AmbientLight        | true                             |
-      | Camera              | camera                           |
-      | FingerPrint         | false                            |
-      | FaceId              | true                             |
-      | PriceAmount         | 899.99                           |
-      | PriceCurrency       | EUR                              |
-      | Description2        | desc2                            |
-      | Description3        | desc3                            |
+  Scenario: Replacing an unknown phone rejects the request without saving changes
+    The update policy rejects an ID that does not exist; this path returns 400 before saving.
+    Given a mobile phone ID that does not exist for replacement
+      | Field            | Value                                    |
+      | Name             | Updated Mobile Phone                     |
+      | Brand            | Brand                                    |
+      | Description      | Updated by acceptance test               |
+      | MainPhoto        | updated-main.jpg                         |
+      | OtherPhotos      | updated-photo-1.jpg, updated-photo-2.jpg |
+      | CPU              | Deca-core                                |
+      | GPU              | Mali                                     |
+      | Ram              | 12GB                                     |
+      | Storage          | 512GB                                    |
+      | DisplayType      | AMOLED                                   |
+      | RefreshRateHz    | 144                                      |
+      | ScreenSizeInches | 6.8                                      |
+      | Width            | 74                                       |
+      | Height           | 160                                      |
+      | BatteryType      | Li-Poly                                  |
+      | BatteryCapacity  | 5200                                     |
+      | Has5G            | false                                    |
+      | WiFi             | true                                     |
+      | NFC              | false                                    |
+      | Bluetooth        | true                                     |
+      | GPS              | true                                     |
+      | AGPS             | false                                    |
+      | Galileo          | true                                     |
+      | GLONASS          | true                                     |
+      | QZSS             | false                                    |
+      | Accelerometer    | true                                     |
+      | Gyroscope        | false                                    |
+      | Proximity        | true                                     |
+      | Compass          | true                                     |
+      | Barometer        | false                                    |
+      | Halla            | true                                     |
+      | AmbientLight     | true                                     |
+      | Camera           | camera                                   |
+      | FingerPrint      | false                                    |
+      | FaceId           | true                                     |
+      | PriceAmount      | 899.99                                   |
+      | PriceCurrency    | EUR                                      |
+      | Description2     | desc2                                    |
+      | Description3     | desc3                                    |
+    And the catalogue and history are recorded before the rejected request
     When I submit the update mobile phone request for missing mobile phone
     Then the mobile phone update fails with validation errors
-      | Field        | Value                                   |
-      | StatusCode   | 400                                     |
-      | Title        | Validation failed                       |
-      | Detail       | One or more validation errors occurred. |
-      | ErrorMessage | Mobile phone cannot be null.            |
-      | ErrorEntity  | MobilePhone                             |
-      | ErrorName    | MobilePhonesIsNullValidationRule        |
+      | Field                  | Value                                   |
+      | StatusCode             | 400                                     |
+      | Code                   | validation_failed                       |
+      | ContentType            | application/problem+json                |
+      | ErrorCount             | 1                                       |
+      | MissingPropertiesCount | 0                                       |
+      | Title                  | Validation failed                       |
+      | Detail                 | One or more validation errors occurred. |
+      | ErrorMessage           | Mobile phone cannot be null.            |
+      | ErrorEntity            | MobilePhone                             |
+      | ErrorName              | MobilePhonesIsNullValidationRule        |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |

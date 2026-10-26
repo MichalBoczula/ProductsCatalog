@@ -165,23 +165,18 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         [When("I request the mobile phone history for the missing id")]
         public async Task WhenIRequestTheMobilePhoneHistoryForTheMissingId()
         {
-            AllureJson.AttachObject(
-                "Request JSON (get history for missing id)",
-                new { MobilePhoneId = _mobilePhoneId, PageNumber, PageSize },
-                _jsonOptions
-            );
-
             _responseFailure = await _apiContext.Client!.GetAsync($"/mobile-phones/{_mobilePhoneId}/history?pageNumber={PageNumber}&pageSize={PageSize}");
 
             var body = await _responseFailure.Content.ReadAsStringAsync();
             AllureJson.AttachRawJson($"Response JSON ({(int)_responseFailure.StatusCode})", body);
         }
 
-        [Then("response show not found error for mobile phone history")]
+        [Then("the unknown phone history returns a not-found problem")]
         public async Task ThenResponseShowNotFoundErrorForMobilePhoneHistory(Table table)
         {
             var expected = ParseExpectedTable(table);
             _responseFailure.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_responseFailure, table);
             _responseFailure!.StatusCode.ShouldBe(ParseStatusCode(expected, HttpStatusCode.NotFound));
 
             var problem = await DeserializeResponse<NotFoundProblemDetails>(_responseFailure);
@@ -250,6 +245,7 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         {
             var expected = ParseExpectedTable(table);
             _responseFailure.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_responseFailure, table);
             _responseFailure!.StatusCode.ShouldBe(ParseStatusCode(expected, HttpStatusCode.BadRequest));
 
             var problem = await DeserializeResponse<ApiProblemDetails>(_responseFailure);

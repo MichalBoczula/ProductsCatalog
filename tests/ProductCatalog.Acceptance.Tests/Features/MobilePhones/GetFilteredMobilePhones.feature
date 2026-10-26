@@ -23,22 +23,34 @@ Scenario: Filtering by brand returns exactly the matching catalogue entries
 		| PriceCurrency | USD            |
 
 @allure.label.scenarioId:REF07_GetFiltered_MobilePhones_02
-Scenario: Filter mobile phones fails when brand is outside enum values
+Scenario: Filtering phones rejects a brand outside the supported enum
+  The numeric brand value 999 is not a member of the filter brand enum.
 	Given existing mobile phones for filtering by brand
-		| Name             | Brand    | PriceAmount |
-		| Apple One        | Apple    | 999.99      |
-		| Samsung One      | Samsung  | 899.99      |
+		| Name        | Brand   | PriceAmount |
+		| Apple One   | Apple   | 999.99      |
+		| Samsung One | Samsung | 899.99      |
+	And the catalogue and history are recorded before the rejected request
 	When I filter mobile phones with invalid brand
 		| Field | Value |
 		| Brand | 999   |
 	Then filtering mobile phones fails with API error
-		| Field        | Value                                          |
-		| StatusCode   | 400                                            |
-		| Title        | Validation failed                              |
-		| Detail       | One or more validation errors occurred.        |
-		| ErrorMessage | Brand must exist in MobilePhonesBrand enum.    |
-		| ErrorEntity  | MobilePhoneFilterDto                           |
-		| ErrorName    | MobilePhoneFilterBrandValidationRule           |
+		| Field                  | Value                                       |
+		| StatusCode             | 400                                         |
+		| Code                   | validation_failed                           |
+		| ContentType            | application/problem+json                    |
+		| ErrorCount             | 1                                           |
+		| MissingPropertiesCount | 0                                           |
+		| Title                  | Validation failed                           |
+		| Detail                 | One or more validation errors occurred.     |
+		| ErrorMessage           | Brand must exist in MobilePhonesBrand enum. |
+		| ErrorEntity            | MobilePhoneFilterDto                        |
+		| ErrorName              | MobilePhoneFilterBrandValidationRule        |
+	And the rejected request leaves the catalogue and history unchanged
+		| Field                | Value |
+		| CurrentRowsChange    | 0     |
+		| HistoryRowsChange    | 0     |
+		| CurrentDataUnchanged | true  |
+		| HistoryDataUnchanged | true  |
 
 @allure.label.scenarioId:REF07_GetFiltered_MobilePhones_03
 Scenario: Filtering with no matching phones returns an empty list

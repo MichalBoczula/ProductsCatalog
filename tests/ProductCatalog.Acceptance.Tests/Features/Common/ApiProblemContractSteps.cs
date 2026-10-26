@@ -1,103 +1,85 @@
-using System.Net;
-using System.Text;
-using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ProductCatalog.Infrastructure.Contexts.Commands;
+using ProductCatalog.Acceptance.Tests.Features.MobilePhones;
 using Reqnroll;
 using Shouldly;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ProductCatalog.Acceptance.Tests.Features.Common;
 
 [Binding]
-public sealed class ApiProblemContractSteps
+public sealed class ApiProblemContractSteps(ScenarioApiContext apiContext) : IDisposable
 {
-    private readonly ScenarioApiContext _apiContext;
-
-    public ApiProblemContractSteps(ScenarioApiContext apiContext)
-    {
-        _apiContext = apiContext;
-    }
-
+    private readonly JsonSerializerOptions _json = new(JsonSerializerDefaults.Web);
+    private HttpRequestMessage? _request;
     private HttpResponseMessage? _response;
-    private string? _path;
-    private string? _errorCase;
-    private int _beforePhones;
-    private int _beforeHistory;
+    private string? _contentType;
 
-    [When("I trigger the Products REF-06 error case {string}")]
-    public async Task WhenITriggerTheErrorCase(string errorCase)
+    [Given("the rejected HTTP request has these details")]
+    public void GivenHttpRequest(Table table)
     {
-        var client = _apiContext.Client!;
-        _errorCase = errorCase;
-        if (errorCase is "json" or "type" or "null" or "missing" or "body")
-        {
-            using var scope = _apiContext.Factory!.Services.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<ProductsContext>();
-            _beforePhones = await db.MobilePhones.CountAsync();
-            _beforeHistory = await db.MobilePhonesHistories.CountAsync();
-        }
-        (_path, _response) = errorCase switch
-        {
-            "route" => ("/ref-06-not-found", await client.GetAsync("/ref-06-not-found")),
-            "method" => ("/mobile-phones/top", await client.PostAsync("/mobile-phones/top", null)),
-            "media" => ("/mobile-phones", await client.PostAsync(
-                "/mobile-phones", new StringContent("{}", Encoding.UTF8, "text/plain"))),
-            "json" => ("/mobile-phones", await client.PostAsync(
-                "/mobile-phones", new StringContent("{INTERNAL_FAILURE_MARKER", Encoding.UTF8, "application/json"))),
-            "type" => ("/mobile-phones", await client.PostAsync(
-                "/mobile-phones", new StringContent("{\"fingerPrint\":\"not-a-boolean\"}", Encoding.UTF8, "application/json"))),
-            "null" => ("/mobile-phones", await client.PostAsync(
-                "/mobile-phones", new StringContent("{\"fingerPrint\":null}", Encoding.UTF8, "application/json"))),
-            "missing" => ("/mobile-phones", await client.PostAsync(
-                "/mobile-phones", new StringContent("{}", Encoding.UTF8, "application/json"))),
-            "body" => ("/mobile-phones", await client.PostAsync(
-                "/mobile-phones", new StringContent("", Encoding.UTF8, "application/json"))),
-            "binding" => ("/mobile-phones?amount=not-a-number", await client.GetAsync(
-                "/mobile-phones?amount=not-a-number")),
-            _ => throw new ArgumentOutOfRangeException(nameof(errorCase))
-        };
+        var values = Values(table);
+        _request = new HttpRequestMessage(new HttpMethod(values["Method"]), values["Path"]);
+        _contentType = values.GetValueOrDefault("ContentType");
     }
 
-    [Then("the Products REF-06 response has status {int} and code {string}")]
-    public async Task ThenTheResponseHasProblemContract(int status, string code)
+    [Given("the rejected HTTP request has this raw body")]
+    public void GivenRawBody(string body) => SetBody(body);
+
+    [Given("the rejected HTTP request has an empty body")]
+    public void GivenEmptyBody() => SetBody(string.Empty);
+
+    [Given("an otherwise valid create body has this JSON member replaced")]
+    public void GivenReplacedMember(Table table)
+    {
+        var values = Values(table);
+        var body = ValidCreateBody();
+        body.ContainsKey(values["Member"]).ShouldBeTrue();
+        body[values["Member"]] = JsonNode.Parse(values["JsonValue"]);
+        SetBody(body.ToJsonString(_json));
+    }
+
+    [Given("an otherwise valid create body omits this JSON member")]
+    public void GivenOmittedMember(Table table)
+    {
+        var body = ValidCreateBody();
+        body.Remove(Values(table)["Member"]).ShouldBeTrue();
+        SetBody(body.ToJsonString(_json));
+    }
+
+    [When("I send the rejected HTTP request")]
+    public async Task WhenSendRequest()
+    {
+        _request.ShouldNotBeNull();
+        _response = await apiContext.Client!.SendAsync(_request);
+    }
+
+    [Then("the rejected HTTP response has this safe problem")]
+    public async Task ThenSafeProblem(Table table)
     {
         _response.ShouldNotBeNull();
-        _response.StatusCode.ShouldBe((HttpStatusCode)status);
-        _response.Content.Headers.ContentType?.MediaType.ShouldBe("application/problem+json");
+        var problem = await ApiProblemAssertions.Assert(_response, table);
+        var expected = Values(table);
+        problem.GetProperty("title").GetString().ShouldBe(expected["Title"]);
+        problem.GetProperty("detail").GetString().ShouldBe(expected["Detail"]);
+    }
 
-        var body = await _response.Content.ReadAsStringAsync();
-        using var document = JsonDocument.Parse(body);
-        var problem = document.RootElement;
-        problem.GetProperty("status").GetInt32().ShouldBe(status);
-        problem.GetProperty("code").GetString().ShouldBe(code);
-        problem.GetProperty("type").GetString().ShouldNotBeNullOrWhiteSpace();
-        problem.GetProperty("title").GetString().ShouldNotBeNullOrWhiteSpace();
-        problem.GetProperty("detail").GetString().ShouldNotBeNullOrWhiteSpace();
-        problem.GetProperty("instance").GetString().ShouldBe(_path!.Split('?')[0]);
-        problem.GetProperty("traceId").GetString().ShouldNotBeNullOrWhiteSpace();
-        problem.GetProperty("errors").GetArrayLength().ShouldBe(0);
-        var missing = problem.GetProperty("missingProperties");
-        if (_errorCase == "missing")
-        {
-            missing.EnumerateArray().Select(item => item.GetString()).ShouldContain("commonDescription");
-        }
-        else if (_errorCase is "type" or "null")
-        {
-            missing.EnumerateArray().Select(item => item.GetString()).ShouldNotContain("fingerPrint");
-        }
-        else
-        {
-            missing.GetArrayLength().ShouldBe(0);
-        }
-        body.ShouldNotContain("INTERNAL_FAILURE_MARKER");
-        body.ShouldNotContain("stackTrace");
-        if (_errorCase is "json" or "type" or "null" or "missing" or "body")
-        {
-            using var scope = _apiContext.Factory!.Services.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<ProductsContext>();
-            (await db.MobilePhones.CountAsync()).ShouldBe(_beforePhones);
-            (await db.MobilePhonesHistories.CountAsync()).ShouldBe(_beforeHistory);
-        }
+    private void SetBody(string body)
+    {
+        _request.ShouldNotBeNull();
+        _contentType.ShouldNotBeNullOrWhiteSpace();
+        _request.Content = new StringContent(body, Encoding.UTF8, _contentType);
+    }
+
+    private JsonObject ValidCreateBody() => JsonSerializer.SerializeToNode(
+        CreateMobilePhoneSteps.BuildMobilePhoneRequest(null), _json)!.AsObject();
+
+    private static Dictionary<string, string> Values(Table table)
+        => table.Rows.ToDictionary(row => row["Field"], row => row["Value"]);
+
+    public void Dispose()
+    {
+        _response?.Dispose();
+        _request?.Dispose();
     }
 }

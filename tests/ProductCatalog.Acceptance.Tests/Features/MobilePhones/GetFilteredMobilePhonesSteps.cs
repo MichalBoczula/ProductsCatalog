@@ -117,11 +117,12 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("filtering mobile phones fails with API error")]
-        public void ThenFilteringMobilePhonesFailsWithApiError(Table table)
+        public async Task ThenFilteringMobilePhonesFailsWithApiError(Table table)
         {
             var expected = ParseExpected(table);
 
             _response.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_response, table);
             _response!.StatusCode.ShouldBe((HttpStatusCode)int.Parse(expected["StatusCode"], CultureInfo.InvariantCulture));
 
             _apiProblem.ShouldNotBeNull();

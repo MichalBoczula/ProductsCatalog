@@ -62,15 +62,27 @@
       | PriceCurrency | USD               |
 
   @allure.label.scenarioId:REF07_GetMobilePhoneHistory_02
-  Scenario: Get mobile phone history fails for missing mobile phone
+  Scenario: Reading history for an unknown phone returns a resource-not-found problem
+    Valid pagination reaches resource lookup; an unknown phone ID returns 404.
     Given a missing mobile phone id
+    And the catalogue and history are recorded before the rejected request
     When I request the mobile phone history for the missing id
-    Then response show not found error for mobile phone history
-      | Field      | Value                                                                                                                                |
-      | StatusCode | 404                                                                                                                                  |
-      | Title      | Resource not found.                                                                                                                 |
-      | Detail     | Resource MobilePhoneHistoryDto identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery.                |
-      | Instance   | /mobile-phones/{MobilePhoneId}/history                                                                                              |
+    Then the unknown phone history returns a not-found problem
+      | Field                  | Value                                                                                                                               |
+      | StatusCode             | 404                                                                                                                                 |
+      | Code                   | resource_not_found                                                                                                                  |
+      | ContentType            | application/problem+json                                                                                                            |
+      | ErrorCount             | 0                                                                                                                                   |
+      | MissingPropertiesCount | 0                                                                                                                                   |
+      | Title                  | Resource not found.                                                                                                                 |
+      | Detail                 | Resource MobilePhoneHistoryDto identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneHistoryQuery. |
+      | Instance               | /mobile-phones/{MobilePhoneId}/history                                                                                              |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |
 
   @allure.label.scenarioId:REF07_GetMobilePhoneHistory_03
   Scenario: Reading an existing phone with no history returns an empty page
@@ -89,30 +101,54 @@
       | StatusCode | 200   |
       | Amount     | 0     |
 
-  Scenario Outline: Get mobile phone history fails for an invalid page number <pageNumber>
+  Scenario Outline: Reading history rejects page number <pageNumber> before resource lookup
+    Page numbers must be positive. Invalid pagination takes precedence even for an unknown phone ID.
     Given a missing mobile phone id
+    And the catalogue and history are recorded before the rejected request
     When I request the mobile phone history with page number <pageNumber> and page size 10
     Then the mobile phone history request fails with validation error
-      | Field        | Value                                      |
-      | StatusCode   | 400                                        |
-      | ErrorMessage | Page number must be greater than zero.     |
-      | ErrorEntity  | PageNumber                                 |
-      | ErrorName    | PaginationParametersValidationRule         |
+      | Field                  | Value                                  |
+      | StatusCode             | 400                                    |
+      | Code                   | validation_failed                      |
+      | ContentType            | application/problem+json               |
+      | ErrorCount             | 1                                      |
+      | MissingPropertiesCount | 0                                      |
+      | ErrorMessage           | Page number must be greater than zero. |
+      | ErrorEntity            | PageNumber                             |
+      | ErrorName              | PaginationParametersValidationRule     |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |
 
     Examples:
       | pageNumber | scenarioId                     |
       | 0          | REF07_GetMobilePhoneHistory_04 |
       | -1         | REF07_GetMobilePhoneHistory_04 |
 
-  Scenario Outline: Get mobile phone history fails for an invalid page size <pageSize>
+  Scenario Outline: Reading history rejects page size <pageSize> before resource lookup
+    Page sizes must be positive. Invalid pagination takes precedence even for an unknown phone ID.
     Given a missing mobile phone id
+    And the catalogue and history are recorded before the rejected request
     When I request the mobile phone history with page number 1 and page size <pageSize>
     Then the mobile phone history request fails with validation error
-      | Field        | Value                                      |
-      | StatusCode   | 400                                        |
-      | ErrorMessage | Page size must be greater than zero.       |
-      | ErrorEntity  | PageSize                                   |
-      | ErrorName    | PaginationParametersValidationRule         |
+      | Field                  | Value                                |
+      | StatusCode             | 400                                  |
+      | Code                   | validation_failed                    |
+      | ContentType            | application/problem+json             |
+      | ErrorCount             | 1                                    |
+      | MissingPropertiesCount | 0                                    |
+      | ErrorMessage           | Page size must be greater than zero. |
+      | ErrorEntity            | PageSize                             |
+      | ErrorName              | PaginationParametersValidationRule   |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |
 
     Examples:
       | pageSize | scenarioId                     |

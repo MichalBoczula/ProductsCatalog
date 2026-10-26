@@ -63,14 +63,26 @@
       | HistoryOperations | Inserted, Deleted |
 
   @allure.label.scenarioId:REF07_DeleteMobilePhone_02
-  Scenario: Delete mobile phone fails for missing mobile phone
+  Scenario: Deleting an unknown phone rejects the request without saving changes
+    The delete policy rejects an ID that does not exist; this path returns 400 before saving.
     Given a mobile phone id that does not exist
+    And the catalogue and history are recorded before the rejected request
     When I submit the delete mobile phone request for missing mobile phone
     Then the mobile phone deletion fails with validation errors
-      | Field        | Value                                   |
-      | StatusCode   | 400                                     |
-      | Title        | Validation failed                       |
-      | Detail       | One or more validation errors occurred. |
-      | ErrorMessage | Mobile phone cannot be null.            |
-      | ErrorEntity  | MobilePhone                             |
-      | ErrorName    | MobilePhonesIsNullValidationRule        |
+      | Field                  | Value                                   |
+      | StatusCode             | 400                                     |
+      | Code                   | validation_failed                       |
+      | ContentType            | application/problem+json                |
+      | ErrorCount             | 1                                       |
+      | MissingPropertiesCount | 0                                       |
+      | Title                  | Validation failed                       |
+      | Detail                 | One or more validation errors occurred. |
+      | ErrorMessage           | Mobile phone cannot be null.            |
+      | ErrorEntity            | MobilePhone                             |
+      | ErrorName              | MobilePhonesIsNullValidationRule        |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |

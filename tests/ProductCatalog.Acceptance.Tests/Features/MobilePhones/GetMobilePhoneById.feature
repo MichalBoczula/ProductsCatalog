@@ -55,12 +55,24 @@
       | PriceCurrency | USD               |
 
   @allure.label.scenarioId:REF07_GetMobilePhoneById_02
-  Scenario: Get mobile phone by id fails for missing mobile phone
-    Given a mobile phone without specific id doesnt exists
-    When I send request for mobile phone by not existed id
-    Then response show not found error for mobile phone
-      | Field      | Value                                                                                                                      |
-      | StatusCode | 404                                                                                                                        |
-      | Title      | Resource not found.                                                                                                         |
-      | Detail     | Resource MobilePhoneDetailsDto identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneByIdQuery. |
-      | Instance   | /mobile-phones/{MobilePhoneId}                                                                                              |
+  Scenario: Reading an unknown phone returns a resource-not-found problem
+    A valid GUID with no catalogue record returns 404 with the requested path and a trace ID.
+    Given a mobile phone ID that does not exist for reading
+    And the catalogue and history are recorded before the rejected request
+    When I request the mobile phone using the unknown ID
+    Then the unknown phone returns a not-found problem
+      | Field                  | Value                                                                                                                            |
+      | StatusCode             | 404                                                                                                                              |
+      | Code                   | resource_not_found                                                                                                               |
+      | ContentType            | application/problem+json                                                                                                         |
+      | ErrorCount             | 0                                                                                                                                |
+      | MissingPropertiesCount | 0                                                                                                                                |
+      | Title                  | Resource not found.                                                                                                              |
+      | Detail                 | Resource MobilePhoneDetailsDto identify by id {MobilePhoneId} cannot be found in databese during action GetMobilePhoneByIdQuery. |
+      | Instance               | /mobile-phones/{MobilePhoneId}                                                                                                   |
+    And the rejected request leaves the catalogue and history unchanged
+      | Field                | Value |
+      | CurrentRowsChange    | 0     |
+      | HistoryRowsChange    | 0     |
+      | CurrentDataUnchanged | true  |
+      | HistoryDataUnchanged | true  |

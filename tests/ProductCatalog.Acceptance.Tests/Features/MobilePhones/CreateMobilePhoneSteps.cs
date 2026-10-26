@@ -169,10 +169,11 @@ namespace ProductCatalog.Acceptance.Tests.Features.MobilePhones
         }
 
         [Then("the mobile phone creation fails with validation errors")]
-        public void ThenTheMobilePhoneCreationFailsWithValidationErrors(Table table)
+        public async Task ThenTheMobilePhoneCreationFailsWithValidationErrors(Table table)
         {
             var expected = ParseExpectedTable(table);
             _response.ShouldNotBeNull();
+            await ApiProblemAssertions.Assert(_response, table);
             _response!.StatusCode.ShouldBe(ParseStatusCode(expected, "StatusCode"));
 
             _apiProblem.ShouldNotBeNull();
