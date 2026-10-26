@@ -45,15 +45,20 @@ status/cause scenarios. This file does not duplicate those contracts.
 Improve Products first in small, separately verified PRs before reusing the
 pattern in the other producers. Generated sources remain authoritative; these
 packages do not introduce parallel handwritten contracts or new Azure resources.
-BDD-01 through BDD-08 are implemented and verified by PRs #200 through #207.
-BDD-08 passed 132 acceptance tests, including 64 BDD cases and 116 paired HTTP
-exchanges with contract and source-documentation observations. BDD-09 adds 12
-missing validation/history-failure examples and classifies the non-normal null-list
-guard explicitly. Its source checks cover 11 operations, 61 matrix cases, 57 steps,
-nine flows and five policies. Final CI, archive and LiveDocs snapshot evidence must
-be recorded before the last checklist item is checked. The audit does not certify
-every invalid-field combination, SQL rollback, RAG ingestion or historical design
-approval. See [the source documentation contract](source-description-contract.md).
+BDD-01 through BDD-09 are complete for the Products source and published-image
+audit. PRs #200 through #208 implement the packages; the
+[BDD-09 completion record](bdd-09-audit.md) records exact producer/archive/LiveDocs
+build identities, verification and remaining limits. The selected producer passed
+144 acceptance-project tests, including 76 BDD cases, with zero failures/skips.
+All 15 published active policy error signatures plus the inline IDs guard have
+actual response evidence. Every active rule has rejection evidence; the defensive
+null-list guard stays explicitly classified rather than counted as covered.
+
+The audit verifies the published documentation image. Azure image rollout remains
+the manual Terraform apply in the completion record; it has not been executed here.
+This does not certify every invalid-field combination, SQL rollback, historical
+design-first approval, RAG ingestion or production readiness. See also the
+[source documentation contract](source-description-contract.md).
 
 | Package | Scope | Completion evidence |
 | --- | --- | --- |
@@ -65,40 +70,41 @@ approval. See [the source documentation contract](source-description-contract.md
 | BDD-06 | Technical scenarios | Health, readiness, startup and documentation cases include appropriate actual HTTP/text or startup evidence and explicit technical exceptions. |
 | BDD-07 | Request/response contracts | Schema validation covers applicable types, required fields, nullability, enums and formats; generated contracts describe field semantics, examples and relevant response headers. |
 | BDD-08 | Flows, rules and RAG links | Source descriptions explain decisions, side effects and failures; distinguish enforced rules from standalone policies; link operation/rule/branch/scenario/evidence identities and reconcile stale docs. |
-| BDD-09 | Final structure and completeness audit | After BDD-02 through BDD-08, verify every current Products scenario and the selected LiveDocs snapshot against the checklist below; record actual CI/run/commit evidence and any remaining gap. |
+| BDD-09 | Final structure and completeness audit — complete | All current scenarios and the selected published LiveDocs image audited; exact CI/source/archive/image evidence and limits are in [the completion record](bdd-09-audit.md). Azure rollout is a separate manual apply. |
 
 ### BDD-09 final acceptance checklist
 
-- [ ] Account for every source scenario and outline example in the real result
+- [x] Account for every source scenario and outline example in the real result
   bundle: nonzero executed cases, no unintended omissions, skips or failures.
   Derive counts from that source revision rather than freezing today's total.
-- [ ] Review readable scenario intent, Given/When/Then, relevant preconditions
+- [x] Review readable scenario intent, Given/When/Then, relevant preconditions
   and meaningful input/expected-output tables or examples as rendered in Allure.
   Keep stable IDs as metadata; document justified technical exceptions.
-- [ ] Check all scenario HTTP exchanges, including setup and alternative fault
+- [x] Check all scenario HTTP exchanges, including setup and alternative fault
   clients, for method/path/query/body, actual status/media/body and their links.
   Preserve malformed request text; retain text/empty-body and startup evidence
   faithfully instead of inventing a JSON payload.
-- [ ] Resolve every attachment, verify its bytes and media type, and parse each
+- [x] Resolve every attachment, verify its bytes and media type, and parse each
   attachment advertised as JSON. Reject missing, stale or placeholder evidence.
-- [ ] Compare endpoint registrations, matrix and exported OpenAPI in both
+- [x] Compare endpoint registrations, matrix and exported OpenAPI in both
   directions. Verify every declared status and distinct documented cause has a
   real case, and check request/response schemas with explicit technical exceptions.
-- [ ] Trace operations to described branches, enforced rules, stable scenario
+- [x] Trace operations to described branches, enforced rules, stable scenario
   IDs and actual result/attachment identities. Identify unused published policies
   explicitly; documentation must not imply that unused rules are enforced.
-- [ ] Check field semantics/examples, flow conditions, side effects, safe errors,
+- [x] Check field semantics/examples, flow conditions, side effects, safe errors,
   current/history outcomes and relevant headers against executable sources.
-- [ ] Reconcile README, source-policy, error-contract and backlog claims with the
+- [x] Reconcile README, source-policy, error-contract and backlog claims with the
   reviewed revision. Record design-first approval evidence or its remaining gap;
   do not infer approval chronology solely from generated OpenAPI.
-- [ ] Require the existing full CI gates and validate the newly selected archive,
+- [x] Require the existing full CI gates and validate the newly selected archive,
   generated reports, provenance and report links in LiveDocs. Record the producer
   run, source SHA, bundle digest and LiveDocs build identity used for sign-off.
 
-BDD-09 is a final audit task, not an implemented assertion that the existing
-reports already meet every criterion. Its scope is Products; applying the same
-pattern to Users, Orders/Invoices and Payments remains separate work.
+The checklist is signed off for the frozen source and published image identified
+in the completion record. It does not claim that the running Azure revision was
+updated. Its scope is Products; applying the same pattern to Users, Orders/Invoices
+and Payments remains separate work.
 
 ## Remaining before a hosted release
 
@@ -118,7 +124,7 @@ pattern to Users, Orders/Invoices and Payments remains separate work.
 
 ## Deferred portfolio work
 
-- The shared LiveDocs portal and consolidated producer archive exist (ADR-0011/0012). Complete the BDD-09 selected-snapshot audit and promotion after these packages; producer upload does not update the running portal.
+- The shared LiveDocs portal and consolidated producer archive exist (ADR-0011/0012). BDD-09 selected-snapshot audit and image publication are complete; the Azure rollout remains a manual Terraform apply. Producer upload does not update the running portal.
 - Design and evaluate RAG ingestion, chunking, access controls and refresh
   from approved artifacts. Exclude secrets, production payloads and personal
   data. No vector store or retrieval endpoint exists in this service.

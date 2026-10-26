@@ -401,9 +401,9 @@ runtime enforcement. Descriptor failures check the complete safe problem and
 actual call count. Isolation examples record separate database identities and
 verify one correctly linked marker phone/history without relying on run order.
 Stable scenario/example identities remain unchanged. Runtime API/configuration,
-schema, dependencies and CI are unchanged; deployment and LiveDocs promotion
-remain deferred. Request/response contracts and semantic flow/RAG links follow
-in BDD-07 and BDD-08, then BDD-09 audits the complete selected evidence.
+schema, dependencies and CI were unchanged by that package. BDD-07 and BDD-08
+subsequently completed contract and semantic flow/RAG links; BDD-09 audits the
+selected evidence and published LiveDocs image.
 
 BDD-07 checks the generated request and response contracts for every scenario
 client, including fault and race clients. The checker covers the schema vocabulary
@@ -441,8 +441,8 @@ reach the API and retain their exact bytes. Schema-invalid input is permitted in
 a schema-valid request can still fail a business rule. Routing 404/405 and media
 415 use the shared problem schema. Health probes have an explicit text contract
 and report schema comparison as not applicable. Bootstrap Swagger retrieval stays
-outside scenario exchanges. Deployment and LiveDocs promotion remain deferred;
-BDD-08 covers semantic flow/rule/evidence links before the BDD-09 final audit.
+outside scenario exchanges. BDD-08 adds semantic flow/rule/evidence links; the
+BDD-09 completion record identifies the subsequently audited LiveDocs snapshot.
 
 BDD-08 gives all 57 flow steps readable source descriptions and stable keys.
 Source attributes identify nine flows, five policies, ten policy rules, the inline
@@ -470,9 +470,12 @@ branch remains explicitly classified: the real repository returns a non-null
 list, including an empty list, and no normal HTTP 404 is invented for it.
 The [source documentation contract](docs/source-description-contract.md) explains
 these limits and same-bundle retrieval joins. No new Python script, package, Azure
-resource, business rule or RAG index is added. Final selected-snapshot evidence
-and the LiveDocs refresh are recorded in the BDD-09 audit handoff; generated
-sources do not establish historical design-first approval.
+resource, business rule or RAG index is added. The
+[BDD-09 completion record](docs/bdd-09-audit.md) identifies the verified master
+bundle and published LiveDocs image, all nine audit results, explicit limits and
+the manual Azure rollout commands. Source/published-image audit is complete; the
+running Azure revision still requires that apply. Generated sources do not
+establish historical design-first approval.
 
 Generated `.feature.cs` files are build artifacts and must not be edited manually.
 
