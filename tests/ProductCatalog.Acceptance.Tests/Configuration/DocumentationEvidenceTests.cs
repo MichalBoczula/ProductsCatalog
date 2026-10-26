@@ -11,7 +11,7 @@ public sealed class DocumentationEvidenceTests
     public void CatalogueDistinguishesInvokedPoliciesStandaloneRulesAndTheInlineGuard()
     {
         var source = DocumentationEvidence.Catalogue.Read();
-        Assert.Equal(49, source.Cases.Count);
+        Assert.Equal(60, source.Cases.Count);
         Assert.Equal(9, source.OperationFlows.Count);
         Assert.Contains("products.rule.hardware-numbers", source.RuleNames.Values);
         Assert.DoesNotContain(source.OperationFlows.Values, flow => flow.RuleIds.Any(id => id.StartsWith("products.rule.hardware-", StringComparison.Ordinal)));
@@ -122,3 +122,4 @@ public sealed class DocumentationEvidenceTests
         return result;
     }
 }
+
