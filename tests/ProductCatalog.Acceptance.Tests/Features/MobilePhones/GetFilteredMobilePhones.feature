@@ -3,7 +3,8 @@ Feature: Get filtered mobile phones
 @allure.label.scenarioId:REF07_GetFiltered_MobilePhones_01
 Scenario: Filtering by brand returns exactly the matching catalogue entries
   Phones of other brands are excluded from the result.
-	Given existing mobile phones for filtering by brand
+	Given no mobile phones exist in the database
+	And existing mobile phones for filtering by brand
 		| Name        | Brand   | PriceAmount |
 		| Apple One   | Apple   | 999.99      |
 		| Samsung One | Samsung | 899.99      |
@@ -42,7 +43,8 @@ Scenario: Filter mobile phones fails when brand is outside enum values
 @allure.label.scenarioId:REF07_GetFiltered_MobilePhones_03
 Scenario: Filtering with no matching phones returns an empty list
   A valid brand and price filter with no matches is a successful result.
-	Given existing mobile phones for filtering by brand
+	Given no mobile phones exist in the database
+	And existing mobile phones for filtering by brand
 		| Name        | Brand   | PriceAmount |
 		| Apple One   | Apple   | 999.99      |
 		| Samsung One | Samsung | 899.99      |
