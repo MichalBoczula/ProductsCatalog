@@ -63,6 +63,7 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext api)
         seed.Applied.Length.ShouldBeGreaterThanOrEqualTo(int.Parse(expected["AppliedMigrationsAtLeast"], CultureInfo.InvariantCulture));
         seed.Pending.Length.ShouldBe(int.Parse(expected["PendingMigrations"], CultureInfo.InvariantCulture));
         seed.SeedLinksValid.ShouldBe(bool.Parse(expected["SeedLinksValid"]));
+        seed.SeedPricesValid.ShouldBe(bool.Parse(expected["SeedPricesValid"]));
         AssertProbe(_first.Probe, expected, "Ready");
     }
 
@@ -110,9 +111,11 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext api)
             var applied = (await db.Database.GetAppliedMigrationsAsync()).ToArray();
             var pending = (await db.Database.GetPendingMigrationsAsync()).ToArray();
             var ids = phones.Select(phone => phone.Id).ToHashSet();
-            var linksValid = entries.Count == phones.Count && entries.Select(entry => entry.MobilePhoneId).Distinct().Count() == ids.Count
-                && entries.All(entry => ids.Contains(entry.MobilePhoneId) && entry.Operation == Operation.Inserted);
-            seed = new SeedSnapshot(current, history, applied, pending, linksValid);
+            var inserted = entries.Where(entry => entry.Operation == Operation.Inserted).ToList();
+            var linksValid = inserted.Count == phones.Count && inserted.Select(entry => entry.MobilePhoneId).Distinct().Count() == ids.Count
+                && entries.All(entry => ids.Contains(entry.MobilePhoneId) && entry.Operation is Operation.Inserted or Operation.Updated);
+            var pricesValid = phones.All(phone => phone.Price.Amount > 0 && phone.Price.Currency == "PLN");
+            seed = new SeedSnapshot(current, history, applied, pending, linksValid, pricesValid);
         }
         var snapshot = new StartupSnapshot(phase, applyMigrations, effective, exists, probe, seed);
         AllureJson.AttachObject("Startup observation", snapshot, JsonOptions);
@@ -144,5 +147,5 @@ public sealed class DatabaseStartupSteps(ScenarioApiContext api)
     private sealed record ProbeObservation(int StatusCode, string? ContentType, string Body);
     private sealed record StartupSnapshot(string Phase, bool? RequestedApplyMigrations, bool EffectiveApplyMigrations,
         bool DatabaseExists, ProbeObservation Probe, SeedSnapshot? Seed);
-    private sealed record SeedSnapshot(JsonElement Current, JsonElement History, string[] Applied, string[] Pending, bool SeedLinksValid);
+    private sealed record SeedSnapshot(JsonElement Current, JsonElement History, string[] Applied, string[] Pending, bool SeedLinksValid, bool SeedPricesValid);
 }

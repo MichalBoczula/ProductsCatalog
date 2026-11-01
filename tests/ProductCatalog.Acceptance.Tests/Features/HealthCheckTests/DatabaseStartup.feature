@@ -19,10 +19,11 @@ Feature: Database startup migration settings
       | EffectiveApplyMigrations | true       |
       | DatabaseExists           | true       |
       | CurrentRows              | 15         |
-      | HistoryRows              | 15         |
+      | HistoryRows              | 26         |
       | AppliedMigrationsAtLeast | 1          |
       | PendingMigrations        | 0          |
       | SeedLinksValid           | true       |
+      | SeedPricesValid          | true       |
       | ReadyStatusCode          | 200        |
       | ReadyContentType         | text/plain |
       | ReadyBody                | Healthy    |

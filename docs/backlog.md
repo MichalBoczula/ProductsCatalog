@@ -108,6 +108,10 @@ and Payments remains separate work.
 
 ## Remaining before a hosted release
 
+- **STORE-01, seed prices:** the corrective EF/embedded-SQL migration, price
+  map, current/history preservation tests and repeated-startup expectations are
+  implemented. Verification is recorded in the PR. Hosted database application
+  remains a separate deployment step; see [the migration guide](database-migrations.md#mobile-phone-price-correction-store-01).
 - **CLEAN-01 data migration:** back up and test
   `20260922220000_RemoveCatalogs` on a copy of an existing database with real
   Categories/Currencies and `CategoryId` data. Verify upgrade, failure recovery
