@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Infrastructure.Contexts.Commands;
 using ProductsCatalog.Infrastructure.UnitTests.Integration.Configuration;
 using Shouldly;
@@ -29,7 +29,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             var mobilePhonesHistoryCount = await context.MobilePhonesHistories.CountAsync();
 
             mobilePhonesCount.ShouldBe(15);
-            mobilePhonesHistoryCount.ShouldBe(15);
+            mobilePhonesHistoryCount.ShouldBe(26);
         }
     }
 }

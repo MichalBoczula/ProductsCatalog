@@ -167,7 +167,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             result.Camera.ShouldBe("48 MP (f/1.6) rear + 12 MP ultrawide, 12 MP front");
             result.FingerPrint.ShouldBeFalse();
             result.FaceId.ShouldBeTrue();
-            result.PriceAmount.ShouldBe(0.00m);
+            result.PriceAmount.ShouldBe(3299.00m);
             result.PriceCurrency.ShouldBe("PLN");
             result.IsActive.ShouldBeTrue();
         }
@@ -193,7 +193,7 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             appleIphone.Camera.ShouldBe("48 MP (f/1.6) rear + 12 MP ultrawide, 12 MP front");
             appleIphone.DisplayType.ShouldBe("OLED");
             appleIphone.ScreenSizeInches.ShouldBe(6.10m);
-            appleIphone.PriceAmount.ShouldBe(0.00m);
+            appleIphone.PriceAmount.ShouldBe(3299.00m);
             appleIphone.PriceCurrency.ShouldBe("PLN");
             appleIphone.IsActive.ShouldBeTrue();
 
@@ -261,7 +261,10 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             await using var context = new ProductsContext(options);
             var seeded = await context.MobilePhonesHistories.AsNoTracking()
                 .SingleAsync(history => history.Id == AppleIphone16HistoryId);
-            var tiedTime = seeded.ChangedAt.AddDays(1);
+            var latest = await context.MobilePhonesHistories.AsNoTracking()
+                .Where(history => history.MobilePhoneId == AppleIphone16Id)
+                .OrderByDescending(history => history.ChangedAt).FirstAsync();
+            var tiedTime = latest.ChangedAt.AddDays(1);
 
             try
             {
@@ -277,10 +280,12 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 var firstPage = await repository.GetHistoryOfChanges(AppleIphone16Id, 1, 1, CancellationToken.None);
                 var secondPage = await repository.GetHistoryOfChanges(AppleIphone16Id, 2, 1, CancellationToken.None);
                 var thirdPage = await repository.GetHistoryOfChanges(AppleIphone16Id, 3, 1, CancellationToken.None);
+                var fourthPage = await repository.GetHistoryOfChanges(AppleIphone16Id, 4, 1, CancellationToken.None);
 
                 firstPage.Single().Id.ShouldBe(secondId);
                 secondPage.Single().Id.ShouldBe(firstId);
-                thirdPage.Single().Id.ShouldBe(AppleIphone16HistoryId);
+                thirdPage.Single().Id.ShouldBe(latest.Id);
+                fourthPage.Single().Id.ShouldBe(AppleIphone16HistoryId);
             }
             finally
             {
@@ -301,9 +306,14 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
 
             // Assert
             result.ShouldNotBeNull();
-            result.Count.ShouldBe(1);
+            result.Count.ShouldBe(2);
 
-            var history = result.Single();
+            var correction = result.First();
+            correction.Operation.ShouldBe(Operation.Updated);
+            correction.PriceAmount.ShouldBe(3299.00m);
+            correction.PriceCurrency.ShouldBe("PLN");
+            var history = result.Single(entry => entry.Id == AppleIphone16HistoryId);
+            correction.ChangedAt.ShouldBeGreaterThan(history.ChangedAt);
             history.Id.ShouldBe(AppleIphone16HistoryId);
             history.MobilePhoneId.ShouldBe(AppleIphone16Id);
             history.Name.ShouldBe("Apple iPhone 16 128GB White");
