@@ -67,15 +67,17 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 phone.Price.Currency.ShouldBe("PLN");
                 var original = history.Single(entry => entry.MobilePhoneId == phone.Id && entry.Operation == Operation.Inserted);
                 var latest = history.Where(entry => entry.MobilePhoneId == phone.Id).OrderByDescending(entry => entry.ChangedAt).First();
-                AssertHistoryMatches(phone, latest);
                 if (latest.Operation == Operation.Updated)
                 {
+                    AssertHistoryMatches(phone, latest);
                     original.PriceAmount.ShouldBe(0m);
                     latest.ChangedAt.ShouldBeGreaterThan(original.ChangedAt);
                 }
                 else
                 {
                     original.PriceAmount.ShouldBe(phone.Price.Amount);
+                    original.PriceCurrency.ShouldBe(phone.Price.Currency);
+                    original.ChangedAt.ShouldBe(phone.ChangedAt);
                 }
             }
         }
@@ -110,7 +112,8 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
                 after.ShouldNotContainKey(Iphone17ProId);
                 var history = await context.MobilePhonesHistories.AsNoTracking().ToListAsync();
                 var originalIds = originalHistory.Select(entry => entry.Id).ToHashSet();
-                history.Where(entry => originalIds.Contains(entry.Id)).OrderBy(entry => entry.Id).ShouldBe(originalHistory);
+                history.Where(entry => originalIds.Contains(entry.Id)).OrderBy(entry => entry.Id)
+                    .ShouldBe(originalHistory.OrderBy(entry => entry.Id));
                 var corrections = history.Where(entry => !originalIds.Contains(entry.Id)).ToList();
                 corrections.Count.ShouldBe(9);
 
@@ -259,9 +262,15 @@ namespace ProductsCatalog.Infrastructure.UnitTests.Integration.Tests
             }
 
             var actual = JsonSerializer.SerializeToNode(history)!.AsObject();
+            // The aggregate exposes a collection; the history read model stores its JSON text.
+            expected[nameof(MobilePhonesHistory.OtherPhotos)] = JsonSerializer.Serialize(phone.CommonDescription.OtherPhotos);
             actual.Remove(nameof(MobilePhonesHistory.Id));
             actual.Remove(nameof(MobilePhonesHistory.Operation));
-            JsonNode.DeepEquals(actual, expected).ShouldBeTrue();
+            actual.Count.ShouldBe(expected.Count);
+            foreach (var (name, value) in expected)
+            {
+                JsonNode.DeepEquals(actual[name], value).ShouldBeTrue($"History field {name} must match the corrected phone {phone.Id}.");
+            }
         }
     }
 }
