@@ -6,14 +6,14 @@ Products acceptance CI replays the exact Invoice Pact v4 artifact pinned in
 hashes. Keep the original JSON bytes when updating the pin.
 
 The verifier uses a loopback Kestrel listener and a migrated Testcontainers SQL
-Server database. Test-only provider states insert one active priced phone and
+Server database. The test-only provider state inserts one active priced phone and
 check that the missing ID is absent. The real API and Dapper read path serve
 `POST /mobile-phones/by-ids` for both interactions.
 
 | Interaction | Required response |
 | --- | --- |
-| One priced phone and one absent ID | HTTP 200 and one phone with the expected ID, name, brand, amount and currency |
-| Only an absent ID | HTTP 404 with a problem response |
+| All requested IDs exist | HTTP 200 and the priced phone with the expected ID, name, brand, amount and currency |
+| One priced phone and one absent ID | HTTP 404 with a problem response for the whole lookup |
 
 Other catalog operations and fields such as photos and specifications are
 outside this Pact. Products OpenAPI and Reqnroll checks cover those API behaviors.

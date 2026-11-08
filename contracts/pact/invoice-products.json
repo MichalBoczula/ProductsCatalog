@@ -4,55 +4,11 @@
   },
   "interactions": [
     {
-      "description": "look up a phone that does not exist",
+      "description": "look up a priced phone when all requested IDs exist",
       "pending": false,
       "providerStates": [
         {
-          "name": "the requested phone does not exist",
-          "params": {
-            "missingId": "42000000-0000-4000-8000-000000000099"
-          }
-        }
-      ],
-      "request": {
-        "body": {
-          "content": [
-            "42000000-0000-4000-8000-000000000099"
-          ],
-          "contentType": "application/json",
-          "encoded": false
-        },
-        "headers": {
-          "Content-Type": [
-            "application/json"
-          ]
-        },
-        "method": "POST",
-        "path": "/mobile-phones/by-ids"
-      },
-      "response": {
-        "body": {
-          "content": {
-            "status": 404
-          },
-          "contentType": "application/problem+json",
-          "encoded": false
-        },
-        "headers": {
-          "Content-Type": [
-            "application/problem+json"
-          ]
-        },
-        "status": 404
-      },
-      "type": "Synchronous/HTTP"
-    },
-    {
-      "description": "look up a priced phone when another requested phone is missing",
-      "pending": false,
-      "providerStates": [
-        {
-          "name": "one priced phone exists and the other requested phone is missing",
+          "name": "one priced phone exists and another phone is missing",
           "params": {
             "amount": 2499.5,
             "brand": "Pact",
@@ -66,8 +22,7 @@
       "request": {
         "body": {
           "content": [
-            "42000000-0000-4000-8000-000000000001",
-            "42000000-0000-4000-8000-000000000099"
+            "42000000-0000-4000-8000-000000000001"
           ],
           "contentType": "application/json",
           "encoded": false
@@ -102,6 +57,56 @@
           ]
         },
         "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "look up an existing phone and a missing phone together",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "one priced phone exists and another phone is missing",
+          "params": {
+            "amount": 2499.5,
+            "brand": "Pact",
+            "currency": "PLN",
+            "missingId": "42000000-0000-4000-8000-000000000099",
+            "name": "Pact checkout phone",
+            "productId": "42000000-0000-4000-8000-000000000001"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": [
+            "42000000-0000-4000-8000-000000000001",
+            "42000000-0000-4000-8000-000000000099"
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/mobile-phones/by-ids"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "status": 404
+          },
+          "contentType": "application/problem+json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/problem+json"
+          ]
+        },
+        "status": 404
       },
       "type": "Synchronous/HTTP"
     }

@@ -103,33 +103,31 @@ public sealed class InvoicePactProviderTests
         private static async Task SetupAsync(HttpContext context)
         {
             var request = await context.Request.ReadFromJsonAsync<JsonElement>(context.RequestAborted);
+            if (request.GetProperty("state").GetString() != "one priced phone exists and another phone is missing")
+                throw new InvalidOperationException("Unsupported Invoice Pact provider state.");
+
             var parameters = request.GetProperty("params");
             var db = context.RequestServices.GetRequiredService<ProductsContext>();
+            var productId = parameters.GetProperty("productId").GetGuid();
             var missingId = parameters.GetProperty("missingId").GetGuid();
-            if (await db.MobilePhones.AnyAsync(phone => phone.Id == missingId, context.RequestAborted))
+            if (productId == missingId || await db.MobilePhones.AnyAsync(phone => phone.Id == missingId, context.RequestAborted))
                 throw new InvalidOperationException("The Pact's missing phone unexpectedly exists.");
 
-            switch (request.GetProperty("state").GetString())
+            if (!await db.MobilePhones.AnyAsync(phone => phone.Id == productId, context.RequestAborted))
             {
-                case "one priced phone exists and the other requested phone is missing":
-                    var phone = new MobilePhone(
-                        new CommonDescription(parameters.GetProperty("name").GetString()!, parameters.GetProperty("brand").GetString()!,
-                            "Pact fixture", "fixture.jpg", []),
-                        new ElectronicDetails("CPU", "GPU", "8 GB", "128 GB", "OLED", 120, 6.1m, 71, 146, "Li-Ion", 4000),
-                        new Connectivity(true, true, true, true),
-                        new SatelliteNavigationSystem(true, true, true, false, false),
-                        new Sensors(true, true, true, true, false, false, true),
-                        "48 MP", true, false,
-                        new Money(parameters.GetProperty("amount").GetDecimal(), parameters.GetProperty("currency").GetString()!),
-                        "Pact fixture", "Pact fixture");
-                    db.Entry(phone).Property(entity => entity.Id).CurrentValue = parameters.GetProperty("productId").GetGuid();
-                    db.MobilePhones.Add(phone);
-                    await db.SaveChangesAsync(context.RequestAborted);
-                    break;
-                case "the requested phone does not exist":
-                    break;
-                default:
-                    throw new InvalidOperationException("Unsupported Invoice Pact provider state.");
+                var phone = new MobilePhone(
+                    new CommonDescription(parameters.GetProperty("name").GetString()!, parameters.GetProperty("brand").GetString()!,
+                        "Pact fixture", "fixture.jpg", []),
+                    new ElectronicDetails("CPU", "GPU", "8 GB", "128 GB", "OLED", 120, 6.1m, 71, 146, "Li-Ion", 4000),
+                    new Connectivity(true, true, true, true),
+                    new SatelliteNavigationSystem(true, true, true, false, false),
+                    new Sensors(true, true, true, true, false, false, true),
+                    "48 MP", true, false,
+                    new Money(parameters.GetProperty("amount").GetDecimal(), parameters.GetProperty("currency").GetString()!),
+                    "Pact fixture", "Pact fixture");
+                db.Entry(phone).Property(entity => entity.Id).CurrentValue = productId;
+                db.MobilePhones.Add(phone);
+                await db.SaveChangesAsync(context.RequestAborted);
             }
 
             await context.Response.WriteAsJsonAsync(new { }, context.RequestAborted);
