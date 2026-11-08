@@ -1,0 +1,110 @@
+"""Publish evidence produced by the required Products acceptance suite."""
+
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+from urllib.error import HTTPError
+from urllib.parse import urlencode, urlsplit
+from urllib.request import HTTPRedirectHandler, Request, build_opener
+
+ROOT = Path(__file__).resolve().parents[1]
+REPOSITORY = "https://github.com/MichalBoczula/ProductsCatalog"
+ACCEPTANCE = ROOT / "tests/ProductCatalog.Acceptance.Tests"
+
+
+class NoRedirect(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("report", type=Path)
+    parser.add_argument("receipt", type=Path)
+    args = parser.parse_args()
+    ref = os.environ["GITHUB_REF"]
+    if os.environ["GITHUB_EVENT_NAME"] != "push" or ref != "refs/heads/master":
+        raise ValueError("Products evidence requires a Products master push.")
+
+    url = urlsplit(os.environ.get("PACT_REGISTRY_URL", ""))
+    token = os.environ.get("PACT_PUBLISHER_TOKEN", "")
+    if (
+        url.scheme != "https" or not url.hostname or url.username is not None
+        or url.password is not None or url.path not in ("", "/") or url.query or url.fragment or not token
+    ):
+        raise ValueError("Configure an HTTPS PACT_REGISTRY_URL origin and the Products PACT_PUBLISHER_TOKEN.")
+    opener = build_opener(NoRedirect())
+
+    def call(path, body=None, raw=False):
+        headers = {} if body is None else {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+        request = Request(f"https://{url.netloc}{path}", data=None if body is None else json.dumps(body).encode(), headers=headers)
+        try:
+            with opener.open(request, timeout=90) as response:
+                return response.read() if raw else json.load(response)
+        except HTTPError as error:
+            raise RuntimeError(f"Pact registry rejected {path.partition('?')[0]} with HTTP {error.code}.") from None
+
+    source = json.loads((ROOT / "contracts/pact/invoice-source.json").read_bytes())
+    report = json.loads(args.report.read_bytes())
+    sha = os.environ["GITHUB_SHA"]
+    digest = source["contractSha256"]
+    if (
+        report["consumerCommitSha"] != source["commitSha"] or report["providerCommitSha"] != sha
+        or report["contractSha256"] != digest or report["status"] != "Passed"
+        or report["verifiedInteractions"] != source["interactionCount"] or report["failedInteractions"] != 0
+    ):
+        raise ValueError("The report must verify all interactions for the pinned Invoice Pact and this Products commit.")
+
+    filter_by = {
+        "sourceApplicationId": "invoice", "consumerApplicationId": "invoice",
+        "providerApplicationId": "products", "kind": "ConsumerPact", "commitSha": source["commitSha"],
+        "contractSha256": digest, "sourceRef": "refs/heads/master", "limit": 100,
+    }
+    consumer_build = f"https://github.com/{source['repository']}/actions/runs/{source['workflowRunId']}"
+    matches = []
+    seen = set()
+    while True:
+        page = call("/api/contract-publications?" + urlencode(filter_by))
+        matches.extend(item for item in page["items"] if item["buildUrl"] == consumer_build)
+        after = page["nextCursor"]
+        if after is None:
+            break
+        if after in seen:
+            raise RuntimeError("The registry repeated a publication cursor.")
+        seen.add(after)
+        filter_by["after"] = after
+    if len(matches) != 1:
+        raise RuntimeError("Publish the pinned Invoice master artifact before publishing Products evidence.")
+    publication, = matches
+    if hashlib.sha256(call(f"/api/artifacts/{digest}/content", raw=True)).hexdigest() != digest:
+        raise RuntimeError("The registry bytes differ from the verified Invoice Pact.")
+
+    configuration = hashlib.sha256()
+    for file in (
+        ACCEPTANCE / "ProductCatalog.Acceptance.Tests.csproj",
+        ACCEPTANCE / "ApplicationFactory.cs",
+        ACCEPTANCE / "AcceptanceSqlServer.cs",
+        ACCEPTANCE / "Configuration/InvoicePactProviderTests.cs",
+    ):
+        configuration.update(hashlib.sha256(file.read_bytes()).digest())
+
+    run = os.environ["GITHUB_RUN_ID"]
+    build_url = f"{REPOSITORY}/actions/runs/{run}"
+    call("/api/applications/products/versions", {"commitSha": sha, "repositoryUrl": REPOSITORY})
+    receipt = call("/api/verification-runs", {
+        **report, "consumerPublicationId": publication["id"],
+        "consumerApplicationId": "invoice", "providerApplicationId": "products",
+        "configurationSha256": configuration.hexdigest(), "ciRunId": run,
+        "ciAttempt": int(os.environ["GITHUB_RUN_ATTEMPT"]), "ciCheckId": "invoice-products-lookup",
+        "sourceRef": ref, "buildUrl": build_url, "evidenceUrls": [build_url],
+    })
+    if receipt["contractSha256"] != digest or receipt["status"] != "Passed" or receipt["publisherId"] != "products-ci":
+        raise RuntimeError("The registry returned different Products verification evidence.")
+    args.receipt.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
+    print(f"Published Products verification {receipt['id']} ({receipt['status']}).")
+
+
+if __name__ == "__main__":
+    main()

@@ -25,6 +25,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="PactNet" Version="5.0.1" />
     <PackageReference Include="Reqnroll.xUnit" Version="3.3.0" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
     <PackageReference Include="Testcontainers" Version="4.15.0" />
@@ -44,6 +45,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="../../contracts/pact/invoice-products.json" Link="pact/invoice-products.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../contracts/pact/invoice-source.json" Link="pact/invoice-source.json" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="..\..\docs\acceptance-matrix.tsv" LogicalName="Products.AcceptanceMatrix" />
     <Using Include="Xunit" />
   </ItemGroup>
