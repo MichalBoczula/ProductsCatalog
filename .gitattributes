@@ -3,6 +3,9 @@
 ###############################################################################
 * text=auto
 
+# Preserve the original bytes of the upstream Pact artifact for SHA-256 checks.
+contracts/pact/invoice-products.json -text
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #

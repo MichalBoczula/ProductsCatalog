@@ -1,0 +1,126 @@
+{
+  "consumer": {
+    "name": "invoice"
+  },
+  "interactions": [
+    {
+      "description": "look up a priced phone when all requested IDs exist",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "one priced phone exists and another phone is missing",
+          "params": {
+            "amount": 2499.5,
+            "brand": "Pact",
+            "currency": "PLN",
+            "missingId": "42000000-0000-4000-8000-000000000099",
+            "name": "Pact checkout phone",
+            "productId": "42000000-0000-4000-8000-000000000001"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": [
+            "42000000-0000-4000-8000-000000000001"
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/mobile-phones/by-ids"
+      },
+      "response": {
+        "body": {
+          "content": [
+            {
+              "brand": "Pact",
+              "id": "42000000-0000-4000-8000-000000000001",
+              "name": "Pact checkout phone",
+              "price": {
+                "amount": 2499.5,
+                "currency": "PLN"
+              }
+            }
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "look up an existing phone and a missing phone together",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "one priced phone exists and another phone is missing",
+          "params": {
+            "amount": 2499.5,
+            "brand": "Pact",
+            "currency": "PLN",
+            "missingId": "42000000-0000-4000-8000-000000000099",
+            "name": "Pact checkout phone",
+            "productId": "42000000-0000-4000-8000-000000000001"
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": [
+            "42000000-0000-4000-8000-000000000001",
+            "42000000-0000-4000-8000-000000000099"
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/mobile-phones/by-ids"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "status": 404
+          },
+          "contentType": "application/problem+json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/problem+json"
+          ]
+        },
+        "status": 404
+      },
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pactRust": {
+      "ffi": "0.4.27",
+      "models": "1.2.8"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "products"
+  }
+}
