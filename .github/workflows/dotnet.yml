@@ -12,6 +12,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   dependency-review:
@@ -35,6 +36,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Require master for manual runs
+        if: github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/master'
+        run: |
+          echo "::error::Select master for a manual CI run."
+          exit 1
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
@@ -285,7 +291,7 @@ jobs:
 
           case "$EVENT_NAME" in
             pull_request) expected_dependency_result=success ;;
-            push) expected_dependency_result=skipped ;;
+            push|workflow_dispatch) expected_dependency_result=skipped ;;
             *) echo "Unexpected event: $EVENT_NAME" >&2; exit 1 ;;
           esac
           if [[ "$DEPENDENCY_REVIEW_RESULT" != "$expected_dependency_result" ]]; then
@@ -297,7 +303,8 @@ jobs:
   publish-invoice-pact-verification:
     if: >-
       always() && !cancelled() && needs.quality-gate.result == 'success' &&
-      github.event_name == 'push' && github.ref == 'refs/heads/master' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      github.ref == 'refs/heads/master' &&
       vars.PACT_REGISTRY_URL != ''
     needs: quality-gate
     runs-on: ubuntu-24.04
@@ -322,8 +329,8 @@ jobs:
           if-no-files-found: error
 
   build-docker-image:
-    # Dependency Review is intentionally skipped on push; only the successful
-    # quality gate permits image work through that skipped ancestor.
+    # Dependency Review is skipped on pushes and manual runs.
+    # Require a successful quality gate before building the image.
     if: ${{ always() && !cancelled() && needs.quality-gate.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
