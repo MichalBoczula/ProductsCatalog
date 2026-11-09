@@ -25,8 +25,8 @@ def main():
     parser.add_argument("receipt", type=Path)
     args = parser.parse_args()
     ref = os.environ["GITHUB_REF"]
-    if os.environ["GITHUB_EVENT_NAME"] != "push" or ref != "refs/heads/master":
-        raise ValueError("Products evidence requires a Products master push.")
+    if os.environ["GITHUB_EVENT_NAME"] not in ("push", "workflow_dispatch") or ref != "refs/heads/master":
+        raise ValueError("Products evidence requires a push or manual run on master.")
 
     url = urlsplit(os.environ.get("PACT_REGISTRY_URL", ""))
     token = os.environ.get("PACT_PUBLISHER_TOKEN", "")

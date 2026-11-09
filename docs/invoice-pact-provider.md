@@ -27,8 +27,10 @@ dotnet test tests/ProductCatalog.Acceptance.Tests --configuration Release --filt
 ## Hosted evidence
 
 The required acceptance suite uploads `invoice-products-verification` on success.
-The `publish-invoice-pact-verification` job runs on a successful `master` push when
-`PACT_REGISTRY_URL` is set. It verifies the publication's source and the registry's
+The `publish-invoice-pact-verification` job runs after a successful push or
+manual CI run on `master` when `PACT_REGISTRY_URL` is set. To start a manual run,
+open **Actions → CI → Run workflow**, select `master`, and click **Run workflow**.
+The job verifies the publication's source and the registry's
 artifact bytes, registers the exact Products commit, and attaches the verified
 result to the pinned Invoice publication. The receipt is uploaded as
 `invoice-products-verification-publication`.
