@@ -150,12 +150,17 @@ jobs:
           global-json-file: global.json
       - name: Verify acceptance suite
         env:
-          PRODUCTS_PACT_REPORT: ${{ github.workspace }}/artifacts/verification/acceptance/invoice-pact-verification.json
+          PRODUCTS_PACT_REPORT_DIR: ${{ github.workspace }}/artifacts/verification/acceptance
         run: VERIFY_SUMMARY_FILE="$GITHUB_STEP_SUMMARY" bash scripts/ci.sh test acceptance
       - uses: actions/upload-artifact@v4
         with:
           name: invoice-products-verification
           path: artifacts/verification/acceptance/invoice-pact-verification.json
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-products-verification
+          path: artifacts/verification/acceptance/web-pact-verification.json
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         if: always()
@@ -300,13 +305,17 @@ jobs:
           fi
 
 
-  publish-invoice-pact-verification:
+  publish-pact-verification:
     if: >-
       always() && !cancelled() && needs.quality-gate.result == 'success' &&
       (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
       github.ref == 'refs/heads/master' &&
       vars.PACT_REGISTRY_URL != ''
     needs: quality-gate
+    strategy:
+      fail-fast: false
+      matrix:
+        consumer: [invoice, web]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -315,16 +324,16 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@v4
         with:
-          name: invoice-products-verification
+          name: ${{ matrix.consumer }}-products-verification
           path: pact-evidence
       - name: Publish verified Products evidence
         env:
           PACT_REGISTRY_URL: ${{ vars.PACT_REGISTRY_URL }}
           PACT_PUBLISHER_TOKEN: ${{ secrets.PACT_PUBLISHER_TOKEN }}
-        run: python3 scripts/publish-invoice-pact-verification.py pact-evidence/invoice-pact-verification.json pact-evidence/receipt.json
+        run: python3 scripts/publish-pact-verification.py "${{ matrix.consumer }}" "pact-evidence/${{ matrix.consumer }}-pact-verification.json" pact-evidence/receipt.json
       - uses: actions/upload-artifact@v4
         with:
-          name: invoice-products-verification-publication
+          name: ${{ matrix.consumer }}-products-verification-publication
           path: pact-evidence/receipt.json
           if-no-files-found: error
 

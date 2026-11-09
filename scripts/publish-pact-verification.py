@@ -21,6 +21,7 @@ class NoRedirect(HTTPRedirectHandler):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("consumer", choices=("invoice", "web"))
     parser.add_argument("report", type=Path)
     parser.add_argument("receipt", type=Path)
     args = parser.parse_args()
@@ -46,7 +47,7 @@ def main():
         except HTTPError as error:
             raise RuntimeError(f"Pact registry rejected {path.partition('?')[0]} with HTTP {error.code}.") from None
 
-    source = json.loads((ROOT / "contracts/pact/invoice-source.json").read_bytes())
+    source = json.loads((ROOT / f"contracts/pact/{args.consumer}-source.json").read_bytes())
     report = json.loads(args.report.read_bytes())
     sha = os.environ["GITHUB_SHA"]
     digest = source["contractSha256"]
@@ -55,10 +56,10 @@ def main():
         or report["contractSha256"] != digest or report["status"] != "Passed"
         or report["verifiedInteractions"] != source["interactionCount"] or report["failedInteractions"] != 0
     ):
-        raise ValueError("The report must verify all interactions for the pinned Invoice Pact and this Products commit.")
+        raise ValueError("The report must verify all interactions for the pinned Pact and this Products commit.")
 
     filter_by = {
-        "sourceApplicationId": "invoice", "consumerApplicationId": "invoice",
+        "sourceApplicationId": args.consumer, "consumerApplicationId": args.consumer,
         "providerApplicationId": "products", "kind": "ConsumerPact", "commitSha": source["commitSha"],
         "contractSha256": digest, "sourceRef": "refs/heads/master", "limit": 100,
     }
@@ -76,17 +77,17 @@ def main():
         seen.add(after)
         filter_by["after"] = after
     if len(matches) != 1:
-        raise RuntimeError("Publish the pinned Invoice master artifact before publishing Products evidence.")
+        raise RuntimeError(f"Publish the pinned {args.consumer} master artifact before publishing Products evidence.")
     publication, = matches
     if hashlib.sha256(call(f"/api/artifacts/{digest}/content", raw=True)).hexdigest() != digest:
-        raise RuntimeError("The registry bytes differ from the verified Invoice Pact.")
+        raise RuntimeError("The registry bytes differ from the verified Pact.")
 
     configuration = hashlib.sha256()
     for file in (
         ACCEPTANCE / "ProductCatalog.Acceptance.Tests.csproj",
         ACCEPTANCE / "ApplicationFactory.cs",
         ACCEPTANCE / "AcceptanceSqlServer.cs",
-        ACCEPTANCE / "Configuration/InvoicePactProviderTests.cs",
+        ACCEPTANCE / "Configuration/ProductsPactProviderTests.cs",
     ):
         configuration.update(hashlib.sha256(file.read_bytes()).digest())
 
@@ -95,9 +96,9 @@ def main():
     call("/api/applications/products/versions", {"commitSha": sha, "repositoryUrl": REPOSITORY})
     receipt = call("/api/verification-runs", {
         **report, "consumerPublicationId": publication["id"],
-        "consumerApplicationId": "invoice", "providerApplicationId": "products",
+        "consumerApplicationId": args.consumer, "providerApplicationId": "products",
         "configurationSha256": configuration.hexdigest(), "ciRunId": run,
-        "ciAttempt": int(os.environ["GITHUB_RUN_ATTEMPT"]), "ciCheckId": "invoice-products-lookup",
+        "ciAttempt": int(os.environ["GITHUB_RUN_ATTEMPT"]), "ciCheckId": f"{args.consumer}-products-lookup",
         "sourceRef": ref, "buildUrl": build_url, "evidenceUrls": [build_url],
     })
     if receipt["contractSha256"] != digest or receipt["status"] != "Passed" or receipt["publisherId"] != "products-ci":

@@ -1,0 +1,145 @@
+{
+  "consumer": {
+    "name": "web"
+  },
+  "interactions": [
+    {
+      "description": "look up a batch with an existing catalog phone and a missing ID",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "a priced catalog phone exists and another ID is absent",
+          "params": {
+            "brand": "Pact",
+            "camera": "48 MP",
+            "displayType": "OLED",
+            "id": "42000000-0000-4000-8000-000000000002",
+            "mainPhoto": "https://photos.example.com/phones/pact.webp",
+            "missingId": "42000000-0000-4000-8000-000000000098",
+            "name": "Pact storefront phone",
+            "price": {
+              "amount": 2499.5,
+              "currency": "PLN"
+            },
+            "screenSizeInches": 6.1
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": [
+            "42000000-0000-4000-8000-000000000002",
+            "42000000-0000-4000-8000-000000000098"
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/mobile-phones/by-ids"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "status": 404
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/problem+json"
+          ]
+        },
+        "status": 404
+      },
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "description": "look up a priced catalog phone for the cart or favorites",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "a priced catalog phone exists and another ID is absent",
+          "params": {
+            "brand": "Pact",
+            "camera": "48 MP",
+            "displayType": "OLED",
+            "id": "42000000-0000-4000-8000-000000000002",
+            "mainPhoto": "https://photos.example.com/phones/pact.webp",
+            "missingId": "42000000-0000-4000-8000-000000000098",
+            "name": "Pact storefront phone",
+            "price": {
+              "amount": 2499.5,
+              "currency": "PLN"
+            },
+            "screenSizeInches": 6.1
+          }
+        }
+      ],
+      "request": {
+        "body": {
+          "content": [
+            "42000000-0000-4000-8000-000000000002"
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "method": "POST",
+        "path": "/mobile-phones/by-ids"
+      },
+      "response": {
+        "body": {
+          "content": [
+            {
+              "brand": "Pact",
+              "camera": "48 MP",
+              "displayType": "OLED",
+              "id": "42000000-0000-4000-8000-000000000002",
+              "mainPhoto": "https://photos.example.com/phones/pact.webp",
+              "name": "Pact storefront phone",
+              "price": {
+                "amount": 2499.5,
+                "currency": "PLN"
+              },
+              "screenSizeInches": 6.1
+            }
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "status": 200
+      },
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "17.1.4"
+    },
+    "pactRust": {
+      "ffi": "0.5.8",
+      "models": "1.3.16"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "products"
+  }
+}

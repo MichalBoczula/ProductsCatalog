@@ -45,8 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../contracts/pact/invoice-products.json" Link="pact/invoice-products.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="../../contracts/pact/invoice-source.json" Link="pact/invoice-source.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../contracts/pact/*.json" Link="pact/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="..\..\docs\acceptance-matrix.tsv" LogicalName="Products.AcceptanceMatrix" />
     <Using Include="Xunit" />
   </ItemGroup>
