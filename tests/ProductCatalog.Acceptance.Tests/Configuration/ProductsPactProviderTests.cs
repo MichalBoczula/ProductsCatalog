@@ -14,33 +14,37 @@ using ProductCatalog.Infrastructure.Contexts.Commands;
 
 namespace ProductCatalog.Acceptance.Tests.Configuration;
 
-public sealed class InvoicePactProviderTests
+public sealed class ProductsPactProviderTests
 {
     private const string StatePath = "/pact-provider-state";
 
-    [Fact]
-    public async Task VerifyPinnedInvoicePactAgainstProductsApi()
+    [Theory]
+    [InlineData("invoice")]
+    [InlineData("web")]
+    public async Task VerifyPinnedPactAgainstProductsApi(string consumer)
     {
         Environment.SetEnvironmentVariable("PACT_DO_NOT_TRACK", "true");
         var directory = Path.Combine(AppContext.BaseDirectory, "pact");
-        var pactPath = Path.Combine(directory, "invoice-products.json");
+        var pactPath = Path.Combine(directory, $"{consumer}-products.json");
         var pactBytes = await File.ReadAllBytesAsync(pactPath);
-        using var source = JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(directory, "invoice-source.json")));
+        using var source = JsonDocument.Parse(await File.ReadAllBytesAsync(Path.Combine(directory, $"{consumer}-source.json")));
         using var pact = JsonDocument.Parse(pactBytes);
         var hash = Convert.ToHexStringLower(SHA256.HashData(pactBytes));
         var interactions = pact.RootElement.GetProperty("interactions").GetArrayLength();
         Assert.Equal(source.RootElement.GetProperty("contractSha256").GetString(), hash);
         Assert.Equal(source.RootElement.GetProperty("interactionCount").GetInt32(), interactions);
         Assert.True(interactions > 0);
-        Assert.Equal("invoice", pact.RootElement.GetProperty("consumer").GetProperty("name").GetString());
+        Assert.Equal(consumer, pact.RootElement.GetProperty("consumer").GetProperty("name").GetString());
         Assert.Equal("products", pact.RootElement.GetProperty("provider").GetProperty("name").GetString());
+        Assert.Equal("4.0", pact.RootElement.GetProperty("metadata").GetProperty("pactSpecification").GetProperty("version").GetString());
 
         var (startedAt, finishedAt) = await VerifyAsync(pactPath);
 
-        var report = Environment.GetEnvironmentVariable("PRODUCTS_PACT_REPORT");
-        if (!string.IsNullOrWhiteSpace(report))
+        var reportDirectory = Environment.GetEnvironmentVariable("PRODUCTS_PACT_REPORT_DIR");
+        if (!string.IsNullOrWhiteSpace(reportDirectory))
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(report))!);
+            Directory.CreateDirectory(reportDirectory);
+            var report = Path.Combine(reportDirectory, $"{consumer}-pact-verification.json");
             await File.WriteAllTextAsync(report, JsonSerializer.Serialize(new
             {
                 consumerCommitSha = source.RootElement.GetProperty("commitSha").GetString(),
@@ -103,12 +107,19 @@ public sealed class InvoicePactProviderTests
         private static async Task SetupAsync(HttpContext context)
         {
             var request = await context.Request.ReadFromJsonAsync<JsonElement>(context.RequestAborted);
-            if (request.GetProperty("state").GetString() != "one priced phone exists and another phone is missing")
-                throw new InvalidOperationException("Unsupported Invoice Pact provider state.");
-
             var parameters = request.GetProperty("params");
+            var (productId, price, photo, displayType, screenSize, camera) = request.GetProperty("state").GetString() switch
+            {
+                "one priced phone exists and another phone is missing" => (
+                    parameters.GetProperty("productId").GetGuid(), parameters, "fixture.jpg", "OLED", 6.1m, "48 MP"),
+                "a priced catalog phone exists and another ID is absent" => (
+                    parameters.GetProperty("id").GetGuid(), parameters.GetProperty("price"),
+                    parameters.GetProperty("mainPhoto").GetString()!, parameters.GetProperty("displayType").GetString()!,
+                    parameters.GetProperty("screenSizeInches").GetDecimal(), parameters.GetProperty("camera").GetString()!),
+                _ => throw new InvalidOperationException("Unsupported Products Pact provider state.")
+            };
+
             var db = context.RequestServices.GetRequiredService<ProductsContext>();
-            var productId = parameters.GetProperty("productId").GetGuid();
             var missingId = parameters.GetProperty("missingId").GetGuid();
             if (productId == missingId || await db.MobilePhones.AnyAsync(phone => phone.Id == missingId, context.RequestAborted))
                 throw new InvalidOperationException("The Pact's missing phone unexpectedly exists.");
@@ -117,13 +128,13 @@ public sealed class InvoicePactProviderTests
             {
                 var phone = new MobilePhone(
                     new CommonDescription(parameters.GetProperty("name").GetString()!, parameters.GetProperty("brand").GetString()!,
-                        "Pact fixture", "fixture.jpg", []),
-                    new ElectronicDetails("CPU", "GPU", "8 GB", "128 GB", "OLED", 120, 6.1m, 71, 146, "Li-Ion", 4000),
+                        "Pact fixture", photo, []),
+                    new ElectronicDetails("CPU", "GPU", "8 GB", "128 GB", displayType, 120, screenSize, 71, 146, "Li-Ion", 4000),
                     new Connectivity(true, true, true, true),
                     new SatelliteNavigationSystem(true, true, true, false, false),
                     new Sensors(true, true, true, true, false, false, true),
-                    "48 MP", true, false,
-                    new Money(parameters.GetProperty("amount").GetDecimal(), parameters.GetProperty("currency").GetString()!),
+                    camera, true, false,
+                    new Money(price.GetProperty("amount").GetDecimal(), price.GetProperty("currency").GetString()!),
                     "Pact fixture", "Pact fixture");
                 db.Entry(phone).Property(entity => entity.Id).CurrentValue = productId;
                 db.MobilePhones.Add(phone);

@@ -300,8 +300,8 @@ dotnet test tests/ProductCatalog.Acceptance.Tests/ProductCatalog.Acceptance.Test
 
 Infrastructure and acceptance tests require Docker because SQL Server is created through Testcontainers. The Reqnroll suite shares a SQL Server container and gives each scenario a separate migrated database, API host, and HTTP client. The scenario hook releases the client and host and drops the database even when a scenario fails. Acceptance scenarios verify HTTP status codes, response bodies, validation details, empty collections, missing resources, and safe server-error responses.
 
-The [Invoice Pact provider check](docs/invoice-pact-provider.md) runs in the same
-acceptance gate with its own SQL database and a loopback Kestrel listener.
+The [Products Pact provider checks](docs/invoice-pact-provider.md) run in the same
+acceptance gate. Each consumer gets an isolated SQL database and loopback Kestrel listener.
 
 Run benchmarks separately:
 
